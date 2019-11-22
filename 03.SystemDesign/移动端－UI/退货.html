@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>三农壹购</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="XFQucHwK8v" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0;"/>
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="三农壹购" />
+<meta name="description" content="三农壹购" />
+
+<link href="css/wsc-3n1g.css" rel="stylesheet" />
+
+<link href="js/flexslider/flexslider.css" rel="stylesheet" />
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/flexslider/jquery.flexslider-min.js"></script>
+<script src="js/default.js"></script>
+
+<script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+
+<style>
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:110px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:110px;
+
+}
+</style>
+
+<script>
+
+</script>
+
+</head>
+<body onLoad="javascript:window_onload();">
+
+
+<!--header 开始-->
+<div class="snyg_headdiv">
+	<span class="ico_ret"><a href="index.html"><img src="images/return.png" ></a></span>
+    <h2>退换货</h2>
+    <span class="ico_home"><a href="个人中心.html"><img src="images/gruser.png"></a></span>
+</div>
+<!--header 结束-->
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="fm-1" action="" method="POST">
+			<a href="搜索结果.html"><input type="text" name="keyword" class="snyg_top_inputsech" value="请输入检索关键字" placeholder="请输入检索关键字"/></a>
+		</form>
+	</div>
+
+	<nav class="snyg_dd_nav">
+    	<a href="退货.html"><span class="spanon">全部</span></a>
+    	<a href=""><span>待寄回</span></a>
+    	<a href=""><span>退款中</span></a>
+    	<a href=""><span>已完成</span></a>
+    	<a href=""><span>被拒绝</span></a>
+    </nav>
+</div>
+
+<script type="text/javascript">
+
+function window_onload() {
+  window.addEventListener("scroll",navbar_reset_top,false);
+}
+
+var navbar_top=100;
+
+function navbar_reset_top() {
+  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+  if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+    document.getElementById("navbar").className="navbar_fixed";
+  }
+  else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+    document.getElementById("navbar").className="navbar_absolute";
+  }
+}
+
+</script>
+
+
+<div class="snyg_contentb" >    
+ 	<ul class="ddlist">
+    	<li>
+        	<a href="退换货订单详情.html"><div>订单编号：D336668<span class="ddzt1">已完成</span></div></a>
+            
+            <div class="ddinfo">
+                    <div class="iconleft">          
+                        <div class="icon">
+                            <a href="团购商品详情.html" title="商品详情"><img title="" src="images/sp1.jpg" alt="" /><i class="tgspbq">团</i></a>                   
+                        </div>         
+                    </div>
+                    <div class="info">
+                        <a href="团购商品详情.html" title="商品详情"><h4>碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米</h4></a>  
+                        <p class="txt"><span class="f4">规格 500克</span></p>                         
+						<p class="txt"><span class="f4">数量 1</span></p> 
+  						<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;234.00</span></p>                   </div>
+             </div>
+             
+             <div class="ddzf"><p class="txt1"><span class="f4">2019-10-01 12:23:34</span></p></div>
+        </li>
+ 
+ 
+     	<li>
+        	<a href="退换货订单详情.html"><div>订单编号：D336668<span class="ddzt2">待寄回</span></div></a>
+            
+            <div class="ddinfo">
+                    <div class="iconleft">          
+                        <div class="icon">
+                            <a href="团购商品详情.html" title="商品详情"><img title="" src="images/sp1.jpg" alt="" /><i class="msspbq">秒</i></a>                   
+                        </div>         
+                    </div>
+                    <div class="info">
+                        <a href="团购商品详情.html" title="商品详情"><h4>碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米</h4></a>  
+                        <p class="txt"><span class="f4">规格 500克</span></p>                         
+						<p class="txt"><span class="f4">数量 1</span></p> 
+  						<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;234.00</span></p>                   </div>
+             </div>
+             
+             <div class="ddzf"><p class="txt1"><span class="f4">2019-10-01 12:23:34</span><a href="发快递.html"><span class="s_btn fr">发快递</span></a></p></div>
+        </li>
+ 
+     	<li>
+        	<a href="退换货订单详情.html"><div>订单编号：D336668<span class="ddzt3">退款中</span></div></a>
+            
+            <div class="ddinfo">
+                    <div class="iconleft">          
+                        <div class="icon">
+                            <a href="商品详情.html" title="商品详情"><img title="" src="images/sp1.jpg" alt="" /></a>                   
+                        </div>         
+                    </div>
+                    <div class="info">
+                        <a href="商品详情.html" title="商品详情"><h4>碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米</h4></a>  
+                        <p class="txt"><span class="f4">规格 500克</span></p>                         
+						<p class="txt"><span class="f4">数量 1</span></p> 
+  						<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;234.00</span></p>                   </div>
+             </div>
+             
+             <div class="ddzf"><p class="txt1"><span class="f4">2019-10-01 12:23:34</span></p></div>
+        </li>
+
+     	<li>
+        	<a href="退换货订单详情.html"><div>订单编号：D336668<span class="ddzt4">被拒绝</span></div></a>
+            
+            <div class="ddinfo">
+                    <div class="iconleft">          
+                        <div class="icon">
+                            <a href="商品详情.html" title="商品详情"><img title="" src="images/sp1.jpg" alt="" /></a>                   
+                        </div>         
+                    </div>
+                    <div class="info">
+                        <a href="商品详情.html" title="商品详情"><h4>碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米碗碗香大米</h4></a>  
+                        <p class="txt"><span class="f4">规格 500克</span></p>                         
+						<p class="txt"><span class="f4">数量 1</span></p> 
+  						<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;234.00</span></p>                   </div>
+             </div>
+             
+             <div class="ddzf"><p class="txt1"><span class="f4">2019-10-01 12:23:34</span></p></div>
+        </li>    
+    
+    </ul>
+ 
+ 
+
+</div>    
+
+<div class="clear"></div>
+<div align="center"><span class="addMore">加载更多</span></div>
+
+        
+<div class="snyg_footer"></div>
+
+
+<script>
+
+
+	var isScroll = true
+
+	$(window).scroll(function(){
+
+		var scrollTop = $(this).scrollTop();
+		var scrollHeight = $(document).height();
+		var windowHeight = $(this).height();
+
+		if( scrollTop + windowHeight == scrollHeight){ //如果拉倒最底部
+
+			$('.addMore').text('正在加载...');
+
+			setTimeout( function(){
+				$('.addMore').before( addList(6) ).text('加载更多...');
+			},1000 )
+
+		}
+
+	})
+
+</script>
+
+
+</body>
+</html>

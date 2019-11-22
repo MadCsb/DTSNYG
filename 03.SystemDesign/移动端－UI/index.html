@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>三农壹购</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="XFQucHwK8v" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0;"/>
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="三农壹购" />
+<meta name="description" content="三农壹购" />
+
+<link href="css/wsc-3n1g.css" rel="stylesheet" />
+
+<link href="js/flexslider/flexslider.css" rel="stylesheet" />
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/flexslider/jquery.flexslider-min.js"></script>
+<script src="js/default.js"></script>
+
+<script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+
+<style>
+
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+
+}
+</style>
+
+<script>
+
+</script>
+
+</head>
+<body onLoad="javascript:window_onload();">
+
+
+<div class="flexslider">
+    <ul class="slides">
+        <li><a href="#" title=""><img src="images/25.jpg" alt="" title="" /></a></li>
+        <li><a href="#" title=""><img src="images/26.jpg" alt="" title="" /></a></li>
+        <li><a href="#" title=""><img src="images/27.jpg" alt="" title="" /></a></li>
+        <li><a href="#" title=""><img src="images/28.jpg" alt="" title="" /></a></li>
+        <li><a href="#" title=""><img src="images/29.jpg" alt="" title="" /></a></li>
+    </ul>
+	<div style="clear:both;"></div>
+</div>
+
+
+
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="fm-1" action="" method="POST">
+			<a href="搜索结果.html"><input type="text" name="keyword" class="snyg_top_inputsech" value="请输入检索关键字" placeholder="请输入检索关键字"/></a>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+function window_onload() {
+  window.addEventListener("scroll",navbar_reset_top,false);
+}
+
+var navbar_top=100;
+
+function navbar_reset_top() {
+  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+  if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+    document.getElementById("navbar").className="navbar_fixed";
+  }
+  else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+    document.getElementById("navbar").className="navbar_absolute";
+  }
+}
+
+</script>
+
+<!--整点秒杀-->
+<a href="秒杀商品列表.html"><div class="snyg_details_title">整点秒杀</div></a>
+<ul class="snyg_data_details">
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp1.jpg" /><i class="msspbq">秒</i></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp2.jpg" /><i class="msspbq">秒</i></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">新鲜绿色食品</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp3.jpg" /><i class="msspbq">秒</i></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp4.jpg" /><i class="msspbq">秒</i></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+</ul>
+
+<div class="snyg_flbanner"><img src="images/bannner1.jpg"></div>
+
+<!--拼团专区 -->
+<a href="团购商品列表.html"><div class="snyg_details_title">拼团专区</div></a>
+<ul class="snyg_data_tglist">
+    <li>
+            <a href="团购商品详情.html">
+            <div class="data_img"><img src="images/sp4.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="团购商品详情.html">
+            <div class="data_img"><img src="images/sp5.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">新鲜绿色食品</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="团购商品详情.html">
+            <div class="data_img"><img src="images/sp6.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+</ul>
+
+<div class="snyg_flbanner"><img src="images/bannner2.jpg"></div>
+
+
+<!--商品精选-->
+<div class="snyg_details_title">
+   商品精选</div>
+<ul class="snyg_data_details">
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp1.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp2.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">新鲜绿色食品</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp3.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp1.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp2.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">新鲜绿色食品</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+    <li>
+            <a href="商品详情.html">
+            <div class="data_img"><img src="images/sp3.jpg" /></div>
+            <div class="data_bt">碗碗香大米</div>
+            <div class="data_xl">产地真供</div>
+            </a>
+            <a href="购物车.html">
+            <div class="data_jg">&yen;109.00</div>
+            <div class="data_more"></div>
+            </a>    </li>
+</ul>
+    
+<div class="clear"></div>
+<div align="center"><span class="addMore">加载更多</span></div>
+
+        
+<div class="snyg_footer"></div>
+
+<nav>
+    <ul class="clear snyg_icon_ul">
+        <li>
+
+                <a title="a" class="" href="">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del1on"></div>
+                    <p class="f1">首页</p>						
+                 </div>
+                 </a>	
+
+        </li>
+         <li>
+
+                <a title="a"  href="分类.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del2"></div>
+                    <p>分类</p>						
+                 </div>
+                 </a>	
+        </li>
+        <li>
+
+                <a title="a" class="" href="购物车.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del3"></div>
+                    <p>购物车</p>						
+                 </div>
+                 </a>
+
+        </li>
+         <li>
+
+                <a title="a" class="" href="个人中心.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del4"></div>
+                    <p>我的</p>						
+                 </div>
+                 </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+
+
+	var isScroll = true
+
+	$(window).scroll(function(){
+
+		var scrollTop = $(this).scrollTop();
+		var scrollHeight = $(document).height();
+		var windowHeight = $(this).height();
+
+		if( scrollTop + windowHeight == scrollHeight){ //如果拉倒最底部
+
+			$('.addMore').text('正在加载...');
+
+			setTimeout( function(){
+				$('.addMore').before( addList(6) ).text('加载更多...');
+			},1000 )
+
+		}
+
+	})
+
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>三农壹购</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="XFQucHwK8v" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0;"/>
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="三农壹购" />
+<meta name="description" content="三农壹购" />
+
+<link href="css/wsc-3n1g.css" rel="stylesheet" />
+
+<link href="js/flexslider/flexslider.css" rel="stylesheet" />
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/flexslider/jquery.flexslider-min.js"></script>
+<script src="js/default.js"></script>
+
+<script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+
+<style>
+
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+
+}
+</style>
+
+<script>
+
+</script>
+
+</head>
+<body onLoad="javascript:window_onload();">
+
+
+<div class="snyg_headdiv">
+	<span class="ico_ret"><a href="index.html"><img src="images/return.png" ></a></span>
+    <h2>商品分类</h2>
+    <span class="ico_home"><a href="个人中心.html"><img src="images/gruser.png"></a></span>
+</div>
+
+
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="fm_1" action="" method="POST">
+			<a href="搜索结果.html"><input type="text" name="keyword" class="snyg_top_inputsech" value="请输入检索关键字" placeholder="请输入检索关键字"/></a>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+function window_onload() {
+  window.addEventListener("scroll",navbar_reset_top,false);
+}
+
+var navbar_top=100;
+
+function navbar_reset_top() {
+  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+  if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+    document.getElementById("navbar").className="navbar_fixed";
+  }
+  else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+    document.getElementById("navbar").className="navbar_absolute";
+  }
+}
+
+</script>
+
+<!--商品分类-->
+
+<div class="snyg_content">
+
+    <div class="l_spfl">
+ 		<ul class="onefl">
+        	<li class="menuon">字数不限制</li>
+        	<li class="menu">食品</li>
+        	<li class="menu">土特产</li>
+        	<li class="menu">特色工艺品</li>
+        	<li class="menu">食品</li>
+        	<li class="menu">土特产</li>
+        	<li class="menu">特色工艺品</li>
+        	<li class="menu">食品</li>
+        	<li class="menu">土特产</li>
+        	<li class="menu">特色工艺品色工艺品</li>
+        	<li class="menu">食品</li>
+        	<li class="menu">土特产</li>
+        	<li class="menu">特色工艺品</li>
+        </ul>
+           
+    </div>
+    <div class="r_spfl">
+		<ul class="twofl">
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>最多6个字</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>苹果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>桔子</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>火龙果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>猕猴桃</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>水蜜蜜桃</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>苹果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>桔子</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>火龙果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>猕猴桃</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>水蜜水蜜</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>苹果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>桔子</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>火龙果</p><a class="more" href="分类列表.html"></a></li>
+        	<li><div class="flimg"><img src="images/fl.png"></div><p>猕猴桃</p><a class="more" href="分类列表.html"></a></li>
+
+        </ul>    
+        <div class="clear"></div>
+        <div align="center"><span class="addMore">加载更多</span></div>
+<div class="snyg_footer"></div>
+    </div>
+
+</div>
+
+
+
+        
+
+
+<nav>
+    <ul class="clear snyg_icon_ul">
+        <li>
+
+                <a title="a" class="" href="">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del1"></div>
+                    <p>首页</p>						
+                 </div>
+                 </a>	
+
+        </li>
+         <li>
+
+                <a title="a"  href="分类.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del2on"></div>
+                    <p class="f1">分类</p>						
+                 </div>
+                 </a>	
+        </li>
+        <li>
+
+                <a title="a" class="" href="购物车.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del3"></div>
+                    <p>购物车</p>						
+                 </div>
+                 </a>
+
+        </li>
+         <li>
+
+                <a title="a" class="" href="个人中心.html">
+                <div class="snyg_icon_wrap">
+                    <div class="snyg_icon_del4"></div>
+                    <p>我的</p>						
+                 </div>
+                 </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+
+	var isScroll = true
+
+	$(window).scroll(function(){
+
+		var scrollTop = $(this).scrollTop();
+		var scrollHeight = $(document).height();
+		var windowHeight = $(this).height();
+
+		if( scrollTop + windowHeight == scrollHeight){ //如果拉倒最底部
+
+			$('.addMore').text('正在加载...');
+
+			setTimeout( function(){
+				$('.addMore').before( addList(6) ).text('加载更多...');
+			},1000 )
+
+		}
+
+	})
+
+</script>
+</body>
+</html>
