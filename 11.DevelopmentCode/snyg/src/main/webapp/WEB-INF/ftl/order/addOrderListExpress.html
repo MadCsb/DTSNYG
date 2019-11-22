@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>
+<body>
+<div class="waybill-title">
+	<span>订单发货</span>
+</div>
+	<form id="queryFrm" action="orderList?method=addExpress" method="post">
+		<input type="hidden" id="orderId" value="${order.orderId!''}">
+		<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+
+				<td width="13%" class="tdright"><b><font class="f2">*</font>快递公司：</b></td>
+				<td width="30%">
+					<select name="epmeCompany"  id="epmeCompany" class=" data-inputtxt-select">
+						<option value="">请选择</option>
+						<#list expressList as li>
+						<option value="${li.mapKey!''}">${li.mapValue!''}</option>
+						</#list>
+					</select>
+				</td>
+				<td width="13%" class="tdright"><b><font class="f2">*</font>快递单号：</b></td>
+				<td width="30%">
+					<input name="epmeOrdcode" type="text"  id="epmeOrdcode" class="data-inputtxt" /> 
+				</td>
+			</tr>
+		</table>
+		</form>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="10%" style="text-align:center"><input type="checkbox" value="" id="allcheck"></th>
+				<th width="16%">商品名称</th>
+				<th width="16%">发货数量</th>
+				<th width="16%">快递公司</th>
+				<th width="16%">快递单号</th>
+				<th width="16%">状态</th>
+			</tr>
+
+			<#list orderListList as l>
+			<tr>
+				<td align="center">
+					<#if l.orderExpressList?size != 0>
+						<input type="checkbox" disabled="disabled" checked>
+					<#else>
+						<input type="checkbox" name="delId" orderListId="${l.orderListId!''}">
+					</#if>
+				</td> 
+				<td title="${l.productName!''}&nbsp;&nbsp;&nbsp;${l.childName!''}">${l.productName!''}&nbsp;&nbsp;&nbsp;${l.childName!''}</td>
+				<td title="${l.num!''}">${l.num!''}</td>
+				<#if (l.orderExpressList)??>
+					<td>
+						<#list l.orderExpressList as loe>
+							<#if loe_index != 0><br></#if>
+							${loe.epmeCompanyValue!''}
+						</#list>
+					</td>
+					<td>
+						<#list l.orderExpressList as loe>
+							<#if loe_index != 0><br></#if>
+							${loe.epmeOrdCode!''}
+						</#list>
+					</td>
+					<td>
+						<#list l.orderExpressList as loe>
+							<#if loe_index != 0><br></#if>
+							未知
+						</#list>
+					</td>
+				<#else>
+					<td></td>
+					<td></td>
+					<td></td>
+				</#if>
+			</tr>
+			</#list>
+		</table>
+		<div class="footerbtn">   
+				<input name="button3" onClick="beforeSubmit();" type="button" class="add-new" id="btnSave" value="保存">
+				<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+			</div>
+	
+<script>
+function beforeSubmit(){
+  $("#btnSave").attr("disabled", "disabled");
+
+	var epmeCompany  = $("#epmeCompany").val();
+	if(epmeCompany==""){
+		$("#btnSave").attr("disabled", false);
+    parent.layer.alert("请选择快递公司");
+		return;
+	}
+	var epmeOrdcode = $.trim($("#epmeOrdcode").val());
+	if(epmeOrdcode==""){
+		$("#btnSave").attr("disabled", false);
+    parent.layer.alert("快递单号不能为空");
+		return;
+	}else if(epmeOrdcode.replace(/[^\x00-\xff]/g,"**").length>100){
+		$("#btnSave").attr("disabled", false);
+    parent.layer.alert("快递单号不能超过100个字符，1个汉字为2个字符");
+		return;
+	}
+	var delIds = "";
+	$(":checkbox[orderListId]").each(function(i){
+		if($(this).attr("checked")){
+			if(delIds!="") delIds+=",";
+			delIds += $(this).attr("orderListId");
+		}
+	})
+	if(delIds==""){
+		$("#btnSave").attr("disabled", false);
+    parent.layer.alert("请选择发货的商品");
+		return;
+	}
+
+  $.ajax({
+    type: "POST",
+    async: false,
+    dataType: "json",
+    url: "order?method=addExpress",
+    data: {
+      d:new Date().getTime(),
+      orderListId:delIds,
+      epmeCompany:epmeCompany,
+      epmeOrdCode:epmeOrdcode
+    },
+    success: function (data) {
+      if(data.resultCode =="0"){
+        parent.layer.alert('操作成功！', function() {
+          closeDialog();
+        });
+      }else
+      {
+        parent.layer.closeAll()
+      }
+    }
+  });
+}
+
+function closeDialog()
+{
+  parent.layer.closeAll()
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("subjectId");
+		document.getElementById("checkedSubjectIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+
+	<a href="subject?method=toAdd">添加用户</a>
+	<form id="queryFrm" action="subject?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<table border="1" style="width: 100%">
+			<tr>
+				<td></td> 
+				<td>subjectId</td> 
+				<td>subject</td> 
+				<td>spId</td> 
+				<td>操作</td>
+			</tr>
+
+			<#list subjectlist as subject>
+			<tr>
+				<td>
+					<input type="checkbox" name="subjectId" value="${subject.subjectId!''}"></td> 
+				<td>${subject.subjectId!''}</td> 
+				<td>${subject.subject!''}</td> 
+				<td>${subject.spId!''}</td> 
+				<td><a
+					href="subject?method=toUpdate&subjectId=${subject.subjectId!''}">修改</a>
+					&nbsp;&nbsp; <a
+					href="subject?method=delete&subjectId=${subject.subjectId!''}">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+
+		<#if subjectlist?? && (subjectlist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="subject?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedSubjectIds"
+			id="checkedSubjectIds">
+	</form>
+</body>
+</html>

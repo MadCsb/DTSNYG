@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "./queryHead.html">
+</head>
+<body>
+	<form id="queryFrm" action="feedback.do?method=query&msgType=0"  method="post" >
+	    <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!''}" />
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!''}" />
+		<div class="cont-div">
+	    	<div class="waybill-title">
+		        <div align="left">
+		           	<input name="button5" id="button5" type="button" class="add-new"  
+		           		value="添加文本回复" onClick="javascript:window.location.href='feedback.do?method=toAdd&msgType=0'">
+	
+		           	<input type="button" class="cbtn1" value="启用" onClick="batch(0);" />
+		           	<input type="button" class="cbtn1" value="停用" onClick="batch(1);" />
+		        </div>
+	    	</div>
+	    	
+	
+	    	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+		        <thead>
+			        <tr>
+					  <th style="text-align:center;" width="5%"><input type="checkbox" id="allcheck" /></th>
+			          <th width="20%">编号</th>
+			          <th width="15%">消息名称</th>
+			          <th width="10%">标题</th>
+			          <th width="10%">状态</th>
+			          <th width="10%">发布时间</th>
+			          <th width="15%">操作</th>
+			        </tr>
+		        </thead>
+	       		<tbody>
+	      		<#list feedbacklist as feedback>
+	        		<tr onClick="selectTr(this)">
+	          			<td align="center"><input type="checkbox" name="delId" value="${feedback.feedBackId!''}" /></td> 
+	          			<td title="${feedback.feedBackId!''}">${feedback.feedBackId!''}</td>
+			          	<td title="${feedback.msgName!''}">${feedback.msgName!''}</td>
+			          	<td title="${feedback.title!''}">${feedback.title!''}</td>
+			          	<td align="center"><#if feedback.delFlag?? && feedback.delFlag == '0'> <span class="c-fg">正常</span> <#else><span class="fred">停用</span></#if></td>
+			          	<td align="center" title="${feedback.lastUpdate!''}">${feedback.lastUpdate!''}</td>
+			          	<td align="center">
+			          	
+	          					<a href="feedback.do?method=toUpdate&feedBackId=${feedback.feedBackId!''}" title="编辑" class="ico_btn1">编辑</a>
+	          		
+	          				
+	          				<#if feedback.delFlag?? && feedback.delFlag == '0'>
+	          				
+		          				<a href="javascript:void(0);" title="停用" class="ico_btn1" onClick="resetFeedbackDelFlag('${feedback.feedBackId}',1)" >停用</a>
+		          	
+	          				
+	          				<#else>
+	          				
+		          				<a href="javascript:void(0);" title="启用" class="ico_btn1" onClick="resetFeedbackDelFlag('${feedback.feedBackId}',0)" >启用</a>
+		          				
+	          				
+	          				</#if>
+	          			</td>
+	        		</tr>
+	      			</#list>
+	   			</tbody>
+	    	</table>
+			<div class="page-div">
+	 		<#if feedbacklist?? && (feedbacklist?size>0)>   
+	       		<#include "/pagination.html">
+	  		<#else>
+	  			<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+	  		</#if>
+			</div>
+		</div>
+	</form>
+	
+	<form action="feedback.do?method=batchResetDelFlag" id="deleteBatch" method="post">
+		<input type="hidden" name="checkedFeedbackIds" id="checkedFeedbackIds">
+		<input type="hidden" name="delFlag" id="delFlagBatch">
+	</form>
+</body>
+
+<script type="text/javascript">
+	
+	$(function(){
+		
+		// 初始化全选复选框
+		initCheckBox('allcheck', 'delId');
+	});
+
+</script>
+</html>

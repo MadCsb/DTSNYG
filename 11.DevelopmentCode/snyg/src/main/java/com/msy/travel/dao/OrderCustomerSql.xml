@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderCustomerDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrderCustomer" parameterType="orderCustomer">
+		INSERT INTO 
+			t_sm_ordercustomer  
+		(
+			F_ORDERID ,
+			F_ORDERLISTID ,
+			F_CUSTNAME ,
+			F_CUSTPHONE ,
+			F_RECADDRESS ,
+			F_CUSTCARD ,
+			F_CARDTYPE 
+		) VALUES (
+			#{orderId} ,
+			#{orderListId} ,
+			#{custName} ,
+			#{custPhone} ,
+			#{recAddress} ,
+			#{custCard} ,
+			#{cardType} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrderCustomer" parameterType="orderCustomer">
+		REPLACE INTO 
+			t_sm_ordercustomer 
+		(
+			F_ORDERID ,
+			F_ORDERLISTID ,
+			F_CUSTNAME ,
+			F_CUSTPHONE ,
+			F_RECADDRESS ,
+			F_CUSTCARD ,
+			F_CARDTYPE 
+		) VALUES (
+			#{orderId} ,
+			#{orderListId} ,
+			#{custName} ,
+			#{custPhone} ,
+			#{recAddress} ,
+			#{custCard} ,
+			#{cardType} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrderCustomer" parameterType="orderCustomer">
+		UPDATE
+			t_sm_ordercustomer 
+		SET
+			F_ORDERLISTID = #{orderListId} ,
+			F_CUSTNAME = #{custName} ,
+			F_CUSTPHONE = #{custPhone} ,
+			F_RECADDRESS = #{recAddress} ,
+			F_CUSTCARD = #{custCard} ,
+			F_CARDTYPE = #{cardType} 
+		<where>
+			F_ORDERID = #{orderId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrderCustomer" parameterType="orderCustomer">
+		DELETE FROM
+			t_sm_ordercustomer 
+		<where>
+			F_ORDERID = #{orderId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchOrderCustomer" parameterType="orderCustomer">
+		DELETE FROM 
+			t_sm_ordercustomer 
+		<where>
+			F_ORDERID in
+			<foreach collection="orderCustomerIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrderCustomer" parameterType="String" resultType="orderCustomer">
+		SELECT
+			t.F_ORDERID as orderId ,
+			t.F_ORDERLISTID as orderListId ,
+			t.F_CUSTNAME as custName ,
+			t.F_CUSTPHONE as custPhone ,
+			t.F_RECADDRESS as recAddress ,
+			t.F_CUSTCARD as custCard ,
+			t.F_CARDTYPE as cardType 
+		FROM
+			t_sm_ordercustomer t
+		<where>
+			t.F_ORDERID = #{orderId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderCustomerList" parameterType="orderCustomer" resultType="orderCustomer">
+		SELECT
+			t.F_ORDERID as orderId ,
+			t.F_ORDERLISTID as orderListId ,
+			t.F_CUSTNAME as custName ,
+			t.F_CUSTPHONE as custPhone ,
+			t.F_RECADDRESS as recAddress ,
+			t.F_CUSTCARD as custCard ,
+			t.F_CARDTYPE as cardType 
+		FROM
+		t_sm_ordercustomer t
+		<where>
+			<if test="orderId!=null and orderId!=''">
+		    	t.F_ORDERID = #{orderId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

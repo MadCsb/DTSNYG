@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+
+</head>
+<body>
+	<div class="cont-div"  style="width:700px;">
+     <form action="wxMenu?method=toUpdate" id="toModifyWxMenu" method="post"> 
+  <table id="aa" class="datalist-new">
+   <input type="hidden" name="menuId" id="menuId" value="${wxMenu.menuId!''}"/>
+    <input type="hidden" name="feedbackType"  id="feedBackType"/>
+      <input type="hidden" name="menuType"  id="menuType" />
+      <input type="hidden" name="pmenuId"  id="pmenuId" value="${wxMenu.pmenuId!''}"/>
+      <input type="hidden" name="menuLevel" id="menuLevel" value="${wxMenu.menuLevel!''}"/>
+    
+    <tbody>
+      <tr>
+        <td width="20%"><span style="color: red;">*</span><b>菜单名称：</b></td>
+        <td width="80%"><input name="menuName" id="menuName" type="text" value="${wxMenu.menuName!''}" size="50" class="data-inputtxt"></td>
+      </tr>
+      <tr> 
+        <td><span style="color: red;">*</span><b>显示顺序：</b></td>
+        <td>
+        <select name="menuOrder" id="menuOrder" class="data-inputtxt-select">
+            <option value="">请选择</option>
+           	<#if wxMenu.menuLevel??>
+           		<#if wxMenu.menuLevel=='0'>
+           			<#if wxMenu.menuOrder??>
+           			<#if wxMenu.menuOrder=='1'>
+           				<option value="1" selected="selected">1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+            		<#elseif wxMenu.menuOrder=='2'>
+           				<option value="1" >1</option>
+			        	<option value="2" selected="selected">2</option>
+			        	<option value="3" >3</option>  
+            		<#elseif wxMenu.menuOrder=='3'>
+            			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" selected="selected">3</option>  
+		        	<#else>
+            			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+            		</#if>
+            		<#else>
+            			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+            		</#if>
+           		<#elseif wxMenu.menuLevel=='1'>
+           			<#if wxMenu.menuOrder??>
+            			<#if wxMenu.menuOrder=='1'>
+            				<option value="1" selected="selected">1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5">5</option>  
+             		<#elseif wxMenu.menuOrder=='2'>
+            				<option value="1" >1</option>
+			        	<option value="2" selected="selected">2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5">5</option>  
+             		<#elseif wxMenu.menuOrder=='3'>
+             			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" selected="selected">3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5">5</option>  
+			        <#elseif wxMenu.menuOrder=='4'>
+             			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4" selected="selected">4</option>  
+			        	<option value="5" >5</option>  
+			        <#elseif wxMenu.menuOrder=='5'>
+             			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5"  selected="selected">5</option>  
+			        <#else>
+             			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5">5</option>  
+             		</#if>
+             	<#else>
+             			<option value="1" >1</option>
+			        	<option value="2" >2</option>
+			        	<option value="3" >3</option>  
+			        	<option value="4">4</option>  
+			        	<option value="5">5</option>  
+            		</#if>
+           		</#if>
+           	</#if>   
+        </select>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" ><span style="color: red;">*</span><b>响应消息：</b></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+        <ul class="nav">
+        	<#if wxMenu.msgType??>
+           		<#if wxMenu.msgType=='0'>
+			        <li><a href="#" onClick="changeMsgType(0)" class="active">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+           		<#elseif wxMenu.msgType=='7'>
+			        <li><a href="#" onClick="changeMsgType(0)" class="">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="active">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+           		<#elseif wxMenu.msgType=='2'>
+			        <li><a href="#" onClick="changeMsgType(0)" class="">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="active">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+			    <#elseif wxMenu.msgType=='6'>
+			        <li><a href="#" onClick="changeMsgType(0)" class="">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="active">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+			    <#elseif wxMenu.msgType=='8'>
+			        <li><a href="#" onClick="changeMsgType(0)" class="">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="active">系统消息</a></li>
+           		<#else>
+           			<li><a href="#" onClick="changeMsgType(0)" class="">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+           		</#if>
+           	<#else>
+           			<li><a href="#" onClick="changeMsgType(0)" class="active">文本</a></li>
+			        <li><a href="#" onClick="changeMsgType(7)" class="">链接</a></li>
+			        <li><a href="#" onClick="changeMsgType(2)" class="">单图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(6)" class="">多图文</a></li>
+			        <li><a href="#" onClick="changeMsgType(8)" class="">系统消息</a></li>
+           	</#if> 
+            </ul> 
+            <div style="clear:both"></div>
+             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" style=" margin-bottom:0;">
+            <tr>
+              <th width="10%">&nbsp;</th>
+              <th width="20%">名称</th>
+              <th width="70%">标题</th>
+            </tr>
+          </table>
+            <div style="height: 125px;overflow:auto;">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist"> 
+	         <#list feedBackList as li>
+	            <tr>
+	              <td width="7%" class="tdleft">
+	              	<#if wxMenu.feedBackId?? && (wxMenu.feedBackId==li.feedBackId)>
+	              		<input type="radio" name="feedBackId" id="feedBackId" value="${li.feedBackId!''}" checked="checked"/>
+	              	<#else>
+	              		<input type="radio" name="feedBackId" id="feedBackId" value="${li.feedBackId!''}" />
+	              	</#if>  
+	              </td>
+	              <td width="28%" class="tdleft">${li.msgName!''}</td>
+	              <td width="70%">${li.title!''}</td>
+	            </tr>
+            </#list>
+          </table>  
+          </div> 
+       <!--
+        <div class="manu1"><a href="#">首页</a><a href="#"><  上一页</a><a href="#?page=2">下一页> </a><a href="#?page=2">尾页</a></div>
+         --> 
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+        <div align="center">      
+        <input type="button" value="删除" onClick="deletemenu('${wxMenu.menuId!''}')" class="cbtn1">
+        <input id="btnSave" type="button" value="保存" onClick="submitmenu()" class="cbtn1">	 
+        </div>
+        </td>		
+      </tr>
+    </tbody>
+  </table>
+  </form>
+</div>
+<!-- //.topbar --><!--头部 E-->
+<!-- 页面中间部分开始 -->
+<!-- 页面中间部分结束 -->
+</body>
+<script type="text/javascript">
+
+ function submitmenu(){
+	 $("#btnSave").attr("disabled", "disabled");
+    	var reg = new RegExp("^[1-9][0-9]{0,3}$");
+    	
+        if($("#menuName").val()==""){
+        	 $("#btnSave").attr("disabled", false);
+			parent.layer.alert("菜单名称不能为空");
+        }else if($("#menuLevel").val()==0&&$("#menuName").val().length>4){	  
+        	 $("#btnSave").attr("disabled", false);     
+        	parent.layer.alert("一级菜单名称不能超过四个字");
+        }else if($("#menuLevel").val()==1&&$("#menuName").val().length>7){
+        	 $("#btnSave").attr("disabled", false);
+        	parent.layer.alert("二级菜单名称不能超过七个字");
+        }else if($("#menuOrder").val()==""){
+        	 $("#btnSave").attr("disabled", false);
+        	parent.layer.alert("请选择显示顺序");
+        }else if($("input[name='feedBackId']:checked").val()==null
+    	        ||$("input[name='feedBackId']:checked").val()==""){	  
+        	 $("#btnSave").attr("disabled", false);      
+        	parent.layer.alert("请设置响应消息");
+        }else{	
+		$.post("wxMenu?method=updateWxMenuNew",
+				{
+				 "menuLevel":$("#menuLevel").val(),
+				 "pmenuId":$("#pmenuId").val(),
+				 "menuId":$("#menuId").val(),
+			     "menuName":$("#menuName").val(),
+				 "menuOrder":$("#menuOrder").val(),
+				 "feedBackId":$("input[name='feedBackId']:checked").val()},function(ret)
+		{
+	
+					 if(ret.ret==0){				
+						 art.dialog.close();
+				    }
+					else if(ret.ret==1)
+					{
+						parent.layer.alert("该消息已被删除不可绑定。");
+						 $("#btnSave").attr("disabled", false);
+					} else if(ret.ret==2){
+						parent.layer.alert("微信菜单名重名。");
+						 $("#btnSave").attr("disabled", false);
+					} else {
+						parent.layer.alert("未知错误。");
+				    	 $("#btnSave").attr("disabled", false);
+					}
+		},"json")
+
+   	}}
+
+
+
+   /**删除菜单**/
+   function deletemenu(menuId){
+
+	   parent.layer.confirm('确认删除该菜单吗?', function() {
+			
+			$.post("wxMenu?method=deleteWxMenuNew",{"menuId":menuId},function(ret){
+					if(ret.ret==0){
+						parent.layer.closeAll();
+						 art.dialog.close();
+					}else{
+						parent.layer.alert("删除失败，请先删除该项菜单的二级菜单。");
+					}
+			},"json")			
+	}, function() {	});
+   }
+
+
+   function changeMsgType(msgType){
+
+		$("#feedBackType").val(msgType);
+		$("#menuType").val(0);
+		$("#toModifyWxMenu").submit();
+    }
+</script>
+</html>

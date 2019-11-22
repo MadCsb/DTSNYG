@@ -1,0 +1,132 @@
+/*-----------------------------------------------------
+	NJUED Team standard Css V 1.0
+	Copyright(c) 2010-present
+-----------------------------------------------------*/
+/*reset.css*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0}fieldset,img{border:0}:focus{outline:0}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:normal;font-weight:normal}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}abbr,acronym{border:0;font-variant:normal}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}code,kbd,samp,tt{font-size:100%}input,button,textarea,select{*font-size:100%}body{line-height:1.5}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th{text-align:left}sup,sub{font-size:100%;vertical-align:baseline}:link,:visited ,ins{text-decoration:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+input{ background-color:transparent;}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: transparent;
+    background-image: none;
+    color: rgb(0, 0, 0);
+}
+/* typography.css */
+html {font-size:100.01%;}
+body {
+	font: 12px/1.5 arial,tahoma, "Î¢ÈíÑÅºÚ", sans-serif;
+	background:url(../images/mainbg.jpg) no-repeat top center #0d132d;
+
+}
+h1, h2, h3, h4, h5, h6 {font-weight:bold; color:#111;}
+h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em; color: #363F4D;}
+h3 {font-size:1.8em;line-height:1.8em;margin-bottom:1em;color:#FFFFFF;}
+h4 {font-size:1.3em;line-height:1.2em;margin-bottom:1.25em;color:#B3B5B9; }
+h5 {font-size:1.3em;line-height:1.2em;margin-bottom:1.5em;color:#FFFFFF;}
+h6 {font-size:1em;}
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+
+h4 a:hover {text-decoration: none;}
+h4 a {color:#B3B5B9;text-decoration:none;outline:none;}
+
+
+
+.l-main{width:450px;height:500px;background:#ffffff; z-index:99; margin:100px auto 0 auto; border-radius:12px; }
+.r-main{ position:absolute; top:10px; left:0; width:100%; text-align:center;}
+
+.login{ margin:0 auto; width:80%; padding-top:30px;}
+
+.ulinfo{ margin:20px auto; list-style:none;padding:0; }
+.ulinfo li{
+		padding:0; margin:0;font-size:16px;width:400px; position:relative;
+}
+.u-input{width:300px;
+		height:30px;
+		border-radius:4px 4px 0px 0px;
+		border:1px solid rgba(233,233,233,1);
+		padding:15px 15px 15px 45px;
+		background:url(../images/user.png) 10px center no-repeat;
+}
+.p-input{width:300px;
+		height:30px;
+		border-radius:0px 0px 4px 4px;
+		border:1px solid rgba(233,233,233,1);
+		border-top:0;
+		padding:15px 15px 15px 45px;
+		background:url(../images/password.png) 10px center no-repeat;
+		margin-bottom:20px;
+}
+.yzm-input{width:170px;
+		height:30px;
+		border-radius:4px;
+		border:1px solid rgba(233,233,233,1);
+		padding:15px;
+		margin-bottom:20px;
+
+}
+.yzm{
+		width:140px;
+		height:60px;
+		background:#fedbde;
+		border-radius:4px;
+		border:0;
+		margin:0 0 20px 20px;
+		vertical-align:top;
+		color:#FA4D59;
+		font-size:32px;
+		line-height:60px;
+		text-align:center;
+		display:inline-block;
+		cursor:pointer;
+
+}
+
+.login-btn{
+		width:362px;
+		height:80px;
+		background:rgba(94,207,136,1);
+		border-radius:4px;
+		border:0;
+		color:#ffffff;
+		font-size:24px;
+		line-height:80px;
+		cursor:pointer;
+
+}
+
+.login-btn{
+		width:362px;
+		height:80px;
+		background:rgba(94,207,136,1);
+		border-radius:4px;
+		border:0;
+		color:#ffffff;
+		font-size:24px;
+		line-height:80px;
+		cursor:pointer;
+
+}
+.login-btnbg{
+		width:362px;
+		height:80px;
+		background: url(../images/gif.gif) left center no-repeat rgba(94,207,136,1);
+		border-radius:4px;
+		border:0;
+		color:#ffffff;
+		font-size:24px;
+		line-height:80px;
+		cursor:pointer;
+
+}
+
+.m-w{width:100%;
+height:1px;
+min-width:1200px;
+
+}
+
+.wrong-tip{ color:#fa4d59; font-size:14px; line-height:40px;}
+
+
+.login-info{ margin-top:60px;}
+.login-info h3 h5{color:#FFFFFF;}

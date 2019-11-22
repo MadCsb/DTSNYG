@@ -1,0 +1,442 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/css-main.css" rel="stylesheet" />
+<script type="text/javascript" src="${rc.contextPath}/js/echarts.js"></script>
+
+</head>
+<body  onLoad="javascript:window_onload();"> 
+<div id="navbar" class="navbar_absolute">
+<form id="queryFrm" action="transactionAnalysis?method=toView" method="post">
+选择统计周期
+	            	<select id="orderDateType" name="orderDateType" class="data-searchtxt-select" style="width:80px;">
+			            <option value="0" <#if orderDateType?? && orderDateType=="0">selected="selected"</#if>>每日</option>
+			            <option value="1" <#if orderDateType?? && orderDateType=="1">selected="selected"</#if>>每周</option>
+			            <option value="2" <#if orderDateType?? && orderDateType=="2">selected="selected"</#if>>每月</option>
+		            </select>选择日期
+	          		<input id="orderDate" value="${orderDate!''}" name="orderDate" type="text" class="validate[required] data-inputtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly">
+	          			<input name="button2" type="submit" class="data-searchbtn" id="button2" value="查询" style="vertical-align:bottom;"/>
+	
+</form> 
+</div>
+<div  class="cont-div">
+	<div class="tjtubg">
+    	<div class="tjtu">
+            <div class="cjwzdiv">成交转化率${conversionRate!'0'}%</div>
+            <div class="xdwzdiv">下单转化率${orderRate!'0'}%</div>
+            <div class="zfwzdiv">支付转化率${orderPayRate!'0'}%</div>
+        	<div class="mlwzdiv">
+            	<div class="wzdiv">访问量<p>${transactionAnalysis.accessNum!'0'}</p></div>
+                <div class="wzdiv">下单量<p>${transactionAnalysis.orderNumTotal!'0'}</p></div>
+                <div class="wzdiv">成交量<p>${transactionAnalysis.orderNumPayTotal!'0'}</p></div>
+            </div>
+        </div>
+        <div class="rightwzdiv">
+                <div class="wzdiv"><span>浏览量<p>${transactionAnalysis.viewNum!'0'}</p><a href="javascript:void(0)" class="whtu" title="通常所说的PV即页面浏览量，同一个用户多次访问，浏览量累计"></a></span></div>
+                <div class="wzdiv"><span>下单件数<p>${transactionAnalysis.orderNum!'0'}</p><a href="javascript:void(0)" class="whtu" title="所有已提交订单内包含的商品数量"></a></span><span>下单金额<p>${transactionAnalysis.orderMoney!'0.00'}</p><a href="javascript:void(0)" class="whtu" title="所有已提交订单总金额（包括退货金额，含运费）"></a></span><span>下单SKU数<p>${transactionAnalysis.orderNumSku!'0'}</p><a href="javascript:void(0)" class="whtu" title="所有已提交订单包含的商品SKU数"></a></span></div>
+                <div class="wzdiv"><span>成交件数<p>${transactionAnalysis.orderNumPay!'0'}</p><a href="javascript:void(0)" class="whtu" title="所有已支付订单内包含的商品数量"></a></span><span>成交金额<p>${transactionAnalysis.orderMoneyPay!'0.00'}</p><a href="javascript:void(0)" class="whtu" title="所有已支付订单总金额（包括退货金额，含运费）"></a></span><span>成交SKU数<p>${transactionAnalysis.orderNumPaySku!'0'}</p><a href="javascript:void(0)" class="whtu" title="所有已成交订单包含的商品SKU数"></a></span></div>
+        </div>
+    </div>
+</div>	
+
+<div  class="cont-div">
+	<ul class="menu-four">
+    	<li onClick="changeTran('changeTran1',this,'1')"><a href="javascript:void(0)" class="whtuf" title="不同用户访问次数统计，相同用户需去重"></a><div id="limenu1" class="limenuhui">
+        	<p><b class="f5">访问量</b></p>
+            <p><span class="f3">${transactionAnalysis.accessNum!'0'}</span></p>
+            <p>昨日访问量<span class="f1">${yesTodayInfo.accessNum!'0'}</span></p>
+            <p>环比昨日<span class="f1">${yesTodayInfoAccessNumRingRatio!'0'}%</span></p>
+            <p>上周同日<span class="f1">${lastInfoAccessNumRingRatio!'0'}%</span></p>
+      </div></li>
+    	<li onClick="changeTran('changeTran2',this,'2')"><a href="javascript:void(0)" class="whtuf" title="已交易完成的总额度，不包括退换货额度"></a>
+    	  <div id="limenu2" class="limenuhui">
+        	<p><b class="f5">完成交易额</b></p>
+            <p><span class="f3">${orderPayMoneyAllDate!'0.00'}</span></p>
+            <p>昨日完成交易额<span class="f1">${orderInfoYestoday.orderPayMoneyAll!'0.00'}</span>元</p>
+            <p>环比昨日<span class="f1">${orderInfoYestoday.orderPayMoneyRate!'0'}%</span></p>
+            <p>上周同日<span class="f1">${orderlastInfo.orderPayMoneyRate!'0'}%</span></p>        
+      </div></li>
+      <li onClick="changeTran('changeTran3',this,'3')"><a href="javascript:void(0)" class="whtuf" title="转换率=成交客户量/访问量"></a><div id="limenu3" class="limenuhui">
+        	<p><b class="f5">成交转换率</b></p>
+            <p><span class="f3">${orderInfoToday.accessNumPayRate!'0'}%</span></p>
+            <p>昨日转换率<span class="f1">${orderInfoYestoday.accessNumPayRate!'0'}%</span></p>
+            <p>环比昨日<span class="f1">${orderlastInfo.accessNumPayRingRate!'0'}%</span></p>
+            <p>上周同日<span class="f1">${orderlastInfo.accessNumPayRate!'0'}%</span></p>        
+      </div></li>
+        <li onClick="changeTran('changeTran4',this,'4')"><a href="javascript:void(0)" class="whtuf" title="转换率=退款订单量/成功支付订单量"></a><div id="limenu4" class="limenuhui">
+        	<p><b class="f5">退款转换率</b></p>
+            <p><span class="f3">${orderInfoToday.backMoneyAllRate!'0'}%</span></p>
+            <p>昨日转换率<span class="f1">${orderInfoYestoday.backMoneyAllRate!'0'}%</span></p>
+            <p>环比昨日<span class="f1">${orderInfoYestoday.backMoneyAllRingRate!'0'}%</span></p>
+            <p>上周同日<span class="f1">${orderlastInfo.backMoneyAllRingRate!'0'}%</span></p>        
+      </div></li>
+        <div style="clear:both"></div>
+    </ul>    
+</div>
+<div id="changeTran1" class="cont-div">
+  <div class="waybill-title"><span>访问量</span></div>
+   	<div class="zjm-tj" id="accessChart" style="height:300px">
+  </div>
+      <div style="clear:both"></div>
+</div>
+<div id="changeTran2" class="cont-div">
+
+   	<div class="waybill-title"><span>完成交易额</span></div>
+   	<div class="zjm-tj" id="orderMoneyChart" style="height:300px">
+        
+    </div>
+      <div style="clear:both"></div>
+</div>
+<div id="changeTran3" class="cont-div">
+
+   	<div class="waybill-title"><span>成交转换率</span></div>
+   	<div class="zjm-tj" id="orderRateChart" style="height:300px">
+       
+    </div>
+      <div style="clear:both"></div>
+</div>
+<div  id="changeTran4" class="cont-div">
+
+   	<div class="waybill-title"><span>退款转换率</span></div>
+   	<div class="zjm-tj" id="backRateChart" style="height:300px">
+    </div>
+      <div style="clear:both"></div>
+</div>
+<script type="text/javascript">
+
+$(function() {
+	setOrderMoneyChart();
+	setOrderRateChart();
+	setBackRateChart();
+	setAccessChart();
+});  
+
+function changeTran(infoId,obj,type){
+	//document.getElementById(infoId).scrollIntoView();
+	$("#changeTran1").hide();
+	$("#changeTran2").hide();
+	$("#changeTran3").hide();
+	$("#changeTran4").hide();
+	$("#"+infoId).show();
+	
+	$(".limenu").removeClass("limenu").addClass("limenuhui");
+	$("#limenu"+type).removeClass("limenuhui").addClass("limenu");
+}
+
+// 查询
+function search() {
+	setOrderMoneyChart();
+	setOrderRateChart();
+	setBackRateChart();
+	setAccessChart();
+}
+
+function window_onload() {
+	  window.addEventListener("scroll",navbar_reset_top,false);
+}
+
+
+function navbar_reset_top() {
+  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+  if(scrollTop>100&&navbar.className=="navbar_absolute") {
+    document.getElementById("navbar").className="navbar_fixed";
+  }else if(scrollTop<100&&navbar.className=="navbar_fixed") {
+    document.getElementById("navbar").className="navbar_absolute";
+  }
+}
+	
+//  访问量
+var accessChart;
+function setAccessChart() {
+	$.ajax({
+		type: "POST",
+		url:"transactionAnalysis.do?method=getAccessChartData",  
+		data: {
+			orderDateType : $("#orderDateType").val(),
+			orderDate : $("#orderDate").val()
+		},
+		success: function(data){
+			
+			data = eval('(' + data + ')');
+
+			if (data.resultCode == "0") {
+				var dataX = [];
+				var dataY = [];
+				
+				var list = data.resultPojo;
+	
+				for (var i = 0; i < list.length; i++) {
+					dataX.push(list[i].pointsName);
+					dataY.push(list[i].pointsValue);
+				}
+
+				initAccessChart(dataX, dataY);
+			}
+		}	
+	});
+}
+
+// 访问量
+function initAccessChart(dataX, dataY) {
+	
+	if (accessChart != null) {
+		accessChart.dispose();
+	}
+	
+	// 基于准备好的dom，初始化echarts实例
+	accessChart = echarts.init(document.getElementById("accessChart"));
+	option = {
+		    tooltip: {
+		        formatter: '{c}'
+		     },
+		    xAxis: {
+		        type: 'category',
+		        data: dataX,
+		        boundaryGap: false,
+		        splitLine: {show: true},
+			    axisLabel :{
+			        interval:0 ,
+			        rotate: 40
+			    }
+		    },
+		    yAxis: {
+		        type: 'value'
+		    },
+		    series: [{
+		        data: dataY,
+		        type: 'line',
+		        showAllSymbol:true,
+		    }]
+		};
+
+	accessChart.resize();
+	
+	// 使用刚指定的配置项和数据显示图表。
+	accessChart.setOption(option);
+}
+
+// 完成交易额
+var orderMoneyChart;
+function setOrderMoneyChart() {
+	$.ajax({
+		type: "POST",
+		url:"transactionAnalysis.do?method=getOrderMoneyChartData",  
+		data: {
+			orderDateType : $("#orderDateType").val(),
+			orderDate : $("#orderDate").val()
+		},
+		success: function(data){
+			
+			data = eval('(' + data + ')');
+
+			if (data.resultCode == "0") {
+				var dataX = [];
+				var dataY = [];
+				
+				var list = data.resultPojo;
+	
+				for (var i = 0; i < list.length; i++) {
+					dataX.push(list[i].pointsName);
+					dataY.push(list[i].pointsValue);
+				}
+
+				initOrderMoneyChart(dataX, dataY);
+			}
+		}	
+	});
+}
+
+// 完成交易额
+function initOrderMoneyChart(dataX, dataY) {
+	
+	if (orderMoneyChart != null) {
+		orderMoneyChart.dispose();
+	}
+	
+	// 基于准备好的dom，初始化echarts实例
+	orderMoneyChart = echarts.init(document.getElementById("orderMoneyChart"));
+	option = {
+		    tooltip: {
+		        formatter: '{c}'
+		     },
+		    xAxis: {
+		        type: 'category',
+		        data: dataX,
+		        boundaryGap: false,
+		        splitLine: {show: true},
+			    axisLabel :{
+			        interval:0 ,
+			        rotate: 40
+			    }
+		    },
+		    yAxis: {
+				name : '金额(元)',
+		        type: 'value'
+		    },
+		    series: [{
+		        data: dataY,
+		        type: 'line',
+		        showAllSymbol:true,
+		    }]
+		};
+
+	orderMoneyChart.resize();
+	
+	// 使用刚指定的配置项和数据显示图表。
+	orderMoneyChart.setOption(option);
+}
+
+
+// 成交转换率
+var orderRateChart;
+function setOrderRateChart() {
+	$.ajax({
+		type: "POST",
+		url:"transactionAnalysis.do?method=getOrderRateData",  
+		data: {
+			orderDateType : $("#orderDateType").val(),
+			orderDate : $("#orderDate").val()
+		},
+		success: function(data){
+			
+			data = eval('(' + data + ')');
+
+			if (data.resultCode == "0") {
+				var dataX = [];
+				var dataY = [];
+				
+				var list = data.resultPojo;
+	
+				for (var i = 0; i < list.length; i++) {
+					dataX.push(list[i].pointsName);
+					dataY.push(list[i].pointsValue);
+				}
+
+				initOrderRateChart(dataX, dataY);
+			}
+		}	
+	});
+}
+
+// 成交转换率
+function initOrderRateChart(dataX, dataY) {
+	
+	if (orderRateChart != null) {
+		orderRateChart.dispose();
+	}
+	
+	// 基于准备好的dom，初始化echarts实例
+	orderRateChart = echarts.init(document.getElementById("orderRateChart"));
+	option = {
+		    tooltip: {
+		        formatter: '{c}'
+		     },
+		    xAxis: {
+		        type: 'category',
+		        data: dataX,
+		        boundaryGap: false,
+		        splitLine: {show: true},
+			    axisLabel :{
+			        interval:0 ,
+			        rotate: 40
+			    }
+		    },
+		    yAxis: {
+				name : '百分比(%)',
+		        type: 'value'
+		    },
+		    series: [{
+		        data: dataY,
+		        type: 'line',
+		        showAllSymbol:true,
+		    }]
+		};
+
+	orderRateChart.resize();
+	
+	// 使用刚指定的配置项和数据显示图表。
+	orderRateChart.setOption(option);
+}
+
+
+//退款转换率
+var backRateChart;
+function setBackRateChart() {
+	$.ajax({
+		type : "POST",
+		url : "transactionAnalysis.do?method=getBackRateData",
+		data : {
+			orderDateType : $("#orderDateType").val(),
+			orderDate : $("#orderDate").val()
+		},
+		success : function(data) {
+
+			data = eval('(' + data + ')');
+
+			if (data.resultCode == "0") {
+				var dataX = [];
+				var dataY = [];
+
+				var list = data.resultPojo;
+
+				for (var i = 0; i < list.length; i++) {
+					dataX.push(list[i].pointsName);
+					dataY.push(list[i].pointsValue);
+				}
+
+				initBackRateChart(dataX, dataY);
+			}
+		}
+	});
+}
+
+//退款转换率图
+function initBackRateChart(dataX, dataY) {
+
+	if (backRateChart != null) {
+		backRateChart.dispose();
+	}
+
+	// 基于准备好的dom，初始化echarts实例
+	backRateChart = echarts.init(document.getElementById("backRateChart"));
+	option = {
+	    tooltip: {
+	        formatter: '{c}'
+	     },
+		xAxis : {
+			type : 'category',
+			data : dataX,
+			boundaryGap : false,
+			splitLine : {
+				show : true
+			},
+			axisLabel : {
+				interval : 0,
+				rotate : 40
+			}
+		},
+		yAxis : {
+			name : '百分比(%)',
+			type : 'value'
+		},
+		series : [ {
+			data : dataY,
+			type : 'line',
+			showAllSymbol : true,
+		} ]
+	};
+
+	backRateChart.resize();
+
+	// 使用刚指定的配置项和数据显示图表。
+	backRateChart.setOption(option);
+}
+
+
+
+
+</script>   
+</body>
+</html>

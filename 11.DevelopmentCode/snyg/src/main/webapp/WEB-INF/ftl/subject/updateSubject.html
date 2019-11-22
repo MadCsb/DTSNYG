@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="subject?method=update" method="post"
+			id="modifySubject">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
+
+
+				<tr class="cs">
+
+					<td>subjectId：</td>
+					<td><input name="subjectId" type="text"
+						id="subjectId" size="40"
+						value="${subject.subjectId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>subject：</td>
+					<td><input name="subject" type="text"
+						id="subject" size="40"
+						value="${subject.subject!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>spId：</td>
+					<td><input name="spId" type="text"
+						id="spId" size="40"
+						value="${subject.spId!''}" /></td>
+				</tr>
+
+
+			</table>
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="submit" class="data-btnbg" value="确认" /> 
+				<input type="reset" class="data-btnbg" value="取消"  onclick="javascript:location.href='{Session.BACK_URL!""}'"/>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

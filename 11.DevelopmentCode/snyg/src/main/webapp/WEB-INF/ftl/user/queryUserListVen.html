@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<meta charset="utf-8" />
+</head>
+<body>
+	<div class="gl-menu">
+		<a href="toAddSysUser?userRoleType=${user.userRoleType!''}"><span><img src="images/plus.png">新增</span></a>
+
+		<a  href="javascript:void(0)" onclick="toEdit()"><span><img src="images/pencil.png">修改</span></a>
+
+		<a href="javascript:void(0)" onclick="toDelete()"><span><img src="images/basket.png">删除</span></a>
+
+		<a href="javascript:void(0)" onclick="toBindUserGroup()"><span style="width: 100px;"><img src="images/pencil.png">绑定角色</span></a>
+
+		<a href="javascript:void(0)" onclick="toLock('0')" id="isLocked" style="display:none"><span><img src="images/basket.png">解锁用户</span></a>
+
+		<a href="javascript:void(0)" onclick="toLock('1')" id="notLocked" style="display:none"><span><img src="images/basket.png">锁定用户</span></a>
+
+		<a href="javascript:void(0)" onclick="toLook()"><span><img src="images/category.png">查看</span></a>
+
+		
+		<input type="hidden" id="userId" name="userId"  value="" />
+		<input type="hidden" id="userState" name="userState"  value="" />
+		<input type="hidden" id="userLocked" name="userLocked"  value="" />
+	</div>
+ 	<form id="queryFrm" action="queryUserList"  method="post" >
+		<input type="hidden" id="userRoleType" name="userRoleType" value="${user.userRoleType!''}">
+        <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
+	    <input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
+	    <input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
+	    <input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+	    
+	    <div class="data-requry">
+			<table border="0" align="left" cellpadding="0" cellspacing="0">
+       			<tr>
+          			<td>用户名称：
+          				<input  name="userName" type="text" class="data-searchtxt" id="userName" value="${user.userName!''}">
+          			</td>
+          			<td>登录名：
+           				<input  name="userLoginName" type="text" class="data-searchtxt" id="userLoginName" value="${user.userLoginName!''}">
+ 		  			</td>
+       			</tr>
+      		</table>
+          	<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+		</div>
+  
+		<div class="cont-div">
+  			<div class="waybill-title">
+			  	<div align="left">
+			     	 <span>操作员管理</span>
+			    </div>
+  			</div>
+       		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+	       		<tr>
+		       		<th width="15%">名称</th>
+			        <th width="10%">登录名</th>
+			    <!--     <th width="10%">单位名称 </th>
+			        <th width="10%">部门名称 </th> -->
+			        <th width="8%">固定电话 </th>
+			        <th width="8%">手机号码</th>
+			        <th width="14%">邮箱</th>
+			        <th width="13%">注册日期<a href="javascript:void(0);" onclick="sort('u.F_USER_REG_DATE')" id="u.F_USER_REG_DATE" class="ico_pxcs"></a></th>
+			        <th width="6%">是否有效</th>
+			        <th width="6%">是否锁定</th>
+	        	</tr>
+	       		<#if userList?? && (userList?size>0)>
+	       		<#list userList as ul>   
+	  			<tr onclick="selectTrUser(this,'${ul.userId!''}','${ul.userState!''}','${ul.userLocked!''}')">
+		  			<td title="${ul.userName!''}">${ul.userName!''}</td>
+		  			<td title="${ul.userLoginName!''}">${ul.userLoginName!''}</td>
+		  	<!-- 		<td title="${ul.unitName!''}">${ul.unitName!''}</td> 
+		  			<td title="${ul.depName!''}">${ul.depName!''}</td>-->
+		  			<td title="${ul.userTel!''}">${ul.userTel!''}</td>
+		  			<td title="${ul.userMobile!''}">${ul.userMobile!''}</td>
+		  			<td title="${ul.userEmail!''}">${ul.userEmail!''}</td>
+		  			<td title="${ul.userRegDate!''}" align="center">${ul.userRegDate!''}</td>
+		  			<td class="tdleft">
+		  				<#if ul.userState??>
+		  					<#if ul.userState == '1'>是
+		  					<#elseif ul.userState == '0'>否
+		  					</#if>
+		  				</#if>
+		  			</td>
+		  			<td class="tdleft">
+		  			<#if ul.userLocked??>
+		  				<#if ul.userLocked == '1'>是
+		  				<#elseif ul.userLocked == '0'>否
+		  				</#if>
+		  			</#if>
+		  			</td>
+	  			</tr>
+				</#list>
+	  	   		</#if> 
+			</table>  
+	
+			<div class="page-div">
+		 	<#if userList?? && (userList?size>0)>   
+		       <#include "/pagination.html">
+		  	<#else>
+		  		<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+		  	</#if>
+			</div>
+		</div>
+	</form>
+	
+<script type="text/javascript">
+	$(function(){
+		initCombox();
+		$("#userGroupId").combobox();
+	});
+
+	function selectTrUser(obj,userId,userState,userLocked){
+
+		selectTr(obj);
+
+		$("#userId").val(userId);
+		$("#userState").val(userState);
+		$("#userLocked").val(userLocked);
+		if("0" == userLocked){
+			$("#isLocked").hide();
+			$("#notLocked").show();
+		}else if("1" == userLocked){
+			$("#isLocked").show();
+			$("#notLocked").hide();
+		}
+		if("0" == userState){
+			$("#unUserState").show();
+			$("#isUserState").hide();
+		}else if("1" == userState){
+			$("#unUserState").hide();
+			$("#isUserState").show();
+		}
+	}
+	
+	function toEdit() {
+		var userId =$("#userId").val();
+		var userRoleType =$("#userRoleType").val();
+		if( null != userId && "" != userId){
+			window.location.href = "toUpdateSysUser?userId="+userId+"&userRoleType="+userRoleType;
+		} else {
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+	function toDelete() {
+		var userId =$("#userId").val();
+		if( null != userId && "" != userId){
+			art.dialog.confirm("确定删除该用户？", function() {
+				window.location.href = "deleteUserGroupLink.do?userId="+userId;
+			});
+		}else{
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+	function toApprove(type) {
+		var userId =$("#userId").val();
+		if( null != userId && "" != userId){
+			var userState =$("#userState").val();
+			if( null != userState && "" != userState){
+				if(type == "0"){
+					if( userState == "1"){
+						art.dialog.confirm("确定取消审批通过该用户？", function() {
+							window.location.href = "approveUser?userId=" + userId+"&userState="+type;
+						});
+					}else{
+						art.dialog.alert("该用户状态不能通过审批！"); 
+					}
+				}else if(type == "1"){
+					if(userState == "0"){
+						art.dialog.confirm("确定审批通过该用户？", function() {
+							window.location.href = "approveUser?userId=" + userId+"&userState="+type;
+						});
+					}else{
+						art.dialog.alert("该用户状态不能通过审批！"); 
+					}
+				}
+			}else{
+				art.dialog.alert("该用户状态不能通过审批！"); 
+			}	
+		}else{
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+	function toLock(type) {
+		var userId =$("#userId").val();
+		if( null != userId && "" != userId){
+		if(type == "0"){
+			art.dialog.confirm("确定解锁该用户？", function() {
+				window.location.href = "lockUser?userId=" + userId+"&type="+type;
+			});
+		}else if(type == "1"){
+			art.dialog.confirm("确定锁定该用户？", function() {
+				window.location.href = "lockUser?userId=" + userId+"&type="+type;
+			});
+		}
+		} else {
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+	function toBindUserGroup(){
+		var userId=$("#userId").val();
+		if(null  != userId && userId != ""){
+			var userRoleType=$("#userRoleType").val();
+			art.dialog.open("toBinkUserGroupLink?userId="+userId+"&userRoleType="+userRoleType, {
+				lock: true,
+				resize: false,
+				drag: false,
+				width: 800,
+				height: 400,
+				close: function() {
+				}
+			});
+		} else {	
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+	function toLook() {
+		var userId =$("#userId").val();
+		if( null != userId && "" != userId) {
+			window.location.href = "toQuerySysUserDetail?userId="+userId;
+		} else {
+			art.dialog.alert("请选择一条记录"); 
+		}
+	}
+	
+</script>
+</body>
+</html>

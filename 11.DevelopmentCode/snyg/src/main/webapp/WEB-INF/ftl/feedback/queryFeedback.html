@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/style.css" rel="stylesheet" />
+<link href="${rc.contextPath}/css/css-main.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="waybill-title"><span>微信消息管理</span> </div>
+    <div class="tab-nav">
+         <ul class="nav"> 
+             <li><a href="queryFeedbackWenben" name="checkNode" id ="checkNode0" class="active">文本</a></li> 
+             <li><a href="queryFeedbackList.action?feedback.msgtype=2" name="checkNode" id ="checkNode2">单图文</a></li> 
+             <li><a href="queryFeedbackList.action?feedback.msgtype=6" name="checkNode" id ="checkNode6">多图文</a></li> 
+             <li><a href="queryFeedbackList.action?feedback.msgtype=7" id ="checkNode7" name="checkNode">链接</a></li>
+             <li><a href="queryFeedbackList.action?feedback.msgtype=8" id ="checkNode8" name="checkNode">系统消息</a></li>
+             <li><a href="toBindSpFeedbackId.action" class="btmenuhui">其它</a></li>
+         </ul> 
+         <div style="clear:both;"></div>
+    </div>
+</body>
+</html>

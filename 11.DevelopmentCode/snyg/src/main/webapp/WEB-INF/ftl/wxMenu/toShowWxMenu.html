@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>
+<body>
+<!--右边主内容-->
+
+            <div class="cont-div">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist">
+                <tr>
+                  <td height="40" class="tdleft"><span class="fred">温馨提示：</span>创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来</td>
+                </tr>
+                <!--
+                <tr>
+                  <td class="tdleft">无法识别时回复消息：<a href="#" class="onbtn"></a>提示</td>
+                </tr>
+                 -->
+              </table>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist">
+                <tr>
+                  <td height="40" valign="top" class="ipbg">
+              <div style="position:relative; top:230px; width:120px; height:100px; margin:0 auto;z-index:0; text-align:center;">
+			
+				<input id="aa2" type="button" name="aa" onClick="sysnc()"  value="同步到微信" class="seabtn"/>
+	
+				<br/>
+
+<!-- 提示：30秒刷新一次数据 --></div>
+                  
+				<div class="menuWrapper" style="text-transform:none;">
+				<ul class="menu" id="menuid">
+				
+			    </ul>
+				</div>
+
+	 </td>
+ </tr>
+              </table>
+            </div>
+            <!--//右边主内容-->
+          </div>
+  </div>
+<script type="text/javascript">
+
+	   $(function(){
+		   reflashMenu();
+	   })
+	   
+	   /**动态刷新菜单**/
+	   function reflashMenu(){
+		   $.post("wxMenu?method=queryWxMenuJson",{},function(ret){
+
+				$("#menuid").html("");
+				var menustr = "";
+			
+				for(var i=0 ; i<ret.length;i++ ){
+
+					menustr = "";
+					menustr +="<li><a href='javascript:void(0)' onclick=\"updateMenu('"+ret[i].m1.menuId+"')\" >"+ret[i].m1.menuName+"</a><ul>";				
+
+					for(var j=0 ; j<(4 - ret[i].m2.length);j++ ){
+					
+						menustr +="<li><span class=\"nolist\"></span></li>";
+					}
+					if(ret[i].m2.length!=5){
+						menustr +="<li><span class=\"nolist\"><input  type=\"button\" value=\"新增+\" onclick=\"addMenu(1,'"+ret[i].m1.menuId+"')\" class=\"btn\"/></span></li>";
+					}
+					for(var j=0 ; j<ret[i].m2.length;j++ ){
+						menustr +="<li><a href='javascript:void(0)' onclick=\"updateMenu('"+ret[i].m2[j].menuId+"')\" >"+ret[i].m2[j].menuName+"</a>";
+						menustr +="<input type=\"button\" value=\"—\" onclick=\"delMenu('"+ret[i].m2[j].menuId+"')\" class=\"btn\"/></li>";
+					}
+
+					menustr +="</ul></li>";		
+					$("#menuid").append(menustr);			
+				}
+
+				for(var i=0 ; i< 3 - ret.length;i++ ){
+
+					menustr = "";
+					menustr +="<li><a href='#' style=\"cursor:pointer;\"  onclick=\"addMenu(0,0)\">"+"新建"+"</a><ul>";
+				
+					menustr +="</ul></li>";		
+					$("#menuid").append(menustr);			
+			    }
+			},"json")
+	   }
+	   
+	   
+	   /**新增菜单**/
+	   function addMenu(mlevel,mpid){
+		 art.dialog.open('wxMenu?method=toAdd&menuLevel='+mlevel+'&pmenuId='+mpid, {
+			lock: true,
+			resize: false,
+			drag: false,			
+			width: 750,
+			height: 560,
+			title: '新建菜单',
+			close: function() {
+				reflashMenu();	
+			}
+		});
+       }
+
+	   /**修改菜单**/
+	   function updateMenu(menuId){
+			 art.dialog.open('wxMenu?method=toUpdate&menuId='+menuId, {
+					lock: true,
+					resize: false,
+					drag: false,			
+					width: 750,
+					height: 560,
+					title: '修改菜单',
+					close: function() {
+						reflashMenu();	
+					}
+				});
+       }
+	   
+
+	   /**删除菜单**/
+	   function delMenu(menuId){
+
+		   art.dialog.confirm('确认删除该菜单吗?', function() {
+				
+				$.post("wxMenu?method=deleteWxMenuNew",{"menuId":menuId},function(ret){
+						if(ret.ret==0){
+						
+							reflashMenu();	
+						}else{
+							art.dialog.alert("删除失败，请先删除该项菜单的二级菜单。");
+						}
+				},"json")			
+		}, function() {	});
+	   }
+       
+		/**菜单同步到微信**/
+		function sysnc(){
+
+			 art.dialog.confirm('确认同步菜单到微信端?', function() {
+					
+					$.post("wxMenu?method=publishMenu",{},function(ret){
+							if(ret.ret==0){
+							
+								 art.dialog.alert("同步成功!");
+							}else{
+								art.dialog.alert("同步失败!");
+							}
+					},"json")			
+			}, function() {	});
+			
+	    }
+
+		
+	</script>
+</body>
+</html>

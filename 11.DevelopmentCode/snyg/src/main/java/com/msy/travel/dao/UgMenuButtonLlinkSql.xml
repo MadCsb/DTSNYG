@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.UgMenuButtonLlinkDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertUgMenuButtonLlink" parameterType="ugMenuButtonLlink">
+		INSERT INTO 
+			t_pub_ugmenubuttonlink  
+		(
+			F_USERGROUP_ID ,
+			F_MENUBUTTON_ID 
+		) VALUES (
+			#{userGroupId} ,
+			#{menuButtonId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeUgMenuButtonLlink" parameterType="ugMenuButtonLlink">
+		REPLACE INTO 
+			t_pub_ugmenubuttonlink 
+		(
+			F_USERGROUP_ID ,
+			F_MENUBUTTON_ID 
+		) VALUES (
+			#{userGroupId} ,
+			#{menuButtonId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateUgMenuButtonLlink" parameterType="ugMenuButtonLlink">
+		UPDATE
+			t_pub_ugmenubuttonlink 
+		SET
+			F_USERGROUP_ID = #{userGroupId} ,
+			F_MENUBUTTON_ID = #{menuButtonId} 
+		<where>
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteUgMenuButtonLlink" parameterType="ugMenuButtonLlink">
+		DELETE FROM
+			t_pub_ugmenubuttonlink 
+		<where>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchUgMenuButtonLlink" parameterType="ugMenuButtonLlink">
+		DELETE FROM 
+			t_pub_ugmenubuttonlink 
+		<where>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryUgMenuButtonLlink" parameterType="String" resultType="ugMenuButtonLlink">
+		SELECT
+			t.F_USERGROUP_ID as userGroupId ,
+			t.F_MENUBUTTON_ID as menuButtonId 
+		FROM
+			t_pub_ugmenubuttonlink t
+		<where>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryUgMenuButtonLlinkList" parameterType="ugMenuButtonLlink" resultType="ugMenuButtonLlink">
+		SELECT
+			t.F_USERGROUP_ID as userGroupId ,
+			t.F_MENUBUTTON_ID as menuButtonId 
+		FROM
+		t_pub_ugmenubuttonlink t
+		<where>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	<delete id="deleteUgMenuButtonLlinkByGroupId" parameterType="ugMenuButtonLlink">
+		DELETE FROM
+			t_pub_ugmenubuttonlink 
+		Where F_USERGROUP_ID =#{userGroupId}
+		<where>
+		</where>
+	</delete>
+	
+</mapper>	

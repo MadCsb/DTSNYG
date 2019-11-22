@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+	<title>Error Page</title>
+	
+</head>
+
+<body>
+
+<div id="content">
+	<br />
+	<img alt="system internal error" src="${rc.contextPath}/images/error.png" />
+	<h3>
+	对不起,发生系统内部错误,不能处理你的请求。<br /><br />
+	请联系管理员或稍候再试。<a href="javascript:void(0);" onclick="history.back();">点击返回</a>
+	</h3>
+	${e!''}
+</div>
+</body>
+</html>

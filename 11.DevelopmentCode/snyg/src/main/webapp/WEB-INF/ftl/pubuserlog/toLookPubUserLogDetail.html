@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+<link href="css/qyt-main.css" rel="stylesheet" />
+
+<body>
+	<script type="text/javascript">
+
+$(function(){
+});
+
+function cancel(){
+	art.dialog.close();
+}
+
+
+</script>
+
+
+	<!--主窗体-->
+	<div class="cont-div">
+	<div class="waybill-title">
+	<span>查看操作日志信息</span>
+	</div>
+		<form action="pubUserLog.do?method=update" method="post"	id="modifyPubUserLog">
+			<!--编辑区-->
+			<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<input type="hidden" id="logId" name="logId" value="${pubUserLog.logId!''}"/>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>登录名：</b></td>
+					<td colspan="3">
+					<span class="Validform_checktip">
+					${pubUserLog.userName!''}
+					</span>
+					</td>
+				</tr>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>操作时间：</b></td>
+					<td colspan="3">
+					<span class="Validform_checktip">
+					${pubUserLog.operationTime!''}
+					</span>
+					</td>
+				</tr>
+				<tr class="cs">
+
+					<td class="tdright"><b><span class="f2"><b></b></span>会话编号：</b></td>
+					<td colspan="3">
+						<span class="Validform_checktip">
+							${pubUserLog.sessionId!""}
+						</span>
+					</td>
+				</tr>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>用户IP：</b></td>
+					<td colspan="3">
+					<span class="Validform_checktip">
+						${pubUserLog.userIP!""}
+					</span>
+					</td>
+				</tr>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>操作名称：</b></td>
+					<td colspan="3">
+					<span class="Validform_checktip">
+						${pubUserLog.operationName!""}
+					</span>
+					</td>
+				</tr>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>操作结果：</b></td>
+					<td colspan="3">
+					<span class="Validform_checktip">
+						<#if (pubUserLog.operationResult)??>
+	          				<#if pubUserLog.operationResult=="0">
+	           					操作失败
+	          				<#elseif pubUserLog.operationResult=="1">
+	          					操作成功
+	            			</#if>
+            			</#if>
+					</span>
+					</td>
+				</tr>
+				<tr class="cs">
+					<td class="tdright"><b><span class="f2"><b></b></span>操作描述：</b></td>
+					<td colspan="3" style="white-space: inherit;"> 
+					<span class="Validform_checktip" style="font-family:sans-serif">
+						${pubUserLog.operationContext!""}
+					</span>
+					</td>
+				</tr>
+				
+			</table>
+			<!--操作区-->
+			<div class="footerbtn">
+				<input type="reset" class="cbtn1" onclick="cancel()" value="关闭" />
+			</div>
+		</form>
+		</div>
+		
+</body>
+
+</html>

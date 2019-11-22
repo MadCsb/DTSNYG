@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form id="opOrderBack">
+			<input type="hidden" id="backId" value="${orderBack.backId!''}">
+			<input type="hidden" id="status" value="${orderBack.status!''}">
+
+			<!--编辑区-->
+			<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed;">
+				<tbody>
+				<!-- 受理-->
+				<#if orderBack.status == '2'>
+					<tr class="">
+						<td width="20%" class="tdright"><b><font class="f2">*</font>退货接收人：</b></td>
+						<td width="70%">
+							<input name="backGoodsName" value="${company.receiver!''}" type="text" class="validate[required,maxSize[50]] data-searchtxt-select" id="backGoodsName">
+						</td>
+					</tr>
+					<tr class="">
+						<td width="20%" class="tdright"><b><font class="f2">*</font>退货接收人电话：</b></td>
+						<td width="70%">
+							<input name="backGoodsPhone" value="${company.recvPhone!''}" type="text" class="validate[required,maxSize[50]] data-searchtxt-select" id="backGoodsPhone">
+						</td>
+					</tr>
+					<tr class="">
+						<td width="20%" class="tdright"><b><font class="f2">*</font>退货接收地址：</b></td>
+						<td width="70%">
+							<input name="backGoodsAddr" value="${company.recvAddress!''}" type="text" class="validate[required,maxSize[50]] data-searchtxt-select" id="backGoodsAddr">
+						</td>
+					</tr>
+				<#elseif orderBack.status == '3'> <!-- 不受理-->
+					<tr class="">
+						<td width="20%" class="tdright"><b><font class="f2">*</font>拒绝原因：</b></td>
+						<td width="70%">
+							<textarea name="refuseReason" rows="4" cols="60" id="refuseReason" class="data-text"></textarea>
+						</td>
+					</tr>
+				<#elseif orderBack.status == '6'> <!-- 关闭 -->
+					<#if orderBack.isBackMoney?? && orderBack.isBackMoney == '1'>
+						<tr class="">
+							<td width="20%" class="tdright"><b><font class="f2">*</font>申请退款金额：</b></td>
+							<td width="70%">
+								${orderBack.applyBackMoney!''}
+							</td>
+						</tr>
+						<tr class="cs">
+							<td width="20%" class="tdright"><b><font class="f2">*</font>实际退款金额：</b></td>
+							<td width="70%">
+								<input name="backMoney" value="${orderBack.applyBackMoney!''}" type="text" class="validate[required,maxSize[50]] data-inputtxt" id="backMoney">
+							</td>
+						</tr>
+					</#if>
+				</#if>
+				</tbody>
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div class="footerbtn">
+				<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="btnSave" value="保存">
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	function beforeSubmit(){
+    if($("#opOrderBack").validationEngine('validate'))
+    {
+      var opDate = new Object();
+      opDate.backId = $("#backId").val();
+      opDate.status = $("#status").val();
+      opDate.backGoodsName = $("#backGoodsName").val();
+      opDate.backGoodsPhone = $("#backGoodsPhone").val();
+      opDate.backGoodsAddr = $("#backGoodsAddr").val();
+      opDate.refuseReason = $("#refuseReason").val();
+      opDate.backMoney = $("#backMoney").val();
+
+      $.ajax({
+        type: "POST",
+        async: false,
+        dataType: "json",
+        url: "orderBack?method=opOrderBack",
+        data: opDate,
+        success: function (data) {
+          if(data.resultCode =="0"){
+            parent.layer.alert('操作成功！', function() {
+              closeDialog();
+            });
+          }else
+					{
+            parent.layer.alert(data.resultMsg);
+					}
+        }
+      });
+    }
+	}
+	function closeDialog()
+	{
+    parent.layer.closeAll();
+	}
+</script>
+</html>

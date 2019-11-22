@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ConsigneeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertConsignee" parameterType="consignee">
+		INSERT INTO 
+			t_sm_consignee  
+		(
+			F_CONSIGNEE ,
+			F_USER_ID ,
+			F_CUSTNAME ,
+			F_CUSTPHONE ,
+			F_PCX ,
+			F_RECADDRESS ,
+			F_CUSTCARD ,
+			F_CARDTYPE ,
+			F_ISDEFAULT 
+		) VALUES (
+			#{consigneeId} ,
+			#{userId} ,
+			#{custName} ,
+			#{custPhone} ,
+			#{pcx} ,
+			#{recAddress} ,
+			#{custCard} ,
+			#{cardType} ,
+			#{isDefault} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeConsignee" parameterType="consignee">
+		REPLACE INTO 
+			t_sm_consignee 
+		(
+			F_CONSIGNEE ,
+			F_USER_ID ,
+			F_CUSTNAME ,
+			F_CUSTPHONE ,
+			F_PCX ,
+			F_RECADDRESS ,
+			F_CUSTCARD ,
+			F_CARDTYPE ,
+			F_ISDEFAULT 
+		) VALUES (
+			#{consigneeId} ,
+			#{userId} ,
+			#{custName} ,
+			#{custPhone} ,
+			#{pcx} ,
+			#{recAddress} ,
+			#{custCard} ,
+			#{cardType} ,
+			#{isDefault} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateConsignee" parameterType="consignee">
+		UPDATE
+			t_sm_consignee 
+		SET
+			F_CUSTNAME = #{custName} ,
+			F_CUSTPHONE = #{custPhone} ,
+			F_PCX = #{pcx} ,
+			F_RECADDRESS = #{recAddress} ,
+			F_CUSTCARD = #{custCard} ,
+			F_CARDTYPE = #{cardType} ,
+			F_ISDEFAULT = #{isDefault} 
+		<where>
+			F_CONSIGNEE = #{consigneeId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteConsignee" parameterType="consignee">
+		DELETE FROM
+			t_sm_consignee 
+		<where>
+			F_CONSIGNEE = #{consigneeId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchConsignee" parameterType="consignee">
+		DELETE FROM 
+			t_sm_consignee 
+		<where>
+			F_CONSIGNEE in
+			<foreach collection="consigneeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryConsignee" parameterType="String" resultType="consignee">
+		SELECT
+			t.F_CONSIGNEE as consigneeId ,
+			t.F_USER_ID as userId ,
+			t.F_CUSTNAME as custName ,
+			t.F_CUSTPHONE as custPhone ,
+			t.F_PCX as pcx ,
+			t.F_RECADDRESS as recAddress ,
+			t.F_CUSTCARD as custCard ,
+			t.F_CARDTYPE as cardType ,
+			t.F_ISDEFAULT as isDefault 
+		FROM
+			t_sm_consignee t
+		<where>
+			<if test="consigneeId!=null and consigneeId!=''">
+		    	t.F_CONSIGNEE = #{consigneeId}
+		     </if>
+			<if test="userId !=null and userId !=''">
+		    	and t.F_USER_ID = #{userId}
+		     </if>
+		     <if test="isDefault !=null and isDefault !=''">
+		    	and t.F_ISDEFAULT = #{isDefault}
+		     </if>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryConsigneeList" parameterType="consignee" resultType="consignee">
+		SELECT
+			t.F_CONSIGNEE as consigneeId ,
+			t.F_USER_ID as userId ,
+			t.F_CUSTNAME as custName ,
+			t.F_CUSTPHONE as custPhone ,
+			t.F_PCX as pcx ,
+			t.F_RECADDRESS as recAddress ,
+			t.F_CUSTCARD as custCard ,
+			t.F_CARDTYPE as cardType ,
+			t.F_ISDEFAULT as isDefault ,
+		  u.F_USER_NAME as userName
+		FROM
+		t_sm_consignee t
+		LEFT JOIN t_pub_user u on  t.F_USER_ID = u.F_USER_ID
+		<where>
+			<if test="consigneeId!=null and consigneeId!=''">
+		    	and t.F_CONSIGNEE = #{consigneeId}
+			</if>
+			<if test="userId !=null and userId !=''">
+		    	and t.F_USER_ID = #{userId}
+			</if>
+			<if test="isDefault !=null and isDefault !=''">
+			   and t.F_ISDEFAULT = #{isDefault}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 修改信息 -->
+	<update id="updateConsigneeIsDefault" parameterType="consignee">
+		UPDATE
+			t_sm_consignee 
+		SET
+			F_ISDEFAULT = #{isDefault} 
+		<where>
+			<if test="consigneeId !=null and consigneeId !=''">
+		    	and F_CONSIGNEE = #{consigneeId}
+		     </if>
+			<if test="userId !=null and userId !=''">
+		    	and F_USER_ID = #{userId}
+		     </if>
+		</where>
+	</update>
+</mapper>	

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/INC_HEAD.html">
+
+		</head>
+<body>
+
+<form id="queryFrm" action="orderBack?method=query" method="post">
+	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+	<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" />
+	<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+	<input type="hidden" id="shortCuts" name="shortCuts" value="${shortCuts!''}" />
+
+	<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+			<tr>
+				<!--//退款单编号 backCodeLike 订单编号orderCodeLike 买家手机号custPhoneLike 买家名称custNameLike-->
+				<!--//退款状态 1-申请退订2-受理3-不受理4-退货5-退款6-关闭 status-->
+				<!--//退款金额 applyBackMoneyS applyBackMoneyE-->
+				<!--//时间范围  申请时间 applyTimeS applyTimeE |收货时间 backGoodsReceiveTimeS backGoodsReceiveTimeE|退款时间 backMoneyReceiveTimeS backMoneyReceiveTimeE-->
+				<!---->
+				<td>
+					退款单编号：
+				</td>
+				<td>
+					<input autocomplete="off"   name="backCodeLike" type="text" class="data-searchtxt" id="backCodeLike" value="${orderBack.backCodeLike!''}">
+				</td>
+				<td>订单编号：</td>
+				<td>
+					<input autocomplete="off"   name="orderCodeLike" type="text" class="data-searchtxt" id="orderCodeLike" value="${orderBack.orderCodeLike!''}">
+				</td>
+				<td>买家手机号：</td>
+				<td>
+					<input autocomplete="off"   name="custPhoneLike" type="text" class="data-searchtxt" id="custPhoneLike" value="${orderBack.custPhoneLike!''}">
+				</td>
+				<td>买家名称：</td>
+				<td>
+					<input autocomplete="off"   name="custNameLike" type="text" class="data-searchtxt" id="custNameLike" value="${orderBack.custNameLike!''}">
+				</td>
+				<td>退款状态：</td>
+				<td>
+					<select id="status" name="status" class="data-searchtxt-select">
+						<option value="">请选择</option>
+						<option value="1" <#if orderBack.status?? && orderBack.status =="1">selected</#if>>待受理</option>
+						<option value="3" <#if orderBack.status?? && orderBack.status =="3">selected</#if>>已拒绝</option>
+						<option value="4" <#if orderBack.status?? && orderBack.status =="4">selected</#if>>退货中</option>
+						<option value="5" <#if orderBack.status?? && orderBack.status =="5">selected</#if>>退款中</option>
+						<option value="6" <#if orderBack.status?? && orderBack.status =="6">selected</#if>>已关闭</option>
+					</select>
+				</td>
+				<td>退款金额：</td>
+				<td>
+					<input name="applyBackMoneyS"  value="${orderBack.applyBackMoneyS!''}" type="text" class="data-searchtxt" id="applyBackMoneyS">
+				</td>
+				<td>
+					-
+				</td>
+				<td>
+					<input name="applyBackMoneyE" value="${orderBack.applyBackMoneyE!''}" type="text" class="data-searchtxt" id="applyBackMoneyE">
+				</td>
+
+
+
+				<td>
+					申请时间
+				</td>
+				<td>
+					<input name="applyTimeS" value="${orderBack.applyTimeS!''}" type="text" class="data-inputtxt-time" style="width: 130px" id="applyTimeS" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'applyTimeE\')}'})" readonly="readonly" >
+				</td>
+				<td>
+					-
+				</td>
+				<td>
+					<input name="applyTimeE" value="${orderBack.applyTimeE!''}" type="text" class="data-inputtxt-time" style="width: 130px" id="applyTimeE" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'applyTimeS\')}'})" readonly="readonly" >
+				</td>
+
+			</tr>
+		</table>
+		<input type="button" class="data-searchbtn" onClick="search()" value="查询"/>
+		<input type="button" class="data-searchbtn" onClick="exportList()" value="导出Excel" style="width: 80px;display: none"/>
+		<div class="getMore">展开更多 ▼</div>
+	</div>
+	<div class="cont-div">
+		<div class="tab-nav">
+			<ul class="nav">
+				<li><a href="javascript:void(0)" onclick="quickSearch(0)" <#if shortCuts?? && shortCuts == '0'>class="active"<#else>class=""</#if>>近十天申请</a></li>
+				<li><a href="javascript:void(0)" onclick="quickSearch(1)" <#if shortCuts?? && shortCuts == '1'>class="active"<#else>class=""</#if>>待受理</a></li>
+				<li><a href="javascript:void(0)" onclick="quickSearch(2)" <#if shortCuts?? && shortCuts == '2'>class="active"<#else>class=""</#if>>待收货</a></li>
+				<li><a href="javascript:void(0)" onclick="quickSearch(3)" <#if shortCuts?? && shortCuts == '3'>class="active"<#else>class=""</#if>>待付款</a></li>
+				<li><a href="javascript:void(0)" onclick="quickSearch(4)" <#if shortCuts?? && shortCuts == '4'>class="active"<#else>class=""</#if>>已关闭</a></li>
+			</ul>
+			<div style="clear:both"></div>
+		</div>
+		<div class="waybill-title">
+			退单总金额：<span class="f2" style=" margin-right:20px;">&yen;${staticOrderBack.money!'0.00'}</span>
+			退单总笔数：<span class="f1" style=" margin-right:20px;">${staticOrderBack.orderBackCount!'0.00'}笔</span>
+			退单单价：<span class="f2" style=" margin-right:20px;">&yen;${staticOrderBack.perMoney!'0.00'}元</span>
+		</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="14%">退单编号</th>
+				<th width="7%">申请时间</th>
+				<th width="8%">退订原因</th>
+				<th width="14%">订单编号</th>
+				<th width="8%">下单时间</th>
+				<th width="8%">买家手机号</th>
+				<th width="5%">买家名称</th>
+				<th width="10%">状态</th>
+				<th width="12%">操作</th>
+			</tr>
+			<#if orderBackList?? && (orderBackList?size>0)>
+				<#list orderBackList as ob>
+					<tr>
+						<td title="${ob.backCode!''}">${ob.backCode!''}</td>
+						<td title="${ob.applyTime!''}">${ob.applyTime!""}</td>
+						<td title="${ob.backReason!''}">${ob.backReason!''}</td>
+						<td title="${ob.orderCode!''}">${ob.orderCode!''}</td>
+						<td title="${ob.orderCreateTime!''}">${ob.orderCreateTime!''}</td>
+						<td title="${ob.custName!''}">${ob.custName!''}</td>
+						<td title="${ob.custPhone!''}">${ob.custPhone!''}</td>
+						<td title='<#if ob.status?? && ob.status == "1">待受理<#elseif ob.status?? && ob.status == "3">已拒绝<#elseif ob.status?? && ob.status == "4">退货中<#if ob.backGoodsStatus?? && ob.backGoodsStatus == "0">【待发货】<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "1">【待收货】<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "2">【已收货】</#if><#elseif ob.status?? && ob.status == "5">退款中<#if ob.backMoneyStatus?? && ob.backMoneyStatus == "0">【待退款】<#elseif ob.backMoneyStatus?? && ob.backMoneyStatus == "1">【已退款】</#if><#elseif ob.status?? && ob.status == "6">已关闭</#if>'>
+							<#if ob.status?? && ob.status == "1">
+								待受理
+								<#elseif ob.status?? && ob.status == "3">
+									已拒绝
+									<#elseif ob.status?? && ob.status == "4">
+										退货中
+										<#if ob.backGoodsStatus?? && ob.backGoodsStatus == "0">
+											【待发货】
+											<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "1">
+												【待收货】
+												<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "2">
+													【已收货】
+										</#if>
+										<#elseif ob.status?? && ob.status == "5">
+											退款中
+											<#if ob.backMoneyStatus?? && ob.backMoneyStatus == "0">
+												【待退款】
+												<#elseif ob.backMoneyStatus?? && ob.backMoneyStatus == "1">
+													【已退款】
+											</#if>
+											<#elseif ob.status?? && ob.status == "6">
+												已关闭
+							</#if>
+						</td>
+						<td>
+							<a class="ico_btn1" href="orderBack?method=detailOrderBack&backId=${ob.backId!''}">详细</a>
+							<#if ob.status?? && ob.status == "1">
+								<!--待受理-->
+								<a class="ico_btn1" onClick="opOrderBack('${ob.backId}','2')">受理</a>
+								<a class="ico_btn1" onClick="opOrderBack('${ob.backId}','3')">不受理</a>
+								<#elseif ob.status?? && ob.status == "3">
+									<!--已拒绝-->
+									<#elseif ob.status?? && ob.status == "4">
+										<!--退货中-->
+										<#if ob.backGoodsStatus?? && ob.backGoodsStatus == "0">
+											<!--【待发货】-->
+											<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "1">
+												<a class="ico_btn1" onClick="receiveGoods('${ob.backId}')">收货</a>
+												<!--【待收货】-->
+												<#elseif ob.backGoodsStatus?? && ob.backGoodsStatus == "2">
+													<!--【已收货】-->
+										</#if>
+										<#elseif ob.status?? && ob.status == "5">
+											<!--退款中-->
+											<#if ob.backMoneyStatus?? && ob.backMoneyStatus == "0">
+												<!--【待退款】-->
+												<a class="ico_btn1" onClick="opOrderBack('${ob.backId}','6')">退款</a>
+												<#elseif ob.backMoneyStatus?? && ob.backMoneyStatus == "1">
+													<!--【已退款】-->
+											</#if>
+											<#elseif ob.status?? && ob.status == "6">
+												<!--已关闭-->
+							</#if>
+						</td>
+					</tr>
+				</#list>
+			</#if>
+		</table>
+
+		<div class="page-div">
+			<#if orderBackList?? && (orderBackList?size>0)>
+				<#include "/pagination.html">
+					<#else>
+						<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+			</#if>
+		</div>
+</form>
+
+<script type="text/javascript">
+
+  function search(){
+    var orderDateS = $("#orderDateS").val();
+    var orderDateE = $("#orderDateE").val();
+//	var payDateS = $("#payDateS").val();
+//	var payDateE = $("#payDateE").val();
+//	var outTicketTimeS = $("#outTicketTimeS").val();
+//	var outTicketTimeE = $("#outTicketTimeE").val();
+    $("#shortCuts").val("");
+
+    $("#queryFrm").submit();
+  }
+
+  function quickSearch(shortCuts) {
+    $("#shortCuts").val(shortCuts);
+    $("#queryFrm").submit();
+  }
+
+  //操作退单
+  function opOrderBack(backId,status){
+    var url = 'orderBack.do?method=toOpOrderBack&backId='+backId+"&status="+status;
+    parent.layer.open({
+      type : 2,
+      title : '操作退单',
+      area : [ '625px', '275px'],
+      fix : true,
+      content :url,
+      end: function(){
+        window.location.reload();
+      }
+    });
+  }
+
+  //确认收货
+  function receiveGoods(backId){
+    parent.layer.confirm("确定该退单申请要收货吗", function() {
+      var opDate = new Object();
+      opDate.backId = backId;
+      $.ajax({
+        type: "POST",
+        async: false,
+        dataType: "json",
+        url: "orderBack?method=receiveGoods",
+        data: opDate,
+        success: function (data) {
+          if(data.resultCode =="0"){
+            window.location.reload();
+            parent.layer.closeAll();
+          }else
+          {
+            parent.layer.alert(data.resultMsg,function () {
+              parent.layer.closeAll();
+            });
+          }
+        }
+      });
+    }, function() {
+      // art.dialog.tips('取消当前操作');
+    });
+  }
+
+  $(function () {
+    //多个查询条件样式
+    showHideQuery();
+  });
+</script>
+
+</body>
+</html>

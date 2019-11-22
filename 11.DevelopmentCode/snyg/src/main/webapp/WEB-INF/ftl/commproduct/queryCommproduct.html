@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("commproductId");
+		document.getElementById("checkedCommproductIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<form id="queryFrm" action="commproduct?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="openFlag" name="openFlag" value="${openFlag!'0'}">
+		<input type="hidden" id="priceType" name="priceType" value="${priceType!''}">
+		<input type="hidden" id="domainName" value="${domainName!''}">
+		<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td>商品名称：</td><td>
+	          	<input name="productName" type="text" class="data-searchtxt" id="title" value="${commproduct.productName!''}">
+	          </td>
+	          <td>商品编号：</td><td>
+	          	<input name="productCode" type="text" class="data-searchtxt" id="title" value="${commproduct.productCode!''}">
+	          </td>
+	          <td align="right">商品类型：</td><td>
+	          	<select  name="type" id="type" class="data-searchtxt-select">
+	         		<option value="">请选择</option>
+	         		<#if pdcTypeList?? && (pdcTypeList?size>0)>
+					<#list pdcTypeList as e>
+						<#if commproduct.type?? && commproduct.type == e.pdcTypeId>
+							<option value="${e.pdcTypeId!''}" selected>${e.typeName!""}</option>
+						<#else>
+							<option value="${e.pdcTypeId!''}">${e.typeName!""}</option>
+						</#if>
+					</#list>
+				</#if>
+				</select>
+	          </td>
+	                <td align="right">　商家名称：</td><td>
+					<select name="venId" id="venId" class="validate[required] data-inputtxt-select">
+						<option value="">请选择</option>
+					    <#if companyList??>
+	               		<#list companyList as company>
+	               			<#if commproduct.venId?? && commproduct.venId == company.venId>
+								<option value="${company.venId!''}" selected>${company.venName!""}</option>
+							<#else>
+								<option value="${company.venId!''}">${company.venName!""}</option>
+							</#if>
+						</#list>
+						</#if>
+	               	</select>
+				</td>
+	          
+	          <td>是否上架：</td><td colspan="6">
+	          	<select  name="state" id="state" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<#if commproduct.state??>
+	          			<#if commproduct.state=='0'>
+			         		<option value="0" selected="selected">否</option>
+			         		<option value="1">是</option>
+			         	<#elseif commproduct.state=='1'>
+			         		<option value="0">否</option>
+			         		<option value="1" selected="selected">是</option>
+		          		<#else>
+			         		<option value="0">否</option>
+			         		<option value="1">是</option>
+		          		</#if>
+	          		<#else>
+		         		<option value="0">否</option>
+		         		<option value="1">是</option>
+	          		</#if>
+				</select>
+	          </td>
+	
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+	      	                
+	    <div class="getMore">展开更多 ▼</div>  
+		</div>
+			      
+	<div class="cont-div">
+		<div class="waybill-title">
+		  	<div align="left">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="新增" onClick="javascript:window.location.href='commproduct?method=toAdd&priceType=${priceType!''}'">
+		    </div>
+		  </div>
+		 	
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="15%">商品名称</th> 
+				<th width="15%">缩略图</th> 
+				<th width="13%">商品编号</th> 
+				<th width="10%">商家名称</th> 
+				<th width="8%">商品类型</th> 
+				<th width="6%">商品状态</th> 
+				<th width="10%">更新时间</th> 
+				<th width="23%">操作</th> 
+			</tr>
+
+			<#list commproductlist as li>
+			<tr  onclick="selectTr(this)">
+				<td title="${li.productName!''}">${li.productName!''}</td> 
+				<td>
+				<#if li.thumbPic?? && li.thumbPic!=''>
+                    <img class="myimg" style="width:120px;height:90px;" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}"  id="idImg1" />
+                <#else>
+                    <img class="myimg"  src="${rc.contextPath}/images/no-tu.png" id="idImg1" />
+                </#if>
+				</td> 
+				<td title="${li.productCode!''}">${li.productCode!''}</td> 
+				<td title="${li.venName!''}">${li.venName!''}</td> 
+				<td title="${li.typeName!''}">${li.typeName!''}</td> 
+				<td title="<#if li.state?? && li.state=='0'>下架<#elseif li.state?? && li.state=='1'>上架</#if>">
+				<#if li.state?? && li.state=='0'>
+                                                     下架
+                <#elseif li.state?? && li.state=='1'>
+                                                     上架
+                </#if>
+				</td> 
+				<td title="${li.updateTime!''}" style="word-wrap: break-word;white-space:normal;">${li.updateTime!''}</td> 
+				<td >
+					<a href="commproduct?method=toDetail&productId=${li.productId!''}&priceType=${priceType!''}" title="详情" class="ico_btn1">详情</a>
+					<a href="commproduct?method=toUpdate&productId=${li.productId!''}&priceType=${priceType!''}"  class="ico_btn1">修改</a>
+					<#if li.state?? && li.state=='0'>
+	                	<a href="javascript:void(0);" title="上架" class="ico_btn1" onClick="changeState('${li.productId!''}',1)">上架</a>
+	                <#elseif li.state?? && li.state=='1'>
+	                	<a href="javascript:void(0);" title="下架" class="ico_btn1"  onclick="changeState('${li.productId!''}',0)">下架</a>
+					</#if>
+					<a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo('${li.productId!''}');" >删除</a>
+					<a href="javascript:void(0)" onclick="copyUrl('${li.productId!''}','${li.priceId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
+						
+					<input type="text" style="border:0px;width:1px;" id="productIdHidden${li.productId!''}" value="" ></input>
+
+				</td>
+			</tr>
+			</#list>
+		</table>
+	</div>
+		<#if commproductlist?? && (commproductlist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="commproduct?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedCommproductIds"
+			id="checkedCommproductIds">
+	</form>
+<script type="text/javascript">
+$(function () {
+	//多个查询条件样式
+	showHideQuery();
+	
+	
+	// 展开
+	if ($("#openFlag").val() == "1") {
+		$(".getMore").click();
+	}
+});
+
+function copyUrl(id,priceId){
+	var url = $("#domainName").val()+"/wx.do?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+	$("#productIdHidden"+id).val(url);
+	 var copyText = $("#productIdHidden"+id);//获取对象
+     copyText.select();//选择
+     document.execCommand("Copy");//执行复制
+　　parent.layer.alert("复制成功！");
+}
+
+function changeState(productId, state) {
+	var msg = "确定要上架商品吗？";
+	if (state == 0) {
+		msg = "确定要下架商品吗？";
+	}
+	parent.layer.confirm(msg, function() {
+		$.post("commproduct.do?method=changeStateCommproduction",{
+			productId : productId,
+			state : state
+		},function(data){
+			if (data == "0") {
+				parent.layer.alert("操作成功！",function() {
+					parent.layer.closeAll();
+					$("#queryFrm").submit();
+			    });
+			} else {
+				parent.layer.alert("操作失败",function() {
+					parent.layer.closeAll();
+					$("#queryFrm").submit();
+			    });
+			} 
+		})
+	});
+}
+
+function deleteInfo(productId){
+	parent.layer.confirm("确定要删除这条记录吗？", function() {
+		parent.layer.closeAll();
+		window.location.href="commproduct?method=delete&productId="+productId;
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/destcity.js"></script>
+
+<style type="text/css">
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;vertical-align:baseline}
+
+li{
+list-style-type: none;list-style-image:none;
+}
+
+h2{
+font-size:100%;
+}
+
+#change-city{width:100%; }
+#change-city .choosecities {
+	border:#ddd 1px solid;
+	background:#fff;
+	padding-bottom:60px;
+	box-shadow:0 0 1px #d4edf4;
+}
+#change-city .choosecities a:hover {
+text-decoration:none;
+
+}
+
+#change-city .citieslist h2 {
+position:relative;
+padding:0 14px;
+line-height:30px;
+margin:20px 20px 12px;
+zoom:1;
+display:inline-block;
+background:#ff6600;
+height:32px;
+color:#FFFFFF;
+border-radius:0;
+
+}
+#change-city .citieslist h2 span {
+border-bottom:#fff 6px solid;
+position:absolute;
+border-left:#fff 6px solid;
+line-height:0;
+width:0px;
+display:block;
+float:none;height:0px;
+font-size:0px;
+border-top:#ff6600 6px solid;
+border-right:#fff 6px solid;
+left:20px;
+margin-top:2px;
+
+}
+#change-city .citieslist li {
+border-bottom:#fff 1px solid;
+border-top:#fff 1px solid;
+
+}
+#change-city .citieslist p {
+
+border-bottom:#fff 1px solid;
+padding-bottom:6px;
+padding-left:39px;
+padding-right:10px;
+padding-top:6px;
+border-top:#fff 1px solid;
+}
+#change-city .citieslist span.label {
+border:#ddd 1px solid;
+line-height:24px;
+width:30px;
+z00m:1;
+display:inline-block;
+height:30px;
+color:#666;
+vertical-align:top;
+margin-right:5px;
+border-radius:0;
+
+}
+#change-city .citieslist span.label strong {
+
+	border:#f7f7f7 1px solid;
+	text-align:center;
+	width:28px;
+	display:block;
+	font-family:Tahoma;
+	background:#f1f1f1;
+	height:28px;
+	font-size:16px;
+	border-radius:0;
+	line-height:28px;
+}
+#change-city .citieslist span {
+
+
+	width:90%;
+	zoom:1;
+	display:inline-block;
+	vertical-align:top;
+}
+#change-city .citieslist span i {
+
+	font-style:normal;
+	margin:0px 3px;
+	color:#ccc;
+}
+#change-city .citieslist .hover {
+
+	border-color:#e5e5e5;
+}
+#change-city .citieslist .hover p {
+
+	background:#f7f7f7;
+}
+#change-city .citieslist .hover span.label {
+	border-color:#1fb7bb;
+}
+#change-city .citieslist .hover span.label strong {
+	border-color: #3fa6e9;
+	background:#3fa6e9;
+	color:#FFFFFF;
+}
+#change-city .citieslist a {
+
+	padding-bottom:1px;
+	line-height:20px;
+	margin:1px 10px;
+	padding:5px 10px;
+	zoom:1;
+	display:inline-block;
+	height:20px;
+	border-radius:0;
+}
+#change-city .citieslist a:hover {
+
+	background:#3fa6e9;
+	color:#fff;
+
+}
+#change-city .citieslist .isonline {
+
+	font-weight:bold;
+}
+#change-city .citieslist .isoffline {
+	font-weight:bold;
+}
+#bdw {
+
+	min-height:500px;
+}
+.cf {
+zoom:1;
+}
+.cf:after {
+display:block;
+height:0px;
+visibility:hidden;
+clear:both;
+overflow:hidden;
+content:'';
+}
+h2{
+	padding: 0px;
+	margin:0px;
+}
+
+body {
+	font:14px/1.5 Tahoma, Helvetica, arial, sans-serif;
+	background:#d6e9ec;
+	color:#000000;
+	background-color: #efefef;
+}
+a {
+	color:#3fa6e9;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+span.money {
+  font-family:arial;
+}
+span.required {
+	color: red
+}
+
+</style>
+
+</head>
+<body>
+	<div id="change-city">
+	  <div id="bdw" class="bdw">
+	    <div id="bd" class="cf">
+	      <div class="choosecities">
+	        <div class="citieslist">
+	          <h2>热门城市</h2>
+	          <ol class="hasallcity" id="destCityHtml">
+	           
+	          </ol>
+	        </div>
+	      </div>
+	    </div>
+	    <!-- bd end -->
+	  </div>
+	  <!-- bdw end -->
+	</div>
+	
+</body>
+
+<script language="javascript" type="text/javascript">
+
+$(function (){
+	$(".hasallcity li").hover(function(){
+		$(this).addClass('hover');
+	}, function(){
+		$(this).removeClass('hover');
+	});	
+	initDestCity("destCityHtml");
+});
+
+function destPlaceClick(destPlace){
+ 	art.dialog.data('destPlace',destPlace);
+ 	art.dialog.close();
+}
+
+</script>
+</html>
+
+
+
+
+

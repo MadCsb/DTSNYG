@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<#include "/INC_HEAD.html">
+
+		<link href="${rc.contextPath}/js/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
+		<link href="${rc.contextPath}/css/menu.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript" src="${rc.contextPath}/js/ligerUI/js/core/base.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/js/ligerUI/js/plugins/ligerResizable.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/js/ligerUI/js/plugins/ligerTree.js"></script>
+
+
+		<script type="text/javascript">
+
+			$( function() {
+
+				$("#Menumgr").validationEngine();
+				var curdate = new Date();
+			});
+
+			$.fnValidationExend = function() {
+				$.extend($.validationEngineLanguage.allRules, {
+					"validateMenuId" : {
+						"url" : "validateMenuId.action",
+						"alertTextOk" : "* 该编号可用",
+						"alertTextLoad" : "* 验证中，请稍后……",
+						"alertText" : "* 该编号已存在"
+					}
+				});
+			};
+
+			function formsubmit(formId)
+			{
+				var isAdmin = $("#isAdmin").val();
+				if(null == isAdmin || isAdmin == ""){
+					art.dialog.alert("对不起，当前菜单isAdmin未设置，请设置isAdmin！");
+				}else{
+
+					if ($("#"+formId).validationEngine()){
+						$.post('menu.do?method=toCorMMenu',{
+							menuId:$("#menuId").val(),
+							menuName:$("#menuName").val(),
+							menuIsAdmin:$("#isAdmin").val()
+						},function(exitedName){
+							if((exitedName!=null  && exitedName == true) ||  exitedName =="true")
+							{
+								art.dialog.alert("菜单名["+$("#menuName").val()+"]已存在，请修改后重试！");
+
+							}else{
+								$("#"+formId).submit();
+
+							}
+						});
+					}
+				}
+			}
+
+			//切换树节点图标
+			function checkNode(menuId){
+				$(".formError").remove();
+
+				$("#d"+menuId).toggle("fast",function(){
+					$("#m"+menuId).removeClass();
+					if($("#d"+menuId).is(":hidden")){
+						$("#m"+menuId).addClass("add");
+					}else{
+						$("#m"+menuId).addClass("ren");
+					}
+				})
+
+				$("#form_1_error_msg_block").attr("style","width:600px;margin:10px auto;display:none;");
+				getMenuInfo(menuId);
+
+			}
+
+			//填充页面表单
+			function getMenuInfo(menuId){
+				$.post("menu.do?method=getMenuInfo",{
+					menuId:menuId
+				},function(data){
+					data = eval("("+data+")");
+					$("#menuidtr").show();
+					$("#checktitle").html(data.menuName);
+					$("#cancelId").val(data.menuId);  //点击取消时调用
+					$("#menuLevel").val(data.menuLevel);
+					$("#menuPid").val(data.pMenuId);
+					$("#menuId").val(data.menuId);
+					$("#menuName").val(data.menuName);
+					$("#menuUrl").val(data.menuUrl);
+					$("#menuOrder").val(data.menuOrder);
+
+
+
+					$("#menuId").attr("disabled","disabled");
+					$("#menuName").attr("disabled","disabled");
+					$("#menuUrl").attr("disabled","disabled");
+					$("#menuOrder").attr("disabled","disabled");
+					$("#operatorbutton").hide();
+
+					$("#root li a").css("color","");
+					$("#m"+menuId+" a").css("color","red");
+				})
+
+				$(".btncenter input[type='button']").removeAttr("disabled");
+				$(".btncenter input[type='button']").removeClass("cbtn30");
+				$(".btncenter input[type='button']").addClass("data-menubtn2");
+
+			}
+
+			//添加子菜单
+			function addSonNode(){
+				if($("#menuLevel").val()!="" && $("#menuLevel").val()=="1" ){
+					$("#Menumgr").attr("action","menu.do?method=createSonMenu");
+					$("input:disabled").removeAttr("disabled");
+					$("select:disabled").removeAttr("disabled");
+
+					$("#menuPid").val($("#menuId").val());
+
+					$("#menuId").val("");
+					$("#menuName").val("");
+					$("#menuName").focus();
+					$("#menuUrl").val("");
+					$("#menuOrder").val("");
+					$("#menuidtr").hide();
+					$("#operatorbutton").show();
+
+					$(".btncenter input[type='button']").attr("disabled","disabled");
+					$(".btncenter input[type='button']").addClass("cbtn30");
+					$("#sonbutton").removeClass();
+					$("#sonbutton").addClass("data-menubtn2");
+				}
+				else if($("#menuLevel").val()!="" && $("#menuLevel").val()=="2" )
+				{
+					art.dialog.alert("对不起，目前还不支持添加第三级子菜单！");
+					return false;
+				}
+			}
+
+			//添加同级节点
+			function addBortherNode(){
+				if($("#menuPid").val()!=""){
+
+					$("#Menumgr").attr("action","menu.do?method=createBortherMenu");
+					$("input:disabled").removeAttr("disabled");
+					$("select:disabled").removeAttr("disabled");
+
+					$("#menuId").val("");
+					$("#menuName").val("");
+					$("#menuName").focus();
+					$("#menuUrl").val("");
+					$("#menuOrder").val("");
+					$("#menuidtr").hide();
+					$("#operatorbutton").show();
+
+					$(".btncenter input[type='button']").attr("disabled","disabled");
+					$(".btncenter input[type='button']").addClass("cbtn30");
+					$("#bortherbutton").removeClass();
+					$("#bortherbutton").addClass("data-menubtn2");
+				}
+			}
+
+			//修改节点
+			function updateNode(){
+				if($("#menuPid").val()!=""){
+					$("#Menumgr").attr("action","menu.do?method=update&menuId="+$("#menuId").val());
+
+					$("#menuName").removeAttr("disabled");
+					$("#menuName").focus();
+					$("#menuName").select();
+					$("#menuUrl").removeAttr("disabled");
+					$("#menuOrder").removeAttr("disabled");
+
+					$("#operatorbutton").show();
+					$(".btncenter input[type='button']").attr("disabled","disabled");
+					$(".btncenter input[type='button']").addClass("cbtn30");
+					$("#updatebutton").removeClass();
+					$("#updatebutton").addClass("data-menubtn2");
+
+				}
+			}
+
+			//取消操作
+			function cancelOperator(){
+
+				$(".formError").remove();
+
+				getMenuInfo($("#cancelId").val());
+				$(".btncenter input[type='button']").removeAttr("disabled");
+				$(".btncenter input[type='button']").removeClass("cbtn30");
+				$(".btncenter input[type='button']").addClass("cbtn3");
+
+			}
+
+
+
+			//删除节点
+			function deleteNode(){
+				var menuName = $("#menuName").val();
+				var d = new Date();
+				var menuId = $("#menuId").val();
+				if(null == menuId || menuId == ""){
+					art.dialog.alert(menuName+"请先选中要删除的菜单后再删除！");
+				}else{
+
+
+					$.getJSON('menu.do?method=toDeleteMenu&menuId='+$("#menuId").val()+'&a='+d ,function(retdetail){
+
+						if (null != retdetail && retdetail.length > 0)
+						{
+							art.dialog.alert(menuName+"菜单中有子菜单，请先删除子菜单后再删除！");
+							//alert(menuName+"菜单中有子菜单，请先删除子菜单后再删除！");
+
+							return false;
+						}
+
+						if($("#menuPid").val()!="")
+						{
+							var msg = '确认删除'+menuName+'菜单吗？';
+							var url = 'menu.do?method=deleteMenu&menuId='+$("#menuId").val()+"&menuIsAdmin="+$("#isAdmin").val();
+
+							art.dialog.confirm(msg, function() {
+								window.location.href = url;
+								// art.dialog.close();
+							}, function() {
+								// art.dialog.tips('取消当前操作');
+							});
+						}
+					});
+				}
+			}
+			//增加根节点
+			function addFatherNode(){
+				var isAdmin = $("#isAdmin").val();
+				if(null == isAdmin || isAdmin == ""){
+					art.dialog.alert("对不起，当前菜单isAdmin未设置，请设置isAdmin！");
+				}else{
+					$("#Menumgr").attr("action","menu.do?method=createRootMenu");
+					$("input:disabled").removeAttr("disabled");
+					$("select:disabled").removeAttr("disabled");
+					var rootMenuPid = $("#rootMenuPid").val();
+					if(null != rootMenuPid && rootMenuPid == ""){
+						$("#menuPid").val(rootMenuPid);
+					}else{
+						$("#menuPid").val("0");
+					}
+
+					$("#menuId").val("");
+					$("#menuName").val("");
+					$("#menuName").focus();
+					$("#menuUrl").val("");
+					$("#menuOrder").val("");
+					$("#menuidtr").hide();
+					$("#operatorbutton").show();
+					$(".btncenter input[type='button']").attr("disabled","disabled");
+					$(".btncenter input[type='button']").addClass("cbtn30");
+					$("#sonbutton").removeClass();
+					$("#sonbutton").addClass("data-menubtn2");
+				}
+			}
+			function cancelDel(){
+				$(window.parent.document).find("#mybg").hide();
+				$(window.parent.document).find("#delete").hide();
+			}
+
+			//调用查询功能按钮
+			function menubuttonNode()
+			{
+				if($("#menuId").val()!=""){
+					var d = new Date();
+					window.location.href = "menuButton.do?method=query&menuId="+$("#menuId").val()+"&a="+d.getTime()+"&menuIsAdmin="+$("#isAdmin").val();
+				}
+			}
+
+		</script>
+
+	</head>
+	<body>
+		<div class="main-con_old">
+			<input type="hidden" id="cancelId" />
+			<table width="100%" cellpadding="0" cellspacing="0" class="datalist_old">
+				<tr>
+					<td width="25%" class="tdleft">
+						<div class="divml">
+							<ul id="root">
+								${treeMenu!''}
+							</ul>
+						</div>
+					</td>
+					<td width="75%" rowspan="2" valign="top" class="cs">
+						<form action="" method="post" id="Menumgr">
+							<input type="hidden" name="menuLevel"  id="menuLevel" />
+							<!-- add by csb -->
+							<input type="hidden" name="menuIsAdmin"  id="isAdmin" value="${menu.menuIsAdmin!''}"/>
+							<input type="hidden" name="pMenuId"  id="menuPid" />
+							<input type="hidden" value="${backUrl!''}" name="backUrl"  />
+							<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="table_old">
+								<tr>
+									<th height="50" valign="middle" class="tdleft">当前选中的菜单：<span id="checktitle" ><font color="red">请先选择菜单后进行操作!</font></span></th>
+								</tr>
+								<tr>
+									<td height="50" valign="middle">
+										<table width="90%" border="0" align="center" cellpadding="10" cellspacing="0" class="table_old" style="margin-top:2px;">
+											<tr id="menuidtr">
+												<td width="24%"><font class="f2">*</font> 菜单编号：</td>
+												<td width="76%" class="tdleft">
+													<input name="menuId"  type="text" disabled="disabled"
+														   class="validate[required,minSize[1],maxSize[20],ajax[validateMenuId]] commtxt"
+														   id="menuId" size="40" />
+												</td>
+											</tr>
+											<tr>
+												<td><font class="f2">*</font> 菜单名称：</td>
+												<td class="tdleft">
+													<input name="menuName" type="text"  disabled="disabled"
+														   class="validate[required,minSize[2],maxSize[30]] commtxt"
+														   id="menuName" size="40" />
+													<font color="red" style="font-weight: bold;"><strong>${msg!''}</strong></font>
+												</td>
+											</tr>
+											<tr>
+												<td><font class="f1">&nbsp;&nbsp;</font> 菜单链接URL：</td>
+												<td class="tdleft">
+													<input name="menuUrl" type="text"  disabled="disabled"
+														   class="validate[maxSize[120]] commtxt"
+														   id="menuUrl" size="40" />
+												</td>
+											</tr>
+											<tr>
+												<td><font class="f2">*</font>菜单显示顺序：</td>
+												<td class="tdleft">
+													<select name="menuOrder" datatype="select" disabled="disabled" id="menuOrder" class="validate[required] data-searchtxt-select" style="width: 100px">
+														<option value="">请选择</option>
+														<#list menuOrderMap?keys as t>
+														<option value="${t!''}">
+															${menuOrderMap["${t}"]}
+														</option>
+													</#list>
+													</select>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="26" valign="top"><div align="center" id="operatorbutton" style="display:none">
+										<input type="button" class="cbtn1" onclick="formsubmit('Menumgr')" id="button" value="确 定"/>
+										<input id="queding" type="button" class="cbtn2" onclick="cancelOperator()" value="取消" />
+									</div></td>
+								</tr>
+							</table>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdleft">
+						<input type="button" id="sonbutton" class="data-menubtn2" onclick="addSonNode()" value="增加子菜单" />
+						<input type="button" id="bortherbutton" class="data-menubtn2" onclick="addBortherNode()" value="增加同级菜单" />
+						<br/>
+						<input type="button" id="updatebutton" class="data-menubtn2" onclick="updateNode()" value="修改菜单" />
+						<input type="button" class="data-menubtn2" onclick="deleteNode()" value="删除菜单" />
+						<br/>
+						<input type="button" id="updatebutton" class="data-menubtn2" onclick="menubuttonNode()" value="管理功能按钮" />
+						<input type="button" class="data-menubtn2" onclick="addFatherNode()" value="增加根菜单" />
+						<br/>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

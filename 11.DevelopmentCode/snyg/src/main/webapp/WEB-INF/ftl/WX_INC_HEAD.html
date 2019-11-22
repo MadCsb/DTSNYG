@@ -1,0 +1,49 @@
+<title>三农壹购</title>
+<meta name="baidu-site-verification" content="XFQucHwK8v" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+<meta name="format-detection" content="telephone=no" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+
+<link href="${rc.contextPath}/wx/css/wsc-3n1g.css" rel="stylesheet" />
+<link href="${rc.contextPath}/wx/js/flexslider/flexslider.css" rel="stylesheet" />
+<script src="${rc.contextPath}/wx/js/jquery-1.9.1.min.js"></script>
+<script src="${rc.contextPath}/wx/js/flexslider/jquery.flexslider-min.js"></script>
+<script src="${rc.contextPath}/wx/js/alert.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/wx/js/scrolltopcontrol.js"></script>
+<script src="${rc.contextPath}/wx/js/msywxutil.js"></script>
+<script src="${rc.contextPath}/wx/js/snyg.js"></script>
+	
+<script type="text/javascript">
+$(function () {
+    $(".flexslider").flexslider({
+        animation: "slide",
+        slideshow: true,
+        slideDirection: "horizontal",
+        mousewheel: true,
+        animationLoop: true,
+        directionNav: false,
+        before: function (slider) {
+            slider.pause();
+            slider.play();
+        }
+    });
+
+});
+
+
+//修改底部样式
+function changeBottomClass(type){
+	$("#tabDiv1").removeClass("snyg_icon_del1on").addClass("snyg_icon_del1");
+	$("#tabDiv2").removeClass("snyg_icon_del2on").addClass("snyg_icon_del2");
+	$("#tabDiv3").removeClass("snyg_icon_del3on").addClass("snyg_icon_del3");
+	$("#tabDiv4").removeClass("snyg_icon_del4on").addClass("snyg_icon_del4");
+	$(".bottomTitle").removeClass("f1");
+	
+	var className = "snyg_icon_del"+type+"on";
+	$("#tabDiv"+type).addClass(className);
+	$("#tabDivShow"+type).addClass("f1");
+}
+</script>
+
+

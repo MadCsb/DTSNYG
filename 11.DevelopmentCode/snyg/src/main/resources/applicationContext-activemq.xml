@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	default-lazy-init="false">
+      
+    <!-- 配置 ConnectionFactory -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+        <property name="redeliveryPolicy" ref="activeMQRedeliveryPolicy" /> 
+    </bean>
+
+   
+
+	<bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+          <property name="connectionFactory" ref="targetConnectionFactory"/>
+        <property name="maxConnections" value="100"></property>
+    </bean>
+    <!--使用缓存可以提升效率-->
+    <bean id="mqconnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="jmsFactory"/>
+        <property name="sessionCacheSize" value="10"/>
+    </bean>
+
+
+     <!-- 使用JMS ConnectionFactory -->
+<!--     <bean id="mqconnectionFactory"
+        class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="targetConnectionFactory" />
+    </bean> -->
+	
+	 <!-- 配置重发策略 -->
+    <bean id="activeMQRedeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">  
+        <!--是否在每次尝试重新发送失败后,增长这个等待时间 -->  
+        <property name="useExponentialBackOff" value="false"></property>  
+        <!--重发次数,默认为6次, 为-1时不限制次数，为0时表示不进行重传 -->  
+        <property name="maximumRedeliveries" value="2"></property>  
+        <!--初始重发时间间隔,默认为1秒  单位是毫秒-->  
+        <property name="initialRedeliveryDelay" value="0"></property> 
+        <!--重发延迟时间，当initialRedeliveryDelay=0时生效 -->
+        <property name="redeliveryDelay" value="1000"></property> 
+        <!--第一次失败后重新发送之前等待500毫秒,第二次失败再等待500 * 2毫秒,这里的2就是value -->  
+        <property name="backOffMultiplier" value="2"></property>  
+        <!--最大传送延迟，只在useExponentialBackOff为true时有效（V5.5），假设首次重连间隔为10ms，倍数为2，那么第   
+                     二次重连时间间隔为 20ms，第三次重连时间间隔为40ms，当重连时间间隔大的最大重连时间间隔时，以后每次重连时间间隔都为最大重连时间间隔。默认为-1 -->  
+        <property name="maximumRedeliveryDelay" value="-1"></property>  
+    </bean>  
+	
+
+
+    
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="mqconnectionFactory" />
+    </bean>
+    
+    <!--这个是队列目的地 -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>queue</value>
+        </constructor-arg>
+    </bean>
+    
+    <!--这个是主题目的地，一对多的-->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="topic"/>
+    </bean>
+    
+ 
+    <!-- 配置消息监听器 -->
+    <bean id="consumerMessageListener"
+        class="com.msy.travel.activemq.ConsumerMessageListener" />
+
+    <bean id="sessionAwareListenerContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="mqconnectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="consumerMessageListener" />
+        <property name="sessionAcknowledgeMode" value="4"></property>  <!-- 使用客户端单条消息应答方式 -->
+    </bean>
+    
+    
+    <!-- 配置处理死信队列监听器 -->
+    <!--  <bean id="dlqDestination" class="org.apache.activemq.command.ActiveMQQueue">
+      <constructor-arg>
+          <value>ActiveMQ.DLQ</value>
+      </constructor-arg>
+     </bean>
+    
+     <bean id="dlqMessageListener"
+        class="com.msy.travel.activemq.DlqMessageListener" />
+
+     <bean id="dlqListenerContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="mqconnectionFactory" />
+        <property name="destination" ref="dlqDestination" />
+        <property name="messageListener" ref="dlqMessageListener" />
+     </bean> -->
+    
+    
+   
+</beans> 

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.TransactionAnalysisDao" >
+	<!-- 查询 访问量 下单量 成交量 -->
+	<select id="getTransactionAnalysisInfo" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			ifnull(sum(viewNum),0) AS viewNum,
+			ifnull(sum(orderNum),0) AS orderNum,
+			ifnull(sum(orderMoney),0) AS orderMoney,
+			ifnull(sum(orderNumSku),0) AS orderNumSku,
+			ifnull(sum(orderNumPay),0) AS orderNumPay,
+			ifnull(sum(orderMoneyPay),0) AS orderMoneyPay,
+			ifnull(sum(orderNumPaySku),0) AS orderNumPaySku,
+			ifnull(sum(orderNumTotal),0) AS orderNumTotal,
+			ifnull(sum(orderNumPayTotal),0) AS orderNumPayTotal,
+			ifnull(sum(accessNum),0) as accessNum
+		FROM
+			(
+				(
+					SELECT
+						sum(1) AS viewNum,
+						0 AS orderNum,
+						0 AS orderMoney,
+						0 AS orderNumSku,
+						0 AS orderNumPay,
+						0 AS orderMoneyPay,
+						0 AS orderNumPaySku,
+						0 AS orderNumTotal,
+						0 AS orderNumPayTotal,
+						0 AS accessNum
+					FROM
+						t_sm_accessrecord ad
+					WHERE
+						ad.F_SPID = #{spId} 
+						and ad.F_ACCESSTIME &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and ad.F_ACCESSTIME &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+				)
+				UNION ALL
+					(
+						SELECT
+							0 AS viewNum,
+							sum(o.F_NUM) AS orderNum,
+							sum(o.F_PAYMONEY) AS orderMoney,
+							count(1) AS orderNumSku,
+							0 AS orderNumPay,
+							0 AS orderMoneyPay,
+							0 AS orderNumPaySku,
+							0 AS orderNumTotal,
+							0 AS orderNumPayTotal,
+							0 AS accessNum
+						FROM
+							t_sm_orderlist o
+						LEFT JOIN t_sm_order od ON od.F_ORDERID = o.F_ORDERID				
+						WHERE
+							od.F_SPID = #{spId}
+						and od.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and od.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+				UNION ALL
+					(
+						SELECT
+							0 AS viewNum,
+							0 AS orderNum,
+							0 AS orderMoney,
+							0 AS orderNumSku,
+							sum(o.F_NUM) AS orderNumPay,
+							sum(o.F_PAYMONEY) AS orderMoneyPay,
+							count(1) AS orderNumPaySku,
+							0 AS orderNumTotal,
+							0 AS orderNumPayTotal,
+							0 AS accessNum
+						FROM
+							t_sm_orderlist o
+						LEFT JOIN t_sm_order od ON od.F_ORDERID = o.F_ORDERID
+						WHERE
+							od.F_SPID = #{spId}
+						AND od.F_PAYTAG = '1'
+						and od.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and od.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+				UNION ALL
+					(
+						SELECT
+							0 AS viewNum,
+							0 AS orderNum,
+							0 AS orderMoney,
+							0 AS orderNumSku,
+							0 AS orderNumPay,
+							0 AS orderMoneyPay,
+							0 AS orderNumPaySku,
+							count(1) AS orderNumTotal,
+							0 AS orderNumPayTotal,
+							0 AS accessNum
+						FROM
+							t_sm_order o
+						WHERE
+							o.F_SPID = #{spId}
+						and o.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and o.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+				UNION ALL
+					(
+						SELECT
+							0 AS viewNum,
+							0 AS orderNum,
+							0 AS orderMoney,
+							0 AS orderNumSku,
+							0 AS orderNumPay,
+							0 AS orderMoneyPay,
+							0 AS orderNumPaySku,
+							0 AS orderNumTotal,
+							count(1) AS orderNumPayTotal,
+							0 AS accessNum
+						FROM
+							t_sm_order o
+						WHERE
+							o.F_SPID = #{spId}
+						AND o.F_PAYTAG = '1'
+						and o.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and o.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+				UNION ALL
+					(
+						SELECT
+							0 AS viewNum,
+							0 AS orderNum,
+							0 AS orderMoney,
+							0 AS orderNumSku,
+							0 AS orderNumPay,
+							0 AS orderMoneyPay,
+							0 AS orderNumPaySku,
+							0 AS orderNumTotal,
+							0 AS orderNumPayTotal,
+						  	count(DISTINCT F_USERID) as accessNum
+						FROM
+							t_sm_accessrecord ad
+						where F_SPID = #{spId}
+						and ad.F_ACCESSTIME &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and ad.F_ACCESSTIME &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+			) test5
+	</select>   
+	
+	<!--1.未退订 已支付      2.已退订 已支付-->
+	<select id="getTransactionAnalysisOrderInfo" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			ifnull(sum(orderMoneyPay),0) as orderPayMoneyAll,
+			ifnull(sum(accessNum),0) as accessNumPay,
+			ifnull(sum(backOrderCount),0) as backOrderCount
+		FROM
+			(
+				(
+					SELECT
+						sum(o.F_PAYMONEY) AS orderMoneyPay,
+						count(DISTINCT(od.F_USERID)) AS accessNum,
+						0 AS backOrderCount
+					FROM
+						t_sm_orderlist o
+					LEFT JOIN t_sm_order od on o.F_ORDERID = od.F_ORDERID
+					WHERE
+						od.F_PAYTAG = 1
+					AND o.F_ORDERLISTTYPE = 0
+					AND od.F_SPID = #{spId}
+					and od.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+					and od.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+				)
+				UNION ALL
+					(
+						SELECT
+							0 AS orderMoneyPay,
+							0 AS accessNum,
+							count(1) backOrderCount
+						FROM
+							t_sm_orderlist o
+						LEFT JOIN t_sm_order od on o.F_ORDERID = od.F_ORDERID
+						WHERE
+							od.F_PAYTAG = 1
+						AND o.F_ORDERLISTTYPE = 1
+						AND od.F_SPID = #{spId}
+						and od.F_ORDERDATE &gt;= CONCAT(#{orderDateTimeStart},' 00:00:00') 
+						and od.F_ORDERDATE &lt;= CONCAT(#{orderDateTimeEnd},' 23:59:59')
+					)
+			) test
+	</select>   
+	
+	<!-- 查询交易额列表   已支付未退订-->
+	<select id="getOrderMoneyList" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			t.F_PAYMONEY as orderMoney,
+			o.F_ORDERDATE as orderDate
+		FROM
+			t_sm_orderlist t
+		LEFT JOIN t_sm_order o on t.F_ORDERID = o.F_ORDERID
+		WHERE
+			o.F_PAYTAG = '1'
+		AND 
+			t.F_ORDERLISTTYPE = '0'			
+		<if test="orderDateTimeStart!=null and orderDateTimeStart!=''">
+	    	AND o.F_ORDERDATE >= #{orderDateTimeStart}
+	    </if>
+	     
+	    <if test="orderDateTimeEnd!=null and orderDateTimeEnd!=''">
+	    	AND #{orderDateTimeEnd} >= o.F_ORDERDATE
+	    </if>
+	    
+	    <if test="spId!=null and spId!=''">
+	    	AND o.F_SPID = #{spId}
+	    </if>
+	    
+	    ORDER BY o.F_ORDERDATE
+	     
+	</select>   
+	
+	<!-- 查询成交客户量列表     已支付未退订-->
+	<select id="getOrderCustomerList" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			od.F_USERID as userId,
+			od.F_ORDERDATE as orderDate
+		FROM
+			t_sm_orderlist t
+		LEFT JOIN t_sm_order od on t.F_ORDERID = od.F_ORDERID
+		WHERE 
+			od.F_PAYTAG = '1'
+	    AND
+	        t.F_ORDERLISTTYPE = '0'
+		<if test="orderDateTimeStart!=null and orderDateTimeStart!=''">
+	    	AND od.F_ORDERDATE >= #{orderDateTimeStart}
+	    </if>
+	     
+	    <if test="orderDateTimeEnd!=null and orderDateTimeEnd!=''">
+	    	AND #{orderDateTimeEnd} >= od.F_ORDERDATE
+	    </if>
+	    
+	    <if test="spId!=null and spId!=''">
+	    	AND od.F_SPID = #{spId}
+	    </if>
+	    
+	    ORDER BY od.F_ORDERDATE
+	     
+	</select>  
+	
+	<!-- 查询访问量列表-->
+	<select id="getAccessList" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			t.F_USERID as userId,
+			t.F_ACCESSTIME as accessTime
+		FROM
+			t_sm_accessrecord t
+		WHERE 1 = 1
+		<if test="orderDateTimeStart!=null and orderDateTimeStart!=''">
+	    	AND t.F_ACCESSTIME >= #{orderDateTimeStart}
+	    </if>
+	     
+	    <if test="orderDateTimeEnd!=null and orderDateTimeEnd!=''">
+	    	AND #{orderDateTimeEnd} >= t.F_ACCESSTIME
+	    </if>
+	    
+	    <if test="spId!=null and spId!=''">
+	    	AND t.F_SPID = #{spId}
+	    </if>
+	    
+	    ORDER BY t.F_ACCESSTIME
+	     
+	</select>  
+	
+	<!-- 查询退款订单列表  已支付已退订-->
+	<select id="getOrderBackList" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			o.F_USERID as userId,
+			o.F_ORDERDATE as orderDate
+		FROM
+			t_sm_orderlist t
+		LEFT JOIN t_sm_orderback b on t.F_ORDERID = b.F_ORDERID 
+		LEFT JOIN t_sm_order o on t.F_ORDERID = t.F_ORDERID
+		WHERE 
+			t.F_ORDERLISTTYPE='1'
+		<if test="orderDateTimeStart!=null and orderDateTimeStart!=''">
+	    	AND o.F_ORDERDATE >= #{orderDateTimeStart}
+	    </if>
+	     
+	    <if test="orderDateTimeEnd!=null and orderDateTimeEnd!=''">
+	    	AND #{orderDateTimeEnd} >= o.F_ORDERDATE
+	    </if>
+	    
+	    <if test="spId!=null and spId!=''">
+	    	AND o.F_SPID = #{spId}
+	    </if>
+	    
+	    ORDER BY o.F_ORDERDATE
+	     
+	</select> 
+	
+	<!-- 查询成功支付订单列表-->
+	<select id="getOrderPayList" parameterType="transactionAnalysis" resultType="transactionAnalysis">
+		SELECT
+			o.F_USERID as userId,
+			o.F_ORDERDATE as orderDate
+		FROM
+			t_sm_orderlist t
+		LEFT JOIN t_sm_order o on t.F_ORDERID = o.F_ORDERID
+		WHERE 
+			o.F_PAYTAG = '1'
+    	and t.F_ORDERLISTTYPE='0'
+		<if test="orderDateTimeStart!=null and orderDateTimeStart!=''">
+	    	AND o.F_ORDERDATE >= #{orderDateTimeStart}
+	    </if>
+	     
+	    <if test="orderDateTimeEnd!=null and orderDateTimeEnd!=''">
+	    	AND #{orderDateTimeEnd} >= o.F_ORDERDATE
+	    </if>
+	    
+	    <if test="spId!=null and spId!=''">
+	    	AND o.F_SPID = #{spId}
+	    </if>
+	    
+	    ORDER BY o.F_ORDERDATE
+	     
+	</select> 
+	
+</mapper>	

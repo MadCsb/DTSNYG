@@ -1,0 +1,119 @@
+/*-----------------------------------------------------
+	NJUED Team standard Css V 1.0
+	Copyright(c) 2010-present
+-----------------------------------------------------*/
+/*reset.css*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0}fieldset,img{border:0}:focus{outline:0}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:normal;font-weight:normal}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}abbr,acronym{border:0;font-variant:normal}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}code,kbd,samp,tt{font-size:100%}input,button,textarea,select{*font-size:100%}body{line-height:1.5}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th{text-align:left}sup,sub{font-size:100%;vertical-align:baseline}:link,:visited ,ins{text-decoration:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+/* typography.css */
+html {font-size:100.01%;}
+body {
+	font: 12px/1.5 arial,tahoma,"\5b8b\4f53", sans-serif;
+	background:#e0eff6;
+}
+h1, h2, h3, h4, h5, h6 {font-weight:bold; color:#111;}
+h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em;}
+h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
+h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+h5 {font-size:1em;margin-bottom:1.5em;}
+h6 {font-size:1em;}
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+
+a:hover {text-decoration:underline;}
+a {color:#339900;text-decoration:underline;outline:none;}
+
+
+
+/*clear float*/
+.clearfix:after {font-size:0;line-height:0;content: "\020";display: block;height: 0;clear: both;}
+.clearfix {zoom: 1;}
+
+.main{
+	margin:0px auto;
+	width:1200px;
+	height:420px;
+	padding-top:200px;
+	background:url(../images/mainbg.png) no-repeat top center;
+	position:relative;
+	z-index:2;
+}
+.footer{
+	margin:5px auto;
+	width:100%;
+	text-align:center;
+	line-height:26px;
+	color:#3ad7cd;
+	position: fixed;
+	bottom:10px;
+}
+.login-area{
+	position: absolute;
+	width:300px;
+	height:310px;
+	right:112px;
+	top: 232px;
+}
+.login-item{
+	position:absolute;
+	left:14px;
+	top:0px;
+	width:280px;
+	zoom:1;
+}
+.login-item li{float:left; width:280px; height:60px; line-height:30px; padding:4px 0;}
+.login-item li span{display:block; width:70px; font-size:14px; color:#777; height:30px;}
+.login-item li input,.login-item li span,.login-item li img{vertical-align:middle;}
+.login-item li img{display:inline-block; height:29px; width:76px;}
+.ltxt{border:1px solid #ccc; background:#ffffff; padding:6px 4px; width:260px; font-size:12px; font-weight:600; color:#666;}
+.ltxt2{border:1px solid #ccc; background:#ffffff; padding:6px 4px; width:180px; font-size:12px; font-weight:600; color:#666;}
+.loginbtn{
+	display:block;
+	position:absolute;
+	left:-3px;
+	top:258px;
+	background:url(../images/loginbtn.png) no-repeat center;
+	border:0px;
+	cursor:pointer;
+	width:310px;
+	height:35px;
+	overflow:hidden;
+	text-indent:-9999px;
+}
+.wrong-tip{
+	position:absolute;
+	left:19px;
+	top:228px;
+	color:#ff0000;
+	line-height:24px;
+	width:167px;
+	height: 20px;
+}
+
+.wrong-tip1{
+	position:absolute;
+	left:213px;
+	top:228px;
+	color:#ff6600;
+	line-height:24px;
+	width:71px;
+	height: 20px;
+}
+.wrong-tip1 a{	color:#ff6600;}
+
+.topbtwz{
+	height:80px; 
+	width:100%; 
+	position:absolute;
+	top:0; 
+	z-index:2; 
+	border-bottom:1px solid #254e7c;
+
+}
+
+.topbtwz h2{line-height:80px; 
+	font-size:28px; 
+	color:#FFFFFF; 
+	font-family:"微软雅黑";
+	 font-weight:200;
+	width:1100px; margin:0 auto;}
+

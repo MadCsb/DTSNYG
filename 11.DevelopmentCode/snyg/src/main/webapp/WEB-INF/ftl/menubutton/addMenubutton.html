@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+
+	<script type="text/javascript">
+  	$( function() {
+		$("#modifyMenubutton").validationEngine();
+	});
+  	
+  	function beforeSubmit(){
+  		if($("#modifyMenubutton").validationEngine('validate')) {
+  			var name=$("#menuButtonName").val();
+  			var menuid =$("#menuId").val();
+  			var id = $("#menuButtonId").val();
+  			if(null == name || name == "")
+  			{
+  				return ;
+  			}else{
+  				var url="menuButton.do?method=judgeMenuButtonName&menuButtonName="+name+"&menuId="+menuid+"&menuButtonId="+id;
+  				$.getJSON(url,function(ret){
+  					if(ret[0] != null)
+  					{
+  						$("#msg").html(ret[0].msg);
+  						$("#menuButtonName").val("");
+  						
+  					}else
+  				    {
+  				     	$("#msg").html("");
+  				     	
+  				     	var tag=$("#menuButtonTag").val();
+  						if(null == tag || tag == "")
+  						{
+  							return;
+  						}else{
+  							url="menuButton.do?method=judgeMenuButtonTag&menuButtonTag="+encodeURI(encodeURI(tag))+"&menuId="+menuid+"&menuButtonId="+id;
+  							$.getJSON(url,function(ret12){
+  								if(ret12[0] != null)
+  								{
+  									$("#tagmsg").html(ret12[0].msg);
+  									$("#menuButtonTag").val("");
+  									return;
+  								}else
+  							    {
+									$("#tagmsg").html("");
+  							    	var menuButtonName  = $("#menuButtonName").val();
+									var menuButtonTag  = $("#menuButtonTag").val();
+									var menuButtonDesc  = $("#menuButtonDesc").val();
+									var menuId = $("#menuId").val();
+
+
+									$.ajax({
+										type: "POST",
+										url:"menuButton.do?method=ajaxAdd",
+										data: {
+											menuButtonName : menuButtonName,
+											menuButtonTag : menuButtonTag,
+											menuButtonDesc : menuButtonDesc,
+											menuId: menuId
+										},
+										success: function(data){
+
+											if (data == "1") {
+												window.location.href = "menuButton.do?method=toSuccess"
+											}else {
+												art.dialog.alert("对不起，同步按钮操作失败！");
+											}
+										}
+									});
+
+  							    }
+  							})
+  						}
+  				    }
+  				})
+  			}
+  		}
+  	}
+  	function judgeName()
+	{
+  		var name=$("#menuButtonName").val();
+			var menuid =$("#menuId").val();
+			var id = $("#menuButtonId").val();
+		if(null == name || name == "")
+		{
+			return ;
+		}
+		var url="menuButton.do?method=judgeMenuButtonName&menuButtonName="+name+"&menuId="+menuid+"&menuButtonId="+id;
+		$.getJSON(url,function(ret){
+			if(ret[0] != null)
+			{
+				$("#msg").html(ret[0].msg);
+				$("#menuButtonName").val("");
+			}else
+		    {
+				$("#msg").html("");
+		    }
+		})
+	}
+  	
+  	function judgeTag()
+	{
+  		var tag=$("#menuButtonTag").val();
+		var menuid =$("#menuId").val();
+		var id = $("#menuButtonId").val();
+		if(null == tag || tag == "")
+		{
+			return ;
+		}
+		var url="menuButton.do?method=judgeMenuButtonTag&menuButtonTag="+encodeURI(encodeURI(tag))+"&menuId="+menuid+"&menuButtonId="+id;
+		$.getJSON(url,function(ret){
+			if(ret[0] != null)
+			{
+				
+				$("#tagmsg").html(ret[0].msg);
+				$("#menuButtonTag").val("");
+			}else
+		    {
+				$("#tagmsg").html("");
+		    }
+		})
+	}
+	</script>
+	
+</head>
+<body>
+	<div class="waybill-title">
+		<span>新增功能按钮</span>
+	</div>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="menuButton?method=add" method="post" id="modifyMenubutton">
+			<input type="hidden" id="menuId" name="menuId" value="${menu.menuId!''}"/>
+			<!--编辑区-->
+			<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+
+
+				<tr class="">
+					<td class="tdright" style="width:20%"><b><font class="f2"></font>菜单：</b></td>
+					<td>
+						${menu.menuName!''}
+	              	</td>
+				</tr>
+			
+				<tr class="">
+					<td class="tdright"><b><font class="f2">*</font>功能名称：</b></td>
+					<td>
+						<input name="menuButtonName" onblur="judgeName();" id="menuButtonName" type="text" value="" class="validate[required,maxSize[30]] data-inputtxt">
+	              		<font color="red" style="font-weight: bold;"><strong><span id="msg"></span></strong></font>
+				</tr>
+
+
+				<tr class="">
+					<td class="tdright"><b><font class="f2">*</font>标识：</b></td>
+					<td>
+						<input name="menuButtonTag" id="menuButtonTag" type="text" onblur="judgeTag();" value=""  class="validate[required,maxSize[30]] data-inputtxt">
+	              		<font color="red" style="font-weight: bold;"><strong><span id="tagmsg"></span></strong></font>
+	              	</td>
+				</tr>
+
+
+				<tr class="">
+					<td class="tdright"><b>功能描述：</b></td>
+					<td>
+						<textarea name="menuButtonDesc" rows="80" cols="5" class="validate[maxSize[255] data-searchtxt" id="menuButtonDesc" 
+						style="width:300px;height:180px;"></textarea>
+	              	</td>
+				</tr>
+
+			</table>
+			<!--操作区-->
+			<div class="footerbtn">   
+				<input name="button3" type="button" onclick="beforeSubmit()" class="add-new" id="button3" value="保存">
+				<input name="button4" type="button" onclick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

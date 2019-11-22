@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.Price1RefDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertPrice1Ref" parameterType="price1Ref">
+		INSERT INTO 
+			t_sm_price_1_ref  
+		(
+			F_REFID ,
+			F_PRICEID ,
+			F_USERID ,
+			F_ORDERLISTID ,
+			F_REF_PATCHCODE ,
+			F_ISBEGIN ,
+			F_PRICESTARTDATE ,
+			F_PRICEENDDATE ,
+			F_CREATETIME 
+		) VALUES (
+			#{refId} ,
+			#{priceId} ,
+			#{userId} ,
+			#{orderListId} ,
+			#{refPatchCode} ,
+			#{isBegin} ,
+			#{priceStartDate} ,
+			#{priceEndDate} ,
+			#{createTime} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergePrice1Ref" parameterType="price1Ref">
+		REPLACE INTO 
+			t_sm_price_1_ref 
+		(
+			F_REFID ,
+			F_PRICEID ,
+			F_USERID ,
+			F_ORDERLISTID ,
+			F_REF_PATCHCODE ,
+			F_ISBEGIN ,
+			F_PRICESTARTDATE ,
+			F_PRICEENDDATE ,
+			F_CREATETIME 
+		) VALUES (
+			#{refId} ,
+			#{priceId} ,
+			#{userId} ,
+			#{orderListId} ,
+			#{refPatchCode} ,
+			#{isBegin} ,
+			#{priceStartDate} ,
+			#{priceEndDate} ,
+			#{createTime} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updatePrice1Ref" parameterType="price1Ref">
+		UPDATE
+			t_sm_price_1_ref 
+		SET
+			F_REFID = #{refId} ,
+			F_USERID = #{userId} ,
+		  F_ORDERLISTID = #{orderListId} ,
+			F_REF_PATCHCODE = #{refPatchCode} ,
+			F_ISBEGIN = #{isBegin} ,
+			F_PRICESTARTDATE = #{priceStartDate} ,
+			F_PRICEENDDATE = #{priceEndDate} ,
+			F_CREATETIME = #{createTime} 
+		<where>
+			F_PRICEID = #{priceId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletePrice1Ref" parameterType="price1Ref">
+		DELETE FROM
+			t_sm_price_1_ref 
+		<where>
+			F_PRICEID = #{priceId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchPrice1Ref" parameterType="price1Ref">
+		DELETE FROM 
+			t_sm_price_1_ref 
+		<where>
+			F_PRICEID in
+			<foreach collection="price1RefIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryPrice1Ref" parameterType="String" resultType="price1Ref">
+		SELECT
+			t.F_REFID as refId ,
+			t.F_PRICEID as priceId ,
+			t.F_USERID as userId ,
+			t.F_ORDERLISTID as orderListId ,
+			t.F_REF_PATCHCODE as refPatchCode ,
+			t.F_ISBEGIN as isBegin ,
+			t.F_PRICESTARTDATE as priceStartDate ,
+			t.F_PRICEENDDATE as priceEndDate ,
+			t.F_CREATETIME as createTime 
+		FROM
+			t_sm_price_1_ref t
+		<where>
+			t.F_PRICEID = #{priceId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryPrice1RefList" parameterType="price1Ref" resultType="price1Ref">
+		SELECT
+			t.F_REFID AS refId,
+			t.F_PRICEID AS priceId,
+			t.F_USERID AS userId,
+			t.F_ORDERLISTID AS orderListId,
+			t.F_REF_PATCHCODE AS refPatchCode,
+			t.F_ISBEGIN AS isBegin,
+			t.F_PRICESTARTDATE AS priceStartDate,
+			t.F_PRICEENDDATE AS priceEndDate,
+			t.F_CREATETIME AS createTime,
+		  	u.F_USER_NAME as userName,
+		  	u.F_HEADPIC as headPic
+		FROM
+		t_sm_price_1_ref t
+		left join t_pub_user u on t.F_USERID = u.F_USER_ID
+		<where>
+			<if test="refId !=null and refId !=''">
+		    	and t.F_REFID = #{refId}
+		    </if>
+		    <if test="priceId !=null and priceId !=''">
+		    	and t.F_PRICEID = #{priceId}
+		    </if>
+		    <if test="isBegin !=null and isBegin !=''">
+		    	and t.F_ISBEGIN = #{isBegin}
+		    </if>
+		    <if test="refPatchCode !=null and refPatchCode !=''">
+		    	and t.F_REF_PATCHCODE = #{refPatchCode}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 按条件查询所有 -->
+	<select id="queryPrice1RefListFowWx" parameterType="price1Ref" resultType="price1Ref">
+		SELECT
+			t.F_REFID AS refId,
+			t.F_PRICEID AS priceId,
+			t.F_USERID AS userId,
+			t.F_ORDERLISTID AS orderListId,
+			t.F_REF_PATCHCODE AS refPatchCode,
+			t.F_ISBEGIN AS isBegin,
+			t.F_PRICESTARTDATE AS priceStartDate,
+			t.F_PRICEENDDATE AS priceEndDate,
+			t.F_CREATETIME AS createTime,
+		  	u.F_USER_NAME as userName,
+		  	u.F_HEADPIC as headPic,
+			temp.F_ORDERCOUNT as orderCount,
+			sellPrice.F_PEOPLENUM - temp.F_ORDERCOUNT as num
+		FROM
+		t_sm_price_1_ref t
+		left join t_pub_user u on t.F_USERID = u.F_USER_ID
+		left JOIN (SELECT sum(1) as F_ORDERCOUNT, F_REF_PATCHCODE AS F_REF_PATCHCODE FROM t_sm_price_1_ref GROUP BY F_REF_PATCHCODE) 
+			temp on t.F_REF_PATCHCODE = temp.F_REF_PATCHCODE
+		LEFT JOIN (SELECT IFNULL(F_PEOPLENUM,1) as F_PEOPLENUM,F_PRICEID from t_sm_sellprice where F_PRICEID=#{priceId}) 
+			sellPrice on t.F_PRICEID = sellPrice.F_PRICEID
+		<where>
+			 t.F_ISBEGIN = 1 and t.F_PRICEID =#{priceId} and (t.F_PRICESTARTDATE &lt;= #{validateDate} and t.F_PRICEENDDATE &gt;= #{validateDate})
+			and temp.F_ORDERCOUNT &lt; sellPrice.F_PEOPLENUM
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<meta charset="utf-8" />
+</head>
+<body>
+
+ <form id="queryFrm" action="carousel.do?method=query"  method="post" >
+       <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
+	   <input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
+	   <input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
+	   <input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+	<div class="data-requry">
+	<table border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>图片名称：
+          	<input  name="carouselName" type="text" class="data-searchtxt" id="name" value="${carousel.carouselName!''}">
+          </td>
+        </tr>
+      </table>
+      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+</div>
+
+<div class="cont-div">
+<!--  
+  <div class="waybill-title">
+  	<div align="left">
+
+     	<input name="button5" id="button5" type="button" class="cbtn1"  
+		           		value="新增" onClick="javascript:window.location.href='carousel.do?method=toAdd'">
+	
+    </div>
+   -->
+  </div>
+		 
+       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+        <tr>
+       		<th width="3%" style="text-align:center">序号</th>
+	        <th width="50%">图片名称</th>
+	        <!-- 
+	        <th width="20%">轮播图类型</th> -->
+	        <th width="20%">操作</th>
+        </tr>
+       <#if carouselList?? && (carouselList?size>0)>
+       <#list carouselList as item>   
+  		<tr onClick="selectTr(this)">
+  			<td align="center" title="${item_index+1}">${item_index+1}</td>
+  			<td title="${item.carouselName!''}">${item.carouselName!''}</td>
+  			<!-- 
+  			<td title="">
+  				<#if lunboTypeList?? && (lunboTypeList?size>0)>
+	  				<#list lunboTypeList as e>
+	  					<#if item.type?? && e.mapKey == item.type>
+	  						${e.mapValue!""}
+	  					</#if>
+					</#list>
+				</#if>
+  			</td> -->
+  			<td title="">
+  				<a href="carousel.do?method=toUpdate&carouselId=${item.carouselId!''}"  class="ico_btn1">修改</a>
+  				<!-- 
+				<a href="javascript:void(0);" onClick="artConfirmUrl('确定要删除这条记录吗？','carousel.do?method=delete&carouselId=${item.carouselId!''}');" class="ico_btn1">删除</a>
+				 -->
+				<a href="carouselItem.do?method=query&carouselId=${item.carouselId!''}" class="ico_btn1">图片明细</a>
+  			</td>
+        </tr>
+       </#list>
+  	   </#if>
+        
+      </table>  
+<div class="page-div">
+ <#if carouselList?? && (carouselList?size>0)>   
+       <#include "/pagination.html">
+  <#else>
+  		<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+  </#if>
+      </div>
+</div>
+</form>
+
+<script type="text/javascript">
+$(function(){
+	// 初始化全选复选框
+});
+
+</script>
+</body>
+</html>

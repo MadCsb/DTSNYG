@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>      
+
+<body>
+ 	<form id="queryFrm" action="article?method=toBindArticle" method="post" >
+ 		<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!''}" />
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!''}" />
+		
+		<div class="waybill-title"><span>添加文章</span></div>
+		<div class="data-requry">
+      		<table border="0" align="left" cellpadding="0" cellspacing="0">
+         		<tr>
+	           		<td>文章标题：
+	       				<input name="title" value="${article.title!''}" type="text" class="data-searchtxt w200" id="title">
+	       			</td>
+	           		<td>文章类型：
+			           	<select name="type" id="type" class="data-searchtxt-select w200">
+			          		<option value="">请选择</option>
+			          		<#if artTypeList?? && (artTypeList?size>0)>
+								<#list artTypeList as e>
+									<#if article.type?? && article.type == e.mapKey>
+										<option value="${e.mapKey!''}" selected>${e.mapValue!""}</option>
+									<#else>
+										<option value="${e.mapKey!''}">${e.mapValue!""}</option>
+									</#if>
+								</#list>
+							</#if>
+						</select>
+					</td>
+	       			</td>
+	       		</tr>
+			</table>
+			<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+		</div>
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" style="margin-top:10px">
+			<tbody>
+				<tr class="">
+					<td width="10%"></td>
+					<td class="tdleft"><b>文章标题</b></td>
+                    <td width="20%" class="tdleft"><b>文章类型</b></td>
+                    <td width="20%" class="tdleft"><b>发布人姓名</b></td>
+                    <td width="20%"><b>发布时间</b></td>
+				</tr>
+				<#if articleList?? && (articleList?size>0)>
+				<#list articleList as article> 	
+     			<tr onClick="selectTrArticle(this)">
+     				<td align="center"><input type="radio" name="selArticleId" value="${article.articleId}"></td>
+                	<td>${article.title!''}</td>
+                    <td>
+                    	<#if artTypeList?? && (artTypeList?size>0)>
+	  					<#list artTypeList as e>
+	  					<#if e.mapKey == article.type>
+	  						${e.mapValue!""}
+	  					</#if>
+						</#list>
+						</#if>
+					</td>
+                    <td>${article.userName!''}</td>
+                    <td>${article.publishDate!''}</td>
+				</tr>
+                </#list>
+                </#if>		
+     		</tbody>
+  		</table>
+ 		<div class="page-div">
+	 		<#if articleList?? && (articleList?size>0)>   
+	       		<#include "/pagination.html">
+	  		<#else>
+	  			<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+	  		</#if>
+		</div>
+  		<div class="footerbtn">  
+        	<input name="button4" type="button" class="cbtn2" id="button4" onClick="cancel()" value="取消">
+        	<input name="btnSave" type="button"  class="add-new" onClick="beforeSub();" id="btnSave" value="确定">
+
+		</div>
+   </form>
+<script type="text/javascript">
+
+// 提交之前
+function beforeSub(){
+	var articleId = $('input[name="selArticleId"]:checked').val();
+	if (articleId == null || articleId == "") {
+		art.dialog.alert("请选择一条记录");
+		return;
+	}
+	
+	art.dialog.data('articleId', articleId);
+	art.dialog.close();
+}
+
+// 选中行
+function selectTrArticle(obj) {
+	
+	// 设置背景色
+	selectTr(obj);
+	
+	// 设置单选按钮选中
+	$(obj).find('input[name="selArticleId"]').attr("checked","checked");
+}
+
+// 取消
+function cancel() {
+	art.dialog.data('articleId', '');
+	art.dialog.close();
+}
+</script>
+
+</body>
+</html>

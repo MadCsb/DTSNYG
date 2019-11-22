@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+  $(function() { 
+    	initCheckBox('checkbox','checkbox2'); 
+    	
+    	showHideQuery();
+    	
+    	
+    	// 展开
+    	if ($("#openFlag").val() == "1") {
+    		$(".getMore").click();
+    	}
+  }
+
+</script>
+
+</head>
+<body>
+
+	<form id="queryFrm" action="queryUserListForType"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="openFlag" name="openFlag" value="${openFlag!'0'}">
+		
+		<input type="hidden" id="type" name="type" value="1">
+		
+		<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>用户昵称：</td>
+            <td>
+			    <input name="userName" type="text" class="data-searchtxt" id="userName" value="${user.userName!''}">
+			</td>
+        	<td>所在城市：</td>
+            <td>
+				<input  name="city" type="text" class="data-searchtxt" id="city" value="${user.city!''}">
+			</td>
+
+       		<td>用户性别：</td>
+            <td>
+       		 <span class="tdleft">
+         		 <select name="sex" class="data-searchtxt-select" id="select4">
+            		<option value="">请选择</option>
+            		<#if user.sex??>
+            			<#if user.sex=='0'>
+            				<option value="1">男</option>
+           		    		<option value="2">女</option>
+           		    		<option value="0" selected="selected">未知</option>
+            			<#elseif user.sex=='1'>
+            				<option value="1" selected="selected">男</option>
+           		    		<option value="2">女</option>
+           		    		<option value="0">未知</option>
+           		    	<#elseif user.sex=='2'>
+            				<option value="1">男</option>
+           		    		<option value="2" selected="selected">女</option>
+           		    		<option value="0">未知</option>
+           		    	<#else>
+            				<option value="1">男</option>
+           		    		<option value="2">女</option>
+           		    		<option value="0">未知</option>
+            			</#if>
+            		<#else>
+            			<option value="1">男</option>
+           		    	<option value="2">女</option>
+           		    	<option value="0">未知</option>
+            		</#if>
+         		 </select>
+        	</span></td>
+        	<td>关注时间：</td>
+            <td>
+           		<input name="updateTimeStart" value="${user.updateTimeStart!''}" type="text" class="data-searchtxt-time" id="updateTimeStart" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly"></td><td>
+           		- </td><td><input name="updateTimeEnd" value="${user.updateTimeEnd!''}" type="text" class="data-searchtxt-time" id="updateTimeEnd" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly">
+      		</td>
+            </tr>
+		</table>
+        <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+        <div class="getMore">展开更多 ▼</div>
+        
+		</div>
+	<div class="cont-div">
+		<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+			<tr>
+				<th width="10%">序号</th>
+				<th width="30%">昵称</th> 
+				<th width="30%">openId</th>
+				<th width="10%">性别</th> 
+				<th width="20%">所在城市</th> 
+				<th width="20%">关注时间</th>
+			</tr>
+			<#list userList as li>
+			<tr>
+				<td title="${li_index+1!""}">${li_index+1!""}</td>
+				<td>${li.userName!""}</td>
+				<td>${li.userLoginName!""}</td>
+				<td>
+					<#if (li.sex)??>
+	          			<#if li.sex=="1">
+	           				男
+	          			<#elseif li.sex=="2">
+	          				女
+	          			<#elseif li.sex=="0">
+	          				未知
+	            		</#if>
+	            	<#else>
+	            		未知
+            		</#if>
+				</td>
+				<td>${li.country!""} ${li.province!""} ${li.city!""}</td>
+				<td>${li.updateTime!""}</td>
+			</tr>
+			</#list>
+		</table>
+		<div class="page-div">
+				<#if userList?? && (userList?size>0)>
+				 <#include "/pagination.html">
+				<#else>
+				<div id='ListIsNullMsg' style="font-size:17px;color:red">
+					<script type="text/javascript">
+						showListIsNullMsg();
+					</script>
+				</div>
+				</#if>
+		</div>
+	</div>
+		
+	</form>
+	<form action="fans.do?method=deleteBatch" id="deleteBatch" method="post">
+		<input type="hidden" name="checkedFansIds" id="checkedFansIds">
+	</form>
+</body>
+</html>

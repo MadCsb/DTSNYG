@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ServiceCodeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertServiceCode" parameterType="serviceCode">
+		INSERT INTO 
+			t_wx_servicecode  
+		(
+			F_WXSERVICEID ,
+			F_NAME ,
+			F_FULLNAME ,
+			F_CODE ,
+			F_TYPE ,
+			F_APPID ,
+			F_APPSECRET ,
+			F_LOGOFILENAME ,
+			F_URL ,
+			F_TOKEN ,
+			F_WELCOME ,
+			F_PAYSIGNKEY ,
+			F_TENPAYPARTNER ,
+			F_TENPAYPARTNERKEY ,
+			F_ALIPAYEMAIL ,
+			F_ALIPAYPARTNER ,
+			F_ALIPAYPARTNERKEY ,
+			F_DELTAG ,
+			F_CREATEDATE ,
+			F_INMSGID ,
+			F_UNREADMSGID ,
+			F_COUPONMEMO ,
+			F_COUPONLINK 
+		) VALUES (
+			#{serviceId} ,
+			#{name} ,
+			#{fullName} ,
+			#{code} ,
+			#{type} ,
+			#{appId} ,
+			#{appSecret} ,
+			#{logoFileName} ,
+			#{url} ,
+			#{token} ,
+			#{welcome} ,
+			#{paySignKey} ,
+			#{tenPayPartner} ,
+			#{tenPayPartnerKey} ,
+			#{aliPayEmail} ,
+			#{aliPayPartner} ,
+			#{aliPayPartnerKey} ,
+			#{delTag} ,
+			#{createDate} ,
+			#{inMsgId} ,
+			#{unreadMsgId} ,
+			#{couponMemo} ,
+			#{couponLink} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeServiceCode" parameterType="serviceCode">
+		REPLACE INTO 
+			t_wx_servicecode 
+		(
+			F_WXSERVICEID ,
+			F_NAME ,
+			F_FULLNAME ,
+			F_CODE ,
+			F_TYPE ,
+			F_APPID ,
+			F_APPSECRET ,
+			F_LOGOFILENAME ,
+			F_URL ,
+			F_TOKEN ,
+			F_WELCOME ,
+			F_PAYSIGNKEY ,
+			F_TENPAYPARTNER ,
+			F_TENPAYPARTNERKEY ,
+			F_ALIPAYEMAIL ,
+			F_ALIPAYPARTNER ,
+			F_ALIPAYPARTNERKEY ,
+			F_DELTAG ,
+			F_CREATEDATE ,
+			F_INMSGID ,
+			F_UNREADMSGID ,
+			F_COUPONMEMO ,
+			F_COUPONLINK 
+		) VALUES (
+			#{serviceId} ,
+			#{name} ,
+			#{fullName} ,
+			#{code} ,
+			#{type} ,
+			#{appId} ,
+			#{appSecret} ,
+			#{logoFileName} ,
+			#{url} ,
+			#{token} ,
+			#{welcome} ,
+			#{paySignKey} ,
+			#{tenPayPartner} ,
+			#{tenPayPartnerKey} ,
+			#{aliPayEmail} ,
+			#{aliPayPartner} ,
+			#{aliPayPartnerKey} ,
+			#{delTag} ,
+			#{createDate} ,
+			#{inMsgId} ,
+			#{unreadMsgId} ,
+			#{couponMemo} ,
+			#{couponLink} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateServiceCode" parameterType="serviceCode">
+		UPDATE
+			t_wx_servicecode 
+		SET
+			F_NAME = #{name} ,
+			F_FULLNAME = #{fullName} ,
+			F_CODE = #{code} ,
+			F_TYPE = #{type} ,
+			F_APPID = #{appId} ,
+			F_APPSECRET = #{appSecret} ,
+			F_LOGOFILENAME = #{logoFileName} ,
+			F_URL = #{url} ,
+			F_TOKEN = #{token} ,
+			F_WELCOME = #{welcome} ,
+			F_PAYSIGNKEY = #{paySignKey} ,
+			F_TENPAYPARTNER = #{tenPayPartner} ,
+			F_TENPAYPARTNERKEY = #{tenPayPartnerKey} ,
+			F_ALIPAYEMAIL = #{aliPayEmail} ,
+			F_ALIPAYPARTNER = #{aliPayPartner} ,
+			F_ALIPAYPARTNERKEY = #{aliPayPartnerKey} ,
+			F_DELTAG = #{delTag} ,
+			F_CREATEDATE = #{createDate} ,
+			F_INMSGID = #{inMsgId} ,
+			F_UNREADMSGID = #{unreadMsgId} ,
+			F_COUPONMEMO = #{couponMemo} ,
+			F_COUPONLINK = #{couponLink} 
+		<where>
+			F_WXSERVICEID = #{serviceId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteServiceCode" parameterType="serviceCode">
+		DELETE FROM
+			t_wx_servicecode 
+		<where>
+			F_WXSERVICEID = #{serviceId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchServiceCode" parameterType="serviceCode">
+		DELETE FROM 
+			t_wx_servicecode 
+		<where>
+			F_WXSERVICEID in
+			<foreach collection="serviceCodeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryServiceCode" parameterType="String" resultType="serviceCode">
+		SELECT
+			t.F_WXSERVICEID as serviceId ,
+			t.F_NAME as name ,
+			t.F_FULLNAME as fullName ,
+			t.F_CODE as code ,
+			t.F_TYPE as type ,
+			t.F_APPID as appId ,
+			t.F_APPSECRET as appSecret ,
+			t.F_LOGOFILENAME as logoFileName ,
+			t.F_URL as url ,
+			t.F_TOKEN as token ,
+			t.F_WELCOME as welcome ,
+			t.F_PAYSIGNKEY as paySignKey ,
+			t.F_TENPAYPARTNER as tenPayPartner ,
+			t.F_TENPAYPARTNERKEY as tenPayPartnerKey ,
+			t.F_ALIPAYEMAIL as aliPayEmail ,
+			t.F_ALIPAYPARTNER as aliPayPartner ,
+			t.F_ALIPAYPARTNERKEY as aliPayPartnerKey ,
+			t.F_DELTAG as delTag ,
+			t.F_CREATEDATE as createDate ,
+			t.F_INMSGID as inMsgId ,
+			t.F_UNREADMSGID as unreadMsgId ,
+			t.F_COUPONMEMO as couponMemo ,
+			t.F_COUPONLINK as couponLink ,
+			fb.f_msgtype as inMsgType,
+   			fb1.f_msgtype as unReadMsgType
+		FROM
+			t_wx_servicecode t
+		LEFT JOIN 
+		    t_wx_feedback fb on t.F_INMSGID = fb.f_feedbackid
+		LEFT JOIN 
+		    t_wx_feedback fb1 on t.f_unreadmsgid = fb1.f_feedbackid
+		<where>
+			t.F_WXSERVICEID = #{serviceId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryServiceCodeList" parameterType="serviceCode" resultType="serviceCode">
+		SELECT
+			t.F_WXSERVICEID as serviceId ,
+			t.F_NAME as name ,
+			t.F_FULLNAME as fullName ,
+			t.F_CODE as code ,
+			t.F_TYPE as type ,
+			t.F_APPID as appId ,
+			t.F_APPSECRET as appSecret ,
+			t.F_LOGOFILENAME as logoFileName ,
+			t.F_URL as url ,
+			t.F_TOKEN as token ,
+			t.F_WELCOME as welcome ,
+			t.F_PAYSIGNKEY as paySignKey ,
+			t.F_TENPAYPARTNER as tenPayPartner ,
+			t.F_TENPAYPARTNERKEY as tenPayPartnerKey ,
+			t.F_ALIPAYEMAIL as aliPayEmail ,
+			t.F_ALIPAYPARTNER as aliPayPartner ,
+			t.F_ALIPAYPARTNERKEY as aliPayPartnerKey ,
+			t.F_DELTAG as delTag ,
+			t.F_CREATEDATE as createDate ,
+			t.F_INMSGID as inMsgId ,
+			t.F_UNREADMSGID as unreadMsgId ,
+			t.F_COUPONMEMO as couponMemo ,
+			t.F_COUPONLINK as couponLink 
+		FROM
+			t_wx_servicecode t
+		<where>
+			<if test="serviceId!=null and serviceId!=''">
+		    	t.F_WXSERVICEID = #{serviceId}
+		     </if>
+		     
+		     <if test="code!=null and code!=''">
+		    	AND t.F_CODE = #{code}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryServiceCodeByCustom" resultType="serviceCode" parameterType="serviceCode">
+		SELECT
+			t.F_WXSERVICEID as serviceId ,
+			t.F_NAME as name ,
+			t.F_FULLNAME as fullName ,
+			t.F_CODE as code ,
+			t.F_TYPE as type ,
+			t.F_APPID as appId ,
+			t.F_APPSECRET as appSecret ,
+			t.F_LOGOFILENAME as logoFileName ,
+			t.F_URL as url ,
+			t.F_TOKEN as token ,
+			t.F_WELCOME as welcome ,
+			t.F_PAYSIGNKEY as paySignKey ,
+			t.F_TENPAYPARTNER as tenPayPartner ,
+			t.F_TENPAYPARTNERKEY as tenPayPartnerKey ,
+			t.F_ALIPAYEMAIL as aliPayEmail ,
+			t.F_ALIPAYPARTNER as aliPayPartner ,
+			t.F_ALIPAYPARTNERKEY as aliPayPartnerKey ,
+			t.F_DELTAG as delTag ,
+			t.F_CREATEDATE as createDate ,
+			t.F_INMSGID as inMsgId ,
+			t.F_UNREADMSGID as unreadMsgId ,
+			t.F_COUPONMEMO as couponMemo ,
+			t.F_COUPONLINK as couponLink
+		FROM 
+			T_WX_SERVICECODE t
+		<where>
+			<if test="code!=null and code!=''">
+		    	F_CODE = #code#
+		    </if>
+		</where>
+	</select>
+	
+</mapper>	

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CityDao" >
+	<!-- 获取总数 -->
+	<select id="getTotalCount" resultType="int" parameterType="city">
+		SELECT
+			COUNT(*)
+		FROM
+			T_PUB_CITY
+		<where>
+			<if test="cityLevel !=null and cityLevel !='' ">
+		    	F_CITYLEVEL = #{cityLevel}
+			</if>
+			<if test="cityName !=null and cityName !='' ">
+		    	and F_CITYNAME LIKE CONCAT('%', #{cityName}, '%')
+			</if>
+			<if test="foreigh !=null and foreigh !='' ">
+		    	and F_FOREIGH = #{foreigh}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询单个详情 -->
+	<select id="queryCity" parameterType="city" resultType="city">
+		SELECT
+		t.F_CITYID as cityId ,
+		t.F_CITYCODE as cityCode ,
+		t.F_CITYNAME as cityName ,
+		t.F_CITYLEVEL as cityLevel ,
+		t.F_FOREIGH as foreigh ,
+		t.F_PCITYID as pcityId ,
+		t.F_PROVINCE as province ,
+		t.F_CITY as city ,
+		t.F_XIAN as xian ,
+		t.F_PY as py ,
+		t.F_IsAlaway as isAlaway
+		FROM
+		T_PUB_CITY t
+		WHERE
+		t.F_CITYID = #{cityId}
+	</select>
+
+
+	<!-- 新增信息 -->
+	<insert id="insertCity" parameterType="city">
+		INSERT INTO T_PUB_CITY  (
+			F_CITYID ,
+			F_CITYCODE ,
+			F_CITYNAME ,
+			F_CITYLEVEL ,
+			F_FOREIGH ,
+			F_PCITYID ,
+			F_PROVINCE ,
+			F_CITY ,
+			F_XIAN ,
+			F_PY,
+			F_IsAlaway
+		) VALUES (
+			#{cityId,jdbcType=VARCHAR} ,
+			#{cityCode,jdbcType=VARCHAR} ,
+			#{cityName,jdbcType=VARCHAR} ,
+			#{cityLevel,jdbcType=VARCHAR} ,
+			#{foreigh,jdbcType=VARCHAR} ,
+			#{pcityId,jdbcType=VARCHAR} ,
+			#{province,jdbcType=VARCHAR} ,
+			#{city,jdbcType=VARCHAR} ,
+			#{xian,jdbcType=VARCHAR} ,
+			#{py,jdbcType=VARCHAR} ,
+			#{isAlaway,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 按条件查询所有 -->
+	<select id="queryCityList" parameterType="city" resultType="city">
+		SELECT
+		t.F_CITYID as cityId ,
+		t.F_CITYCODE as cityCode ,
+		t.F_CITYNAME as cityName ,
+		t.F_CITYLEVEL as cityLevel ,
+		t.F_FOREIGH as foreigh ,
+		t.F_PCITYID as pcityId ,
+		t.F_PROVINCE as province ,
+		t.F_CITY as city ,
+		t.F_XIAN as xian ,
+		t.F_PY as py ,
+		t.F_ISAlAWAY AS isAlaway
+		FROM
+		T_PUB_CITY t
+		<where>
+			<if test="cityId !=null and cityId !='' ">
+		    	t.F_CITYID = #{cityId}
+			</if>
+			<if test="cityLevel !=null and cityLevel !='' ">
+		    	and t.F_CITYLEVEL = #{cityLevel}
+			</if>
+			<if test="cityCode !=null and cityCode !='' ">
+		    	and t.F_CITYCODE = #{cityCode}
+			</if>
+			<if test="foreigh !=null and foreigh !='' ">
+		    	and t.F_FOREIGH = #{foreigh}
+			</if>
+			<if test="pcityId !=null and pcityId !='' ">
+		    	and t.F_PCITYID = #{pcityId}
+			</if>
+			<if test="cityName !=null and cityName !='' ">
+		    	and t.F_CITYNAME LIKE CONCAT('%', #{cityName}, '%')
+			</if>
+			<if test="province !=null and province !='' ">
+		    	and t.F_PROVINCE LIKE CONCAT('%', #{province}, '%')
+			</if>
+			<if test="xian !=null and xian !='' ">
+		    	and t.F_XIAN LIKE CONCAT('%', #{xian}, '%')
+			</if>
+			<if test="city !=null and city !='' ">
+		    	and t.F_CITY LIKE CONCAT('%', #{city}, '%')
+			</if>
+			<if test="isAlaway !=null and isAlaway !='' ">
+		    	and t.F_ISAlAWAY = #{isAlaway}
+			</if>
+		</where>
+		<if test="entityPage != null and entityPage.sortField !=null and entityPage.sortField !='' ">
+		    ORDER BY ${entityPage.sortField}
+		</if>
+		<if test="entityPage != null and entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    ${entityPage.sortOrder}
+		</if>
+	</select>
+
+
+	<!-- 修改信息 -->
+	<update id="updateCity" parameterType="city">
+		UPDATE
+		T_PUB_CITY t
+		SET
+		t.F_CITYCODE = #{cityCode,jdbcType=VARCHAR} ,
+		t.F_CITYNAME = #{cityName,jdbcType=VARCHAR} ,
+		t.F_CITYLEVEL = #{cityLevel,jdbcType=VARCHAR} ,
+		t.F_FOREIGH = #{foreigh,jdbcType=VARCHAR} ,
+		t.F_PCITYID = #{pcityId,jdbcType=VARCHAR} ,
+		t.F_PROVINCE = #{province,jdbcType=VARCHAR} ,
+		t.F_CITY = #{city,jdbcType=VARCHAR} ,
+		t.F_XIAN = #{xian,jdbcType=VARCHAR} ,
+		t.F_PY = #{py,jdbcType=VARCHAR} ,
+		t.F_IsAlaway= #{isAlaway,jdbcType=VARCHAR}
+		WHERE
+		F_CITYID = #{cityId}
+	</update>
+
+	<!-- 删除消息 -->
+	<delete id="deleteCity" parameterType="city">
+		DELETE FROM
+			T_PUB_CITY 
+		WHERE
+			F_CITYID = #{cityId}
+	</delete>
+
+	<!-- 按城市名，pcityId，cityLevel查询所有 -->
+	<select id="queryCityListByName" parameterType="city" resultType="city">
+		SELECT
+		t1.F_CITYID as cityId ,
+		t1.F_CITYNAME as cityName ,
+		t1.F_PCITYID as pcityId 
+		FROM
+		T_PUB_CITY t INNER JOIN T_PUB_CITY t1 ON t.F_CITYID = t1.F_PCITYID
+		<where>
+			<if test="cityLevel !=null and cityLevel !='' ">
+		    	t.F_CITYLEVEL = #{cityLevel}
+			</if>
+			<if test="cityName !=null and cityName !='' ">
+		    	and t.F_CITYNAME = #{cityName}
+			</if>
+			<if test="pcityId !=null and pcityId !='' ">
+		    	and t.F_PCITYID = #{pcityId}
+			</if>
+		    	and t.F_FOREIGH = '0'
+		    	AND t1.F_FOREIGH = '0'
+		</where>
+		ORDER BY t1.F_PY ASC
+	</select>
+</mapper>	

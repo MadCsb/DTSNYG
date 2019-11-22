@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+<body>
+ <input type="hidden" name="readOnly" id="readOnly" value="${readOnly!''}">
+	<div class="waybill-title">
+		<span>退款信息</span>
+	</div>	
+
+    <div class="tab-nav">
+        <ul class="nav">
+        <li><a href="javascript:void(0)" onClick="changeMenu(1)" id="menu1" class="active">基本信息</a></li>
+        <li><a href="javascript:void(0)" onClick="changeMenu(2)" id="menu2" >操作日志</a></li>
+        </ul>
+        <div style="clear:both;"></div>
+    </div>
+	
+	<div id="divInfo">	
+		<div class="waybill-title">
+			<span>退款申请单信息</span>
+		</div>
+		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<col style="width:15%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:35%" />
+			<tr>
+				<td class="tdright"><b>退款单编号：</b></td>
+				<td>${orderBack.backCode!''}</td>
+				<td class="tdright"><b>订单编号：</b></td>
+				<td><a href="order?method=toDetail&orderId=${orderBack.orderId!''}">${order.orderCode!''}</a></td>
+			</tr>
+			<tr>
+				<td class="tdright"><b>状态：</b></td>
+				<td>
+					<#if orderBack.status?? && orderBack.status == "1">
+						待受理
+						<#elseif orderBack.status?? && orderBack.status == "3">
+							已拒绝
+							<#elseif orderBack.status?? && orderBack.status == "4">
+								退货中
+								<#if orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "0">
+									【待发货】
+									<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "1">
+										【待收货】
+										<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "2">
+											【已收货】
+								</#if>
+								<#elseif orderBack.status?? && orderBack.status == "5">
+									退款中
+									<#if orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "0">
+										【待退款】
+										<#elseif orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "1">
+											【已退款】
+									</#if>
+									<#elseif orderBack.status?? && orderBack.status == "6">
+										已关闭
+					</#if>
+				</td>
+				<td class="tdright"><b>申请时间：</b></td>
+				<td>${orderBack.applyTime!''}</td>
+			</tr>
+			<#if orderBack.status?? && orderBack.status == "3">
+				<tr>
+					<td class="tdright"><b>拒绝原因：</b></td>
+					<td colspan="3">${orderBack.refuseReason!''}</td>
+				</tr>
+			</#if>
+
+			<tr>
+					<td class="tdright"><b>退款类型：</b></td>
+					<td>${orderBack.backReasonTypeValue!''}</td>
+					<td class="tdright"><b>退款原因：</b></td>
+					<td>${orderBack.backReason!''}</td>
+			</tr>
+			<tr>
+				<td class="tdright"><b>需要退货：</b></td>
+				<td>
+					<#if orderBack.isBackGoods?? && orderBack.isBackGoods == '1'>
+						是
+					<#else>
+						否
+					</#if>
+				</td>
+				<td class="tdright"><b>需要退款：</b></td>
+				<td>
+					<#if orderBack.isBackMoney?? && orderBack.isBackMoney == '1'>
+						是
+					<#else>
+							否
+					</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdright"><b>卖家上传：</b></td>
+				<td colspan="3">
+					<#list rsPicList as rsl>
+						<img style="width: 300px;height: 300px;" src="${rc.contextPath}/upload/orderBack/${rsl.picFileName!''}">
+					</#list>
+				</td>
+			</tr>
+		</table>
+
+		<#if orderBack.isBackGoods?? && orderBack.isBackGoods == '1'>
+			<div class="waybill-title">
+				<span>退货信息</span>
+			</div>
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<col style="width:15%" />
+				<col style="width:35%" />
+				<col style="width:15%" />
+				<col style="width:35%" />
+				<tr>
+					<td class="tdright"><b>退货状态：</b></td>
+					<td colspan="3">
+						<#if orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "0">
+							待发货
+						<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "1">
+							待收货
+						<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "2">
+						  已收货
+						</#if>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b>退货接收人：</b></td>
+					<td>
+						${orderBack.backGoodsName!''}
+					</td>
+					<td class="tdright"><b>接收人电话：</b></td>
+					<td>
+						${orderBack.backGoodsPhone!''}
+					</td>
+				</tr>
+
+				<tr>
+					<td class="tdright"><b>退货快递公司：</b></td>
+					<td>
+						${orderBack.backGoodsEpmeCompany!''}
+					</td>
+					<td class="tdright"><b>退货快递单号：</b></td>
+					<td>
+						<#if orderBack.backGoodsEpmeCompany?? && orderBack.backGoodsEpmeOrdCode??>
+							<a onclick="showOrderExpress('${orderBack.backGoodsEpmeCompany}','${orderBack.backGoodsEpmeOrdCode}')">${orderBack.backGoodsEpmeOrdCode!''}</a>
+							<#else>
+								${orderBack.backGoodsEpmeOrdCode!''}
+						</#if>
+
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b>退货接收时间：</b></td>
+					<td colspan="3">
+						${orderBack.backGoodsReceiveTime!''}
+					</td>
+				</tr>
+			</table>
+		</#if>
+
+		<#if orderBack.isBackMoney?? && orderBack.isBackMoney == '1'>
+			<div class="waybill-title">
+				<span>退款信息</span>
+			</div>
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<col style="width:15%" />
+				<col style="width:35%" />
+				<col style="width:15%" />
+				<col style="width:35%" />
+				<tr>
+					<td class="tdright"><b>退款状态：</b></td>
+					<td colspan="3">
+						<#if orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "0">
+							待退款
+							<#elseif orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "1">
+								已退款
+						</#if>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b>申请退款金额：</b></td>
+					<td>
+						${orderBack.applyBackMoney!''}
+					</td>
+					<td class="tdright"><b>实际退款金额：</b></td>
+					<td>
+						${orderBack.backMoney!''}
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b>退款人姓名：</b></td>
+					<td>
+						${orderBack.custName!''}
+					</td>
+					<td class="tdright"><b>退款人电话：</b></td>
+					<td>
+						${orderBack.custPhone!''}
+					</td>
+				</tr>
+
+				<tr>
+					<td class="tdright"><b>退款接收时间：</b></td>
+					<td colspan="3">
+						${orderBack.backMoneyReceiveTime!''}
+					</td>
+				</tr>
+			</table>
+		</#if>
+		
+		<div class="waybill-title">
+			<span>商品信息</span>
+		</div>
+		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<col style="width:15%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:35%" />
+			<tbody>
+			<#if orderListList?? && (orderListList?size>0)>
+				<#list orderListList as o>
+					<tr class="">
+						<td width="10%" class="tdright"><b>商品名称：</b></td>
+						<td width="40%">
+							<a href="commproduct?method=toDetail&productId=${o.productId!''}&priceType=0"   style="white-space:normal;" title="${o.productName!''}">${o.productName!''}</a>
+						</td>
+						<td width="10%" class="tdright"><b>规格名称：</b></td>
+						<td width="40%">
+							<a href="commproduct?method=toDetail&productId=${o.productId!''}&priceType=0" style="white-space:normal;" title="${o.childName!''}">${o.childName!''}</a>
+						</td>
+					</tr>
+					<tr class="">
+						<td class="tdright"><b>购买总量：</b></td>
+						<td>${o.num!''}</td>
+						<td class="tdright"><b>商品单价：</b></td>
+						<td>&yen;${o.price!'0'}</td>
+					</tr>
+					<tr class="">
+						<td class="tdright"><b>运费：</b></td>
+						<td colspan="3">${o.transFee!'0'}</td>
+					</tr>
+					<tr class="" style="display: none;">
+						<td class="tdright"><b>当前退订数量：</b></td>
+						<td colspan="3">${o.backNum!''}</td>
+					</tr>
+				</#list>
+			</#if>
+		</table>
+	
+		<div class="footerbtn">
+			<#if readOnly?? && readOnly !=''>
+			<#else>
+				<#if orderBack.status?? && orderBack.status == "1">
+					<!--待受理-->
+					<input name="button4" type="button" onClick="opOrderBack('${orderBack.backId}','2')" class="cbtn1" value="受理">
+					<input name="button4" type="button" onClick="opOrderBack('${orderBack.backId}','3')" class="cbtn1" value="不受理">
+					<#elseif orderBack.status?? && orderBack.status == "3">
+						<!--已拒绝-->
+						<#elseif orderBack.status?? && orderBack.status == "4">
+							<!--退货中-->
+							<#if orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "0">
+								<!--【待发货】-->
+								<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "1">
+									<input name="button4" type="button" onClick="receiveGoods('${orderBack.backId}')" class="cbtn1" value="收货">
+									<!--【待收货】-->
+									<#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "2">
+										<!--【已收货】-->
+							</#if>
+							<#elseif orderBack.status?? && orderBack.status == "5">
+								<!--退款中-->
+								<#if orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "0">
+									<!--【待退款】-->
+									<input name="button4" type="button" onClick="opOrderBack('${orderBack.backId}','6')" class="cbtn1" value="退款">
+									<#elseif orderBack.backMoneyStatus?? && orderBack.backMoneyStatus == "1">
+										<!--【已退款】-->
+								</#if>
+								<#elseif orderBack.status?? && orderBack.status == "6">
+									<!--已关闭-->
+				</#if>
+			</#if>
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn1" id="button4" value="返回">
+		</div>
+	</div>
+	
+	<div id="divLog" style="display:none;margin-top:20px;">	
+		<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+			<tr>
+				<th width="20%">操作时间</th>
+				<th width="20%">操作人</th>  
+				<th>操作内容</th> 
+			</tr>
+			<#if orderLogList?? && (orderLogList?size > 0)>
+			<#list orderLogList as orderLog>
+			<tr>
+				<td title="${orderLog.opTime!''}">${orderLog.opTime!''}</td>
+				<td title="${orderLog.oper!''}">${orderLog.oper!''}</td>
+				<td title="${orderLog.opContent!''}">${orderLog.opContent!''}</td>
+			</tr>
+			</#list>
+			</#if>
+		</table>
+		
+		<div style="text-align:center">
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn1" id="button4" value="返回">
+		</div>
+	</div>	
+	
+</body>
+<script type="text/javascript">
+
+// 菜单改变
+function changeMenu(flag) {
+	if (flag == 1) {
+		$("#menu1").attr("class", "btmenu");
+		$("#menu2").attr("class", "btmenuhui");
+		$("#divInfo").css("display", "block");
+		$("#divLog").css("display", "none");
+	} else {
+		$("#menu1").attr("class", "btmenuhui");
+		$("#menu2").attr("class", "btmenu");
+		$("#divInfo").css("display", "none");
+		$("#divLog").css("display", "block");
+	}
+}
+
+function showOrderExpress(com,nu)
+{
+  var url = "https://www.kuaidi100.com/chaxun?com="+com+"&nu="+ nu;
+  parent.layer.open({
+    type : 2,
+    title : '快递信息',
+    area : [ '800px', '600px'],
+    fix : true,
+    content :url,
+    end: function(){
+      //window.location.reload();
+    }
+  });
+}
+
+// 跳转到订单详情
+function toOrder(orderId, backId) {
+	var preViewUrl = encodeURIComponent("orderBack.do?method=detailOrderBack&backId=" + backId);
+	var url = "order.do?method=toDetail&orderId=" + orderId + "&preViewUrl=" + preViewUrl+"&readOnly=${readOnly!''}";
+	window.location.href = url;
+}
+
+
+//操作退单
+function opOrderBack(backId,status){
+  var url = 'orderBack.do?method=toOpOrderBack&backId='+backId+"&status="+status;
+  parent.layer.open({
+    type : 2,
+    title : '操作退单',
+    area : [ '625px', '275px'],
+    fix : true,
+    content :url,
+    end: function(){
+      window.location.reload();
+    }
+  });
+}
+
+//确认收货
+function receiveGoods(backId){
+  parent.layer.confirm("确定该退单申请要收货吗", function() {
+    var opDate = new Object();
+    opDate.backId = backId;
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "orderBack?method=receiveGoods",
+      data: opDate,
+      success: function (data) {
+        if(data.resultCode =="0"){
+          window.location.reload();
+          parent.layer.closeAll();
+        }else
+        {
+          parent.layer.alert(data.resultMsg,function () {
+            parent.layer.closeAll();
+          });
+        }
+      }
+    });
+  }, function() {
+    // art.dialog.tips('取消当前操作');
+  });
+}
+
+</script>
+</html>

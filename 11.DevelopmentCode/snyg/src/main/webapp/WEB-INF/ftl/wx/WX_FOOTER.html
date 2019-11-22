@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/WX_INC_HEAD.html">
+
+    <style>
+
+      #navbar.navbar_fixed {
+        position:fixed;
+        top:0px;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:60px;
+      }
+      #navbar.navbar_absolute {
+        position: relative;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:60px;
+
+      }
+    </style>
+
+    </head>
+    <nav>
+      <ul class="clear snyg_icon_ul">
+        <li>
+
+          <a title="a" class="" onclick="toIndex()">
+            <div class="snyg_icon_wrap">
+              <div id="tabDiv1" class="snyg_icon_del1"></div>
+              <p id="tabDivShow1" class="bottomTitle" >首页</p>
+            </div>
+          </a>
+
+        </li>
+        <li>
+
+          <a title="a" onclick="toPdcTypeList()">
+            <div class="snyg_icon_wrap">
+              <div id="tabDiv2" class="snyg_icon_del2"></div>
+              <p id="tabDivShow2" class="bottomTitle">分类</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a title="a" class="" onclick="toShopCart()">
+            <div class="snyg_icon_wrap">
+              <div id="tabDiv3" class="snyg_icon_del3"></div>
+              <p id="tabDivShow3"  class="bottomTitle">购物车</p>
+            </div>
+          </a>
+
+        </li>
+        <li>
+
+          <a title="a" class="" onclick="toPersonal()">
+            <div class="snyg_icon_wrap">
+              <div id="tabDiv4" class="snyg_icon_del4"></div>
+              <p  id="tabDivShow4" class="bottomTitle">我的</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    </body>
+</html>

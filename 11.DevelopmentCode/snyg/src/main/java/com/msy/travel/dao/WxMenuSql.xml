@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.WxMenuDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertWxMenu" parameterType="wxMenu">
+		INSERT INTO 
+			t_wx_menu  
+		(
+			F_MENU_ID ,
+			F_WXSERVICEID ,
+			F_FEEDBACKID ,
+			F_MENU_NAME ,
+			F_MENU_LEVEL ,
+			F_PMENU_ID ,
+			F_MENU_URL ,
+			F_MENU_ORDER ,
+			F_MENU_DESC ,
+			F_XML 
+		) VALUES (
+			#{menuId} ,
+			#{wxServiceId} ,
+			#{feedBackId} ,
+			#{menuName} ,
+			#{menuLevel} ,
+			#{pmenuId} ,
+			#{menuUrl} ,
+			#{menuOrder} ,
+			#{menuDesc} ,
+			#{fxml} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeWxMenu" parameterType="wxMenu">
+		REPLACE INTO 
+			t_wx_menu 
+		(
+			F_MENU_ID ,
+			F_WXSERVICEID ,
+			F_FEEDBACKID ,
+			F_MENU_NAME ,
+			F_MENU_LEVEL ,
+			F_PMENU_ID ,
+			F_MENU_URL ,
+			F_MENU_ORDER ,
+			F_MENU_DESC ,
+			F_XML 
+		) VALUES (
+			#{menuId} ,
+			#{wxServiceId} ,
+			#{feedBackId} ,
+			#{menuName} ,
+			#{menuLevel} ,
+			#{pmenuId} ,
+			#{menuUrl} ,
+			#{menuOrder} ,
+			#{menuDesc} ,
+			#{fxml} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateWxMenu" parameterType="wxMenu">
+		UPDATE
+			t_wx_menu 
+		SET
+			F_WXSERVICEID = #{wxServiceId} ,
+			F_FEEDBACKID = #{feedBackId} ,
+			F_MENU_NAME = #{menuName} ,
+			F_MENU_LEVEL = #{menuLevel} ,
+			F_PMENU_ID = #{pmenuId} ,
+			F_MENU_URL = #{menuUrl} ,
+			F_MENU_ORDER = #{menuOrder} ,
+			F_MENU_DESC = #{menuDesc} ,
+			F_XML = #{fxml} 
+		<where>
+			F_MENU_ID = #{menuId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteWxMenu" parameterType="wxMenu">
+		DELETE FROM
+			t_wx_menu 
+		<where>
+			F_MENU_ID = #{menuId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchWxMenu" parameterType="wxMenu">
+		DELETE FROM 
+			t_wx_menu 
+		<where>
+			F_MENU_ID in
+			<foreach collection="wxMenuIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryWxMenu" parameterType="String" resultType="wxMenu">
+		SELECT
+			t.F_MENU_ID as menuId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_FEEDBACKID as feedBackId ,
+			t.F_MENU_NAME as menuName ,
+			t.F_MENU_LEVEL as menuLevel ,
+			t.F_PMENU_ID as pmenuId ,
+			t.F_MENU_URL as menuUrl ,
+			t.F_MENU_ORDER as menuOrder ,
+			t.F_MENU_DESC as menuDesc ,
+			t.F_XML as fxml 
+		FROM
+			t_wx_menu t
+		<where>
+			t.F_MENU_ID = #{menuId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryWxMenuList" parameterType="wxMenu" resultType="wxMenu">
+		SELECT
+			t.F_MENU_ID as menuId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_FEEDBACKID as feedBackId ,
+			t.F_MENU_NAME as menuName ,
+			t.F_MENU_LEVEL as menuLevel ,
+			t.F_PMENU_ID as pmenuId ,
+			t.F_MENU_URL as menuUrl ,
+			t.F_MENU_ORDER as menuOrder ,
+			t.F_MENU_DESC as menuDesc ,
+			t.F_XML as fxml 
+		FROM
+		t_wx_menu t
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	t.F_MENU_ID = #{menuId}
+		     </if>
+		     
+		     <if test="feedBackId!=null and feedBackId!=''">
+		    	AND t.F_FEEDBACKID = #{feedBackId}
+		     </if>
+			<if test="pmenuId!=null and pmenuId!=''">
+		    	AND t.F_PMENU_ID = #{pmenuId}
+		     </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 根据服务号查找列表 -->
+	<select id="queryWxMenuListByServiceId" parameterType="WxMenu" resultType="WxMenu">
+	   	SELECT
+	        m.F_MENU_ID as menuId ,
+	        m.F_WXSERVICEID as wxServiceId ,
+	        m.F_FEEDBACKID as feedbackId ,
+	        m.F_MENU_NAME as menuName ,
+	        m.F_MENU_LEVEL as menuLevel ,
+	        m.F_PMENU_ID as pmenuId ,
+	        m.F_MENU_URL as menuUrl ,
+	        m.F_MENU_ORDER as menuOrder ,
+	        m.F_MENU_DESC as menuDesc ,
+	        f.F_MSGTYPE as msgType,
+	        f.F_LINKURL as linkUrl
+		FROM 
+		    T_WX_MENU m LEFT JOIN  T_WX_FEEDBACK f ON m.F_FEEDBACKID = f.F_FEEDBACKID
+		<where>
+			<if test="wxServiceId!=null and wxServiceId!=''">
+		    	and m.F_WXSERVICEID = #{wxServiceId}	
+		    </if>
+			<if test="menuLevel!=null and menuLevel!=''">
+		    	and F_MENU_LEVEL = #{menuLevel}	
+		    </if>
+		</where>
+		order by m.f_menu_level,m.f_menu_order,m.f_menu_id desc
+	</select>
+	
+	<!-- 检查重名 -->
+	<select id="checkWxMenuName" parameterType="WxMenu" resultType="int">
+		SELECT
+			COUNT(t.F_MENU_ID)
+		FROM
+		t_wx_menu t
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	t.F_MENU_ID != #{menuId}
+		    </if>
+		    <if test="wxServiceId!=null and wxServiceId!=''">
+		    	and t.F_WXSERVICEID= #{wxServiceId}
+		    </if>
+		    <if test="menuName!=null and menuName!=''">
+		    	and t.F_MENU_NAME = #{menuName}
+		    </if>
+		</where>
+	</select>
+</mapper>	

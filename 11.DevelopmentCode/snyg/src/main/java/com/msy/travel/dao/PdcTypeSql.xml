@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.PdcTypeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertPdcType" parameterType="pdcType">
+		INSERT INTO 
+			t_sm_pdctype  
+		(
+			F_PDCTYPEID ,
+			F_TYPENAME ,
+			F_PPDCTYPEID ,
+			F_DELFLAG ,
+			F_PICURL ,
+			F_LEVEL ,
+			F_SPID
+		) VALUES (
+			#{pdcTypeId} ,
+			#{typeName} ,
+			#{ppdcTypeId} ,
+			#{delFlag} ,
+			#{picUrl} ,
+			#{level} ,
+			#{spId}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergePdcType" parameterType="pdcType">
+		REPLACE INTO 
+			t_sm_pdctype 
+		(
+			F_PDCTYPEID ,
+			F_TYPENAME ,
+			F_PPDCTYPEID ,
+			F_DELFLAG ,
+			F_PICURL ,
+			F_LEVEL ,
+			F_SPID
+		) VALUES (
+			#{pdcTypeId} ,
+			#{typeName} ,
+			#{ppdcTypeId} ,
+			#{delFlag} ,
+			#{picUrl} ,
+			#{level} ,
+			#{spId}
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updatePdcType" parameterType="pdcType">
+		UPDATE
+			t_sm_pdctype 
+		SET
+			F_TYPENAME = #{typeName} ,
+			F_PPDCTYPEID = #{ppdcTypeId} ,
+			F_PICURL = #{picUrl} ,
+			F_LEVEL = #{level} 
+		<where>
+			<if test="pdcTypeId !=null and pdcTypeId !=''">
+		    	F_PDCTYPEID = #{pdcTypeId}
+		    </if>
+		    <if test="ppdcTypeId !=null and ppdcTypeId !=''">
+		    	and F_PPDCTYPEID = #{ppdcTypeId}
+		    </if>
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletePdcType" parameterType="pdcType">
+		UPDATE
+			t_sm_pdctype 
+		SET
+			F_DELFLAG = #{delFlag} 
+		<where>
+			<if test="pdcTypeId !=null and pdcTypeId !=''">
+		    	F_PDCTYPEID = #{pdcTypeId}
+		    </if>
+		    <if test="ppdcTypeId !=null and ppdcTypeId !=''">
+		    	and F_PPDCTYPEID = #{ppdcTypeId}
+		    </if>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchPdcType" parameterType="pdcType">
+		DELETE FROM 
+			t_sm_pdctype 
+		<where>
+			F_PDCTYPEID in
+			<foreach collection="pdcTypeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryPdcType" parameterType="String" resultType="pdcType">
+		SELECT
+			t.F_PDCTYPEID as pdcTypeId ,
+			t.F_TYPENAME as typeName ,
+			t.F_PPDCTYPEID as ppdcTypeId ,
+			t.F_DELFLAG as delFlag ,
+			t.F_PICURL as picUrl ,
+			t.F_LEVEL as level ,
+			t.F_SPID as spId
+		FROM
+			t_sm_pdctype t
+		<where>
+			t.F_PDCTYPEID = #{pdcTypeId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryPdcTypeList" parameterType="pdcType" resultType="pdcType">
+		SELECT
+			t.F_PDCTYPEID as pdcTypeId ,
+			t.F_TYPENAME as typeName ,
+			t.F_PPDCTYPEID as ppdcTypeId ,
+			t.F_DELFLAG as delFlag ,
+			t.F_PICURL as picUrl ,
+			t.F_LEVEL as level ,
+			t.F_SPID as spId  ,
+			p.F_TYPENAME as ppdcTypeName
+		FROM
+		t_sm_pdctype t
+		left join t_sm_pdctype p on t.F_PPDCTYPEID = p.F_PDCTYPEID
+		<where>
+			<if test="pdcTypeId!=null and pdcTypeId!=''">
+		    	t.F_PDCTYPEID = #{pdcTypeId}
+		    </if>
+			<if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="level !=null and level !=''">
+		    	and t.F_LEVEL = #{level}
+		    </if>
+		    <if test="ppdcTypeId !=null and ppdcTypeId !=''">
+		    	and t.F_PPDCTYPEID = #{ppdcTypeId}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="typeName !=null and typeName !=''">
+		    	and t.F_TYPENAME like concat('%',#{typeName},'%') 
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 按条件查询所有 -->
+	<select id="queryPdcTypeNameExis" parameterType="pdcType" resultType="int">
+		SELECT
+			count(1)
+		FROM
+		t_sm_pdctype t
+		<where>
+			<if test="typeName !=null and typeName !=''">
+		    	t.F_TYPENAME = #{typeName}
+		    </if>
+			<if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="pdcTypeId !=null and pdcTypeId !=''">
+		    	and t.F_PDCTYPEID &lt;&gt; #{pdcTypeId}
+		    </if>
+		    <if test="level !=null and level !=''">
+		    	<if test='level =="1"'>
+			    	and (t.F_PPDCTYPEID is null or t.F_PPDCTYPEID ='')
+			    </if>
+			    <if test='level !="1"'>
+			    	and t.F_PPDCTYPEID = #{ppdcTypeId}
+			    </if>
+		    </if>
+		</where>
+	</select>
+</mapper>	

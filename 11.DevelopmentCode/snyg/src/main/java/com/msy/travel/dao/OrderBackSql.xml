@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderBackDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrderBack" parameterType="orderBack">
+		INSERT INTO 
+			t_sm_orderback  
+		(
+			F_BACKID ,
+			F_BACKCODE ,
+			F_STATUS ,
+			F_ORDERID ,
+			F_BACKDATA ,
+			F_BACKREASON_TYPE ,
+			F_BACKREASON ,
+			F_APPLYTIME ,
+			F_APPLY_UID ,
+			F_APPLY_UNAME ,
+			F_OPTIME ,
+			F_OP_UID ,
+			F_OP_UNAME ,
+			F_ISBACK_GOODS ,
+			F_BACK_GOODS_STATUS ,
+			F_BACK_GOODS_EPMECOMPANY ,
+			F_BACK_GOODS_EPMEORDCODE ,
+			F_BACK_GOODS_NAME ,
+			F_BACK_GOODS_PHONE ,
+			F_BACK_GOODS_ADDR ,
+			F_BACK_GOODS_RECEIVE_TIME ,
+			F_ISBACK_MONEY ,
+			F_BACK_MONEY_STATUS ,
+			F_BACK_MONEY_RECEIVE_TIME ,
+			F_APPLYBACKMONEY ,
+			F_BACKMONEY ,
+			F_REFUSE_REASON ,
+			F_SPID
+		) VALUES (
+			#{backId} ,
+			#{backCode} ,
+			#{status} ,
+			#{orderId} ,
+			#{backData} ,
+			#{backReasonType} ,
+			#{backReason} ,
+			#{applyTime} ,
+			#{applyUID} ,
+			#{applyUName} ,
+			#{opTime} ,
+			#{opUID} ,
+			#{opUName} ,
+			#{isBackGoods} ,
+			#{backGoodsStatus} ,
+			#{backGoodsEpmeCompany} ,
+			#{backGoodsEpmeOrdCode} ,
+			#{backGoodsName} ,
+			#{backGoodsPhone} ,
+			#{backGoodsAddr} ,
+			#{backGoodsReceiveTime} ,
+			#{isBackMoney} ,
+			#{backMoneyStatus} ,
+			#{backMoneyReceiveTime} ,
+			#{applyBackMoney} ,
+			#{backMoney} ,
+			#{refuseReason} ,
+			#{spId}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrderBack" parameterType="orderBack">
+		REPLACE INTO 
+			t_sm_orderback 
+		(
+			F_BACKID ,
+			F_BACKCODE ,
+			F_STATUS ,
+			F_ORDERID ,
+			F_BACKDATA ,
+			F_BACKREASON_TYPE ,
+			F_BACKREASON ,
+			F_APPLYTIME ,
+			F_APPLY_UID ,
+			F_APPLY_UNAME ,
+			F_OPTIME ,
+			F_OP_UID ,
+			F_OP_UNAME ,
+			F_ISBACK_GOODS ,
+			F_BACK_GOODS_STATUS ,
+			F_BACK_GOODS_EPMECOMPANY ,
+			F_BACK_GOODS_EPMEORDCODE ,
+			F_BACK_GOODS_NAME ,
+			F_BACK_GOODS_PHONE ,
+			F_BACK_GOODS_RECEIVE_TIME ,
+			F_ISBACK_MONEY ,
+			F_BACK_MONEY_STATUS ,
+			F_BACK_MONEY_RECEIVE_TIME ,
+			F_APPLYBACKMONEY ,
+			F_BACKMONEY ,
+			F_REFUSE_REASON 
+		) VALUES (
+			#{backId} ,
+			#{backCode} ,
+			#{status} ,
+			#{orderId} ,
+			#{backData} ,
+			#{backReasonType} ,
+			#{backReason} ,
+			#{applyTime} ,
+			#{applyUID} ,
+			#{applyUName} ,
+			#{opTime} ,
+			#{opUID} ,
+			#{opUName} ,
+			#{isBackGoods} ,
+			#{backGoodsStatus} ,
+			#{backGoodsEpmeCompany} ,
+			#{backGoodsEpmeOrdCode} ,
+			#{backGoodsName} ,
+			#{backGoodsPhone} ,
+			#{backGoodsReceiveTime} ,
+			#{isBackMoney} ,
+			#{backMoneyStatus} ,
+			#{backMoneyReceiveTime} ,
+			#{applyBackMoney} ,
+			#{backMoney} ,
+			#{refuseReason} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrderBack" parameterType="orderBack">
+		UPDATE
+			t_sm_orderback
+		<set>
+			<if test="backCode !=null">F_BACKCODE  = #{backCode} ,</if>
+			<if test="status !=null">F_STATUS  = #{status} ,</if>
+			<if test="orderId !=null">F_ORDERID  = #{orderId} ,</if>
+			<if test="backData !=null">F_BACKDATA  = #{backData} ,</if>
+			<if test="backReasonType !=null">F_BACKREASON_TYPE  = #{backReasonType} ,</if>
+			<if test="backReason !=null">F_BACKREASON  = #{backReason} ,</if>
+			<if test="applyTime !=null">F_APPLYTIME  = #{applyTime} ,</if>
+			<if test="applyUID !=null">F_APPLY_UID  = #{applyUID} ,</if>
+			<if test="applyUName !=null">F_APPLY_UNAME  = #{applyUName} ,</if>
+			<if test="opTime !=null">F_OPTIME  = #{opTime} ,</if>
+			<if test="opUID !=null">F_OP_UID  = #{opUID} ,</if>
+			<if test="opUName !=null">F_OP_UNAME  = #{opUName} ,</if>
+			<if test="isBackGoods !=null">F_ISBACK_GOODS  = #{isBackGoods} ,</if>
+			<if test="backGoodsStatus !=null">F_BACK_GOODS_STATUS  = #{backGoodsStatus} ,</if>
+			<if test="backGoodsEpmeCompany !=null">F_BACK_GOODS_EPMECOMPANY  = #{backGoodsEpmeCompany} ,</if>
+			<if test="backGoodsEpmeOrdCode !=null">F_BACK_GOODS_EPMEORDCODE  = #{backGoodsEpmeOrdCode} ,</if>
+			<if test="backGoodsName !=null">F_BACK_GOODS_NAME  = #{backGoodsName} ,</if>
+			<if test="backGoodsPhone !=null">F_BACK_GOODS_PHONE  = #{backGoodsPhone} ,</if>
+			<if test="backGoodsAddr !=null">F_BACK_GOODS_ADDR  = #{backGoodsAddr} ,</if>
+			<if test="backGoodsReceiveTime !=null">F_BACK_GOODS_RECEIVE_TIME  = #{backGoodsReceiveTime} ,</if>
+			<if test="isBackMoney !=null">F_ISBACK_MONEY  = #{isBackMoney} ,</if>
+			<if test="backMoneyStatus !=null">F_BACK_MONEY_STATUS  = #{backMoneyStatus} ,</if>
+			<if test="backMoneyReceiveTime !=null">F_BACK_MONEY_RECEIVE_TIME  = #{backMoneyReceiveTime} ,</if>
+			<if test="applyBackMoney !=null">F_APPLYBACKMONEY  = #{applyBackMoney} ,</if>
+			<if test="backMoney !=null">F_BACKMONEY  = #{backMoney} ,</if>
+			<if test="refuseReason !=null">F_REFUSE_REASON  = #{refuseReason} ,</if>
+			<if test="spId !=null">F_SPID  = #{spId} ,</if>
+		</set>
+		<where>
+			F_BACKID = #{backId}
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrderBack" parameterType="orderBack">
+		DELETE FROM
+			t_sm_orderback 
+		<where>
+			F_BACKID = #{backId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchOrderBack" parameterType="orderBack">
+		DELETE FROM 
+			t_sm_orderback 
+		<where>
+			F_BACKID in
+			<foreach collection="orderBackIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrderBack" parameterType="String" resultType="orderBack">
+		SELECT
+			t.F_BACKID as backId ,
+			t.F_BACKCODE as backCode ,
+			t.F_STATUS as status ,
+			t.F_ORDERID as orderId ,
+			t.F_BACKDATA as backData ,
+			t.F_BACKREASON_TYPE as backReasonType ,
+			t.F_BACKREASON as backReason ,
+			t.F_APPLYTIME as applyTime ,
+			t.F_APPLY_UID as applyUID ,
+			t.F_APPLY_UNAME as applyUName ,
+			t.F_OPTIME as opTime ,
+			t.F_OP_UID as opUID ,
+			t.F_OP_UNAME as opUName ,
+			t.F_ISBACK_GOODS as isBackGoods ,
+			t.F_BACK_GOODS_STATUS as backGoodsStatus ,
+			t.F_BACK_GOODS_EPMECOMPANY as backGoodsEpmeCompany ,
+			t.F_BACK_GOODS_EPMEORDCODE as backGoodsEpmeOrdCode ,
+			t.F_BACK_GOODS_NAME as backGoodsName ,
+			t.F_BACK_GOODS_PHONE as backGoodsPhone ,
+			t.F_BACK_GOODS_ADDR as backGoodsAddr ,
+			t.F_BACK_GOODS_RECEIVE_TIME as backGoodsReceiveTime ,
+			t.F_ISBACK_MONEY as isBackMoney ,
+			t.F_BACK_MONEY_STATUS as backMoneyStatus ,
+			t.F_BACK_MONEY_RECEIVE_TIME as backMoneyReceiveTime ,
+			t.F_APPLYBACKMONEY as applyBackMoney ,
+			t.F_BACKMONEY as backMoney ,
+			t.F_REFUSE_REASON as refuseReason ,
+			t.F_SPID as spId ,
+			pm.F_MAPVALUE as backReasonTypeValue,
+			OS.F_CUSTPHONE  as custName ,
+		OS.F_CUSTNAME  as custPhone
+		FROM
+			t_sm_orderback t
+		LEFT JOIN (SELECT F_MAPKEY,F_MAPVALUE FROM t_pub_map WHERE F_MAPTYPE = 'BACKREASON') pm on pm.F_MAPKEY = t.F_BACKREASON_TYPE
+		LEFT JOIN t_sm_ordercustomer OS ON t.F_ORDERID = OS.F_ORDERID
+		<where>
+			<if test="backId!=null and backId!=''">
+				AND t.F_BACKID = #{backId}
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND t.F_ORDERID = #{orderId}
+			</if>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderBackList" parameterType="orderBack" resultType="orderBack">
+		SELECT
+			t.F_BACKID as backId ,
+			t.F_BACKCODE as backCode ,
+			t.F_STATUS as status ,
+			t.F_ORDERID as orderId ,
+			t.F_BACKDATA as backData ,
+			t.F_BACKREASON_TYPE as backReasonType ,
+			pm.F_MAPVALUE as backReasonTypeValue,
+			t.F_BACKREASON as backReason ,
+			t.F_APPLYTIME as applyTime ,
+			t.F_APPLY_UID as applyUID ,
+			t.F_APPLY_UNAME as applyUName ,
+			t.F_OPTIME as opTime ,
+			t.F_OP_UID as opUID ,
+			t.F_OP_UNAME as opUName ,
+			t.F_ISBACK_GOODS as isBackGoods ,
+			t.F_BACK_GOODS_STATUS as backGoodsStatus ,
+			t.F_BACK_GOODS_EPMECOMPANY as backGoodsEpmeCompany ,
+			t.F_BACK_GOODS_EPMEORDCODE as backGoodsEpmeOrdCode ,
+			t.F_BACK_GOODS_NAME as backGoodsName ,
+			t.F_BACK_GOODS_PHONE as backGoodsPhone ,
+		  t.F_BACK_GOODS_ADDR as backGoodsAddr ,
+			t.F_BACK_GOODS_RECEIVE_TIME as backGoodsReceiveTime ,
+			t.F_ISBACK_MONEY as isBackMoney ,
+			t.F_BACK_MONEY_STATUS as backMoneyStatus ,
+			t.F_BACK_MONEY_RECEIVE_TIME as backMoneyReceiveTime ,
+			t.F_APPLYBACKMONEY as applyBackMoney ,
+			t.F_BACKMONEY as backMoney ,
+			t.F_REFUSE_REASON as refuseReason ,
+			t.F_SPID as spId ,
+		  o.F_ORDERCODE as orderCode ,
+			o.F_CREATETIME as orderCreateTime ,
+			OS.F_CUSTPHONE  as custName ,
+			OS.F_CUSTNAME  as custPhone
+		FROM
+		t_sm_orderback t
+		LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+		LEFT JOIN (SELECT F_MAPKEY,F_MAPVALUE FROM t_pub_map WHERE F_MAPTYPE = 'BACKREASON') pm on pm.F_MAPKEY = t.F_BACKREASON_TYPE
+		LEFT JOIN t_sm_ordercustomer OS ON t.F_ORDERID = OS.F_ORDERID
+		<where>
+			<if test="orderId!=null and orderId!=''">
+				AND t.F_ORDERID = #{orderId}
+			</if>
+			<if test="backCode!=null and backCode!=''">
+				AND t.F_BACKCODE = #{backCode}
+			</if>
+			<if test="backCodeLike!=null and backCodeLike!=''">
+				AND t.F_BACKCODE like concat('%',#{backCodeLike},'%')
+			</if>
+			<if test="custNameLike!=null and custNameLike!=''">
+				AND OS.F_CUSTNAME like concat('%',#{custNameLike},'%')
+			</if>
+			<if test="custPhoneLike!=null and custPhoneLike!=''">
+				AND OS.F_CUSTPHONE like concat('%',#{custPhoneLike},'%')
+			</if>
+
+			<if test="status!=null and status!=''">
+				AND t.F_STATUS = #{status}
+			</if>
+			<if test="orderCode!=null and orderCode!=''">
+				AND o.F_ORDERCODE  = #{orderCode}
+			</if>
+			<if test="orderCodeLike!=null and orderCodeLike!=''">
+				AND o.F_ORDERCODE like concat('%',#{orderCodeLike},'%')
+			</if>
+			<if test="applyTimeS!=null and applyTimeS!=''">
+				and t.F_APPLYTIME &gt;= #{applyTimeS}
+			</if>
+			<if test="applyTimeE!=null and applyTimeE!=''">
+				and t.F_APPLYTIME &lt;= #{applyTimeE}
+			</if>
+
+			<if test="backGoodsReceiveTimeS!=null and backGoodsReceiveTimeS!=''">
+				and t.F_BACK_GOODS_RECEIVE_TIME &gt;= #{backGoodsReceiveTimeS}
+			</if>
+			<if test="backGoodsReceiveTimeE!=null and backGoodsReceiveTimeE!=''">
+				and t.F_BACK_GOODS_RECEIVE_TIME &lt;= #{applyTimeE}
+			</if>
+			<if test="applyUNameLike!=null and applyUNameLike!=''">
+				and t.F_APPLY_UNAME like concat('%',#{applyUNameLike},'%')
+			</if>
+			<if test="opTimeS!=null and opTimeS!=''">
+				and t.F_OPTIME &gt;= #{opTimeS}
+			</if>
+			<if test="opTimeE!=null and opTimeE!=''">
+				and t.F_OPTIME &lt;= #{opTimeE}
+			</if>
+			<if test="opUNameLike!=null and opUNameLike!=''">
+				and t.F_OP_UNAME like concat('%',#{opUNameLike},'%')
+			</if>
+			<if test="isBackGoods!=null and isBackGoods!=''">
+				and t.F_ISBACK_GOODS  = #{isBackGoods}
+			</if>
+			<if test="backGoodsStatus!=null and backGoodsStatus!=''">
+				and t.F_BACK_GOODS_STATUS  = #{backGoodsStatus}
+			</if>
+			<if test="isBackMoney!=null and isBackMoney!=''">
+				and t.F_ISBACK_MONEY  = #{isBackMoney}
+			</if>
+			<if test="backMoneyStatus!=null and backMoneyStatus!=''">
+				and t.F_BACK_MONEY_STATUS  = #{backMoneyStatus}
+			</if>
+			<if test="backMoneyReceiveTimeS!=null and backMoneyReceiveTimeS!=''">
+				and t.F_BACK_MONEY_RECEIVE_TIME &gt;= #{backMoneyReceiveTimeS}
+			</if>
+			<if test="backMoneyReceiveTimeE!=null and backMoneyReceiveTimeE!=''">
+				and t.F_BACK_MONEY_RECEIVE_TIME &lt;= #{backMoneyReceiveTimeE}
+			</if>
+			<if test="spId!=null and spId!=''">
+				and t.F_SPID  = #{spId}
+			</if>
+			<if test="applyBackMoneyS!=null and applyBackMoneyS!=''">
+				and t.F_APPLYBACKMONEY &gt;= #{applyBackMoneyS}
+			</if>
+			<if test="applyBackMoneyE!=null and applyBackMoneyE!=''">
+				and t.F_APPLYBACKMONEY &lt;= #{applyBackMoneyE}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderBackListStatic" parameterType="orderBack" resultType="orderBack">
+		SELECT
+		COUNT(t.F_BACKID) as orderBackCount,
+		IFNULL(SUM(t.F_APPLYBACKMONEY),0) as money,
+		ROUND(IFNULL(SUM(t.F_APPLYBACKMONEY),0)/COUNT(t.F_BACKID),2) as perMoney
+		FROM
+		t_sm_orderback t
+		LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+		LEFT JOIN (SELECT F_MAPKEY,F_MAPVALUE FROM t_pub_map WHERE F_MAPTYPE = 'BACKREASON') pm on pm.F_MAPKEY = t.F_BACKREASON_TYPE
+		LEFT JOIN t_sm_ordercustomer OS ON t.F_ORDERID = OS.F_ORDERID
+		<where>
+			<if test="orderId!=null and orderId!=''">
+				AND t.F_ORDERID = #{orderId}
+			</if>
+			<if test="backCode!=null and backCode!=''">
+				AND t.F_BACKCODE = #{backCode}
+			</if>
+			<if test="backCodeLike!=null and backCodeLike!=''">
+				AND t.F_BACKCODE like concat('%',#{backCodeLike},'%')
+			</if>
+			<if test="custNameLike!=null and custNameLike!=''">
+				AND OS.F_CUSTNAME like concat('%',#{custNameLike},'%')
+			</if>
+			<if test="custPhoneLike!=null and custPhoneLike!=''">
+				AND OS.F_CUSTPHONE like concat('%',#{custPhoneLike},'%')
+			</if>
+
+			<if test="status!=null and status!=''">
+				AND t.F_STATUS = #{status}
+			</if>
+			<if test="orderCode!=null and orderCode!=''">
+				AND o.F_ORDERCODE  = #{orderCode}
+			</if>
+			<if test="orderCodeLike!=null and orderCodeLike!=''">
+				AND o.F_ORDERCODE like concat('%',#{orderCodeLike},'%')
+			</if>
+			<if test="applyTimeS!=null and applyTimeS!=''">
+				and t.F_APPLYTIME &gt;= #{applyTimeS}
+			</if>
+			<if test="applyTimeE!=null and applyTimeE!=''">
+				and t.F_APPLYTIME &lt;= #{applyTimeE}
+			</if>
+
+			<if test="backGoodsReceiveTimeS!=null and backGoodsReceiveTimeS!=''">
+				and t.F_BACK_GOODS_RECEIVE_TIME &gt;= #{backGoodsReceiveTimeS}
+			</if>
+			<if test="backGoodsReceiveTimeE!=null and backGoodsReceiveTimeE!=''">
+				and t.F_BACK_GOODS_RECEIVE_TIME &lt;= #{applyTimeE}
+			</if>
+			<if test="applyUNameLike!=null and applyUNameLike!=''">
+				and t.F_APPLY_UNAME like concat('%',#{applyUNameLike},'%')
+			</if>
+			<if test="opTimeS!=null and opTimeS!=''">
+				and t.F_OPTIME &gt;= #{opTimeS}
+			</if>
+			<if test="opTimeE!=null and opTimeE!=''">
+				and t.F_OPTIME &lt;= #{opTimeE}
+			</if>
+			<if test="opUNameLike!=null and opUNameLike!=''">
+				and t.F_OP_UNAME like concat('%',#{opUNameLike},'%')
+			</if>
+			<if test="isBackGoods!=null and isBackGoods!=''">
+				and t.F_ISBACK_GOODS  = #{isBackGoods}
+			</if>
+			<if test="backGoodsStatus!=null and backGoodsStatus!=''">
+				and t.F_BACK_GOODS_STATUS  = #{backGoodsStatus}
+			</if>
+			<if test="isBackMoney!=null and isBackMoney!=''">
+				and t.F_ISBACK_MONEY  = #{isBackMoney}
+			</if>
+			<if test="backMoneyStatus!=null and backMoneyStatus!=''">
+				and t.F_BACK_MONEY_STATUS  = #{backMoneyStatus}
+			</if>
+			<if test="backMoneyReceiveTimeS!=null and backMoneyReceiveTimeS!=''">
+				and t.F_BACK_MONEY_RECEIVE_TIME &gt;= #{backMoneyReceiveTimeS}
+			</if>
+			<if test="backMoneyReceiveTimeE!=null and backMoneyReceiveTimeE!=''">
+				and t.F_BACK_MONEY_RECEIVE_TIME &lt;= #{backMoneyReceiveTimeE}
+			</if>
+			<if test="spId!=null and spId!=''">
+				and t.F_SPID  = #{spId}
+			</if>
+			<if test="applyBackMoneyS!=null and applyBackMoneyS!=''">
+				and t.F_APPLYBACKMONEY &gt;= #{applyBackMoneyS}
+			</if>
+			<if test="applyBackMoneyE!=null and applyBackMoneyE!=''">
+				and t.F_APPLYBACKMONEY &lt;= #{applyBackMoneyE}
+			</if>
+		</where>
+	</select>
+</mapper>	

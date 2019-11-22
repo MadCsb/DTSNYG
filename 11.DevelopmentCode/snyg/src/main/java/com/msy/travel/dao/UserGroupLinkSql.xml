@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.UserGroupLinkDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertUserGroupLink" parameterType="userGroupLink">
+		INSERT INTO 
+			t_pub_usergrouplink  
+		(
+			F_USER_ID ,
+			F_USERGROUP_ID 
+		) VALUES (
+			#{userId} ,
+			#{userGroupId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeUserGroupLink" parameterType="userGroupLink">
+		REPLACE INTO 
+			t_pub_usergrouplink 
+		(
+			F_USER_ID ,
+			F_USERGROUP_ID 
+		) VALUES (
+			#{userId} ,
+			#{userGroupId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateUserGroupLink" parameterType="userGroupLink">
+		UPDATE
+			t_pub_usergrouplink 
+		SET
+			F_USER_ID = #{userId} ,
+			F_USERGROUP_ID = #{userGroupId} 
+		<where>
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteUserGroupLink" parameterType="userGroupLink">
+		DELETE FROM
+			t_pub_usergrouplink 
+		<where>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchUserGroupLink" parameterType="userGroupLink">
+		DELETE FROM 
+			t_pub_usergrouplink 
+		<where>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryUserGroupLink" parameterType="String" resultType="userGroupLink">
+		SELECT
+			t.F_USER_ID as userId ,
+			t.F_USERGROUP_ID as userGroupId 
+		FROM
+			t_pub_usergrouplink t
+		<where>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryUserGroupLinkList" parameterType="userGroupLink" resultType="userGroupLink">
+		SELECT
+			t.F_USER_ID as userId ,
+			t.F_USERGROUP_ID as userGroupId 
+		FROM
+		t_pub_usergrouplink t
+		<where>
+		1=1
+			<if test="userId != null and userId != '' ">
+				and t.F_USER_ID = #{userId}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

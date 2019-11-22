@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/Password.js"></script>
+</head>      
+
+<body>
+<div class="cont-div">
+	<div class="waybill-title"><span>修改用户密码</span></div>
+	<form action="updateUserPWD" method="post" id="updateUserPWD">
+		<input type="hidden" name="userId" id="userId" value="${user.userId!''}">
+        	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+            	<tbody>
+                	<tr class="">
+                    	<td  width="10%" class="tdright"><b>用户姓名：</b></td>
+                       	<td width="52%">
+                        	${user.userName!""}
+                      	</td>
+                   </tr>
+                   <tr class="">
+                       <td class="tdright"><b><span class="f2"><b>*</b></span>原密码：</b></td>
+                       <td>
+                       		<input name="userPwd" type="password" onchange="judgePassword();" class="validate[required,minSize[6],maxSize[50]] data-searchtxt firstfocus" id="userPwd" style="width:218px;" >
+                       		<span id="isexist"></span>
+                       </td>
+                   </tr>
+                   <tr class="">
+                       <td class="tdright"><b><span class="f2"><b>*</b></span>新密码：</b></td>
+                       <td >
+                       		<input name="userNewPwd" type="password" class="validate[required,custom[pwdformat]] data-searchtxt" id="userNewPwd" style="width:218px;" >
+							<span id="isexist2"></span>
+							<div class="pwstrong">
+								<span>密码强度：</span><span id="infoText"></span>
+								<div style="width:150px;height:7px;background:gray">
+									<div  id="infoBar" style="height:100%"></div>
+								</div>
+							</div>
+							
+                       </td>
+                   </tr>
+                   <tr class="">
+                       <td class="tdright"><b><span class="f2"><b>*</b></span>确认新密码：</b></td>
+                       <td>
+                       		<input type="password" class="validate[required,minSize[8],maxSize[16]] data-searchtxt" id="userNewPwdAgain" style="width:218px;" >
+                       		<div id="checkInfoText"></div>
+                       </td>
+                   </tr>
+     </tbody>
+  </table>
+
+<div class="footerbtn">
+	<input name="button4" type="button" class="cbtn2" id="button4" onclick="javascript:location.href='${Session.BACK_URL!""}'" value="取消">
+	<input name="btnSave" type="button" onclick="beforeSub();" class="add-new" id="btnSave" value="确定">
+</div>
+	</form>
+	</div>
+</body>
+<script type="text/javascript">
+var bl = false;
+	$( function() {
+		$("#updateUserPWD").validationEngine();
+
+		$.fn.password({
+			passwordInput:'userNewPwd',
+			checkInput:'userNewPwdAgain',
+			strengthInfoText:'infoText',
+			strengthInfoBar:'infoBar',
+			checkInfoText:"checkInfoText"
+		});
+	});
+	
+	function judgePassword(){
+		var userpassword = $("#userPwd").val();
+		var userId = $("#userId").val();
+		if (userpassword == "" || userpassword.length < 6){
+				bl=false;
+				return;
+		}
+		$.ajax({
+		   type: "POST",
+		   url:"judgeUserPWD",           
+		   data: {
+			   "userPwd":userpassword,
+			   "userId":userId,
+			   "type":"0"
+		   },
+		   success: function(data){  
+		    if("0" == data){
+				document.getElementById("isexist").innerHTML="<font class='f2'>原密码输入错误，请重新输入</font>";
+				bl=false;
+		    }else if("1" == data){
+		    	document.getElementById("isexist").innerHTML=""; 
+		    	bl=true;
+		    }
+		   }
+		 });
+	}
+function beforeSub(){
+	if($("#updateUserPWD").validationEngine('validate'))
+  	{   
+	var userId = $("#userId").val();
+	var userNewPwd = $("#userNewPwd").val();
+	var userNewPwdAgain = $("#userNewPwdAgain").val();
+	if(userNewPwdAgain !="" && userNewPwd !="" ){
+		if ( userNewPwd.length < 6){
+			return;
+		}
+		if ( userNewPwdAgain.length < 6){
+			return;
+		}
+		if(userNewPwd != userNewPwdAgain){
+			return;
+		}else{
+			$.ajax({
+				   type: "POST",
+				   url:"judgeUserPWD",           
+				   data: {
+					   "userNewPwd":userNewPwd,
+					   "userId":userId,
+					   "type":"1"
+				   },
+				   success: function(data){  
+				    if("1" == data){
+				    	document.getElementById("isexist2").innerHTML=""; 
+				    	if(bl){
+				    		//$("#updateUserPWD").submit();
+				    		submitForm();
+				    	}
+				    }else if("2" == data){
+				    	document.getElementById("isexist2").innerHTML="<font class='f2'>新密码不能与原密码相同，请重新输入</font>";
+				    }
+				   }
+				 });
+		}
+	}else{
+		if(userNewPwd ==""){
+			art.dialog.alert("请输入新密码"); 
+		}else if(userNewPwdAgain ==""){
+			art.dialog.alert("请确认新密码"); 
+		}
+	}
+  }	
+}
+
+function submitForm(){
+	$.ajax({
+		   type: "POST",
+		   url:"updateUserPWD",           
+		   data: $("#updateUserPWD").serialize(),
+		   success: function(data){           
+		    if("1" == data){
+		    	document.getElementById("checkInfoText").innerHTML="<font color=\"red\">修改密码成功，请重新登录！</font>"; 
+		    	setTimeout(function(){
+		        	top.location.href = "logout";
+		        },800)
+		    }else{
+		    	document.getElementById("checkInfoText").innerHTML="<font color=\"red\">修改密码失败！</font>"; 
+		    }
+		   }
+		 });
+	}
+
+	</script>
+</html>

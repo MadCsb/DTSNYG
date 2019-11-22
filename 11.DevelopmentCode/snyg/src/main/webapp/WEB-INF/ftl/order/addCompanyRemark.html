@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form id="addPlatFormRemark">
+			<input type="hidden" id="orderId" value="${order.orderId!''}">
+			<!--编辑区-->
+			<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+
+				<tr class="cs">
+
+					<td width="20%" class="tdright"><b><font class="f2">*</font>订单备注：</b></td>
+					<td width="70%">
+						<textarea name="companyRemark" rows="4" cols="60" id="companyRemark" valign="${order.companyRemark!''} " class="data-text">${order.companyRemark!''}</textarea>
+					</td>
+				</tr>
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div class="footerbtn">   
+				<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="btnSave" value="保存">
+
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	function beforeSubmit(){
+	  var orderId = $("#orderId").val();
+		$("#btnSave").attr("disabled", "disabled");
+		var remark = $("#companyRemark").val();
+
+		if(remark==""){
+			$("#btnSave").attr("disabled", false);
+      parent.layer.alert("订单备注不能为空。");
+			return;
+		}else if(remark.replace(/[^\x00-\xff]/g,"**").length>2000){
+			$("#btnSave").attr("disabled", false);
+      parent.layer.alert("订单备注不能超过2000个字符，1个汉字为2个字符。");
+			return;
+		}
+		
+		$.post("order.do?method=addCompanyRemark",{
+			orderId:orderId,
+      companyRemark:remark
+		},function(data){
+			if(data=="1"){
+
+      }
+       parent.layer.alert('操作成功！', function() {
+         closeDialog();
+       });
+		})
+	}
+	function closeDialog()
+	{
+    parent.layer.closeAll();
+	}
+</script>
+</html>

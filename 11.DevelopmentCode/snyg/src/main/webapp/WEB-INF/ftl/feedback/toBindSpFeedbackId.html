@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "./queryHead.html">
+<link href="${rc.contextPath}/css/style.css" rel="stylesheet" />
+<link href="${rc.contextPath}/css/css-main.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="cont-div">
+		<form action="feedback.do?method=updateServiceCode" method="post" id="updateServiceCode">
+			<input type="hidden" name="serviceId" id="serviceId" value="${serviceCode.serviceId}"/>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist-new">
+				<tr>
+					<td width="20%" height="80px">
+						用户关注时回复消息：
+					</td>
+					<td width="20%">
+						<#if serviceCode.inMsgId ?? && serviceCode.inMsgId != "">
+						<a href="javascript:void(0);" id="inMsgClock" class="onbtn" onClick="resetButton(1,'offbtn')"></a>
+						<#else>
+						<a href="javascript:void(0);" id="inMsgClock" class="offbtn" onClick="resetButton(1,'onbtn')"></a>
+						</#if>
+					</td>
+					
+					<td width="30%">
+						<select class="data-inputtxt-select" id="inMsgTypeSelect" onChange="resetList(this,'inMsgId')">
+							<option value="">请选择</option>
+							<option value="0" <#if (serviceCode.inMsgType!"") == '0'>selected</#if>>文本</option>
+							<option value="2" <#if (serviceCode.inMsgType!"") == '2'>selected</#if>>图文</option>
+							<option value="6" <#if (serviceCode.inMsgType!"") == '6'>selected</#if>>多图文</option>
+							<option value="7" <#if (serviceCode.inMsgType!"") == '7'>selected</#if>>链接</option>
+							<option value="8" <#if (serviceCode.inMsgType!"") == '8'>selected</#if>>客服</option>
+						</select>
+					</td>
+					
+					<td width="30%">
+						<select class="data-inputtxt-select" id="inMsgId" name="inMsgId">
+							<option value="">请选择</option>
+							<#if inMsgFeedbackList??>
+							<#list inMsgFeedbackList as inMsgFeedback>
+							<option value="${inMsgFeedback.feedBackId}" <#if (serviceCode.inMsgId!"") == (inMsgFeedback.feedBackId!"")>selected</#if>>${inMsgFeedback.msgName!''}</option>
+							</#list>
+							</#if>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td height="80">
+						无法识别时回复消息：
+					</td>
+					<td>
+						<#if serviceCode.unreadMsgId ?? && serviceCode.unreadMsgId != "">
+						<a href="javascript:void(0);" id="unReadMsgClock" class="onbtn" onClick="resetButton(2,'offbtn')"></a>
+						<#else>
+						<a href="javascript:void(0);" id="unReadMsgClock" class="offbtn" onClick="resetButton(2,'onbtn')"></a>
+						</#if>
+					</td>
+					<td>
+						<select class="data-inputtxt-select" id="unReadMsgTypeSelect" onChange="resetList(this,'unreadMsgId')">
+							<option value="">请选择</option>
+							<option value="0" <#if (serviceCode.unReadMsgType!"") == '0'>selected</#if>>文本</option>
+							<option value="2" <#if (serviceCode.unReadMsgType!"") == '2'>selected</#if>>图文</option>
+							<option value="6" <#if (serviceCode.unReadMsgType!"") == '6'>selected</#if>>多图文</option>
+							<option value="7" <#if (serviceCode.unReadMsgType!"") == '7'>selected</#if>>链接</option>
+							<option value="8" <#if (serviceCode.unReadMsgType!"") == '8'>selected</#if>>客服</option>
+						</select>
+					</td>
+					<td>
+						<select class="data-inputtxt-select" id="unreadMsgId" name="unreadMsgId">
+							<option value="">请选择</option>
+							<#if unReadMsgFeedbackList??>
+							<#list unReadMsgFeedbackList as unReadMsgFeedback>
+							<option value="${unReadMsgFeedback.feedBackId}" <#if (serviceCode.unreadMsgId!"") == (unReadMsgFeedback.feedBackId!"")>selected</#if>>${unReadMsgFeedback.msgName}</option>
+							</#list>
+							</#if>
+						</select>
+					</td>
+				</tr>
+			</table>
+			
+			<div class="footerbtn">
+				<input type="button" class="cbtn2" onClick="javascript:location.href='${Session.BACK_URL!''}'" value="取消">			
+		
+				<input type="button" class="cbtn1" onClick="beforeSubmit()" value="确定">
+		
+				
+
+			</div>
+		</form>
+	</div>
+</body>
+
+<script type="text/javascript">
+
+	$(function(){
+		if ($("#inMsgClock").attr("class") == "offbtn") {
+			
+			// 清空下拉框并设置为不可用
+			$("#inMsgTypeSelect").val("");
+			$("#inMsgTypeSelect").attr("disabled", "disabled");
+			
+			$("#inMsgId").html("<option value=''>请选择</option>");
+			$("#inMsgId").attr("disabled", "disabled");
+		}
+		
+		if ($("#unReadMsgClock").attr("class") == "offbtn") {
+			
+			// 清空下拉框并设置为不可用
+			$("#unReadMsgTypeSelect").val("");
+			$("#unReadMsgTypeSelect").attr("disabled", "disabled");
+			
+			$("#unreadMsgId").html("<option value=''>请选择</option>");
+			$("#unreadMsgId").attr("disabled", "disabled");
+		}
+	});
+		
+	// 开关
+	function resetButton(index, csss) {
+		
+		// 用户关注时回复消息
+		if(index == 1) {
+			$("#inMsgClock").attr("class", csss);
+			
+			// 打开
+			if(csss == 'onbtn') {
+				$("#inMsgClock").attr("onclick", "resetButton(1,'offbtn')");
+				
+				// 下拉框设置为可用
+				$("#inMsgTypeSelect").attr("disabled", false);
+				$("#inMsgId").attr("disabled", false);
+				
+			} else { // 关闭
+				$("#inMsgClock").attr("onclick", "resetButton(1,'onbtn')");
+
+				// 清空下拉框并设置为不可用
+				$("#inMsgTypeSelect").val("");
+				$("#inMsgTypeSelect").attr("disabled", "disabled");
+				
+				$("#inMsgId").html("<option value=''>请选择</option>");
+				$("#inMsgId").attr("disabled", "disabled");
+			}
+		} else { // 无法识别时回复消息
+			$("#unReadMsgClock").attr("class", csss);
+			if(csss == 'onbtn') { // 打开
+				$("#unReadMsgClock").attr("onclick","resetButton(2,'offbtn')");
+
+				// 下拉框设置为可用
+				$("#unReadMsgTypeSelect").attr("disabled", false);
+				$("#unreadMsgId").attr("disabled", false);
+			} else { // 关闭
+				$("#unReadMsgClock").attr("onclick","resetButton(2,'onbtn')");
+				
+				// 清空下拉框并设置为不可用
+				$("#unReadMsgTypeSelect").val("");
+				$("#unReadMsgTypeSelect").attr("disabled", "disabled");
+				
+				$("#unreadMsgId").html("<option value=''>请选择</option>");
+				$("#unreadMsgId").attr("disabled", "disabled");
+			}
+		}
+	}
+	
+	// 微信消息类型下拉框改变
+	function resetList(obj, listId) {
+		$("#" + listId).html("<option value=''>请选择</option>");
+		var msgType = $(obj).val();
+		
+		// 未选择
+		if (msgType == "") {
+			return;
+		}
+		
+		$.ajax({
+			type: "POST",
+			url:"feedback.do?method=getFeedbackListByType",           
+			dataType:'json',
+			data: {
+				'msgType' : msgType,
+				'wxServiceId': $("#serviceId").val()
+			},
+			success: function(data){           
+				var feedbackList = data.feedbackList;
+				if(feedbackList != null && feedbackList.length > 0){
+					var length = feedbackList.length;
+					for(var i = 0; i < length; i++){
+						$("#" + listId).append('<option value="'+feedbackList[i].feedBackId+'">'+feedbackList[i].msgName+'</option>');
+					}
+				}
+			}
+		});
+	}
+	
+	// 保存前
+	function beforeSubmit() {
+	
+		// 用户关注时回复消息打开时没有选择
+		if ($("#inMsgClock").attr("class") == "onbtn" && $("#inMsgId").val() == "") {
+			parent.layer.alert('请选择用户关注时回复消息！');
+			return;
+		}
+		
+		// 无法识别时回复消息打开时没有选择
+		if ($("#unReadMsgClock").attr("class") == "onbtn" && $("#unreadMsgId").val() == "") {
+			parent.layer.alert('请选择无法识别时回复消息！');
+			return;
+		}
+		
+		// 提交
+		$("#updateServiceCode").submit();
+	}
+	
+</script>
+</html>

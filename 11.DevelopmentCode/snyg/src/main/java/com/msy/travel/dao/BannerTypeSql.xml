@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.BannerTypeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertBannerType" parameterType="bannerType">
+		INSERT INTO 
+			t_sm_bannertype  
+		(
+			F_BANNERTYPEID ,
+			F_TYPENAME ,
+			F_SPID ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_BANNERTYPETAG ,
+			F_PICURL ,
+			F_SEQNUM ,
+			F_DELFLAG 
+		) VALUES (
+			#{bannerTypeId} ,
+			#{typeName} ,
+			#{spId} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{bannerTypeTag} ,
+			#{picUrl} ,
+			#{seqNum} ,
+			#{delFlag} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeBannerType" parameterType="bannerType">
+		REPLACE INTO 
+			t_sm_bannertype 
+		(
+			F_BANNERTYPEID ,
+			F_TYPENAME ,
+			F_SPID ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_BANNERTYPETAG ,
+			F_PICURL ,
+			F_SEQNUM ,
+			F_DELFLAG 
+		) VALUES (
+			#{bannerTypeId} ,
+			#{typeName} ,
+			#{spId} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{bannerTypeTag} ,
+			#{picUrl} ,
+			#{seqNum} ,
+			#{delFlag} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateBannerType" parameterType="bannerType">
+		UPDATE
+			t_sm_bannertype 
+		SET
+			F_TYPENAME = #{typeName} ,
+			F_SPID = #{spId} ,
+			F_CREATETIME = #{createTime} ,
+			F_CREATORUID = #{creatorUid} ,
+			F_CREATOR = #{creator} ,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} ,
+			F_BANNERTYPETAG = #{bannerTypeTag} ,
+			F_PICURL = #{picUrl} ,
+			F_SEQNUM = #{seqNum} ,
+			F_DELFLAG = #{delFlag} 
+		<where>
+			F_BANNERTYPEID = #{bannerTypeId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteBannerType" parameterType="bannerType">
+		DELETE FROM
+			t_sm_bannertype 
+		<where>
+			F_BANNERTYPEID = #{bannerTypeId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchBannerType" parameterType="bannerType">
+		DELETE FROM 
+			t_sm_bannertype 
+		<where>
+			F_BANNERTYPEID in
+			<foreach collection="bannerTypeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryBannerType" parameterType="String" resultType="bannerType">
+		SELECT
+			t.F_BANNERTYPEID as bannerTypeId ,
+			t.F_TYPENAME as typeName ,
+			t.F_SPID as spId ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_BANNERTYPETAG as bannerTypeTag ,
+			t.F_PICURL as picUrl ,
+			t.F_SEQNUM as seqNum ,
+			t.F_DELFLAG as delFlag 
+		FROM
+			t_sm_bannertype t
+		<where>
+			t.F_BANNERTYPEID = #{bannerTypeId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryBannerTypeList" parameterType="bannerType" resultType="bannerType">
+		SELECT
+			t.F_BANNERTYPEID as bannerTypeId ,
+			t.F_TYPENAME as typeName ,
+			t.F_SPID as spId ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_BANNERTYPETAG as bannerTypeTag ,
+			t.F_PICURL as picUrl ,
+			t.F_SEQNUM as seqNum ,
+			t.F_DELFLAG as delFlag 
+		FROM
+		t_sm_bannertype t
+		<where>
+			<if test="bannerTypeId!=null and bannerTypeId!=''">
+		    	t.F_BANNERTYPEID = #{bannerTypeId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

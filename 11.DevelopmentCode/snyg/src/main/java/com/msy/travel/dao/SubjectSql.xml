@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.SubjectDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertSubject" parameterType="subject">
+		INSERT INTO 
+			t_sm_subject  
+		(
+			F_SUBJECTID ,
+			F_SUBJECT ,
+			F_SPID 
+		) VALUES (
+			#{subjectId} ,
+			#{subject} ,
+			#{spId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeSubject" parameterType="subject">
+		REPLACE INTO 
+			t_sm_subject 
+		(
+			F_SUBJECTID ,
+			F_SUBJECT ,
+			F_SPID 
+		) VALUES (
+			#{subjectId} ,
+			#{subject} ,
+			#{spId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateSubject" parameterType="subject">
+		UPDATE
+			t_sm_subject 
+		SET
+			F_SUBJECT = #{subject} ,
+			F_SPID = #{spId} 
+		<where>
+			F_SUBJECTID = #{subjectId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteSubject" parameterType="subject">
+		DELETE FROM
+			t_sm_subject 
+		<where>
+			F_SUBJECTID = #{subjectId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchSubject" parameterType="subject">
+		DELETE FROM 
+			t_sm_subject 
+		<where>
+			F_SUBJECTID in
+			<foreach collection="subjectIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="querySubject" parameterType="String" resultType="subject">
+		SELECT
+			t.F_SUBJECTID as subjectId ,
+			t.F_SUBJECT as subject ,
+			t.F_SPID as spId 
+		FROM
+			t_sm_subject t
+		<where>
+			t.F_SUBJECTID = #{subjectId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="querySubjectList" parameterType="subject" resultType="subject">
+		SELECT
+			t.F_SUBJECTID as subjectId ,
+			t.F_SUBJECT as subject ,
+			t.F_SPID as spId 
+		FROM
+		t_sm_subject t
+		<where>
+			<if test="subjectId!=null and subjectId!=''">
+		    	t.F_SUBJECTID = #{subjectId}
+		    </if>
+			<if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/INC_HEAD.html">
+		<script type="text/javascript">
+
+			$(function() {
+				initCheckBox('checkbox','checkbox2');
+				//设置数据奇偶行背景色
+				senfe("changecolor","#f6f6f6","","#e5f1f4","#ffff00");
+			});
+
+			//列表斑马线
+			function senfe(o,a,b,c,d){
+				var t=document.getElementById(o).getElementsByTagName("tr");
+				for(var i=0;i<t.length;i++){
+					t[i].style.backgroundColor=(t[i].sectionRowIndex%2==0)?a:b;
+				}
+			}
+			//设置选中行背景色
+			function selectTr(obj){
+				senfe("changecolor","#f6f6f6","","#e5f1f4","#ffff00");
+				$(obj).css("backgroundColor","#ffff00");
+			}
+			//单个删除
+			function deleteData(cityId) {
+				art.dialog.confirm("确定删除该行政区划么？", function() {
+					window.location.href = "city.do?method=delete&cityId=" + cityId;
+				});
+			}
+
+			function updateData(cityId){
+				art.dialog.confirm("确定修改该行政区划么？", function() {
+					window.location.href = "city.do?method=toUpdate&cityId=" + cityId;
+				});
+			}
+
+			//重置
+			function clearValue(){
+				$("#userName").val("");
+				$("#userLoginName").val("");
+			}
+
+
+		</script>
+
+		</head>
+<body>
+
+
+
+<form id="queryFrm" action="city.do?method=query" method="post">
+
+	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage" value="${entityPage.currentPage}" />
+	<input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize" value="${entityPage.totalSize}" />
+	<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" />
+	<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+	<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+
+			<tr>
+				<td>行政名称：
+					<input autocomplete="off"  name="cityName" type="text" class="data-searchtxt" id="cityName" value="${city.cityName!''}" style="width:218px;">
+				</td>
+				<td>是否国内
+					<select id="foreigh" name="foreigh" class="data-searchtxt-select" >
+						<option value="">----请选择----</option>
+						<#if city.foreigh?? && city.foreigh=='0'>
+							<option value="0" selected="selected">国内</option>
+							<option value="1">国外</option>
+							<#elseif city.foreigh?? && city.foreigh=='1'>
+								<option value="0">国内</option>
+								<option value="1" selected="selected">国外</option>
+								<#else>
+									<option value="0">国内</option>
+									<option value="1">国外</option>
+						</#if>
+					</select>
+				</td>
+				<td>行政级别：
+					<select id="cityLevel" name="cityLevel" class="data-searchtxt-select" >
+						<option value="">----请选择----</option>
+						<#if city.cityLevel?? && city.cityLevel=='1'>
+							<option value="1" selected="selected">省份</option>
+							<option value="2">地市</option>
+							<option value="3">区县</option>
+							<#elseif city.cityLevel?? && city.cityLevel=='2'>
+								<option value="1">省份</option>
+								<option value="2" selected="selected">地市</option>
+								<option value="3">区县</option>
+								<#elseif city.cityLevel?? && city.cityLevel=='3'>
+									<option value="1">省份</option>
+									<option value="2">地市</option>
+									<option value="3" selected="selected">区县</option>
+									<#else>
+										<option value="1">省份</option>
+										<option value="2">地市</option>
+										<option value="3">区县</option>
+						</#if>
+					</select>
+				</td>
+				<td valign="bottom">
+					<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="cont-div">
+
+		<div class="waybill-title">
+			<div align="left">
+				<input name="button5" type="button"  pa="addUser" class="cbtn1" id="button5" value="新增" onClick="javascript:window.location.href='city.do?method=toAdd'">
+
+			</div>
+		</div>
+
+
+
+		<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+			<tr>
+				<th width="10%">行政编码<a href="javascript:void(0);" onclick="sort('F_CITYCODE')" id="F_CITYCODE" class="ico_pxcs"></a></th>
+				<th width="20%">行政名称<a href="javascript:void(0);" onclick="sort('F_CITYNAME')" id="F_CITYNAME" class="ico_pxcs"></a></th>
+				<th width="10%">是否国内<a href="javascript:void(0);" onclick="sort('F_FOREIGH')" id="F_FOREIGH" class="ico_pxcs"></a></th>
+				<th width="10%">行政级别<a href="javascript:void(0);" onclick="sort('F_CITYLEVEL')" id="F_CITYLEVEL" class="ico_pxcs"></a></th>
+				<th width="10%">所属省<a href="javascript:void(0);" onclick="sort('F_PROVINCE')" id="F_PROVINCE" class="ico_pxcs"></a></th>
+				<th width="10%">所属市<a href="javascript:void(0);" onclick="sort('F_CITY')" id="F_CITY" class="ico_pxcs"></a></th>
+				<th width="10%">所属区县<a href="javascript:void(0);" onclick="sort('F_XIAN')" id="F_XIAN" class="ico_pxcs"></a></th>
+				<th width="10%">是否常用<a href="javascript:void(0);" onclick="sort('F_IsAlaway')" id="F_IsAlaway" class="ico_pxcs"></a></th>
+				<th width="10%">操作</td>
+			</tr>
+
+			<#list citylist as city>
+				<tr onclick="selectTr(this)">
+					<td>${city.cityCode!""}</td>
+					<td>${city.cityName!""}</td>
+					<td>
+						<#if city.foreigh?? && city.foreigh=='0' >
+							国内
+							<#elseif city.foreigh?? && city.foreigh=='1' >
+								国外
+						</#if>
+					</td>
+					<td>
+						<#if city.cityLevel?? && city.cityLevel=='1'>
+							省份
+							<#elseif city.cityLevel?? && city.cityLevel=='2'>
+								地市
+								<#elseif city.cityLevel?? && city.cityLevel=='3'>
+									区县
+						</#if>
+					</td>
+					<td>${city.province!""}</td>
+					<td>${city.city!""}</td>
+					<td>${city.xian!""}</td>
+					<td>
+						<#if city.isAlaway?? && city.isAlaway=='1'>
+							常用
+							<#elseif city.isAlaway?? && city.isAlaway=='2'>
+								不常用
+						</#if>
+					</td>
+					<td class="tdleft">
+						<a href="javaScript:void();" class="ico_btn1" onclick="updateData('${city.cityId!''}')">修改</a>
+						&nbsp;&nbsp;
+						<a href="#" class="ico_btn1" onclick="deleteData('${city.cityId!''}')">删除</a>
+					</td>
+				</tr>
+			</#list>
+		</table>
+
+		<div class="page-div">
+			<#if citylist?? && (citylist?size>0)>
+				<#include "/pagination.html">
+					<#else>
+						<div id='ListIsNullMsg' style="font-size:17px;color:red">
+							<script type="text/javascript">
+								showListIsNullMsg();
+							</script>
+						</div>
+			</#if>
+		</div>
+	</div>
+</form>
+</body>
+</html>

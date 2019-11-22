@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.BannerDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertBanner" parameterType="banner">
+		INSERT INTO 
+			t_sm_banner  
+		(
+			F_BANNID ,
+			F_TYPE ,
+			F_CPRODUCTID ,
+			F_SORT ,
+			F_SPID 
+		) VALUES (
+			#{bannId} ,
+			#{type} ,
+			#{fcproductid} ,
+			#{sort} ,
+			#{spId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeBanner" parameterType="banner">
+		REPLACE INTO 
+			t_sm_banner 
+		(
+			F_BANNID ,
+			F_TYPE ,
+			F_CPRODUCTID ,
+			F_SORT ,
+			F_SPID 
+		) VALUES (
+			#{bannId} ,
+			#{type} ,
+			#{fcproductid} ,
+			#{sort} ,
+			#{spId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateBanner" parameterType="banner">
+		UPDATE
+			t_sm_banner 
+		SET
+			F_TYPE = #{type} ,
+			F_CPRODUCTID = #{fcproductid} ,
+			F_SORT = #{sort} ,
+			F_SPID = #{spId} 
+		<where>
+			F_BANNID = #{bannId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteBanner" parameterType="banner">
+		DELETE FROM
+			t_sm_banner 
+		<where>
+			F_BANNID = #{bannId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchBanner" parameterType="banner">
+		DELETE FROM 
+			t_sm_banner 
+		<where>
+			F_BANNID in
+			<foreach collection="bannerIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryBanner" parameterType="String" resultType="banner">
+		SELECT
+			t.F_BANNID as bannId ,
+			t.F_TYPE as type ,
+			t.F_CPRODUCTID as fcproductid ,
+			t.F_SORT as sort ,
+			t.F_SPID as spId 
+		FROM
+			t_sm_banner t
+		<where>
+			t.F_BANNID = #{bannId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryBannerList" parameterType="banner" resultType="banner">
+		SELECT
+			t.F_BANNID as bannId ,
+			t.F_TYPE as type ,
+			t.F_CPRODUCTID as fcproductid ,
+			t.F_SORT as sort ,
+			t.F_SPID as spId 
+		FROM
+		t_sm_banner t
+		<where>
+			<if test="bannId!=null and bannId!=''">
+		    	t.F_BANNID = #{bannId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

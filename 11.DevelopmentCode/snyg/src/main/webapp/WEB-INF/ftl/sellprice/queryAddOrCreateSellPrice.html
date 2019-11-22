@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+<body>
+	<form id="queryFrm" action="sellPrice?method=querySellPriceListForAdd" method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="priceType" name="priceType" value="${priceType!''}" />
+		<input type="hidden" id="openFlag" name="openFlag" value="${openFlag!''}" />
+		<input type="hidden" id="isSearch" name="isSearch" value="1" />
+		
+		
+	<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td>商品名称：</td><td>
+	          	<input name="productName" type="text" class="data-searchtxt" id="title" value="${sellPrice.productName!''}">
+	          </td>
+	          <td>商品编号：</td><td>
+	          	<input name="productCode" type="text" class="data-searchtxt" id="title" value="${sellPrice.productCode!''}">
+	          </td>
+	          <td align="right">商品类型：</td><td>
+	          	<select  name="type" id="type" class="data-searchtxt-select">
+	         		<option value="">请选择</option>
+	         		<#if pdcTypeList?? && (pdcTypeList?size>0)>
+					<#list pdcTypeList as e>
+						<#if sellPrice.type?? && sellPrice.type == e.pdcTypeId>
+							<option value="${e.pdcTypeId!''}" selected>${e.typeName!""}</option>
+						<#else>
+							<option value="${e.pdcTypeId!''}">${e.typeName!""}</option>
+						</#if>
+					</#list>
+				</#if>
+				</select>
+	          </td>
+	          <td>是否上架：</td><td colspan="6">
+	          	<select  name="state" id="state" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<#if sellPrice.state??>
+	          			<#if sellPrice.state=='0'>
+			         		<option value="0" selected="selected">否</option>
+			         		<option value="1">是</option>
+			         	<#elseif sellPrice.state=='1'>
+			         		<option value="0">否</option>
+			         		<option value="1" selected="selected">是</option>
+		          		<#else>
+			         		<option value="0">否</option>
+			         		<option value="1">是</option>
+		          		</#if>
+	          		<#else>
+		         		<option value="0">否</option>
+		         		<option value="1">是</option>
+	          		</#if>
+				</select>
+	          </td>
+	
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+		</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" style="margin-bottom:0px;">
+			<tr>
+				<th width="14%">商品编号</th> 
+				<th width="16%">商品名称</th> 
+				<th width="13%">商品规格</th> 
+				<th width="10%">团购价格（元）</th> 
+				<th width="14%">活动开始时间</th> 
+				<th width="14%">活动结束时间</th> 
+				<th width="7%">参团人数</th> 
+				<th width="12%">操作</th> 
+			</tr>
+
+			<#list sellPricelist as sellPrice>
+			<tr  onclick="selectTr(this)">
+		<!-- 		<td><input type="checkbox" name="sellPriceId" value="${sellPrice.sellPriceId!''}"></td> --> 
+				<td title="${sellPrice.productCode!''}">${sellPrice.productCode!''}</td> 
+				<td title="${sellPrice.productName!''}">${sellPrice.productName!''}</td> 
+				<td title="${sellPrice.priceName!''}">${sellPrice.priceName!''}</td> 
+				<td title="${sellPrice.price!''}">${sellPrice.price!''}</td> 
+				<td title="${sellPrice.priceStartDate!''}">${sellPrice.priceStartDate!''}</td> 
+				<td title="${sellPrice.priceEndDate!''}">${sellPrice.priceEndDate!''}</td> 
+				<td title="${sellPrice.peopleNum!''}">${sellPrice.peopleNum!''}</td> 
+				<td>
+					<#if sellPrice.priceType?? && sellPrice.priceType!='0'>
+						<a href="javascript:void(0)" onclick="checkSellPrice('${sellPrice.goodsPriceId!''}')" title="编辑" class="ico_btn1">编辑</a>
+					<#else>
+						<a href="javascript:void(0)" onclick="checkSellPrice('${sellPrice.goodsPriceId!''}')" title="添加" class="ico_btn1">添加</a>
+					</#if>
+					<input id="goodsPriceId${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.goodsPriceId!''}">
+					<input id="productCode${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.productCode!''}">
+					<input id="productName${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.productName!''}">
+					<input id="peopleNum${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.peopleNum!''}">
+					<input id="priceStartDate${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.priceStartDate!''}">
+					<input id="priceEndDate${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.priceEndDate!''}">
+					<input id="price${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.price!''}">
+					<input id="priceName${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.priceName!''}">
+					<input id="priceId${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.priceId!''}">
+					<input id="productId${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.productId!''}">
+					
+					<input id="limitBuyCount${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.limitBuyCount!''}">
+					<input id="maxBuyCount${sellPrice.goodsPriceId!''}" type="hidden" value="${sellPrice.maxBuyCount!''}">
+				</td>
+			</tr>
+			</#list>
+		</table>
+
+		<#if sellPricelist?? && (sellPricelist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	
+<!-- 	<form action="sellPrice?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedSellPriceIds"
+			id="checkedSellPriceIds">
+	</form> -->
+	</form>
+<script>
+
+function checkSellPrice(goodsPriceId){
+
+	var priceType = $("#priceType").val();
+	if(priceType == ""){
+		parent.layer.alert("系统错误，请重新进入该页面");
+	}else{
+		checkIndex = window.parent.checkIndex;
+		var str = ''; 
+		str += '<tr id="sellPriceTr'+checkIndex+'">';
+		str += '<td title="'+$("#productCode"+goodsPriceId).val()+'">'+$("#productCode"+goodsPriceId).val();
+		str +='<input name="sellPriceList['+checkIndex+'].priceId" value="'+$("#priceId"+goodsPriceId).val()+'" type="hidden" />';
+		str +='<input name="sellPriceList['+checkIndex+'].goodsPriceId" value="'+goodsPriceId+'" type="hidden" />';
+		str +='<input name="sellPriceList['+checkIndex+'].productId" value="'+$("#productId"+goodsPriceId).val()+'" type="hidden" />';
+		str +='</td>'; 
+		str += '<td title="'+$("#productName"+goodsPriceId).val()+'">'+$("#productName"+goodsPriceId).val()+'</td>'; 
+		str += '<td title="'+$("#priceName"+goodsPriceId).val()+'">'+$("#priceName"+goodsPriceId).val()+'</td>'; 
+		str += '<td><input name="sellPriceList['+checkIndex+'].price" id="price'+checkIndex+'" value="'+$("#price"+goodsPriceId).val()+'" type="text" class="validate[required,custom[num6point2] data-inputtxt" style="width:100px;" maxlength="9" onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'"/></td>';
+		str += '<td><input name="sellPriceList['+checkIndex+'].priceStartDate" id="priceStartDate'+checkIndex+'" value="'+$("#priceStartDate"+goodsPriceId).val()+'" type="text" class="data-inputtxt-time dateStartClass" style="width:190px;"  onfocus="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\',maxDate:\'#F{$dp.$D(\\\'priceEndDate'+checkIndex+'\\\')}\'})" readonly="readonly"/></td>'; 
+		str += '<td><input name="sellPriceList['+checkIndex+'].priceEndDate" id="priceEndDate'+checkIndex+'" value="'+$("#priceEndDate"+goodsPriceId).val()+'" type="text" class="data-inputtxt-time dateEndClass" style="width:190px;" onfocus="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\',minDate:\'#F{$dp.$D(\\\'priceStartDate'+checkIndex+'\\\')}\'})" readonly="readonly"/></td>';
+		str += '<td><input name="sellPriceList['+checkIndex+'].peopleNum" id="peopleNum'+checkIndex+'" value="'+$("#peopleNum"+goodsPriceId).val()+'" type="text" class="data-inputtxt" style="width:70px;" maxlength="2"  onkeyup="value=value.replace(/[^\\d]/g,\'\')"/></td>';
+		str += '<td><input name="sellPriceList['+checkIndex+'].limitBuyCount" id="limitBuyCount'+checkIndex+'" value="'+$("#limitBuyCount"+goodsPriceId).val()+'" type="text" class="data-inputtxt" style="width:70px;" maxlength="2"  onkeyup="value=value.replace(/[^\\d]/g,\'\')"/></td>';
+		str += '<td><input name="sellPriceList['+checkIndex+'].maxBuyCount" id="maxBuyCount'+checkIndex+'" value="'+$("#maxBuyCount"+goodsPriceId).val()+'" type="text" class="data-inputtxt" style="width:70px;" maxlength="2"  onkeyup="value=value.replace(/[^\\d]/g,\'\')"/></td>';
+		str += '<td><a href="javascript:void(0)" onclick="delCheckSellPrice(\'sellPriceTr'+checkIndex+'\')" title="移除" class="ico_btn1">移除</a></td>';  
+		str += '</tr>';
+		window.parent.checkIndex++;
+		
+		window.parent.$("#saveTable").append(str);
+	}
+}
+</script>
+</body>
+</html>

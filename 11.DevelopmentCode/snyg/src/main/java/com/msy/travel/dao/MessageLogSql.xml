@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.MessageLogDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertMessageLog" parameterType="messageLog">
+		INSERT INTO 
+			t_wx_messagelog  
+		(
+			F_LOGID ,
+			F_FANSID ,
+			F_WXSERVICEID ,
+			F_OPENID ,
+			F_FROMTYPE ,
+			F_DIRECT ,
+			F_MSGTYPE ,
+			F_CONTEXT ,
+			F_DATE 
+		) VALUES (
+			#{logId} ,
+			#{fansId} ,
+			#{wxServiceId} ,
+			#{openId} ,
+			#{fromType} ,
+			#{direct} ,
+			#{msgType} ,
+			#{context} ,
+			#{date} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeMessageLog" parameterType="messageLog">
+		REPLACE INTO 
+			t_wx_messagelog 
+		(
+			F_LOGID ,
+			F_FANSID ,
+			F_WXSERVICEID ,
+			F_OPENID ,
+			F_FROMTYPE ,
+			F_DIRECT ,
+			F_MSGTYPE ,
+			F_CONTEXT ,
+			F_DATE 
+		) VALUES (
+			#{logId} ,
+			#{fansId} ,
+			#{wxServiceId} ,
+			#{openId} ,
+			#{fromType} ,
+			#{direct} ,
+			#{msgType} ,
+			#{context} ,
+			#{date} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateMessageLog" parameterType="messageLog">
+		UPDATE
+			t_wx_messagelog 
+		SET
+			F_FANSID = #{fansId} ,
+			F_WXSERVICEID = #{wxServiceId} ,
+			F_OPENID = #{openId} ,
+			F_FROMTYPE = #{fromType} ,
+			F_DIRECT = #{direct} ,
+			F_MSGTYPE = #{msgType} ,
+			F_CONTEXT = #{context} ,
+			F_DATE = #{date} 
+		<where>
+			F_LOGID = #{logId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteMessageLog" parameterType="messageLog">
+		DELETE FROM
+			t_wx_messagelog 
+		<where>
+			F_LOGID = #{logId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchMessageLog" parameterType="messageLog">
+		DELETE FROM 
+			t_wx_messagelog 
+		<where>
+			F_LOGID in
+			<foreach collection="messageLogIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryMessageLog" parameterType="String" resultType="messageLog">
+		SELECT
+			t.F_LOGID as logId ,
+			t.F_FANSID as fansId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_OPENID as openId ,
+			t.F_FROMTYPE as fromType ,
+			t.F_DIRECT as direct ,
+			t.F_MSGTYPE as msgType ,
+			t.F_CONTEXT as context ,
+			t.F_DATE as date 
+		FROM
+			t_wx_messagelog t
+		<where>
+			t.F_LOGID = #{logId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryMessageLogList" parameterType="messageLog" resultType="messageLog">
+		SELECT
+			t.F_LOGID as logId ,
+			t.F_FANSID as fansId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_OPENID as openId ,
+			t.F_FROMTYPE as fromType ,
+			t.F_DIRECT as direct ,
+			t.F_MSGTYPE as msgType ,
+			t.F_CONTEXT as context ,
+			t.F_DATE as date 
+		FROM
+		t_wx_messagelog t
+		<where>
+			<if test="logId!=null and logId!=''">
+		    	t.F_LOGID = #{logId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

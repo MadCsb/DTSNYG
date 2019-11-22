@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrder" parameterType="order">
+		INSERT INTO 
+			t_sm_order  
+		(
+			F_ORDERID ,
+			F_ORDERCODE ,
+			F_SPID ,
+			F_USERID ,
+			F_PRODUCTNAME ,
+			F_BACKNUM ,
+			F_GIFTNUM ,
+			F_NUM ,
+			F_MONEY ,
+			F_PAYMONEY ,
+			F_PRODUCTPRICE ,
+			F_TRANSFEE ,
+			F_ORDERDATE ,
+			F_MEMO ,
+			F_STATUS ,
+			F_BEFORE_PAY_STATUS ,
+			F_PAYTAG ,
+			F_PAYDATE ,
+			F_PAYTYPE ,
+			F_PLATFORM_FLOW_CODE ,
+			F_DELFLAG ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER 
+		) VALUES (
+			#{orderId} ,
+			#{orderCode} ,
+			#{spId} ,
+			#{userId} ,
+			#{productName} ,
+			#{backNum} ,
+			#{giftNum} ,
+			#{num} ,
+			#{money} ,
+			#{payMoney} ,
+			#{productPrice} ,
+			#{transFee} ,
+			#{orderDate} ,
+			#{memo} ,
+			#{status} ,
+			#{beforePayStatus} ,
+			#{payTag} ,
+			#{payDate} ,
+			#{payType} ,
+			#{platformFlowCode} ,
+			#{delFlag} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updateUid} ,
+			#{updater} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrder" parameterType="order">
+		REPLACE INTO 
+			t_sm_order 
+		(
+			F_ORDERID ,
+			F_ORDERCODE ,
+			F_SPID ,
+			F_USERID ,
+			F_PRODUCTNAME ,
+			F_BACKNUM ,
+			F_GIFTNUM ,
+			F_NUM ,
+			F_MONEY ,
+			F_PAYMONEY ,
+			F_PRODUCTPRICE ,
+			F_TRANSFEE ,
+			F_ORDERDATE ,
+			F_MEMO ,
+			F_STATUS ,
+			F_BEFORE_PAY_STATUS ,
+			F_PAYTAG ,
+			F_PAYDATE ,
+			F_PAYTYPE ,
+			F_PLATFORM_FLOW_CODE ,
+			F_DELFLAG ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER 
+		) VALUES (
+			#{orderId} ,
+			#{orderCode} ,
+			#{spId} ,
+			#{userId} ,
+			#{productName} ,
+			#{backNum} ,
+			#{giftNum} ,
+			#{num} ,
+			#{money} ,
+			#{payMoney} ,
+			#{productPrice} ,
+			#{transFee} ,
+			#{orderDate} ,
+			#{memo} ,
+			#{status} ,
+			#{beforePayStatus} ,
+			#{payTag} ,
+			#{payDate} ,
+			#{payType} ,
+			#{platformFlowCode} ,
+			#{delFlag} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updateUid} ,
+			#{updater} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrder" parameterType="order">
+		UPDATE
+			t_sm_order
+		<set>
+			<if test="orderCode !=null"> F_ORDERCODE = #{orderCode} ,</if>
+			<if test="spId !=null">F_SPID = #{spId} ,</if>
+			<if test="userId !=null">F_USERID = #{userId} ,</if>
+			<if test="productName !=null">F_PRODUCTNAME = #{productName} ,</if>
+			<if test="backNum !=null">F_BACKNUM = #{backNum} ,</if>
+			<if test="giftNum !=null">F_GIFTNUM = #{giftNum} ,</if>
+			<if test="num !=null">F_NUM = #{num} ,</if>
+			<if test="money !=null">F_MONEY = #{money} ,</if>
+			<if test="payMoney !=null">F_PAYMONEY = #{payMoney} ,</if>
+			<if test="productPrice !=null">F_PRODUCTPRICE = #{productPrice} ,</if>
+			<if test="transFee !=null">F_TRANSFEE = #{transFee} ,</if>
+			<if test="orderDate !=null">F_ORDERDATE = #{orderDate} ,</if>
+			<if test="memo !=null">F_MEMO = #{memo} ,</if>
+			<if test="status !=null">F_STATUS = #{status} ,</if>
+			<if test="beforePayStatus !=null">F_BEFORE_PAY_STATUS = #{beforePayStatus} ,</if>
+			<if test="payTag !=null">F_PAYTAG = #{payTag} ,</if>
+			<if test="payDate !=null">F_PAYDATE = #{payDate} ,</if>
+			<if test="payType !=null">F_PAYTYPE = #{payType} ,</if>
+			<if test="platformFlowCode !=null">F_PLATFORM_FLOW_CODE = #{platformFlowCode} ,</if>
+			<if test="delFlag !=null">F_DELFLAG = #{delFlag} ,</if>
+			<if test="createTime !=null">F_CREATETIME = #{createTime} ,</if>
+			<if test="creatorUid !=null">F_CREATORUID = #{creatorUid} ,</if>
+			<if test="creator !=null">F_CREATOR = #{creator} ,</if>
+			<if test="updateTime !=null">F_UPDATETIME = #{updateTime} ,</if>
+			<if test="updateUid !=null">F_UPDATERUID = #{updateUid} ,</if>
+			<if test="updater !=null">F_UPDATER = #{updater}   ,</if>
+			<if test="companyRemark !=null">F_COMPANYREMARK = #{companyRemark}   ,</if>
+		</set>
+		<where>
+			F_ORDERID = #{orderId}
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrder" parameterType="order">
+		DELETE FROM
+			t_sm_order 
+		<where>
+			F_ORDERID = #{orderId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchOrder" parameterType="order">
+		DELETE FROM 
+			t_sm_order 
+		<where>
+			F_ORDERID in
+			<foreach collection="orderIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrder" parameterType="String" resultType="order">
+		SELECT
+			t.F_ORDERID as orderId ,
+			t.F_ORDERCODE as orderCode ,
+			t.F_SPID as spId ,
+			t.F_USERID as userId ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_BACKNUM as backNum ,
+			t.F_GIFTNUM as giftNum ,
+			t.F_NUM as num ,
+			t.F_MONEY as money ,
+			t.F_PAYMONEY as payMoney ,
+			t.F_PRODUCTPRICE as productPrice ,
+			t.F_TRANSFEE as transFee ,
+			t.F_ORDERDATE as orderDate ,
+			t.F_MEMO as memo ,
+			t.F_STATUS as status ,
+			t.F_BEFORE_PAY_STATUS as beforePayStatus ,
+			t.F_PAYTAG as payTag ,
+			t.F_PAYDATE as payDate ,
+			t.F_PAYTYPE as payType ,
+			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
+			t.F_DELFLAG as delFlag ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updateUid ,
+			t.F_UPDATER as updater ,
+			t.F_COMPANYREMARK as companyRemark ,
+			IFNULL(orderBack.F_BACKTIMES,0) as backTimes
+		FROM
+			t_sm_order t
+			LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
+		<where>
+			t.F_ORDERID = #{orderId}
+
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderList" parameterType="order" resultType="order">
+		SELECT
+			t.F_ORDERID as orderId ,
+			t.F_ORDERCODE as orderCode ,
+			t.F_SPID as spId ,
+			t.F_USERID as userId ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_BACKNUM as backNum ,
+			t.F_GIFTNUM as giftNum ,
+			t.F_NUM as num ,
+			t.F_MONEY as money ,
+			t.F_PAYMONEY as payMoney ,
+			t.F_PRODUCTPRICE as productPrice ,
+			t.F_TRANSFEE as transFee ,
+			t.F_ORDERDATE as orderDate ,
+			t.F_MEMO as memo ,
+			t.F_STATUS as status ,
+			t.F_BEFORE_PAY_STATUS as beforePayStatus ,
+			t.F_PAYTAG as payTag ,
+			t.F_PAYDATE as payDate ,
+			t.F_PAYTYPE as payType ,
+			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
+			t.F_DELFLAG as delFlag ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updateUid ,
+			t.F_UPDATER as updater ,
+		  IFNULL(orderBack.F_BACKTIMES,0) as backTimes ,
+		  oc.F_CUSTPHONE  as custNameLike ,
+		  oc.F_CUSTNAME  as custPhoneLike
+		FROM
+		t_sm_order t
+		LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
+		LEFT JOIN t_sm_ordercustomer oc on t.F_ORDERID = oc.F_ORDERID
+		<where>
+			<if test="userId!=null and userId!=''">
+		  	and t.F_USERID = #{userId}
+			</if>
+			<if test="searchKey!=null and searchKey!=''">
+				and t.F_PRODUCTNAME like concat('%',#{searchKey},'%')
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				and t.F_DELFLAG = #{delFlag}
+			</if>
+			<if test="payTag!=null and payTag!=''">
+				and t.F_PAYTAG = #{payTag}
+			</if>
+			<if test="beforePayStatus!=null and beforePayStatus!=''">
+				and t.F_BEFORE_PAY_STATUS = #{beforePayStatus}
+			</if>
+			<if test="status!=null and status!=''">
+				and t.F_STATUS = #{status}
+			</if>
+			<if test="backNumS!=null and backNumS!=''">
+				and IFNULL(orderBack.F_BACKTIMES,0) &gt;= ${backNumS}
+			</if>
+			<if test="orderCodeLike!=null and orderCodeLike!=''">
+				and t.F_ORDERCODE like concat('%',#{orderCodeLike},'%')
+			</if>
+			<if test="productNameLike!=null and productNameLike!=''">
+				and t.F_PRODUCTNAME like concat('%',#{productNameLike},'%')
+			</if>
+			<if test="custPhoneLike!=null and custPhoneLike!=''">
+				and oc.F_CUSTPHONE like concat('%',#{custPhoneLike},'%')
+			</if>
+			<if test="custNameLike!=null and custNameLike!=''">
+				and oc.F_CUSTNAME like concat('%',#{custNameLike},'%')
+			</if>
+			<if test="moneyS!=null and moneyS!=''">
+				and t.F_MONEY &gt;= ${moneyS}
+			</if>
+			<if test="moneyE!=null and moneyE!=''">
+				and t.F_MONEY &lt;= ${moneyE}
+			</if>
+			<if test="orderDateS!=null and orderDateS!=''">
+				and t.F_ORDERDATE &gt;= #{orderDateS}
+			</if>
+			<if test="orderDateE!=null and orderDateE!=''">
+				and t.F_ORDERDATE &lt;= #{orderDateE}
+			</if>
+
+			<if test="createTimeS!=null and createTimeS!=''">
+				and t.F_CREATETIME &gt;= #{createTimeS}
+			</if>
+			<if test="createTimeE!=null and createTimeE!=''">
+				and t.F_CREATETIME &lt;= #{createTimeE}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderListStatic" parameterType="order" resultType="order">
+		SELECT
+		COUNT(t.F_ORDERID) as orderCount,
+		IFNULL(SUM(t.F_MONEY),0) as money,
+		ROUND(IFNULL(SUM(t.F_MONEY),0)/COUNT(t.F_ORDERID),2) as perMoney
+		FROM
+		t_sm_order t
+		LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
+		LEFT JOIN t_sm_ordercustomer oc on t.F_ORDERID = oc.F_ORDERID
+		<where>
+			<if test="userId!=null and userId!=''">
+				and t.F_USERID = #{userId}
+			</if>
+			<if test="searchKey!=null and searchKey!=''">
+				and t.F_PRODUCTNAME like concat('%',#{searchKey},'%')
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				and t.F_DELFLAG = #{delFlag}
+			</if>
+			<if test="payTag!=null and payTag!=''">
+				and t.F_PAYTAG = #{payTag}
+			</if>
+			<if test="beforePayStatus!=null and beforePayStatus!=''">
+				and t.F_BEFORE_PAY_STATUS = #{beforePayStatus}
+			</if>
+			<if test="status!=null and status!=''">
+				and t.F_STATUS = #{status}
+			</if>
+			<if test="backNumS!=null and backNumS!=''">
+				and IFNULL(orderBack.F_BACKTIMES,0) &gt;= ${backNumS}
+			</if>
+			<if test="orderCodeLike!=null and orderCodeLike!=''">
+				and t.F_ORDERCODE like concat('%',#{orderCodeLike},'%')
+			</if>
+			<if test="productNameLike!=null and productNameLike!=''">
+				and t.F_PRODUCTNAME like concat('%',#{productNameLike},'%')
+			</if>
+			<if test="custPhoneLike!=null and custPhoneLike!=''">
+				and oc.F_CUSTPHONE like concat('%',#{custPhoneLike},'%')
+			</if>
+			<if test="custNameLike!=null and custNameLike!=''">
+				and oc.F_CUSTNAME like concat('%',#{custNameLike},'%')
+			</if>
+			<if test="moneyS!=null and moneyS!=''">
+				and t.F_MONEY &gt;= ${moneyS}
+			</if>
+			<if test="moneyE!=null and moneyE!=''">
+				and t.F_MONEY &lt;= ${moneyE}
+			</if>
+			<if test="orderDateS!=null and orderDateS!=''">
+				and t.F_ORDERDATE &gt;= #{orderDateS}
+			</if>
+			<if test="orderDateE!=null and orderDateE!=''">
+				and t.F_ORDERDATE &lt;= #{orderDateE}
+			</if>
+
+			<if test="createTimeS!=null and createTimeS!=''">
+				and t.F_CREATETIME &gt;= #{createTimeS}
+			</if>
+			<if test="createTimeE!=null and createTimeE!=''">
+				and t.F_CREATETIME &lt;= #{createTimeE}
+			</if>
+		</where>
+
+	</select>
+
+
+</mapper>	

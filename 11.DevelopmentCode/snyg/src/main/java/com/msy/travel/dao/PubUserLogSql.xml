@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.PubUserLogDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertPubUserLog" parameterType="pubUserLog">
+		INSERT INTO 
+			t_pub_userlog  
+		(
+			F_LOG_ID ,
+			F_USER_NAME ,
+			F_OPERATION_TIME ,
+			F_SESSION_ID ,
+			F_IP ,
+			F_OPERATION_NAME ,
+			F_OPERATION_RESULT ,
+			F_DURING ,
+			F_LOG_MENU ,
+			F_USER_ID ,
+			F_OPERATION_CONTEXT 
+		) VALUES (
+			#{logId} ,
+			#{userName} ,
+			#{operationTime} ,
+			#{sessionId} ,
+			#{userIP} ,
+			#{operationName} ,
+			#{operationResult} ,
+			#{during} ,
+			#{logMenu} ,
+			#{userId} ,
+			#{operationContext} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergePubUserLog" parameterType="pubUserLog">
+		REPLACE INTO 
+			t_pub_userlog 
+		(
+			F_LOG_ID ,
+			F_USER_NAME ,
+			F_OPERATION_TIME ,
+			F_SESSION_ID ,
+			F_IP ,
+			F_OPERATION_NAME ,
+			F_OPERATION_RESULT ,
+			F_DURING ,
+			F_LOG_MENU ,
+			F_USER_ID ,
+			F_OPERATION_CONTEXT 
+		) VALUES (
+			#{logId} ,
+			#{userName} ,
+			#{operationTime} ,
+			#{sessionId} ,
+			#{userIP} ,
+			#{operationName} ,
+			#{operationResult} ,
+			#{during} ,
+			#{logMenu} ,
+			#{userId} ,
+			#{operationContext} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updatePubUserLog" parameterType="pubUserLog">
+		UPDATE
+			t_pub_userlog 
+		SET
+			F_USER_NAME = #{userName} ,
+			F_OPERATION_TIME = #{operationTime} ,
+			F_SESSION_ID = #{sessionId} ,
+			F_IP = #{userIP} ,
+			F_OPERATION_NAME = #{operationName} ,
+			F_OPERATION_RESULT = #{operationResult} ,
+			F_DURING = #{during} ,
+			F_LOG_MENU = #{logMenu} ,
+			F_USER_ID = #{userId} ,
+			F_OPERATION_CONTEXT = #{operationContext} 
+		<where>
+			F_LOG_ID = #{logId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletePubUserLog" parameterType="pubUserLog">
+		DELETE FROM
+			t_pub_userlog 
+		<where>
+			F_LOG_ID = #{logId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchPubUserLog" parameterType="pubUserLog">
+		DELETE FROM 
+			t_pub_userlog 
+		<where>
+			F_LOG_ID in
+			<foreach collection="pubUserLogIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryPubUserLog" parameterType="String" resultType="pubUserLog">
+		SELECT
+			t.F_LOG_ID as logId ,
+			t.F_USER_NAME as userName ,
+			t.F_OPERATION_TIME as operationTime ,
+			t.F_SESSION_ID as sessionId ,
+			t.F_IP as userIP ,
+			t.F_OPERATION_NAME as operationName ,
+			t.F_OPERATION_RESULT as operationResult ,
+			t.F_DURING as during ,
+			t.F_LOG_MENU as logMenu ,
+			t.F_USER_ID as userId ,
+			t.F_OPERATION_CONTEXT as operationContext 
+		FROM
+			t_pub_userlog t
+		<where>
+			t.F_LOG_ID = #{logId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryPubUserLogList" parameterType="pubUserLog" resultType="pubUserLog">
+		SELECT
+			t.F_LOG_ID as logId ,
+			t.F_USER_NAME as userName ,
+			t.F_OPERATION_TIME as operationTime ,
+			t.F_SESSION_ID as sessionId ,
+			t.F_IP as userIP ,
+			t.F_OPERATION_NAME as operationName ,
+			t.F_OPERATION_RESULT as operationResult ,
+			t.F_DURING as during ,
+			t.F_LOG_MENU as logMenu ,
+			t.F_USER_ID as userId ,
+			t.F_OPERATION_CONTEXT as operationContext 
+		FROM
+		t_pub_userlog t
+		<where>
+			<if test="logId!=null and logId!=''">
+		    	t.F_LOG_ID = #{logId}
+		     </if>
+		     
+		     <if test="userName!=null and userName!=''">
+		    	and t.F_USER_NAME like concat('%',#{userName},'%') 
+		     </if>
+		     
+		     <if test="operationTime!=null and operationTime!=''">
+		    	and t.F_OPERATION_TIME &gt;= #{operationTime}
+		     </if>
+		     
+		     <if test="operationTime2!=null and operationTime2!=''">
+		    	and t.F_OPERATION_TIME &lt;= #{operationTime2}
+		     </if>
+		     
+		     <if test="operationName!=null and operationName!=''">
+		    	and t.F_OPERATION_NAME like concat('%',#{operationName},'%') 
+		     </if>
+		     
+		     <if test="operationContext!=null and operationContext!=''">
+		    	and t.F_OPERATION_CONTEXT like concat('%',#{operationContext},'%')
+		     </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<select id="getUserLogListForApi" parameterType="pubUserLog" resultType="pubUserLog">
+		SELECT
+			t.F_LOG_ID as logId ,
+			t.F_USER_NAME as userName ,
+			t.F_OPERATION_TIME as operationTime ,
+			t.F_SESSION_ID as sessionId ,
+			t.F_IP as userIP ,
+			t.F_OPERATION_NAME as operationName ,
+			t.F_OPERATION_RESULT as operationResult ,
+			t.F_DURING as during ,
+			t.F_LOG_MENU as logMenu ,
+			t.F_USER_ID as userId ,
+			t.F_OPERATION_CONTEXT as operationContext,
+			t.F_ISSYN as isSyn,
+			tuser.F_THIRDUSERID as thirdUserId
+		FROM
+			t_pub_userlog t
+			left join t_pub_user tuser on tuser.F_USER_ID=t.F_USER_ID
+		where (t.F_ISSYN is null or t.F_ISSYN='0') and (tuser.F_THIRDUSERID is not null or tuser.F_THIRDUSERID!='')
+	</select>
+	
+	<update id="updateIsSyn" parameterType="pubUserLog">
+		UPDATE
+			t_pub_userlog 
+		SET
+			F_ISSYN=#{isSyn}
+		<where>
+			F_LOG_ID = #{logId} 
+		</where>
+	</update>
+</mapper>	

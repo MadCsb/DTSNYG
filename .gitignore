@@ -1,0 +1,7 @@
+11.DevelopmentCode/snyg/.settings/
+*.classpath
+*.mymetadata
+*.project
+*.iml
+*jdbc_config.properties
+11.DevelopmentCode/snyg/target/

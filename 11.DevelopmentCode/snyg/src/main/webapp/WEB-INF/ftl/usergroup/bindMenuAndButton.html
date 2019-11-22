@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+	<#include "/INC_HEAD.html">
+</head>
+<body>
+<div class="cont-div">
+	<div class="waybill-title" style="position:relative;">
+		<span>角色管理</span>
+	</div>
+	<input type="hidden" id="userGroupId" value="${userGroup.userGroupId}"/>
+	<input type="hidden" id="roleType" value="2"/>
+	<form autocomplete="off">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="userGroupBind">
+		<tr>
+			<th width="13%">目录</th>
+			<th width="14%">模块</th>
+			<!-- 
+			<th width="60%">操作</th> -->
+			<th width="13%"></th>
+		</tr>
+		<#list menuList as ti>
+			<tr>
+				<td title="${ti.pMenuName!''}">
+					${ti.pMenuName!''}
+				</td>
+				<td  title="${ti.menuName!''}">
+					<#if ti.checked == '1'>
+						<input type="checkbox" pMenuId="${ti.pMenuId}" menuId="${ti.menuId}" checked="checked"/>
+					<#else>
+						<input type="checkbox" pMenuId="${ti.pMenuId}" menuId="${ti.menuId}"/>
+					</#if>
+					${ti.menuName!''}
+				</td>
+					<!-- 
+				<td style="white-space: inherit;">
+					<#if menuButtonList??>
+						<#list menuButtonList as ml>
+							<#if ml.menuId == ti.menuId>
+								<#if ml.checked == '1'>
+									<input type="checkbox" menuId="${ml.menuId}" menuButtonId="${ml.menuButtonId}" checked="checked"/>
+								<#else>
+									<input type="checkbox" menuId="${ml.menuId}" menuButtonId="${ml.menuButtonId}"/>
+								</#if>
+								${ml.menuButtonName!''}
+							</#if>
+						</#list>
+					</#if>
+				</td>
+				-->
+				<td align="center">
+					<a href="javascript:void(0);" title="全选" class="ico_btn1" onclick="selectRowAll(this,1)">全选</a>
+					<a href="javascript:void(0);" title="全不选" class="ico_btn1" onclick="selectRowAll(this,0)">全不选</a>
+				</td>
+				
+			</tr>
+		</#list>
+	</table>
+	</form>
+	<div class="footerbtn">
+		<input type="button" class="cbtn2" onclick="location.href='${Session.BACK_URL!''}'" value="取消">
+		<input type="button" class="add-new" onclick="beforeSubmit()" value="提交">
+	</div>
+
+	<script type="text/javascript" >
+	function beforeSubmit()
+	{
+		var userGroupId = document.getElementById("userGroupId").value;
+		var menuids = "";
+		var menubuttonids = "";
+		var pMenuIds = new Array();
+		var checkBoxEs = $("input[type='checkbox']").each(function () {
+			if($(this).is(':checked'))
+			{
+				if(typeof($(this).attr("pMenuId"))!="undefined") //菜单选择
+				{
+					menuids = menuids+ $(this).attr("menuId")+",";
+
+					var pMenuId=$(this).attr("pMenuId");
+					var hash = false;
+					for(var i=pMenuIds.length-1;i>=0;i--)
+					{
+						if(pMenuIds[i] == pMenuId )
+						{
+							hash = true;
+							break;
+						}
+					}
+					if(!hash)
+					{
+						pMenuIds.push(pMenuId);
+						menuids = menuids+ pMenuId +",";
+					}
+				}else {
+					menubuttonids = menubuttonids+ $(this).attr("menuButtonId")+",";
+				}
+			}
+		});
+		var baseUrl = "userGroup?method=updateMenu&userGroupId="+userGroupId;
+		if(menuids.length>0)
+		{
+			menuids = menuids.substring(0,menuids.length-1);
+			baseUrl = baseUrl+"&menuId="+menuids;
+		}	
+		if(menubuttonids.length>0)
+		{
+			menubuttonids = menubuttonids.substring(0,menubuttonids.length-1);
+			baseUrl = baseUrl+"&menuButtonId="+menubuttonids;
+		}
+		location.href=baseUrl;
+	}
+
+	/**
+	 * 重新选择
+	 * @param doom
+	 */
+	function reset(doom)
+	{
+
+	}
+	 $(function () {
+		 $("input[type='checkbox']").change(function() {
+			 var doom = this;
+			 if(typeof($(doom).attr("pMenuId"))!="undefined") //菜单选择
+			 {
+				 if($(this).is(':checked')) //如果选中
+				 {
+					 //菜单项不更改
+				 }else { //如果不选中
+					 $("input[menuId='" + $(this).attr("menuId") + "']").attr("checked",false); //菜单项不选中
+				 }
+			 }else { //按钮选择
+				 var menuCheckBox ;
+				 var checkBoxEs = $("input[menuId='" + $(this).attr("menuId") + "']").each(function(){
+					 if(typeof($(this).attr("pMenuId"))!="undefined")
+					 {
+						 menuCheckBox = this;
+					 }
+				 });
+				 if($(this).is(':checked')) //如果选中
+				 {
+					 $(menuCheckBox).attr("checked","true"); //菜单选中
+				 }else { //如果不选中
+
+				 }
+			 }
+		 });
+		 //根据父id，设置目录显示
+		$()
+
+	 })
+	 
+	// 设置全选 0:全不选 1：全选
+	 function selectRowAll(obj,flag) {
+		 
+		 var moduleCheckbox = $(obj).parent().parent().children().eq(1).find("input[type='checkbox']")[0];
+		 var tdCheckbox = $(obj).parent().parent().children().eq(2);
+
+		 if (flag == 1) {
+			tdCheckbox.find("input[type='checkbox']").each(function(){
+	            $(this).attr("checked",'true');
+	        });
+			
+			$(moduleCheckbox).attr("checked",'true');
+		 } else {
+			tdCheckbox.find("input[type='checkbox']").each(function(){
+	            $(this).removeAttr("checked");
+	        });
+			
+			$(moduleCheckbox).removeAttr("checked");
+		 }
+	 }
+	</script>
+</div>
+</body>
+</html>

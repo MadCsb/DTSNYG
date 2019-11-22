@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CompanyDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCompany" parameterType="company">
+		INSERT INTO 
+			t_sm_company  
+		(
+			F_VENID ,
+			F_SPID ,
+			F_VENNAME ,
+			F_TEL ,
+			F_WWWSITE ,
+			F_FAX ,
+			F_LEAGAL ,
+			F_LEAGALTEL ,
+			F_LINKPERSON ,
+			F_LINKTEL ,
+			F_VENMEMO ,
+			F_BANKMEMO ,
+			F_LINKMEMO ,
+			F_COMPADDRESS ,
+			F_BANKNAME ,
+			F_BANKACC ,
+			F_BANKTAX ,
+			F_FUND ,
+			F_BUSCERT ,
+			F_LOGOURL ,
+			F_BUSINESSRANGE ,
+			F_BANKUSER ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_RECVADDRESS,
+			F_RECEIVER,
+			F_RECVPHONE
+		) VALUES (
+			#{venId} ,
+			#{spId} ,
+			#{venName} ,
+			#{tel} ,
+			#{wWWSite} ,
+			#{fax} ,
+			#{leagal} ,
+			#{leagalTel} ,
+			#{linkPerson} ,
+			#{linkTel} ,
+			#{venMemo} ,
+			#{bankMemo} ,
+			#{linkMemo} ,
+			#{compAddress} ,
+			#{bankName} ,
+			#{bankAcc} ,
+			#{bankTax} ,
+			#{fund} ,
+			#{buscert} ,
+			#{logoUrl} ,
+			#{businessRange} ,
+			#{bankUser} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{recvAddress} ,
+			#{receiver} ,
+			#{recvPhone} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCompany" parameterType="company">
+		REPLACE INTO 
+			t_sm_company 
+		(
+			F_VENID ,
+			F_SPID ,
+			F_VENNAME ,
+			F_TEL ,
+			F_WWWSITE ,
+			F_FAX ,
+			F_LEAGAL ,
+			F_LEAGALTEL ,
+			F_LINKPERSON ,
+			F_LINKTEL ,
+			F_VENMEMO ,
+			F_BANKMEMO ,
+			F_LINKMEMO ,
+			F_COMPADDRESS ,
+			F_BANKNAME ,
+			F_BANKACC ,
+			F_BANKTAX ,
+			F_FUND ,
+			F_BUSCERT ,
+			F_LOGOURL ,
+			F_BUSINESSRANGE ,
+			F_BANKUSER ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_RECVADDRESS,
+			F_RECEIVER,
+			F_RECVPHONE
+		) VALUES (
+			#{venId} ,
+			#{spId} ,
+			#{venName} ,
+			#{tel} ,
+			#{wWWSite} ,
+			#{fax} ,
+			#{leagal} ,
+			#{leagalTel} ,
+			#{linkPerson} ,
+			#{linkTel} ,
+			#{venMemo} ,
+			#{bankMemo} ,
+			#{linkMemo} ,
+			#{compAddress} ,
+			#{bankName} ,
+			#{bankAcc} ,
+			#{bankTax} ,
+			#{fund} ,
+			#{buscert} ,
+			#{logoUrl} ,
+			#{businessRange} ,
+			#{bankUser} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{recvAddress} ,
+			#{receiver} ,
+			#{recvPhone} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCompany" parameterType="company">
+		UPDATE
+			t_sm_company 
+		SET
+			F_VENNAME = #{venName} ,
+			F_TEL = #{tel} ,
+			F_WWWSITE = #{wWWSite} ,
+			F_FAX = #{fax} ,
+			F_LEAGAL = #{leagal} ,
+			F_LEAGALTEL = #{leagalTel} ,
+			F_LINKPERSON = #{linkPerson} ,
+			F_LINKTEL = #{linkTel} ,
+			F_VENMEMO = #{venMemo} ,
+			F_BANKMEMO = #{bankMemo} ,
+			F_LINKMEMO = #{linkMemo} ,
+			F_COMPADDRESS = #{compAddress} ,
+			F_BANKNAME = #{bankName} ,
+			F_BANKACC = #{bankAcc} ,
+			F_BANKTAX = #{bankTax} ,
+			F_FUND = #{fund} ,
+			F_BUSCERT = #{buscert} ,
+			F_LOGOURL = #{logoUrl} ,
+			F_BUSINESSRANGE = #{businessRange} ,
+			F_BANKUSER = #{bankUser} ,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} ,
+			F_RECVADDRESS = #{recvAddress} ,
+			F_RECEIVER = #{receiver} ,
+			F_RECVPHONE = #{recvPhone} 
+		<where>
+			F_VENID = #{venId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCompany" parameterType="company">
+		UPDATE
+			t_sm_company 
+		SET
+			F_DELFLAG = 1,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} 
+		<where>
+			F_VENID = #{venId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCompany" parameterType="company">
+		UPDATE
+			t_sm_company 
+		SET
+			F_DELFLAG = 1
+		<where>
+			F_VENID in
+			<foreach collection="companyIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCompany" parameterType="String" resultType="company">
+		SELECT
+			t.F_VENID as venId ,
+			t.F_SPID as spId ,
+			t.F_VENNAME as venName ,
+			t.F_TEL as tel ,
+			t.F_WWWSITE as wWWSite ,
+			t.F_FAX as fax ,
+			t.F_LEAGAL as leagal ,
+			t.F_LEAGALTEL as leagalTel ,
+			t.F_LINKPERSON as linkPerson ,
+			t.F_LINKTEL as linkTel ,
+			t.F_VENMEMO as venMemo ,
+			t.F_BANKMEMO as bankMemo ,
+			t.F_LINKMEMO as linkMemo ,
+			t.F_COMPADDRESS as compAddress ,
+			t.F_BANKNAME as bankName ,
+			t.F_BANKACC as bankAcc ,
+			t.F_BANKTAX as bankTax ,
+			t.F_FUND as fund ,
+			t.F_BUSCERT as buscert ,
+			t.F_LOGOURL as logoUrl ,
+			t.F_BUSINESSRANGE as businessRange ,
+			t.F_BANKUSER as bankUser ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECVADDRESS as recvAddress,
+			t.F_RECEIVER as receiver,
+			t.F_RECVPHONE as recvPhone,
+			d.F_SPNAME as spName
+		FROM
+			t_sm_company t
+		left join T_PUB_DESTSP d on d.F_SPID = t.F_SPID
+		<where>
+			t.F_VENID = #{venId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCompanyList" parameterType="company" resultType="company">
+		SELECT
+			t.F_VENID as venId ,
+			t.F_SPID as spId ,
+			t.F_VENNAME as venName ,
+			t.F_TEL as tel ,
+			t.F_WWWSITE as wWWSite ,
+			t.F_FAX as fax ,
+			t.F_LEAGAL as leagal ,
+			t.F_LEAGALTEL as leagalTel ,
+			t.F_LINKPERSON as linkPerson ,
+			t.F_LINKTEL as linkTel ,
+			t.F_VENMEMO as venMemo ,
+			t.F_BANKMEMO as bankMemo ,
+			t.F_LINKMEMO as linkMemo ,
+			t.F_COMPADDRESS as compAddress ,
+			t.F_BANKNAME as bankName ,
+			t.F_BANKACC as bankAcc ,
+			t.F_BANKTAX as bankTax ,
+			t.F_FUND as fund ,
+			t.F_BUSCERT as buscert ,
+			t.F_LOGOURL as logoUrl ,
+			t.F_BUSINESSRANGE as businessRange ,
+			t.F_BANKUSER as bankUser ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECVADDRESS as recvAddress,
+			t.F_RECEIVER as receiver,
+			t.F_RECVPHONE as recvPhone
+		FROM
+		t_sm_company t
+		<where>
+			<if test="venId!=null and venId!=''">
+		    	t.F_VENID = #{venId}
+		    </if>
+		    <if test="spId!=null and spId!=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="venName!=null and venName!=''">
+		    	and t.F_VENNAME like concat('%',#{venName},'%')
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 根据商家名称检索条数  -->
+	<select id="getCountByVenName" parameterType="company" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+			t_sm_company t
+		<where>
+			<if test="venId!=null and venId!=''">
+		    	t.F_VENID != #{venId}
+		    </if>
+		    <if test="venName!=null and venName!=''">
+		    	and t.F_VENNAME = #{venName}
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="spId!=null and spId!=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		</where>
+	</select>
+	
+	<select id="queryCompanyListByIdList" parameterType="company" resultType="company">
+		SELECT
+			t.F_VENID as venId ,
+			t.F_SPID as spId ,
+			t.F_VENNAME as venName ,
+			t.F_TEL as tel ,
+			t.F_WWWSITE as wWWSite ,
+			t.F_FAX as fax ,
+			t.F_LEAGAL as leagal ,
+			t.F_LEAGALTEL as leagalTel ,
+			t.F_LINKPERSON as linkPerson ,
+			t.F_LINKTEL as linkTel ,
+			t.F_VENMEMO as venMemo ,
+			t.F_BANKMEMO as bankMemo ,
+			t.F_LINKMEMO as linkMemo ,
+			t.F_COMPADDRESS as compAddress ,
+			t.F_BANKNAME as bankName ,
+			t.F_BANKACC as bankAcc ,
+			t.F_BANKTAX as bankTax ,
+			t.F_FUND as fund ,
+			t.F_BUSCERT as buscert ,
+			t.F_LOGOURL as logoUrl ,
+			t.F_BUSINESSRANGE as businessRange ,
+			t.F_BANKUSER as bankUser ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECVADDRESS as recvAddress,
+			t.F_RECEIVER as receiver,
+			t.F_RECVPHONE as recvPhone
+		FROM
+		t_sm_company t
+		<where>
+			t.F_VENID in
+			<foreach collection="companyIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+</mapper>	

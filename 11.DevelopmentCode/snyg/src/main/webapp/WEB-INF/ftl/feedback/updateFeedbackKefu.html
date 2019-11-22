@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<div class="waybill-title">
+	<span>编辑系统消息</span></div>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="feedback.do?method=update" method="post" id="createFeedback">
+			
+			<input type="hidden" name="msgType" id="msgType" value="${feedback.msgType}"/>
+			<input type="hidden" name="url" id="url" value="${feedback.url}"/>
+			<input type="hidden" name="spId" id="spId" value="${feedback.spId}"/>
+			<input type="hidden" name="feedBackId" id="feedBackId" value="${feedback.feedBackId}"/>
+			
+			<input type="hidden" name="delFlag" id="delFlag" value="${feedback.delFlag}"/>
+
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed;">
+				<tbody>
+					<tr class="">
+						<td width="10%" class="tdright"><b><span class="f2"><b>*</b></span>消息名称：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="msgName" id="msgName" type="text" value="${feedback.msgName!''}" class="validate[required,maxSize[100]] data-inputtxt" maxlength="50">
+							</span>
+						</td>
+					</tr>
+					
+					<tr class="">
+						<td width="15%" class="tdright"><b><span class="f2"><b>*</b></span>消息类型：</b></td>
+						<td>
+							<select id="context" name="context" class="validate[required] data-inputtxt-select">
+							<#if pubmapList??>
+							<#list pubmapList as pubmap>
+								<#if (feedback.context!"") == (pubmap.mapKey!"")>
+								<option value="${pubmap.mapKey}" selected>${pubmap.mapValue}</option>
+								<#else>
+								<option value="${pubmap.mapKey}">${pubmap.mapValue}</option>
+								</#if>
+							</#list>
+							</#if>
+							</select>
+						</td>
+					</tr>
+					
+					<tr class="">
+						<td width="10%" class="tdright"><b><span class="f2"></span>标题：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="title" id="title" type="text" value="${feedback.title!''}" class="validate[maxSize[100]] data-inputtxt" maxlength="50">
+							</span>
+						</td>
+					</tr>
+					
+					<tr class="">
+						<td width="10%" class="tdright"><b><span class="f2"></span>完全匹配关键词：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="keyWord" id="keyWord" type="text" value="${feedback.keyWord!''}" class="validate[maxSize[100]] data-inputtxt" maxlength="50">
+							</span>
+						</td>
+					</tr>
+					
+					<tr class="">
+						<td class="tdright"><b><span class="f2"></span>使用状态：</b></td>
+						<td>
+						    <#if feedback.delFlag = '0'>
+								正常
+						    <#else>
+						    	停用
+						    </#if>
+						</td>
+					</tr>
+	
+				</tbody>
+			</table>
+
+			<div class="footerbtn">
+				<input type="button" class="cbtn2" onClick="javascript:location.href='${Session.BACK_URL!''}'" value="取消">
+				<input type="button" class="cbtn1" onClick="beforeSubmit()" value="确定">
+			</div>
+			
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+
+$(function() {
+	$("#createFeedback").validationEngine();// 验证
+});
+
+// 保存前
+function beforeSubmit() {
+	if ($("#createFeedback").validationEngine('validate')) {
+		$("#createFeedback").submit();
+	}
+}
+
+</script>
+</html>

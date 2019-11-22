@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("sellPriceId");
+		document.getElementById("checkedSellPriceIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<form id="queryFrm" action="sellPrice?method=query" method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="priceType" name="priceType" value="${priceType!''}" />
+		<input type="hidden" id="openFlag" name="openFlag" value="${openFlag!''}" />
+		<input type="hidden" id="domainName" value="${domainName!''}">
+	<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td>商品名称：</td><td>
+	          	<input name="productName" type="text" class="data-searchtxt" id="title" value="${sellPrice.productName!''}">
+	          </td>
+	          <td>商品编号：</td><td>
+	          	<input name="productCode" type="text" class="data-searchtxt" id="title" value="${sellPrice.productCode!''}">
+	          </td>
+	          <td align="right">商品类型：</td><td>
+	          	<select  name="type" id="type" class="data-searchtxt-select">
+	         		<option value="">请选择</option>
+	         		<#if pdcTypeList?? && (pdcTypeList?size>0)>
+					<#list pdcTypeList as e>
+						<#if sellPrice.type?? && sellPrice.type == e.pdcTypeId>
+							<option value="${e.pdcTypeId!''}" selected>${e.typeName!""}</option>
+						<#else>
+							<option value="${e.pdcTypeId!''}">${e.typeName!""}</option>
+						</#if>
+					</#list>
+				</#if>
+				</select>
+	          </td>
+	                <td align="right">　商家名称：</td><td>
+					<select name="venId" id="venId" class="validate[required] data-inputtxt-select">
+						<option value="">请选择</option>
+					    <#if companyList??>
+	               		<#list companyList as company>
+	               			<#if sellPrice.venId?? && sellPrice.venId == company.venId>
+								<option value="${company.venId!''}" selected>${company.venName!""}</option>
+							<#else>
+								<option value="${company.venId!''}">${company.venName!""}</option>
+							</#if>
+						</#list>
+						</#if>
+	               	</select>
+				</td>
+	          
+	          <td>是否上架：</td><td colspan="6">
+	          	<select  name="state" id="state" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<#if sellPrice.state??>
+	          			<#if sellPrice.state=='0'>
+			         		<option value="0" selected="selected">否</option>
+			         		<option value="1">是</option>
+			         	<#elseif sellPrice.state=='1'>
+			         		<option value="0">否</option>
+			         		<option value="1" selected="selected">是</option>
+		          		<#else>
+			         		<option value="0">否</option>
+			         		<option value="1">是</option>
+		          		</#if>
+	          		<#else>
+		         		<option value="0">否</option>
+		         		<option value="1">是</option>
+	          		</#if>
+				</select>
+	          </td>
+	
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+	      	                
+	    <div class="getMore">展开更多 ▼</div>  
+		</div>
+		<div class="waybill-title">
+		  	<div align="left">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="批量管理" onclick="toQueryForAdd()">
+		    </div>
+		  </div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="14%">商品编号</th> 
+				<th width="16%">商品名称</th> 
+				<th width="10%">商品规格</th> 
+				<th width="10%">秒杀价格（元）</th> 
+				<th width="14%">活动开始时间</th> 
+				<th width="14%">活动结束时间</th> 
+				<th width="15%">操作</th> 
+			</tr>
+
+			<#list sellPricelist as sellPrice>
+			<tr  onclick="selectTr(this)">
+		<!-- 		<td>
+					<input type="checkbox" name="sellPriceId" value="${sellPrice.sellPriceId!''}"></td> --> 
+				<td title="${sellPrice.productCode!''}">${sellPrice.productCode!''}</td> 
+				<td title="${sellPrice.productName!''}">${sellPrice.productName!''}</td> 
+				<td title="${sellPrice.priceName!''}">${sellPrice.priceName!''}</td> 
+				<td title="${sellPrice.priceStartDate!''}">${sellPrice.priceStartDate!''}</td> 
+				<td title="${sellPrice.priceEndDate!''}">${sellPrice.priceEndDate!''}</td> 
+				<td title="${sellPrice.price!''}">${sellPrice.price!''}</td> 
+				<td>
+					<a href="commproduct?method=toDetail&productId=${sellPrice.productId!''}&priceType=${sellPrice.priceType!''}" title="详情" class="ico_btn1">详情</a>
+					<a href="sellPrice?method=toUpdateDetail&priceId=${sellPrice.priceId!''}">修改</a>
+					<a href="javascript:void(0)" onclick="delPrice('${sellPrice.priceId!''}')">删除</a>
+					<a href="javascript:void(0)" onclick="copyUrl('${sellPrice.priceId!''}','${sellPrice.priceId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
+					<input type="text" style="border:0px;width:1px;" id="productIdHidden${sellPrice.priceId!''}" value="" ></input>
+				</td>
+			</tr>
+			</#list>
+		</table>
+
+		<#if sellPricelist?? && (sellPricelist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+<!-- 	<form action="sellPrice?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedSellPriceIds"
+			id="checkedSellPriceIds">
+	</form> -->
+<script>
+$(function () {
+	//多个查询条件样式
+	showHideQuery();
+	
+	
+	// 展开
+	if ($("#openFlag").val() == "1") {
+		$(".getMore").click();
+	}
+});
+function copyUrl(id,priceId){
+	var url = $("#domainName").val()+"/wx.do?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+	$("#productIdHidden"+id).val(url);
+	 var copyText = $("#productIdHidden"+id);//获取对象
+     copyText.select();//选择
+     document.execCommand("Copy");//执行复制
+　　parent.layer.alert("复制成功！");
+}
+function delPrice(priceId) {
+	var index = parent.layer.confirm('确认删除该商品吗?', function() {
+		$.post("sellPrice?method=delete", {
+			priceId : priceId
+		}, function(ret) {
+			if (ret=="success") {
+				var index2 = parent.layer.alert("删除成功",function(){
+					$("#queryFrm").submit();
+
+					parent.layer.closeAll();
+				}); 
+			}
+		})
+	}, function() {
+		parent.layer.closeAll();
+	});
+}
+
+function toQueryForAdd(){
+	var content = "sellPrice?method=toQuerySellPriceListForAdd&priceType="+$("#priceType").val();
+	parent.layer.open({
+		type : 2,
+		title : '管理活动商品',
+		area : [ '1320px', '600px' ],
+		fix : true,
+		content :content,
+		end: function(){
+			$("#queryFrm").submit();
+		}
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/style.css" rel="stylesheet" />
+<link href="${rc.contextPath}/css/css-main.css" rel="stylesheet" />
+</head>
+<body>
+<div class="waybill-title"><span>订单信息</span></div>
+<div class="tab-nav">
+    <ul class="nav">
+    <li><a href="order?method=toOrderDetailWindow&orderId=${orderLog.linkId!''}" >基本信息</a></li>
+    <li><a href="orderLog?method=queryAllRorWindow&linkId=${orderLog.linkId!''}&type=1" class="active">操作日志</a></li>
+    </ul>
+    <div style="clear:both;"></div>
+</div>
+<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tbody>
+    <tr>
+       <th width="10%">操作时间</th>
+       <th width="20%">操作人</th>
+       <th width="20%">操作内容</th>
+       <th width="20%">操作结果</th>
+      </tr> 
+    <#if orderLoglist?? && (orderLoglist?size>0)>
+		<#list orderLoglist as l>
+			<tr>
+	  			<td title="${l.opTime}">${l.opTime}</td>
+	  			<td title="${l.oper}"><em>${l.oper}</em></td>
+	  			<td title="${l.opContent}">${l.opContent}</td>
+	  			<td>
+	  				<#if l.result??>
+	  					<#if l.result=='0'>
+	  						失败
+	  					<#elseif l.result=='1'>
+	  						成功
+	  					</#if>
+	  				</#if>
+	  			</td>
+			</tr>
+		</#list>
+	</#if>
+  </tbody>
+</table>
+
+
+<script>
+</script>
+</body>
+</html>

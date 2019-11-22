@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.DestspDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertDestsp" parameterType="Destsp">
+		INSERT INTO 
+			t_pub_destsp  
+		(
+			F_SPID ,
+			F_WXSERVICEID ,
+			F_SPTYPE ,
+			F_SPNAME ,
+			F_LINKNAME ,
+			F_TELPHONE ,
+			F_FAX ,
+			F_WWWSITE ,
+			F_ADDRESS ,
+			F_MEMO ,
+			F_DELTAG ,
+			F_ORDERPREFIX ,
+			F_CARPREFIX ,
+			F_DESTPLACE ,
+			F_LNG ,
+			F_LAT ,
+			F_ISHOT ,
+			F_ISAPP ,
+			F_ISB2B ,
+			F_ACCOUNTPERIOD ,
+			F_RATE ,
+			F_ZNRATE ,
+			F_FREEPERIOD ,
+			F_HOT ,
+			F_ISB2C ,
+			F_TICKETSUBJECT ,
+			F_LINESUBJECT ,
+			F_HOTELSUBJECT ,
+			F_GOODSSUBJECT ,
+			F_THUMBPIC 
+		) VALUES (
+			#{spId} ,
+			#{wxServiceId} ,
+			#{spType} ,
+			#{spName} ,
+			#{linkName} ,
+			#{telephone} ,
+			#{fax} ,
+			#{wwwsite} ,
+			#{address} ,
+			#{memo} ,
+			#{delTag} ,
+			#{orderprefix} ,
+			#{carprefix} ,
+			#{destPlace} ,
+			#{lng} ,
+			#{lat} ,
+			#{isHot} ,
+			#{isApp} ,
+			#{isB2b} ,
+			#{accountPeriod} ,
+			#{rate} ,
+			#{znRate} ,
+			#{freePeriod} ,
+			#{hot} ,
+			#{isB2c} ,
+			#{ticketSubject} ,
+			#{lineSubject} ,
+			#{hotelSubject} ,
+			#{goodsSubject} ,
+			#{thumbpic} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeDestsp" parameterType="Destsp">
+		REPLACE INTO 
+			t_pub_destsp 
+		(
+			F_SPID ,
+			F_WXSERVICEID ,
+			F_SPTYPE ,
+			F_SPNAME ,
+			F_LINKNAME ,
+			F_TELPHONE ,
+			F_FAX ,
+			F_WWWSITE ,
+			F_ADDRESS ,
+			F_MEMO ,
+			F_DELTAG ,
+			F_ORDERPREFIX ,
+			F_CARPREFIX ,
+			F_DESTPLACE ,
+			F_LNG ,
+			F_LAT ,
+			F_ISHOT ,
+			F_ISAPP ,
+			F_ISB2B ,
+			F_ACCOUNTPERIOD ,
+			F_RATE ,
+			F_ZNRATE ,
+			F_FREEPERIOD ,
+			F_HOT ,
+			F_ISB2C ,
+			F_TICKETSUBJECT ,
+			F_LINESUBJECT ,
+			F_HOTELSUBJECT ,
+			F_GOODSSUBJECT ,
+			F_THUMBPIC 
+		) VALUES (
+			#{spId} ,
+			#{wxServiceId} ,
+			#{spType} ,
+			#{spName} ,
+			#{linkName} ,
+			#{telephone} ,
+			#{fax} ,
+			#{wwwsite} ,
+			#{address} ,
+			#{memo} ,
+			#{delTag} ,
+			#{orderprefix} ,
+			#{carprefix} ,
+			#{destPlace} ,
+			#{lng} ,
+			#{lat} ,
+			#{isHot} ,
+			#{isApp} ,
+			#{isB2b} ,
+			#{accountPeriod} ,
+			#{rate} ,
+			#{znRate} ,
+			#{freePeriod} ,
+			#{hot} ,
+			#{isB2c} ,
+			#{ticketSubject} ,
+			#{lineSubject} ,
+			#{hotelSubject} ,
+			#{goodsSubject} ,
+			#{thumbpic} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateDestsp" parameterType="Destsp">
+		UPDATE
+			t_pub_destsp 
+		SET
+			F_WXSERVICEID = #{wxServiceId} ,
+			F_SPTYPE = #{spType} ,
+			F_SPNAME = #{spName} ,
+			F_LINKNAME = #{linkName} ,
+			F_TELPHONE = #{telephone} ,
+			F_FAX = #{fax} ,
+			F_WWWSITE = #{wwwsite} ,
+			F_ADDRESS = #{address} ,
+			F_MEMO = #{memo} ,
+			F_DELTAG = #{delTag} ,
+			F_ORDERPREFIX = #{orderprefix} ,
+			F_CARPREFIX = #{carprefix} ,
+			F_DESTPLACE = #{destPlace} ,
+			F_LNG = #{lng} ,
+			F_LAT = #{lat} ,
+			F_ISHOT = #{isHot} ,
+			F_ISAPP = #{isApp} ,
+			F_ISB2B = #{isB2b} ,
+			F_ACCOUNTPERIOD = #{accountPeriod} ,
+			F_RATE = #{rate} ,
+			F_ZNRATE = #{znRate} ,
+			F_FREEPERIOD = #{freePeriod} ,
+			F_HOT = #{hot} ,
+			F_ISB2C = #{isB2c} ,
+			F_TICKETSUBJECT = #{ticketSubject} ,
+			F_LINESUBJECT = #{lineSubject} ,
+			F_HOTELSUBJECT = #{hotelSubject} ,
+			F_GOODSSUBJECT = #{goodsSubject} ,
+			F_THUMBPIC = #{thumbpic} 
+		<where>
+			F_SPID = #{spId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteDestsp" parameterType="Destsp">
+		DELETE FROM
+			t_pub_destsp 
+		<where>
+			F_SPID = #{spId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchDestsp" parameterType="Destsp">
+		DELETE FROM 
+			t_pub_destsp 
+		<where>
+			F_SPID in
+			<foreach collection="destspIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryDestsp" parameterType="String" resultType="Destsp">
+		SELECT
+			t.F_SPID as spId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_SPTYPE as spType ,
+			t.F_SPNAME as spName ,
+			t.F_LINKNAME as linkName ,
+			t.F_TELPHONE as telephone ,
+			t.F_FAX as fax ,
+			t.F_WWWSITE as wwwsite ,
+			t.F_ADDRESS as address ,
+			t.F_MEMO as memo ,
+			t.F_DELTAG as delTag ,
+			t.F_ORDERPREFIX as orderprefix ,
+			t.F_CARPREFIX as carprefix ,
+			t.F_DESTPLACE as destPlace ,
+			t.F_LNG as lng ,
+			t.F_LAT as lat ,
+			t.F_ISHOT as isHot ,
+			t.F_ISAPP as isApp ,
+			t.F_ISB2B as isB2b ,
+			t.F_ACCOUNTPERIOD as accountPeriod ,
+			t.F_RATE as rate ,
+			t.F_ZNRATE as znRate ,
+			t.F_FREEPERIOD as freePeriod ,
+			t.F_HOT as hot ,
+			t.F_ISB2C as isB2c ,
+			t.F_TICKETSUBJECT as ticketSubject ,
+			t.F_LINESUBJECT as lineSubject ,
+			t.F_HOTELSUBJECT as hotelSubject ,
+			t.F_GOODSSUBJECT as goodsSubject ,
+			t.F_THUMBPIC as thumbpic 
+		FROM
+			t_pub_destsp t
+		<where>
+			t.F_SPID = #{spId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryDestspList" parameterType="Destsp" resultType="Destsp">
+		SELECT
+			t.F_SPID as spId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_SPTYPE as spType ,
+			t.F_SPNAME as spName ,
+			t.F_LINKNAME as linkName ,
+			t.F_TELPHONE as telephone ,
+			t.F_FAX as fax ,
+			t.F_WWWSITE as wwwsite ,
+			t.F_ADDRESS as address ,
+			t.F_MEMO as memo ,
+			t.F_DELTAG as delTag ,
+			t.F_ORDERPREFIX as orderprefix ,
+			t.F_CARPREFIX as carprefix ,
+			t.F_DESTPLACE as destPlace ,
+			t.F_LNG as lng ,
+			t.F_LAT as lat ,
+			t.F_ISHOT as isHot ,
+			t.F_ISAPP as isApp ,
+			t.F_ISB2B as isB2b ,
+			t.F_ACCOUNTPERIOD as accountPeriod ,
+			t.F_RATE as rate ,
+			t.F_ZNRATE as znRate ,
+			t.F_FREEPERIOD as freePeriod ,
+			t.F_HOT as hot ,
+			t.F_ISB2C as isB2c ,
+			t.F_TICKETSUBJECT as ticketSubject ,
+			t.F_LINESUBJECT as lineSubject ,
+			t.F_HOTELSUBJECT as hotelSubject ,
+			t.F_GOODSSUBJECT as goodsSubject ,
+			t.F_THUMBPIC as thumbpic 
+		FROM
+		t_pub_destsp t
+		<where>
+			<if test="spId!=null and spId!=''">
+		    	t.F_SPID = #{spId}
+		     </if>
+		     
+		     <if test="wxServiceId!=null and wxServiceId!=''">
+		    	AND t.F_WXSERVICEID = #{wxServiceId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

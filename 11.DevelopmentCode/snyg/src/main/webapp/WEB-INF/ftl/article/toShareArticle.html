@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
+<title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript"> 	
+$(function(){
+	//设置记录
+	history.replaceState("pay_forword", null, "wxcountry820pages/order/forword.jsp"); 
+
+	var redirecturl ="toShareArticleSec?spId=${destsp.spId!''}&articleId=${article.articleId!''}&sOpenId=${sOpenId!''}";
+	var url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=${serviceCode.appId!''}"+
+	"&redirect_uri="+
+	encodeURIComponent("${serviceCode.url!''}/"+redirecturl)
+	+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+	location.href=url;
+});
+</script>
+</html>

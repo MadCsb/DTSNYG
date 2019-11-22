@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/jee
+	http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-3.1.xsd"
+	default-lazy-init="false">
+
+    <!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+	<context:component-scan base-package="com.msy.travel.*" />
+	
+	<!-- 启用Schedule注解功能 -->
+	<task:annotation-driven executor="myexecutor"/>
+	<task:executor id="myexecutor" pool-size="20" />
+	
+	<!-- 引用jdbc配置文件 -->
+	<bean id="propertyPlaceHolderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc_config.properties</value>
+            </list>
+        </property>
+    </bean>
+	<!-- /引用jdbc配置文件 -->
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.user}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<!-- 配置初始化大小、最小、最大 -->  
+		<property name="initialSize">
+			<value>${jdbc.initConnectionSize}</value>
+		</property>
+		<property name="minIdle">
+			<value>${jdbc.minConnectionSize}</value>
+		</property>
+		<property name="maxActive">
+			<value>${jdbc.maxConnectionSize}</value>
+		</property>
+		 <!-- 配置获取连接等待超时的时间  单位毫秒-->  
+		<property name="maxWait">
+			<value>60000</value>
+		</property>
+		 <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位毫秒 -->  
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
+		<property name="validationQuery">
+			<value>select 1 from dual</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
+		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->  
+		<property name="filters">
+			<value>stat</value>
+		</property>  
+		<!-- oracle下建议启用-->
+		<!--<property name="poolPreparedStatements">
+			<value>true</value>
+		</property>
+		<property name="maxOpenPreparedStatements"> 
+			<value>100</value>
+		</property> -->
+	</bean>
+	<!-- /配置数据源 -->
+
+
+	<!-- mybatis的SqlSession的工厂-->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 自动扫描mapping.xml文件 -->  
+        <property name="mapperLocations">
+	        <array>
+	            <value>classpath*:com/**/travel/dao/*.xml</value>
+	            <value>classpath*:com/**/travel/statistics/dao/*.xml</value>
+	        </array>
+        </property>
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- 扫描实体类别名 -->
+        <property name="typeAliasesPackage" value="com.msy.travel.pojo" />
+    </bean>  
+  
+    <!-- mybatis自动扫描加载Sql映射文件/接口  -->  
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="com.msy.travel.dao;com.msy.travel.statistics.dao"></property>
+        <!-- 配置sqlSessionFactoryBeanName来解决启动时资源文件无法读取问题 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>  
+  
+    <!-- 事务管理 -->  
+    <bean id="txManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource"></property>  
+    </bean>  
+  
+    <!-- 使用声明式事务 事务管理器  -->  
+    <tx:annotation-driven transaction-manager="txManager" />  
+
+
+	 <!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">          
+        <!--1024*1000即1000k-->  
+        <!--<property name="maxUploadSize" value="1024"/>-->
+        <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->  
+        <!--<property name="resolveLazily" value="true"/>-->  
+    </bean>
+  
+    <!-- 引入资源配置文件 -->
+	<import resource="applicationContext-resources.xml" />
+
+	<!-- 引入shiro配置文件-->
+	<import resource="applicationContext-shiro.xml"/> 
+	
+	<!-- 引入redis配置文件-->
+	<!-- <import resource="applicationContext-redies.xml"/> -->
+	
+	<!-- 引入activemq配置文件-->
+	<!-- <import resource="applicationContext-activemq.xml"/> -->
+	 
+</beans>

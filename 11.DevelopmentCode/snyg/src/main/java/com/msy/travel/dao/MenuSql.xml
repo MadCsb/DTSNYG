@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.MenuDao">
+	<!--根据用户id及roleType值获取用户菜单  -->
+	<select id="getListByUserIdAndRoletype" parameterType="menu"  resultType="menu">
+		select a.F_MENU_ID       as menuId,
+		a.F_MENU_NAME     as menuName,
+		a.F_MENU_LEVEL    as menuLevel,
+		a.F_PMENU_ID      as pMenuId,
+		a.F_MENU_URL      as menuUrl,
+		a.F_MENU_ORDER    as menuOrder,
+		a.F_MENU_IS_ADMIN as menuIsAdmin
+		FROM T_PUB_MENU a
+		where a.F_MENU_ID in (SELECT menu.F_MENU_ID
+		from T_PUB_MENU menu
+		left join T_PUB_UGMENULINK um
+		on um.F_MENU_ID = menu.F_MENU_ID
+		left join T_PUB_USERGROUPLINK ug
+		on um.F_USERGROUP_ID = ug.F_USERGROUP_ID
+		<where>
+			<if test="userId !=null and userId !=''">
+		    	and ug.F_USER_ID = #{userId}
+		    </if>
+		    <if test="roleType !=null and roleType !=''">
+		    	and menu.F_MENU_IS_ADMIN = #{roleType}
+		    </if>
+		</where>
+		)
+		order by a.F_MENU_ORDER
+	</select>
+
+	<!-- 查询单个详情 -->
+	<select id="queryMenu" parameterType="menu" resultType="menu">
+		SELECT
+		F_MENU_ID as menuId ,
+		F_MENU_NAME as menuName ,
+		F_MENU_LEVEL as menuLevel ,
+		F_PMENU_ID as pMenuId ,
+		F_MENU_URL as menuUrl ,
+		F_MENU_ORDER as menuOrder ,
+		F_MENU_DESC as menuDesc ,
+		F_MENU_IS_ADMIN as menuIsAdmin
+		FROM
+		T_PUB_MENU
+		WHERE
+		F_MENU_ID = #{menuId}
+	</select>
+
+	<!-- 查询所有菜单信息 -->
+	<select id="getAll" resultType="menu">
+		select
+		m.F_MENU_ID as menuId,
+		m.F_MENU_NAME as menuName,
+		m.F_MENU_LEVEL as menuLevel,
+		m.F_PMENU_ID as pMenuId,
+		m.F_MENU_URL as menuUrl,
+		m.F_MENU_ORDER as menuOrder,
+		m.F_MENU_IS_ADMIN as menuIsAdmin,
+		(case
+		when m.F_MENU_ID in
+		(select menu.F_MENU_ID
+		from T_PUB_MENU menu
+		LEFT JOIN T_PUB_UGMENULINK um
+		on menu.F_MENU_ID = um.F_MENU_ID
+		where um.F_USERGROUP_ID = #{usergroupId}) then
+		'1'
+		ELSE
+		'2'
+		end) as checked,
+		pm.f_menu_name as pMenuName
+		from T_PUB_MENU m
+		left join T_PUB_MENU pm
+		on pm.f_menu_id = m.f_pmenu_id
+		<where>
+			<if test="menuIsAdmin !=null and menuIsAdmin !=''">
+		    	and m.F_MENU_IS_ADMIN = #{menuIsAdmin}
+		    </if>
+		    <if test="menuLevel !=null and menuLevel !=''">
+		    	and m.F_MENU_LEVEL = #{menuLevel}
+		    </if>
+		</where>
+		order by  pm.f_menu_order,m.F_MENU_ORDER
+	</select>
+	
+	<!-- 查询所有菜单信息 -->
+  	<select id="queryMenuListByMenuPid" parameterType="String" resultType="menu">
+    	SELECT
+	        F_MENU_ID as menuId ,
+	        F_MENU_NAME as menuName ,
+	        F_MENU_LEVEL as menuLevel ,
+	        F_PMENU_ID as pMenuId ,
+	        F_MENU_URL as menuUrl ,
+	        F_MENU_ORDER as menuOrder ,
+	        F_MENU_IS_ADMIN as menuIsAdmin
+		FROM 
+			T_PUB_MENU
+		WHERE
+			F_PMENU_ID =#{pMenuId}
+		ORDER BY F_MENU_ORDER
+	</select>
+	
+	<!-- 根据菜单名称和菜单ID获取所有相同菜单名称的菜单 -->
+  	<select id="isExistMenuName" parameterType="menu" resultType="menu">
+    	SELECT
+	        F_MENU_ID as menuId ,
+	        F_MENU_NAME as menuName 
+		FROM 
+			T_PUB_MENU
+		WHERE
+			<if test="menuName !=null and menuName !=''">
+		    	 F_MENU_NAME =#{menuName}
+		    </if>
+		    <if test="menuIsAdmin !=null and menuIsAdmin !=''">
+		    	and F_MENU_IS_ADMIN =#{menuIsAdmin}
+		    </if>
+	</select>
+	
+	<!-- 获取最大编号 -->
+	<select id="getMaxMenuId" parameterType="menu" resultType="menu">
+		SELECT
+			MAX(F_MENU_ID) as menuId
+		FROM 
+			T_PUB_MENU
+		<where>
+			<if test="pMenuId !=null and pMenuId !=''">
+		    	 F_PMENU_ID = #{pMenuId}
+		    </if>
+		</where>
+	</select>
+
+	<!-- 新增信息 -->
+	<insert id="insertMenu" parameterType="menu">
+		INSERT INTO 
+			t_pub_menu  
+		(
+			F_MENU_ID ,
+			F_MENU_NAME ,
+			F_MENU_LEVEL ,
+			F_PMENU_ID ,
+			F_MENU_URL ,
+			F_PRIV_ID ,
+			F_MENU_ORDER ,
+			F_MENU_DESC ,
+			F_SYSTAG ,
+			F_MENU_IS_ADMIN
+		) VALUES (
+			#{menuId} ,
+			#{menuName} ,
+			#{menuLevel} ,
+			#{pMenuId} ,
+			#{menuUrl} ,
+			#{privId} ,
+			#{menuOrder} ,
+			#{menuDesc} ,
+			#{sysTag} ,
+			#{menuIsAdmin}
+		)
+	</insert>
+	
+	<!-- 修改信息 -->
+	<update id="updateMenu" parameterType="menu">
+		UPDATE
+			t_pub_menu 
+		SET
+			F_MENU_NAME = #{menuName} ,
+			F_MENU_LEVEL = #{menuLevel} ,
+			F_PMENU_ID = #{pMenuId} ,
+			F_MENU_URL = #{menuUrl} ,
+			F_PRIV_ID = #{privId} ,
+			F_MENU_ORDER = #{menuOrder} ,
+			F_MENU_DESC = #{menuDesc} ,
+			F_SYSTAG = #{sysTag} ,
+			F_MENU_IS_ADMIN = #{menuIsAdmin} 
+		<where>
+			F_MENU_ID = #{menuId} 
+			
+		</where>
+	</update>
+	<delete id="deleteMenu" parameterType="menu">
+		DELETE FROM
+			t_pub_menu 
+		<where>
+			F_MENU_ID = #{menuId}
+			
+		</where>
+	</delete>
+
+	<!-- 查询所有需同步菜单信息 -->
+	<select id="getSynAll" resultType="menu">
+		select
+		m.F_MENU_ID as menuId,
+		m.F_MENU_NAME as menuName,
+		m.F_MENU_LEVEL as menuLevel,
+		m.F_PMENU_ID as pMenuId,
+		m.F_MENU_URL as menuUrl,
+		m.F_MENU_ORDER as menuOrder,
+		m.F_MENU_IS_ADMIN as menuIsAdmin
+		from T_PUB_MENU m
+
+		<where>
+			<if test="menuIsAdmin !=null and menuIsAdmin !=''">
+				and m.F_MENU_IS_ADMIN = #{menuIsAdmin}
+			</if>
+			<if test="menuLevel !=null and menuLevel !=''">
+				and m.F_MENU_LEVEL = #{menuLevel}
+			</if>
+		</where>
+		order by m.F_MENU_LEVEL asc
+	</select>
+
+
+</mapper>	

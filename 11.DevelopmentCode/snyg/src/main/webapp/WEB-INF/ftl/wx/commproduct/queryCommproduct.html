@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">
+<style>
+
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:110px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:110px;
+
+}
+
+.one_sp_list .info {
+	position: relative;
+	padding: 0 0 0 120px;
+	z-index:1;
+	height:80px;
+}
+</style>
+</head>
+<body onLoad="javascript:window_onload();">
+<div class="snyg_headdiv">
+	<span class="ico_ret"><a href="index.html"><img src="images/return.png" ></a></span>
+    <h2>商品</h2>
+    <span class="ico_home"><a href="个人中心.html"><img src="images/gruser.png"></a></span>
+</div>
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="form1" action="wx?method=toQueryCommproduct" method="POST">
+    		<input type="hidden" id="spId" name="spId" value="${commproduct.spId!''}" />
+    		<input type="hidden" id="sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+			<input type="hidden" id="sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+			<input type="hidden" id="type" name="type" value="${commproduct.type!''}" />
+			<input type="hidden" id="subType" name="subType" value="${commproduct.subType!''}" />
+			<input type="text" name="productName" id="productName" value="${commproduct.productName!''}" class="snyg_top_inputsech" placeholder="请输入检索关键字"/>
+			<input type="hidden" name="appId" id="appId" value="${serviceCode.appId!''}" />
+			<input type="hidden" name="url" id="url" value="${serviceCode.url!''}" />
+			<input type="hidden" name="priceType" id="priceType" value="${priceType!''}" />
+		</form>
+	</div>
+
+	<nav class="snyg_spfl_nav">
+    	<#if entityPage.sortField??>
+    		<#if entityPage.sortField=='p.F_SALENUM'>
+    			<a href="javascript:void(0)" onclick="changeOrder('p.F_SALENUM')"><span class="spanon">销量
+    			<#if entityPage.sortOrder??>
+    				<#if entityPage.sortOrder == 'DESC'>
+    					<i class="ico_djt"></i>
+    				<#elseif entityPage.sortOrder == 'ASC'>
+    					<i class="ico_ujt"></i>
+    				</#if>
+    			<#else>
+    				<i class="ico_djt"></i>
+    			</#if></span></a>
+    			<a href="javascript:void(0)" onclick="changeOrder('p.F_UPDATETIME')"><span>上新<i class="ico_jt"></i></span></a>
+	    		<a href="javascript:void(0)" onclick="changeOrder('s.F_PRICE')"><span>价格<i class="ico_jt"></i></span></a>    
+    		<#elseif entityPage.sortField=='p.F_UPDATETIME'>
+    			<a href="javascript:void(0)" onclick="changeOrder('p.F_SALENUM')"><span class="spanon">销量<i class="ico_jt"></i></span></a>
+    			<a href="javascript:void(0)" onclick="changeOrder('p.F_UPDATETIME')"><span class="spanon">上新
+    			<#if entityPage.sortOrder??>
+    				<#if entityPage.sortOrder == 'DESC'>
+    					<i class="ico_djt"></i>
+    				<#elseif entityPage.sortOrder == 'ASC'>
+    					<i class="ico_ujt"></i>
+    				</#if>
+    			<#else>
+    				<i class="ico_djt"></i>
+    			</#if></span></a>
+    			<a href="javascript:void(0)" onclick="changeOrder('s.F_PRICE')"><span>价格<i class="ico_jt"></i></span></a>    
+    		<#elseif entityPage.sortField=='s.F_PRICE'>
+    			<a href="javascript:void(0)" onclick="changeOrder('p.F_SALENUM')"><span class="spanon">销量<i class="ico_jt"></i></span></a>
+	    		<a href="javascript:void(0)" onclick="changeOrder('p.F_UPDATETIME')"><span>上新<i class="ico_jt"></i></span></a>
+    			<a href="javascript:void(0)" onclick="changeOrder('s.F_PRICE')"><span class="spanon">价格
+    			<#if entityPage.sortOrder??>
+    				<#if entityPage.sortOrder == 'DESC'>
+    					<i class="ico_djt"></i>
+    				<#elseif entityPage.sortOrder == 'ASC'>
+    					<i class="ico_ujt"></i>
+    				</#if>
+    			<#else>
+    				<i class="ico_djt"></i>
+    			</#if></span></a>
+    		</#if>
+    	<#else>
+	    	<a href="javascript:void(0)" onclick="changeOrder('p.F_SALENUM')"><span class="spanon">销量<i class="ico_djt"></i></span></a>
+	    	<a href="javascript:void(0)" onclick="changeOrder('p.F_UPDATETIME')"><span>上新<i class="ico_jt"></i></span></a>
+	    	<a href="javascript:void(0)" onclick="changeOrder('s.F_PRICE')"><span>价格<i class="ico_jt"></i></span></a>    
+    	</#if>
+    </nav>
+
+</div>
+<ul class="one_sp_list" id="dataUl">
+
+
+</ul>
+ 
+    <div class="clear"></div>
+    <div align="center"><span class="addMore">加载更多</span></div>
+    </div>
+</div>
+
+<div class="snyg_footer"></div>
+
+<script>
+	var isScroll = true;
+	var currentPage = "1";
+	
+	
+	
+	$(function(){
+		var sortField = $("#sortField").val();
+		var sortOrder = $("#sortOrder").val();
+		if(sortField == ""){
+			sortField = "p.F_SALENUM";
+			$("#sortField").val("p.F_SALENUM");
+		}
+		if(sortOrder == ""){
+			$("#sortOrder").val("DESC");
+		}
+		
+		getDataList();
+	});
+
+	function getDataList(){
+		
+		$.post("wx?method=querySellPriceListForWx",{
+			'entityPage.currentPage': currentPage,
+			'entityPage.rowsPerPage': '10',
+			'entityPage.sortOrder': $("#sortOrder").val(),
+			'entityPage.sortField': $("#sortField").val(),
+			'spId': $("#spId").val(),
+			'productName':$("#productName").val(),
+			'type':$("#type").val(),
+			'subType':$("#subType").val(),
+			'priceType':$("#priceType").val()
+		},function(data){
+			if(data.length==0){
+				$('.addMore').hide();
+			}else{
+				$("#dataUl").append(getDataStr(data));
+				currentPage++;
+				
+				if(data.length<10){
+					$('.addMore').text('没有更多了');
+				}
+			}
+		},'json');
+	}
+	
+	function getDataStr(data){
+		var str = "";
+		if(data!=null && data.length>0){
+			for(var i = 0;i<data.length;i++){
+				str+='<li>';
+				str+='<div class="iconleft">';  
+				str+='<div class="iconl0">';
+				str+='<a href="javascript:void(0)" onclick="productDetail(\''+data[i].priceId+'\')" title="商品详情"><img title="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" alt="" />';
+				if(data[i].priceType=='1'){
+					str+='<i class="tgspbq">团</i></a>';   
+				}else if(data[i].priceType=='2'){
+					str+='<i class="msspbq">秒</i></a>';   
+				}
+				str+='</div>';    
+				str+='</div>';
+				str+='<div class="info">';
+				str+='<a href="javascript:void(0)" onclick="productDetail(\''+data[i].priceId+'\',\''+data[i].priceType+'\')" title="商品详情"><h4>' + data[i].productName + '</h4></a>';  
+				str+='<p class="txt1"><span class="f4">' + data[i].priceName + '</span></p>';
+				str+='<a href="javasript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\',\''+data[i].priceType+'\')" title="购物车"><p class="txt"><span class="f2">&yen;' + data[i].price + '</span></p>';
+		        str+='<div class="gwc"  onclick="toShopCart()"></div></a>';
+		        str+='</div>';
+		        str+='</li>';
+			}
+		}
+		return str;
+	}
+	
+	function productDetail(priceId){
+	//	var detailUrl = $("#url").val() + "/wx.do?method=toQueryCommproductDetail&productId=" + productId +
+	//	'&spId=' + $("#spId").val()+'&priceType='+priceType;
+		
+		window.location.href='wx?method=toQueryCommproductDetailByPriceId&priceId='+priceId+"&spId="+$("#spId").val();
+		
+	//	wxAuthorizeBase($("#appId").val(), detailUrl);
+	}
+	
+	function toShopCart(){
+		//alert("购物车");
+		event.cancelBubble=true;
+	}
+	
+	function changeOrder(sortField){
+		var sortOrder = $("#sortOrder").val();
+		if($("#sortField").val() != sortField){
+			if(sortField=="s.F_PRICE"){
+				sortOrder = "ASC";
+			}else{
+				sortOrder = "DESC";
+			}
+		}else{
+			if(sortOrder == "DESC"){
+				sortOrder = "ASC";
+			}else{
+				sortOrder = "DESC";
+			}
+		}
+		$("#sortField").val(sortField);
+		$("#sortOrder").val(sortOrder)
+		$("#form1").submit();
+	}
+	
+	$(window).scroll(function(){
+
+		var scrollTop = $(this).scrollTop();
+		var scrollHeight = $(document).height();
+		var windowHeight = $(this).height();
+
+		if( scrollTop + windowHeight == scrollHeight){ //如果拉倒最底部
+
+			$('.addMore').text('正在加载...');
+
+			setTimeout( function(){
+				getDataList();
+				$('.addMore').before( addList(6) ).text('加载更多...');
+			},1000 )
+
+		}
+
+	});
+	
+	function window_onload() {
+	 	window.addEventListener("scroll",navbar_reset_top,false);
+	}
+
+	var navbar_top=100;
+
+	function navbar_reset_top() {
+		  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+		  if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+		    	document.getElementById("navbar").className="navbar_fixed";
+		  }
+		  else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+		    	document.getElementById("navbar").className="navbar_absolute";
+		  }
+	}
+		
+
+
+</script>
+</body>
+</html>

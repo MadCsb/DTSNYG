@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ShopcartDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertShopcart" parameterType="shopcart">
+		INSERT INTO 
+			t_sm_shopcart  
+		(
+			F_CARTID ,
+			F_PRICEID ,
+			F_NUM ,
+			F_USERID ,
+			F_CREATETIME ,
+			F_UPDATETIME 
+		) VALUES (
+			#{cartId} ,
+			#{priceId} ,
+			#{num} ,
+			#{userId} ,
+			#{createTime} ,
+			#{updateTime} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeShopcart" parameterType="shopcart">
+		REPLACE INTO 
+			t_sm_shopcart 
+		(
+			F_CARTID ,
+			F_PRICEID ,
+			F_NUM ,
+			F_USERID ,
+			F_CREATETIME ,
+			F_UPDATETIME 
+		) VALUES (
+			#{cartId} ,
+			#{priceId} ,
+			#{num} ,
+			#{userId} ,
+			#{createTime} ,
+			#{updateTime} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateShopcart" parameterType="shopcart">
+		UPDATE
+			t_sm_shopcart 
+		SET
+			F_PRICEID = #{priceId} ,
+			F_NUM = #{num} ,
+			F_UPDATETIME = #{updateTime} 
+		<where>
+			<if test="userId !=null and userId !=''">
+		    	and F_USERID = #{userId}
+		    </if>
+		    <if test="priceId !=null and priceId !=''">
+		    	and F_PRICEID = #{priceId}
+		    </if>
+		    <if test="cartId !=null and cartId !=''">
+		    	and F_CARTID = #{cartId}
+		    </if>
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteShopcart" parameterType="shopcart">
+		DELETE FROM
+			t_sm_shopcart 
+		<where>
+			F_CARTID = #{cartId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchShopcart" parameterType="shopcart">
+		DELETE FROM 
+			t_sm_shopcart 
+		<where>
+			F_CARTID in
+			<foreach collection="shopcartIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryShopcart" parameterType="String" resultType="shopcart">
+		SELECT
+			t.F_CARTID as cartId ,
+			t.F_PRICEID as priceId ,
+			t.F_NUM as num ,
+			t.F_USERID as userId ,
+			t.F_CREATETIME as createTime ,
+			t.F_UPDATETIME as updateTime 
+		FROM
+			t_sm_shopcart t
+		<where>
+			<if test="userId !=null and userId !=''">
+		    	and t.F_USERID = #{userId}
+		    </if>
+		    <if test="priceId !=null and priceId !=''">
+		    	and t.F_PRICEID = #{priceId}
+		    </if>
+		    <if test="cartId !=null and cartId !=''">
+		    	and t.F_CARTID = #{cartId}
+		    </if>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryShopcartList" parameterType="shopcart" resultType="shopcart">
+		SELECT
+			t.F_CARTID as cartId ,
+			t.F_PRICEID as priceId ,
+			t.F_NUM as num ,
+			t.F_USERID as userId ,
+			t.F_CREATETIME as createTime ,
+			t.F_UPDATETIME as updateTime ,
+			c.F_PRODUCTNAME as productName,
+		    g.F_PRICENAME as priceName,
+		    s.F_PRICE as price,
+			c.F_THUMBPIC as thumbPic
+		FROM
+		t_sm_shopcart t
+		left join t_sm_sellprice s on t.F_PRICEID = s.F_priceid
+		left join t_sm_commproduct c on s.F_PRODUCTID = c.F_PRODUCTID
+		left join t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		<where>
+			<if test="cartId!=null and cartId!=''">
+		    	and t.F_CARTID = #{cartId}
+		    </if>
+			<if test="userId !=null and userId !=''">
+		    	and t.F_USERID = #{userId}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and s.F_DELFLAG=#{delFlag} and c.F_DELFLAG=#{delFlag} and g.F_DELFLAG=#{delFlag}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

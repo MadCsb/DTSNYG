@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>      
+
+<body>
+	<form action="addSysUser.do" method="post" id="createUser">
+		<div class="waybill-title"><span>新增用户</span></div>
+        	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+            	<tbody>
+                	<tr class="">
+                    	<td width="18%" class="tdright"><b><span class="f2"><b>*</b></span>登录名：</b></td>
+                       	<td width="35%">
+                        	<input autocomplete="off" name="userLoginName" type="text" class="validate[required,maxSize[30]] firstfocus data-searchtxt" id="userLoginName" 
+                        	style="width:218px;" onblur="checkName()"/>
+                        	<font color="red" style="font-weight: bold;"><strong><span id="msg">${msg!''}</span></strong></font>
+                      	</td>
+                      	<td class="tdright" width="12%"><b><span class="f2"><b>*</b></span>密码：</b></td>
+                       	<td width="35%">
+                       		<input autocomplete="off" name="userPwd" type="password" class="validate[required,custom[pwdformat]] data-searchtxt" id="password" style="width:218px;" readonly onfocus="this.removeAttribute('readonly');">
+                       	</td>
+                   </tr>
+                   <tr>
+                   		<td class="tdright"><b><span class="f2"><b>*</b></span>姓名：</b></td>
+                       	<td colspan="3">	
+                       		<input name="userName" type="text" class="validate[required,maxSize[30],custom[onlyLetterNumber2]] data-searchtxt" id="userName" style="width:218px;">
+                        </td>
+                        <!-- 
+                    	 <td class="tdright"><b><span class="f2"><b></b></span>身份证号：</b></td>
+						<td >
+							<input name="cradNum" value="${user.cradNum!''}" type="text"  class="data-searchtxt validate[funcCall[idCardCheckExt]]" id="cradNum" style="width:218px;">
+						</td> --> 
+                   </tr>
+                   <tr>
+                  		<td class="tdright"><b>固定电话：</b></td>
+                        <td valign="top">
+                        	<input name="userTel" type="text" class="validate[maxSize[20],custom[phone]] data-searchtxt" id="userTel" style="width:218px;">
+                        </td>
+                        <td class="tdright"><b><span class="f2"><b></b></span>手机号码：</b></td>
+                        <td>
+                        	<input name="userMobile" type="text" class="validate[maxSize[15],custom[mobile]] data-searchtxt"  id="userMobile" style="width:218px;">
+                        </td>	
+                  </tr>
+                  <tr>
+                   		<td class="tdright"><b>电子邮箱：</b></td>
+                        <td>
+                        	<input name="userEmail" type="text" class="validate[maxSize[50],custom[email]] data-searchtxt" id="userEmail" style="width:218px;">
+                   		</td>	
+                      	<td class="tdright"><b>联系地址：</b></td>
+                      	<td>
+                      		<input name="userAddr" type="text" class="validate[maxSize[255]] data-searchtxt" id="userAddr" style="width:218px;">
+					  	</td>
+                  </tr>
+                   <tr>
+                   		<td class="tdright"><b>是否可以同时登录：</b></td>
+                        <td>
+                        	<select id="isSame" name="isSame" class="data-inputtxt-select"  style="width:218px;">
+       								<option  value="0" >否</option>
+       								<option  value="1" >是</option>
+           					</select>
+                   		</td>
+					    <td class="tdright"><b>描述：</b></td>
+                    	<td>
+                        	<input name="userDesc" type="text" class="validate[maxSize[255]] data-searchtxt" id="userDesc" style="width:218px;">
+                        </td> 
+                  </tr> 
+     		</tbody>
+  		</table>
+
+<div class="footerbtn">  
+	<input name="button4" type="button" class="cbtn2" id="button4" onclick="javascript:location.href='${Session.BACK_URL!""}'" value="取消">
+	<input name="btnSave" type="button" class="add-new" onClick="beforeSub();" id="btnSave" value="确定">
+</div>
+	</form>
+<script type="text/javascript">
+	$( function() {
+		$("#createUser").validationEngine();
+		$("#userLoginName").val("");
+		$("#password").val("");
+		if(typeof($("#teamPreCode").val()) != "undefined" )
+		{
+			var resetLength = 30 - $("#teamPreCode").val().length;
+			$("#userLoginName").attr("class","validate[required,maxSize["+resetLength+"]] firstfocus data-searchtxt");
+		}
+	});
+	function checkName()
+	{
+		var userLoginName = $("#userLoginName").val();
+		if(typeof($("#teamPreCode").val()) != "undefined" )
+		{
+			userLoginName = $("#teamPreCode").val()+$("#userLoginName").val();
+		}
+
+		if(null !=  userLoginName && userLoginName != "")
+		{   userLoginName = $.trim(userLoginName);
+			$.getJSON('checkUserLoginName.do?userLoginName='+userLoginName ,function(data){
+				if( data[0].msg != null && data[0].msg !="")
+				{
+					document.getElementById("msg").innerHTML = data[0].msg;
+					document.getElementById("userLoginName").value="";
+				}else
+			    {
+			     	document.getElementById("msg").innerHTML = "";
+			    }
+			});
+		}
+	}
+	function beforeSub()
+	{ 
+		if($("#createUser").validationEngine('validate'))
+	  	{   
+			var userLoginName = $("#userLoginName").val();
+			userLoginName = $.trim(userLoginName);
+			$.getJSON('checkUserLoginName.do?userLoginName='+userLoginName ,function(data){
+				if( data[0].msg != null && data[0].msg !="")
+				{
+					document.getElementById("msg").innerHTML = data[0].msg;
+					document.getElementById("userLoginName").value="";
+					return false;
+				}else
+			    {
+			     	document.getElementById("msg").innerHTML = "";
+			     	$("#userLoginName").val(userLoginName);
+			     	$("#createUser").submit();
+			    }
+			});
+		}
+	}
+	function bindUserRole(userRoleType){
+		var uid= $("#unitId").val();
+		art.dialog.open("bindUserRole?userRoleType="+userRoleType+"&checkedUnitId="+uid, {
+			lock: true,
+			resize: false,
+			drag: false,
+			width: 800,
+			height: 500,
+			close: function() {
+				var unitId = art.dialog.data("unitId");
+				var unitName = art.dialog.data("unitName");
+				if(unitId != null && unitId != "" && unitName != null && unitName != ""){
+					$("#unitId").val(unitId);
+					$("#unitName").val(unitName);
+				}
+			}
+		});
+	}
+	/*
+	* 身份证验证（严格）*
+	* @param field 需要验证的dom元素
+	* @param rules 验证规则数组
+		* 使用funcCall单独调用外部函数验证时无效，需要配合"required"规则一起使用，
+		* 例：validate[required,funcCall[idCardCheckExt]]，
+		* 也可以在返回错误信息前，通过rules.push('required')，向验证规则数组内添加必填验证。
+	*/
+	function idCardCheckExt(field, rules, i, op) {
+		if(!identityCodeValid($(field).val().toUpperCase())) {
+			if($(field).val() != "") {
+				// rules.push('required');
+				return "*身份证无效!";					
+			}
+		}
+	}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<div class="waybill-title">
+		<span>商品详情</span>
+	</div>
+	<form action="commproduct?method=update" method="post" id="createCommproduct" enctype="multipart/form-data">
+		<input type="hidden" name="priceId" id="priceId" value="${sellPrice.priceId!''}"/>
+		<input type="hidden" name="productId" id="productId" value="${commproduct.productId!''}" />
+		<input type="hidden" id="thumbPic" name="thumbPic" value="${commproduct.thumbPic!''}"> 
+		<input type="hidden" name="priceIds" id="priceIds" value="${commproduct.priceIds!''}"/>
+		<input type="hidden" id="priceType" name="priceType" value="${sellPrice.priceType!''}">
+		<!--编辑区-->
+		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr >
+
+				<td width="16%" class="tdright"><b>商品名称：</b></td>
+				<td width="38%">${commproduct.productName!''}</span>
+				</td>
+
+				<td width="16%" class="tdright"><b>商家：</b></td>
+				<td width="30%">
+					<#if companyList?? && (companyList?size>0)>
+						<#list companyList as  li>
+						<#if commproduct.venId?? && commproduct.venId==li.venId>
+							${li.venName!''}	
+						</#if>
+						</#list>
+					</#if>
+				</td>
+			</tr>
+			<tr>
+
+				<td class="tdright"><b>商品类型：</b></td>
+				<td>
+					<#if pdcTypeList?? && (pdcTypeList?size>0)>
+						<#list pdcTypeList as  li>
+						<#if commproduct.type?? && commproduct.type==li.pdcTypeId>
+						${li.typeName!''}
+						</#if>
+						</#list>
+					</#if>
+				</td>
+				<td  class="tdright"><b>商品子类：</b></td>
+				<td>
+					<#if subPdcTypeList?? && (subPdcTypeList?size>0)>
+						<#list subPdcTypeList as  li>
+						<#if commproduct.subType?? && commproduct.subType==li.pdcTypeId>
+						${li.typeName!''}
+						</#if>
+						</#list>
+					</#if>
+				</td>
+			</tr>
+			<tr class="cs">
+
+				<td width="20%" class="tdright"><b>详情：</b></td>
+				<td width="30%"  colspan="3">${commproduct.productInfo!''}
+				</td>
+			</tr>
+			<tr class="cs">
+				<td class="tdright"><b>默认购买数量：</b></td>
+				<td colspan="3">${commproduct.saleNum!''}</td>
+			</tr>
+			<tr class="cs">
+				<td class="tdright"><b>是否上架：</b></td>
+				<td >
+					<#if commproduct.state?? && commproduct.state=='0'>否</#if>
+					<#if commproduct.state?? && commproduct.state=='1'>是</#if>
+				</td>
+				<td class="tdright"><b>是否允许退货：</b></td>
+				<td>
+					<#if commproduct.reorder?? && commproduct.reorder=='0'>否</#if>
+					<#if commproduct.reorder?? && commproduct.reorder=='1'>是</#if>
+				</td>
+			</tr>
+			<tr class="cs">
+				<td width="20%" class="tdright"><b>缩略图：</b></td>
+				<td width="30%" colspan="3">
+				<#if commproduct.thumbPic?? && commproduct.thumbPic!=''>
+     				<img class="myimg" src="${rc.contextPath}/upload/wxpic/${commproduct.thumbPic!''}" id="img" style="max-width:400px;max-height:300px;"/>
+     			<#else>
+     				<img class="myimg" src="${rc.contextPath}/images/no-tu.png" id="img" style="max-width:400px;max-height:300px;"/>
+     			</#if>
+			</tr>
+			<tr class="cs">
+				<td width="20%" class="tdright"><b>商品规格：</b></td>
+				<td id="priceList" colspan="3"></td>
+			</tr>
+			
+			<tr class="cs">
+
+				<td width="20%" class="tdright"><b>费用说明：</b></td>
+				<td width="30%">
+					${commproduct.feeMemo!''}
+				</td>
+
+				<td width="20%" class="tdright"><b>温馨提示：</b></td>
+				<td width="30%">
+					${commproduct.tigInfo!''}
+				</td>
+			</tr>
+			<tr class="" >
+                <td class="tdright"><b>图片管理：</b></td>
+				<td colspan="3" class="addcal2 noshare">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="twList">
+	     				<tr>
+			           		<th width="5%"><label>序号</label></th>
+			           		<th width="30%">图片</th>
+			           		<th width="30%">名称</th>
+	         			</tr>
+	         			<#list rsPicList as item>
+							<tr>
+								<td width="5%"><label>${item.picOrder!""}</label></td>
+								<td width="30%">
+									<img src="${rc.contextPath}/upload/wxpic/${item.picFileName!''}" width="110" height="70" border="0" style="margin: 5px 15px 0px 0px;" /> 
+							</td>
+							<td width="35%">${item.picTitle!""}<input type="hidden" name="picIds" value="${item.picId!''}"/></td>
+							</tr>
+						</#list>
+	     			</table>
+                  	</td>
+			</tr>  
+		</table>
+		<!--操作区-->
+		<!--操作区-->
+		<div class="footerbtn">
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn1" id="button4" value="返回">
+		</div>
+	</form>
+</body>
+<script type="text/javascript">
+	$(function() {
+		// 加载验证框架
+		$("#createCommproduct").validationEngine();
+		
+		//初始化商品规格
+		getPriceList();
+	});
+ 	 
+ 	function getPriceList() {
+ 		$.post("wx?method=queryGoodsPriceListForUpdate",{
+			productId : $("#productId").val(),
+			priceType:$("#priceType").val()
+		},
+		function(ret) {
+			if (ret.length > 0) {
+				$("#priceList").html("");
+
+				var str = "<table id=\"priceTable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"datalist\">";
+				str += "<tr><th width=\"15%\">商品规格名称</th><th width=\"15%\">缩略图</th><th width=\"11%\">销售价</th><th width=\"11%\">活动开始时间</th><th width=\"11%\">活动结束时间</th><th width=\"13%\">操作</th></tr>";
+
+				for ( var i = 0; i < ret.length; i++) {
+						str += "<tr id='price"+ret[i].priceId+"'><td width=\"15%\" class=\"tdleft\">"
+						+ ret[i].priceName
+						+ "</td>"
+						+ "<td width=\"15%\" align=\"center\">";
+						if (ret[i].thumbPic!=''){
+							str += '<img class="myimg" style="max-width:140px;max-height:120px;" src="${rc.contextPath}/upload/wxpic/'+ret[i].thumbPic+'" id="idImg1" />';
+						}else{
+							str += '<img class="myimg"  src="${rc.contextPath}/images/no-tu.png" id="idImg1" />';
+						}
+					str +=  "</td>"
+						+ "<td width=\"15%\">"
+						+ ret[i].price
+						+ "</td>"
+						+ "<td style='white-space:normal' width=\"15%\">"
+						+ ret[i].priceStartDate
+						+ "</td>"
+						+ "<td style='white-space:normal' width=\"15%\">"
+						+ ret[i].priceEndDate
+						+ "</td>"
+						+ "<td width=\"15%\">"
+						+ "<a href=\"javascript:void(0)\" onclick=\"updatePrice('"
+						+ ret[i].priceId
+						+ "')\" title=\"编辑\" class=\"ico_btn1\">编辑</a>"
+						+ "<a href=\"javascript:void(0)\" onclick=\"delPrice('"
+						+ ret[i].priceId
+						+ "')\" class=\"ico_btn1\">删除</a></td></tr>";
+
+			}
+				str += " </table>";
+	
+				$("#priceList").html(str);
+			}else{
+				$("#priceList").html("")
+			}
+
+		}, "json")
+	}
+ 	/*删除价格*/
+	function delPrice(priceId) {
+		parent.layer.confirm('确认删除该秒杀商品吗?', function() {
+			$.post("sellPrice?method=delete", {
+				priceId : priceId
+			}, function(ret) {
+				if (ret =="success") {
+					$("#price" + priceId).remove();
+				}
+				parent.layer.closeAll();
+			})
+		}, function() {
+			parent.layer.closeAll();
+		});
+	}
+ 	
+ 	function updatePrice(priceId){
+ 		parent.layer.open({
+ 			type : 2,
+ 			title : '修改秒杀价格',
+ 			area : [ '750px', '410px' ],
+ 			fix : true,
+ 			content :'sellPrice?method=toUpdate&priceId=' + priceId,
+ 			end: function(){
+ 				getPriceList();
+ 			}
+ 		});
+ 	}
+ 	
+</script>
+</html>

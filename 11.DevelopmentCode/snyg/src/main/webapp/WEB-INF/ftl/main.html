@@ -1,0 +1,404 @@
+	<!doctype html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/validationEngine.jquery.css" rel="stylesheet"/>
+<script type="text/javascript" src="${rc.contextPath}/js/yanue.pop.js"></script>
+<link rel="stylesheet" href="${rc.contextPath}/css/pop.css" type="text/css"></link>
+<style type="text/css">
+.top-div-xx {
+    position: absolute;
+    right: 100px;
+}
+.top-div-xx dl {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-align: left;
+    width: 140px;
+}
+.top-div-xx dl dd {
+    float: left;
+    height: 25px;
+    width: 150px;
+}
+.top-div-xx dl dd a {
+	color: #ff0000;
+    display: block;
+}
+.top-div-xx dl dd a:hover {
+    color: #ff0000;
+}
+
+</style>
+
+</head>
+<body onLoad="getMessageInfoByTime();" style="overflow:hidden">
+<div class="pagemain">
+<div class="pagewarp">
+
+<div class="DivGlobal clearfix">
+	<input id="hidUpdatePassDate" type="hidden"  value="${Session.LOGIN_USER.updatePassDate!''}">
+	<div class="DivMainLeft">		
+		<!--左侧菜单--->	
+		<div class="namediv"></div>
+		<ul class="container">
+		      
+		      <#if Session.LOGIN_USER_MENU?exists>
+			      <#list Session.LOGIN_USER_MENU as menu> 
+			        <li class="menu">
+	                <ul class="titleList">         
+	                 <#if menu.pMenuId=='0' >
+	                  <li class="button"><a  href="javascript:void(0);">${menu.menuName!""}<span></span></a></li>   
+	                  <li class="dropdown">                
+	                     <#list Session.LOGIN_USER_MENU as menu2>
+	                        <#if menu2.pMenuId = menu.menuId  >
+		                    <ul>
+		                      <li><a href="javascript:void(0);" onClick="toMainFrame('${menu2.menuId!''}','${menu2.menuUrl!''}',this);">${menu2.menuName!""}</a></li>
+		                    </ul>
+		                    </#if> 
+	                     </#list>
+	                  </li>
+	                 </#if> 
+	                </ul>
+	              </li>
+			      </#list>
+		      </#if> 
+		</ul>
+	</div>
+	<div class="DivMainRight">
+		<div class="body-header">
+			  <div class="body-header-top">
+                <!--右边页面标题-->
+			    <div class="login-tu">
+						<span >三农壹购管理平台</span>
+			    </div>
+			    <div class="userbar">
+                
+                	<i class="ico-xx" style="float: left;"></i>
+                
+                    <div style="float: left;height:40px" onMouseOver="showMsgDiv()" onMouseOut="hiddenMsgDiv()">
+                    <a href="javascript:void(0);" id="user"><i class="ico-tx"></i><b>${Session.LOGIN_USER.userName!''}</b><i class="ico-jtd"></i></a>
+                    <dl id="userinfo" class="layui-nav-child">
+                        <dd><a href="javascript:void(0);" onClick="window.open('toUpdateUserPWD','mainContent','');">修改密码</a></dd>
+                        <dd><a href="logout">退出</a></dd>
+                    </dl>
+                	</div>
+			    </div>
+			  </div>
+			</div>
+		<!--右边主内容-->
+        <div class="home-title">
+            <div align="left">
+                <span id="menubar"></span><span class="ml20 mr20">|</span>您的当前位置：
+                <a target="mainContent" href="javascript:void(0);">首页</a><a href="javascript:void(0);" id="onemenubar"></a>
+            </div>
+        </div>
+        <div class="main-con">
+
+			
+			<#if Session.LOGIN_USER.userRoleType == '0'><!-- 旅行社子系统首页 -->
+				<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
+		    <#elseif Session.LOGIN_USER.userRoleType =='1'><!-- 景点子系统首页 -->
+		     	<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
+		    <#elseif Session.LOGIN_USER.userRoleType =='3'><!-- 旅游局子系统首页 -->
+		    	<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
+		    <#elseif Session.LOGIN_USER.userRoleType =='4'><!-- 车队子系统首页 -->
+		    	<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
+		    <#elseif Session.LOGIN_USER.userRoleType =='6'><!-- 保险子系统首页 -->
+		    	<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
+		    <#else>
+				<iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="yes" frameborder="0" src="" style="padding:0px 5px 0px 30px; box-sizing:border-box;"></iframe>
+        	</#if>
+        </div>
+		<!--//右边主内容-->		
+	</div>
+	
+</div>
+</div>
+</div>
+<div id="pop" style="display:none;">
+		<div id="popHead">
+			<a id="popClose" title="关闭" style="text-decoration:none;">关闭</a>
+			<h2>消息提醒</h2>
+		</div>
+		<div id="popContent" style="background: url('${rc.contextPath}/images/gth.png') no-repeat 5px 15px;">
+			<dl style="padding-left: 40px;min-height: 60px;">
+				<dt id="popTitle">
+				</dt>
+				<dd id="popIntro"></dd>
+			</dl>
+			<p id="popMore">
+				<a href="#" title="立即处理">立即处理</a>
+			</p>
+		</div>
+
+	</div>
+</body>
+
+<script type="text/javascript" language="javascript">
+
+//setInterval("getMessageInfoByTime()",60000);
+
+function getMessageInfoByTime() 
+{
+// 	$.post("message/getMessageInfoByTime",{},function(ret){
+// 		if(ret>0)
+// 		{
+// 			$("#myMsg").html("("+ret+")");
+// 			/*
+// 			var mess="尊敬的供应商用户您好！<br>您有<span style='color:red'>"+ret+"</span>条消息未处理。 <a href='javascript:showMegBoxList();'>立即处理</a>";
+// 			var toUrl="javascript:showMegBoxList();";
+// 			var pop = new Pop("",toUrl, mess);  
+// 			*/
+// 			art.dialog.notice({
+// 			    title: '消息提醒',
+// 			    width: 220,
+// 			    height: 120,
+// 			    content: "尊敬的用户您好！<br>您有<span style='color:red'>"+ret+"</span>条消息未处理。 <a href='javascript:showMegBoxList();'>立即处理</a>",
+// 			    icon: 'face-smile',
+// 			    time: 5
+// 			});
+// 		}
+// 	},'json');
+}
+	//获取紧急消息
+	function getEmergencyMessage() 
+	{
+// 		$.post("message/getEmergencyMessageByTime",{},function(ret){
+// 			if(ret.length>0)
+// 			{
+// 				art.dialog.open("message?method=toReadEmergencyMessage&messageId="+ret[0].messageId+"&messageType=0", {
+// 					lock: true,
+// 					resize: false,
+// 					drag: false,			
+// 					width: 800,
+// 					height: 500
+// 				});
+// 			}
+// 		},'json');
+	}
+
+function noticeChangePWD() 
+{
+	if(typeof($("#hidUpdatePassDate").val())!= "undefined"&& $("#hidUpdatePassDate").val()!='')
+	{
+		var starttime = $("#hidUpdatePassDate").val().replace(new RegExp("-","gm"),"/");
+		var starttimeHaoMiao = (new Date(starttime)).getTime(); //得到毫秒数
+		var endTimeHaoMiao  = new Date().getTime();//得到毫秒数
+		var times40=3456000000;
+		var betweenTime = endTimeHaoMiao - starttimeHaoMiao; 
+		
+		if(betweenTime>times40)
+		{
+			art.dialog.notice({
+			    title: '消息提醒',
+			    id:"notice2",
+			    width: 220,
+			    height: 120,
+			    content: "尊敬的用户您好！您的密码长期未修改，为了您账户的安全请及时修改密码。 <a href='javascript:toChangePWD();'>修改密码</a>",
+			    icon: 'face-smile',
+			    time: 5
+			});
+		}
+	}
+}
+
+function toChangePWD()
+{
+	window.open("toUpdateUserPWD","mainContent","");	
+}
+
+function getNowFormatDate(days) {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate()-days;
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+    return currentdate;
+}
+
+$(function() {
+//	myrefresh();
+//	getEmergencyMessage() ;
+	//默认打开第一个菜单
+	$(".dropdown").each(function(i){
+		if(i==0){
+			$(this).css("display","block");
+		}	
+	})
+//	getMessageInfoByTime();
+//	setTimeout("noticeChangePWD()",8000);
+});
+//IFRAME自适应大小
+function reinitIframe(){
+    var iframe = document.getElementById("mainContent");
+    try{
+	    var bHeight = iframe.contentWindow.document.body == null?0:iframe.contentWindow.document.body.scrollHeight;
+	    var dHeight = iframe.contentWindow.document.documentElement==null?0:iframe.contentWindow.document.documentElement.scrollHeight;
+	    var height = Math.max(bHeight, dHeight);
+		var s=document.body.clientHeight;
+	    iframe.height =s-155+"px";
+    }catch (ex){}
+}
+reinitIframe();
+window.setInterval("reinitIframe()", 200);
+//window.setInterval("myrefresh()", 600000);
+
+function myrefresh(){
+	/* $.post("queryMsgCount",function(ret){
+		//拼接html
+		 $('#autoDd').html(strHtml(ret));  
+		 $("#myMsg").html(getCount(ret));
+	},'json') */
+	
+}
+
+//拼接字符串
+function strHtml(arrayObj){//集合分组
+	var html = '';
+	for(var i=0;i<arrayObj.length;i++){
+		html += '<dd ><a href="#" onclick="gotoMsgBox(\''+subStr(arrayObj[i])[0]+'\');"><font style="color:#000000;margin-right:2px;">'+subStr(arrayObj[i])[1]+'</font>'+subStr(arrayObj[i])[2]+'</a></dd>'
+	}
+	html += '<dd><a href="#" onclick="showMegBox();"><font style="color:#000000;margin-right:2px;">查看所有消息</font></a></dd>'
+	return html;
+}
+//获取总数
+function getCount(arrayObj){
+	var html = 0;
+	for(var i=0;i<arrayObj.length;i++){
+		html +=  Number(subStr(arrayObj[i])[2]);
+	}
+	return html;
+}
+
+//分割字符串
+function subStr(str){
+	var strs= new Array(); //定义一数组
+	strs= str.split(":"); //字符分割 
+	return strs;
+}
+
+
+//跳转页面
+function toMainFrame(menuId,url,obj){
+	
+	$(".dropdown ul li a").each(function(){
+		$(this).removeClass();
+	})
+	
+	
+	$(obj).addClass("ton");
+    
+	$.post("queryMenuBar",{"menuId":menuId},function(ret){
+	    if (ret != null && ret != "") {
+		 var arr = ret.split(">");
+		 if (arr.length == 3) {
+		 $("#menubar").html(arr[2]);
+		 $("#onemenubar").html(">" + arr[1]);
+		 }
+		}
+	
+		
+		
+		window.open(url,"mainContent","");	
+	})
+	
+	
+}
+
+//隐藏消息盒子
+function hiddenMsgDiv()
+{
+	$("#msgDiv").hide();
+}
+//显示消息盒子
+function showMsgDiv() {
+	if($("#myMessage").text()!='0')
+	{
+		$("#msgDiv").show();
+	}else{
+		$("#msgDiv").hide();
+	}
+	
+}
+
+function showMegBox()
+{
+	//$("#mainFrame").attr("src","message.do?method=query");	
+	//window.location.href="login.do";
+	$("#menubar").html("&nbsp;>&nbsp;消息盒子 ");
+	window.open("message?method=queryMessageByList","mainContent","");	
+}
+
+function showMegBoxList()
+{
+	window.open("message?method=queryMessageByList&isRead=0","mainContent","");	
+}
+
+function gotoMsgBox(url){
+	window.open(url,"mainContent","");	
+}
+
+
+
+
+function showMess(){
+	$.messager.anim('show', 1000);
+	$.messager.show(0, 'show动画消息');
+}
+
+function toStatisticMain(url){
+
+	 window.frames["mainContent"].document.location.href=url;
+	 $("#menubar").html("");
+	
+}
+
+//隐藏消息盒子
+function hiddenMsgDiv() {
+	$("#msgDiv").hide();
+
+	// 隐藏修改密码盒子
+	$("#userinfo").hide();
+}
+//显示消息盒子
+function showMsgDiv() {
+	if ($("#myMessage").text() != '0') {
+		$("#msgDiv").show();
+	} else {
+		$("#msgDiv").hide();
+	}
+	// 显示修改密码盒子
+	$("#userinfo").show();
+}
+
+	$(function () {
+	// 默认第一个高亮
+	$(".titleList").find(".button").each(function (index, item) {
+		if (index == 0) {
+			$(item).find("a").addClass("on")
+		}
+	})
+	// 点击高亮
+	$(".button").on("click", function () {
+		$(".titleList").find(".button").each(function (index, item) {
+			$(item).find("a").removeClass("on")
+		})
+		$(this).find("a").addClass("on")
+	})
+})
+</script>
+</html>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.FeedbackDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertFeedback" parameterType="feedback">
+		INSERT INTO 
+			t_wx_feedback  
+		(
+			F_WXSERVICEID ,
+			F_FEEDBACKID ,
+			F_MSGNAME ,
+			F_TITLE ,
+			F_MSGTYPE ,
+			F_KEYWORD ,
+			F_KEYWORD2 ,
+			F_CONTEXT ,
+			F_MEDIAID ,
+			F_SUMMARY ,
+			F_LINKURL ,
+			F_MEDIAFILENAME ,
+			F_MEDIAURL ,
+			F_HQMEDIAURL ,
+			F_THUMBID ,
+			F_DELFLAG ,
+			F_LASTUPDATE ,
+			F_XML 
+		) VALUES (
+			#{wxServiceId} ,
+			#{feedBackId} ,
+			#{msgName} ,
+			#{title} ,
+			#{msgType} ,
+			#{keyWord} ,
+			#{keyWord2} ,
+			#{context} ,
+			#{mediaId} ,
+			#{summary} ,
+			#{linkUrl} ,
+			#{mediaFileName} ,
+			#{mediaUrl} ,
+			#{hqMediaUrl} ,
+			#{thumbId} ,
+			#{delFlag} ,
+			#{lastUpdate} ,
+			#{fxml} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeFeedback" parameterType="feedback">
+		REPLACE INTO 
+			t_wx_feedback 
+		(
+			F_WXSERVICEID ,
+			F_FEEDBACKID ,
+			F_MSGNAME ,
+			F_TITLE ,
+			F_MSGTYPE ,
+			F_KEYWORD ,
+			F_KEYWORD2 ,
+			F_CONTEXT ,
+			F_MEDIAID ,
+			F_SUMMARY ,
+			F_LINKURL ,
+			F_MEDIAFILENAME ,
+			F_MEDIAURL ,
+			F_HQMEDIAURL ,
+			F_THUMBID ,
+			F_DELFLAG ,
+			F_LASTUPDATE ,
+			F_XML 
+		) VALUES (
+			#{wxServiceId} ,
+			#{feedBackId} ,
+			#{msgName} ,
+			#{title} ,
+			#{msgType} ,
+			#{keyWord} ,
+			#{keyWord2} ,
+			#{context} ,
+			#{mediaId} ,
+			#{summary} ,
+			#{linkUrl} ,
+			#{mediaFileName} ,
+			#{mediaUrl} ,
+			#{hqMediaUrl} ,
+			#{thumbId} ,
+			#{delFlag} ,
+			#{lastUpdate} ,
+			#{fxml} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateFeedback" parameterType="feedback">
+		UPDATE
+			t_wx_feedback 
+		SET
+			F_WXSERVICEID = #{wxServiceId} ,
+			F_MSGNAME = #{msgName} ,
+			F_TITLE = #{title} ,
+			F_MSGTYPE = #{msgType} ,
+			F_KEYWORD = #{keyWord} ,
+			F_KEYWORD2 = #{keyWord2} ,
+			F_CONTEXT = #{context} ,
+			F_MEDIAID = #{mediaId} ,
+			F_SUMMARY = #{summary} ,
+			F_LINKURL = #{linkUrl} ,
+			F_MEDIAFILENAME = #{mediaFileName} ,
+			F_MEDIAURL = #{mediaUrl} ,
+			F_HQMEDIAURL = #{hqMediaUrl} ,
+			F_THUMBID = #{thumbId} ,
+			F_LASTUPDATE = #{lastUpdate} ,
+			F_XML = #{fxml} ,
+			F_DELFLAG = #{delFlag}
+		<where>
+			F_FEEDBACKID = #{feedBackId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<update id="deleteFeedback" parameterType="feedback">
+		UPDATE
+			t_wx_feedback 
+		SET
+			F_DELFLAG = #{delFlag} ,
+			F_LASTUPDATE = #{lastUpdate}
+		<where>
+			F_FEEDBACKID = #{feedBackId}
+		</where>
+	</update>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchFeedback" parameterType="feedback">
+		DELETE FROM 
+			t_wx_feedback 
+		<where>
+			F_FEEDBACKID in
+			<foreach collection="feedbackIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryFeedback" parameterType="String" resultType="feedback">
+		SELECT
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_FEEDBACKID as feedBackId ,
+			t.F_MSGNAME as msgName ,
+			t.F_TITLE as title ,
+			t.F_MSGTYPE as msgType ,
+			t.F_KEYWORD as keyWord ,
+			t.F_KEYWORD2 as keyWord2 ,
+			t.F_CONTEXT as context ,
+			t.F_MEDIAID as mediaId ,
+			t.F_SUMMARY as summary ,
+			t.F_LINKURL as linkUrl ,
+			t.F_MEDIAFILENAME as mediaFileName ,
+			t.F_MEDIAURL as mediaUrl ,
+			t.F_HQMEDIAURL as hqMediaUrl ,
+			t.F_THUMBID as thumbId ,
+			t.F_DELFLAG as delFlag ,
+			t.F_LASTUPDATE as lastUpdate ,
+			t.F_XML as fxml 
+		FROM
+			t_wx_feedback t
+		<where>
+			t.F_FEEDBACKID = #{feedBackId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryFeedbackList" parameterType="feedback" resultType="feedback">
+		SELECT
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_FEEDBACKID as feedBackId ,
+			t.F_MSGNAME as msgName ,
+			t.F_TITLE as title ,
+			t.F_MSGTYPE as msgType ,
+			t.F_KEYWORD as keyWord ,
+			t.F_KEYWORD2 as keyWord2 ,
+			t.F_CONTEXT as context ,
+			t.F_MEDIAID as mediaId ,
+			t.F_SUMMARY as summary ,
+			t.F_LINKURL as linkUrl ,
+			t.F_MEDIAFILENAME as mediaFileName ,
+			t.F_MEDIAURL as mediaUrl ,
+			t.F_HQMEDIAURL as hqMediaUrl ,
+			t.F_THUMBID as thumbId ,
+			t.F_DELFLAG as delFlag ,
+			t.F_LASTUPDATE as lastUpdate ,
+			t.F_XML as fxml 
+		FROM
+		t_wx_feedback t
+		<where>
+			<if test="feedBackId!=null and feedBackId!=''">
+		    	t.F_FEEDBACKID = #{feedBackId}
+		     </if>
+		     
+		     <if test="msgType!=null and msgType!=''">
+		    	AND t.F_MSGTYPE = #{msgType}
+		     </if>
+		     
+		      <if test="wxServiceId!=null and wxServiceId!=''">
+		    	AND t.F_WXSERVICEID = #{wxServiceId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryFeedbackListByCustom" parameterType="Feedback" resultType="Feedback">
+		SELECT
+	        t.F_WXSERVICEID as wxServiceId ,
+	        t.F_FEEDBACKID as feedbackId ,
+	        t.F_MSGNAME as msgName ,
+	        t.F_MSGTYPE as msgtype ,
+	        t.F_KEYWORD as keyWord ,
+	        t.F_KEYWORD2 as keyWord2 ,
+	        t.F_CONTEXT as contexts ,
+	        t.F_MEDIAID as mediaId ,
+	        t.F_TITLE as title ,
+	        t.F_SUMMARY as summary ,
+	        t.F_LINKURL as linkUrl ,
+	        t.F_MEDIAFILENAME as mediaFileName ,
+	        t.F_MEDIAURL as mediaUrl ,
+	        t.F_HQMEDIAURL as hqmediaUrl ,
+	        t.F_THUMBID as thumbId ,
+	        t.F_DELFLAG as delFlag ,
+	        t.F_LASTUPDATE as lastUpdate 
+		FROM 
+			T_WX_FEEDBACK t
+		where  F_DELFLAG = 0
+			<if test="wxServiceId!=null and wxServiceId!=''">
+		    	and t.F_WXSERVICEID = #{wxServiceId}
+		     </if>
+			<if test="msgType!=null and msgType!=''">
+		    	and t.F_MSGTYPE = #{msgType}
+		     </if>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+	<!-- 批量更新消息状态  -->
+	<update id="batchResetDelFlag" parameterType="feedback">
+		UPDATE
+			t_wx_feedback 
+		SET
+			F_DELFLAG = #{delFlag} ,
+			F_LASTUPDATE = #{lastUpdate}
+		<where>
+			F_FEEDBACKID in
+			<foreach collection="feedbackIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</update>
+	
+	<!-- 按关键字查询 -->
+	<select id="getFeedbackByKey" parameterType="feedback" resultType="feedback">
+		SELECT
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_FEEDBACKID as feedBackId ,
+			t.F_MSGNAME as msgName ,
+			t.F_TITLE as title ,
+			t.F_MSGTYPE as msgType ,
+			t.F_KEYWORD as keyWord ,
+			t.F_KEYWORD2 as keyWord2 ,
+			t.F_CONTEXT as context ,
+			t.F_MEDIAID as mediaId ,
+			t.F_SUMMARY as summary ,
+			t.F_LINKURL as linkUrl ,
+			t.F_MEDIAFILENAME as mediaFileName ,
+			t.F_MEDIAURL as mediaUrl ,
+			t.F_HQMEDIAURL as hqMediaUrl ,
+			t.F_THUMBID as thumbId ,
+			t.F_DELFLAG as delFlag ,
+			t.F_LASTUPDATE as lastUpdate ,
+			t.F_XML as fxml 
+		FROM
+		t_wx_feedback t
+		<where>
+			<if test="feedBackId!=null and feedBackId!=''">
+		    	t.F_FEEDBACKID = #{feedBackId}
+		     </if>
+		     
+		     <if test="keyWord!=null and keyWord!=''">
+		    	AND t.F_KEYWORD = #{keyWord} 
+		     </if>
+		     
+		     <if test="delFlag!=null and delFlag!=''">
+		    	AND t.F_DELFLAG = #{delFlag}
+		     </if>
+		</where>
+	</select>
+	
+	<!-- 检索重名 -->
+	<select id="checkName" parameterType="feedback" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+			t_wx_feedback t
+		<where>
+			<if test="feedBackId!=null and feedBackId!=''">
+		    	t.F_FEEDBACKID != #{feedBackId}
+		     </if>
+		    <if test="msgName!=null and msgName!=''">
+		    	and t.F_MSGNAME = #{msgName}
+		    </if>
+		    <if test="msgType!=null and msgType!=''">
+		    	and t.F_MSGTYPE = #{msgType}
+		    </if>
+		</where>
+	</select>
+	
+</mapper>	

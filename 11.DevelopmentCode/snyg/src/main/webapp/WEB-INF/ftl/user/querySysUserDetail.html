@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>      
+
+<body>
+        	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+            	<tbody>
+                	<tr class="">
+                    	<td width="18%" class="tdright"><b>登录名：</b></td>
+                       	<td width="35%">${user.userLoginName!''}</td>
+                      	<td width="12%" class="tdright" ><b>电子邮箱：</b></td>
+                       	<td width="35%">${user.userEmail!''}</td>
+                   </tr>
+                   <tr>
+                   		<td class="tdright"><b>名称：</b></td>
+                       	<td>${user.userName!''}</td>
+                       	<td class="tdright"><b>手机号码：</b></td>
+                        <td>${user.userMobile!''}</td>	
+                   </tr>
+                   <tr>
+                  		<td class="tdright"><b>身份证号：</b></td>
+                        <td colspan="3">${user.cradNum!''}</td>
+                   </tr>
+                   <tr>
+                    	<td class="tdright"><b>描述：</b></td>
+                    	<td colspan="3" style="white-space: inherit;">${user.userDesc!''}</td>  	
+                   </tr>
+                 <!--  <tr>
+                  	 	<td  class="tdright"><b>所属单位：</b></td>
+                       	<td colspan="3">${user.unitName!''}</td> 
+                   		<td class="tdright"><b>所属子系统：</b></td>
+                       	<td  colspan="3">	
+                       	  <#if user.userRoleType??>
+           					<#if roleList?? && (roleList?size>0)>
+       						  <#list roleList as rl> 
+       							<#if rl.roleId ?? && rl.roleId == user.userRoleType>
+       								${rl.roleName!''}
+       							</#if>
+       						  </#list>
+       						</#if>
+       					  </#if>		
+                       	</td>
+                  </tr>-->
+                  <tr>
+                  		<td class="tdright"><b>是否有效：</b></td>
+                        <td valign="top">
+                        	<#if user.userState??>
+  								<#if user.userState == '1'>是</span>
+  								<#elseif user.userState == '0'>否</span>
+  								</#if>
+  							</#if>
+                        </td>
+                        <td class="tdright"><b>是否锁定：</b></td>
+                        <td valign="top">
+                        	<#if user.userLocked??>
+  								<#if user.userLocked == '1'>是</span>
+  								<#elseif user.userLocked == '0'>否</span>
+  								</#if>
+  							</#if>
+                        </td>
+                   </tr>
+                   <tr>
+                    	<td class="tdright"><b>创建时间：</b></td>
+                    	<td colspan="3">${user.userRegDate!''}</td>  	
+                   </tr>
+                       <tr>
+                    	<td class="tdright"><b>角色：</b></td>
+                    	<td colspan="3">
+                    		<#if userGroupList?? && (userGroupList?size>0)>
+       							<#list userGroupList as userGroup> 	
+                       				<#if (userGroup_index + 1) == userGroupList?size>
+                       					${userGroup.userGroupName!''}
+                       				<#else>
+                       					${userGroup.userGroupName!''}、
+                       				</#if>	
+                       			</#list>
+                       		</#if>		
+                    	</td>  	
+                   </tr>
+     		</tbody>
+  		</table>
+
+<div class="footerbtn">
+	<input name="button4" type="button" class="cbtn1" id="button4" onclick="javascript:location.href='${Session.BACK_URL!""}'" value="返回">
+</div>
+</body>
+</html>

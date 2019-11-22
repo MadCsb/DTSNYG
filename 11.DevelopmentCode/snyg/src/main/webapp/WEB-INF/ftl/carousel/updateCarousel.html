@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<#include "/INC_HEAD.html">
+</head>
+<body>
+
+	<div class="waybill-title">
+		<span>新增轮播图</span>
+	</div>
+
+	<form action="carousel.do?method=update" method="post" id="updateCarousel">
+		<input type="hidden" id="carouselId" name="carouselId" value="${carousel.carouselId!''}" />
+	   	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tbody>
+			
+				<tr class="">
+					<td width="20%" class="tdright"><b><font class="f2">*</font>轮播图名称：</b></td>
+					<td width="30%">
+						<input id="name" name="carouselName" type="text" class="validate[required,maxSize[100]] data-inputtxt" value="${carousel.carouselName!''}">
+	              	 	<br>
+	              	</td>
+	              	<!-- 
+	              	<td width="20%" class="tdright"><b><font class="f2">*</font>轮播图类型：</b></td>
+					<td width="30%">
+						<select name="type" id="type" class="validate[required] data-inputtxt-select" onChange="checkType(this.value);">
+							<option value="">请选择</option>
+							<#if carousel.type??>
+							<#if lunboTypeList?? && (lunboTypeList?size>0)>
+		                		<#list lunboTypeList as e>
+		                			<#if e.mapKey == carousel.type>
+		                			<option value="${e.mapKey!''}" selected>${e.mapValue!""}</option>
+		                			<#else>
+		                			<option value="${e.mapKey!''}">${e.mapValue!""}</option>
+		                			</#if>
+								</#list>
+							</#if>
+							</#if>
+	                	</select>
+	                	<div id="errSpan" class="f2" style="display:none;" title="存在重复类型，请选择其他类型。">存在重复类型，请选择其他类型。</div>
+	              	</td>  	
+	              	 -->
+				</tr>  
+			</tbody>
+		</table>
+	                 
+	<div class="footerbtn">   
+
+		<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+		<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
+	</div>
+	</form>
+  
+</body>
+<script type="text/javascript">
+
+// 页面初始化
+$(function(){
+ 		
+ 	// 加载验证框架
+	$("#updateCarousel").validationEngine();
+ 		
+});
+
+// 保存前
+function beforeSubmit(){
+	if($("#updateCarousel").validationEngine('validate')) {
+		$("#updateCarousel").submit();
+	}
+}
+
+function checkType(typeValue) {
+	if (typeValue == "") {
+		$("#button3").removeAttr("disabled");
+		$("#errSpan").css("display", "none");
+		return;
+	}
+	$("#button3").attr("disabled", "disabled");
+	$.post("carousel.do?method=checkCarousel", {
+		"type": typeValue, 
+		"carouselId":$("#carouselId").val()
+	}, function(data) {
+		if (data != null) {
+			if (data == "0") {
+				$("#button3").removeAttr("disabled");
+				$("#errSpan").css("display", "none");
+			} else {
+				$("#errSpan").show();
+			}
+		}
+	}, "json");
+}
+
+</script> 
+</html>

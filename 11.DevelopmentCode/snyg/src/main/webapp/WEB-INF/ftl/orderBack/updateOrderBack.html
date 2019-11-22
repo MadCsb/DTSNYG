@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="orderBack?method=update" method="post"
+			id="modifyOrderBack">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="datalist-new">
+
+
+				<tr class="cs">
+
+					<td>backId：</td>
+					<td><input name="backId" type="text"
+						id="backId" size="40"
+						value="${orderBack.backId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>orderId：</td>
+					<td><input name="orderId" type="text"
+						id="orderId" size="40"
+						value="${orderBack.orderId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>orderListId：</td>
+					<td><input name="orderListId" type="text"
+						id="orderListId" size="40"
+						value="${orderBack.orderListId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>applyTime：</td>
+					<td><input name="applyTime" type="text"
+						id="applyTime" size="40"
+						value="${orderBack.applyTime!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>opTime：</td>
+					<td><input name="opTime" type="text"
+						id="opTime" size="40"
+						value="${orderBack.opTime!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>backTime：</td>
+					<td><input name="backTime" type="text"
+						id="backTime" size="40"
+						value="${orderBack.backTime!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>backReason：</td>
+					<td><input name="backReason" type="text"
+						id="backReason" size="40"
+						value="${orderBack.backReason!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>status：</td>
+					<td><input name="status" type="text"
+						id="status" size="40"
+						value="${orderBack.status!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>backAmount：</td>
+					<td><input name="backAmount" type="text"
+						id="backAmount" size="40"
+						value="${orderBack.backAmount!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>backAccount：</td>
+					<td><input name="backAccount" type="text"
+						id="backAccount" size="40"
+						value="${orderBack.backAccount!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>applyBackMoney：</td>
+					<td><input name="applyBackMoney" type="text"
+						id="applyBackMoney" size="40"
+						value="${orderBack.applyBackMoney!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>backMoney：</td>
+					<td><input name="backMoney" type="text"
+						id="backMoney" size="40"
+						value="${orderBack.backMoney!''}" /></td>
+				</tr>
+
+
+			</table>
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="reset" class="data-btnbg" value="取消"  onclick="javascript:location.href='{Session.BACK_URL!""}'"/>
+				<input type="submit" class="data-btnbg" value="确认" /> 
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

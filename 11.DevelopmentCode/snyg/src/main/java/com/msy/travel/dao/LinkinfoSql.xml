@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.LinkinfoDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertLinkinfo" parameterType="linkinfo">
+		INSERT INTO 
+			t_sm_linkinfo  
+		(
+			F_LINKID ,
+			F_VENID ,
+			F_DUTY ,
+			F_NAME ,
+			F_HANDPHONE ,
+			F_FAX ,
+			F_TEL ,
+			F_QQ ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER 
+		) VALUES (
+			#{linkId} ,
+			#{venId} ,
+			#{duty} ,
+			#{name} ,
+			#{handPhone} ,
+			#{fax} ,
+			#{tel} ,
+			#{qq} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeLinkinfo" parameterType="linkinfo">
+		REPLACE INTO 
+			t_sm_linkinfo 
+		(
+			F_LINKID ,
+			F_VENID ,
+			F_DUTY ,
+			F_NAME ,
+			F_HANDPHONE ,
+			F_FAX ,
+			F_TEL ,
+			F_QQ ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER 
+		) VALUES (
+			#{linkId} ,
+			#{venId} ,
+			#{duty} ,
+			#{name} ,
+			#{handPhone} ,
+			#{fax} ,
+			#{tel} ,
+			#{qq} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateLinkinfo" parameterType="linkinfo">
+		UPDATE
+			t_sm_linkinfo 
+		SET
+			F_DUTY = #{duty} ,
+			F_NAME = #{name} ,
+			F_HANDPHONE = #{handPhone} ,
+			F_FAX = #{fax} ,
+			F_TEL = #{tel} ,
+			F_QQ = #{qq} ,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} 
+		<where>
+			F_LINKID = #{linkId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteLinkinfo" parameterType="linkinfo">
+		DELETE FROM
+			t_sm_linkinfo 
+		<where>
+			F_LINKID = #{linkId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchLinkinfo" parameterType="linkinfo">
+		DELETE FROM 
+			t_sm_linkinfo 
+		<where>
+			F_LINKID in
+			<foreach collection="linkinfoIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryLinkinfo" parameterType="String" resultType="linkinfo">
+		SELECT
+			t.F_LINKID as linkId ,
+			t.F_VENID as venId ,
+			t.F_DUTY as duty ,
+			t.F_NAME as name ,
+			t.F_HANDPHONE as handPhone ,
+			t.F_FAX as fax ,
+			t.F_TEL as tel ,
+			t.F_QQ as qq ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater 
+		FROM
+			t_sm_linkinfo t
+		<where>
+			t.F_LINKID = #{linkId}
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryLinkinfoList" parameterType="linkinfo" resultType="linkinfo">
+		SELECT
+			t.F_LINKID as linkId ,
+			t.F_VENID as venId ,
+			t.F_DUTY as duty ,
+			t.F_NAME as name ,
+			t.F_HANDPHONE as handPhone ,
+			t.F_FAX as fax ,
+			t.F_TEL as tel ,
+			t.F_QQ as qq ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater 
+		FROM
+		t_sm_linkinfo t
+		<where>
+			<if test="linkId!=null and linkId!=''">
+		    	t.F_LINKID = #{linkId}
+		     </if>
+		     <if test="venId!=null and venId!=''">
+		    	t.F_VENID = #{venId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

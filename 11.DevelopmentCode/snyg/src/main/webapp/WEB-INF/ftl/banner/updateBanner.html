@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="banner?method=update" method="post"
+			id="modifyBanner">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
+
+
+				<tr class="cs">
+
+					<td>bannId：</td>
+					<td><input name="bannId" type="text"
+						id="bannId" size="40"
+						value="${banner.bannId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>type：</td>
+					<td><input name="type" type="text"
+						id="type" size="40"
+						value="${banner.type!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>fcproductid：</td>
+					<td><input name="fcproductid" type="text"
+						id="fcproductid" size="40"
+						value="${banner.fcproductid!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>sort：</td>
+					<td><input name="sort" type="text"
+						id="sort" size="40"
+						value="${banner.sort!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>spId：</td>
+					<td><input name="spId" type="text"
+						id="spId" size="40"
+						value="${banner.spId!''}" /></td>
+				</tr>
+
+
+			</table>
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="submit" class="data-btnbg" value="确认" /> 
+				<input type="reset" class="data-btnbg" value="取消"  onclick="javascript:location.href='{Session.BACK_URL!""}'"/>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

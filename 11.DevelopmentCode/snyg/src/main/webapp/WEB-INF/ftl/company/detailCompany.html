@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+<style type="text/css">
+td {
+	white-space: inherit !important;
+	word-break: break-all;
+}
+</style>
+
+</head>
+<body>
+	<div class="waybill-title">
+	<span>商家详细信息</span></div>
+	<!--主窗体-->
+
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="0%" style="table-layout:fixed;width: 100%;">
+			<tbody>
+				<tr class="">
+					<td colspan="4" style="height: 40px;color: #ACD6FF"><b>企业基础信息</b></td>
+				</tr>
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>商家名称：</b></td>
+					<td width="30%">
+						${company.venName!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>商家类型：</b></td>
+					<td width="30%">
+						${company.venTypeName!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>法人：</b></td>
+					<td width="30%">
+						${company.leagal!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>公司网址：</b></td>
+					<td width="30%">
+						${company.wWWSite!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>联系人：</b></td>
+					<td width="30%">
+						${company.linkPerson!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>联系电话：</b></td>
+					<td width="30%">
+						${company.linkTel!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>公司传真：</b></td>
+					<td width="30%">
+						${company.fax!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>公司详细地址：</b></td>
+					<td width="30%">
+						${company.compAddress!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>公司图片：</b></td>
+					<td colspan="3" class="Validform_checktip">
+                        <div id="pict" align="left">
+							<p>
+								<#if picurl??>
+			                   		<img style="width:100px;" class="myimg" src="${rc.contextPath}/${picurl!''}" id="idImg" />
+								<#else>
+									<img style="width:100px;" class="myimg" src="${rc.contextPath}/images/no-tu.png" id="idImg"  />
+								</#if> 
+							</p>
+						</div>
+					</td>
+	            </tr>
+	            
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>主营业务：</b></td>
+					<td width="30%" colspan="3">
+						${company.businessRange!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td colspan="4" style="height: 40px;color: #ACD6FF"><b>结算价格</b></td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>结算比例：</b></td>
+					<td width="30%" colspan="3">
+						${company.clearRate!''}
+	              	</td>
+	            </tr>
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>分销费率：</b></td>
+					<td width="30%" colspan="3">
+						${company.dsaleRate!''}
+	              	</td>
+				</tr>
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>客户折扣：</b></td>
+					<td width="30%" colspan="3">
+						${company.custdisRate!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td colspan="4" style="height: 40px;color: #ACD6FF"><b>企业资质</b></td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>经营许可证：</b></td>
+					<td width="30%">
+						${company.buscert!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>运营商名称：</b></td>
+					<td width="30%">
+						${company.spName!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>开户行名称：</b></td>
+					<td width="30%">
+						${company.bankName!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>开户行账号：</b></td>
+					<td width="30%">
+						${company.bankAcc!''}
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b>开户人名称：</b></td>
+					<td width="30%">
+						${company.bankUser!''}
+	              	</td>
+	              	<td width="20%" class="tdright"><b>注册资金：</b></td>
+					<td width="30%">
+						${company.fund!''}元
+	              	</td>
+				</tr>
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>银行税号：</b></td>
+					<td width="30%" colspan="3">
+						${company.bankTax!''}
+	              	</td>
+				</tr>
+					<#if linkinfoList?? && (linkinfoList?size>0)>
+					<tr class="">
+						<td colspan="4" style="height: 40px;color: #ACD6FF"><b>联系人</b></td>
+					</tr>
+        			<#list linkinfoList as linkinfo>
+        			<tr>
+	              		<td width="20%" class="tdright"><b>姓名：</b></td>
+						<td width="30%">
+							${linkinfo.name!''}
+	              		</td>
+        				<td width="20%" class="tdright"><b>手机：</b></td>
+						<td width="30%">
+							${linkinfo.handPhone!''}
+	              		</td>
+	              	<tr>
+        					<td width="20%" class="tdright"><b>职务：</b></td>
+					<td width="30%">
+						${linkinfo.duty!''}
+	              	</td>
+        					<td width="20%" class="tdright"><b>办公电话：</b></td>
+					<td width="30%">
+						${linkinfo.tel!''}
+	              	</td>
+	              	</tr>
+	              	<tr>
+	              	<td width="20%" class="tdright"><b>传真：</b></td>
+					<td width="30%">
+						${linkinfo.fax!''}
+	              	</td>
+        					<td width="20%" class="tdright"><b>QQ：</b></td>
+					<td width="30%">
+						${linkinfo.qq!''}
+	              	</td>
+        				</tr>
+        			</#list>
+        			</#if>
+				<tr class="">
+	              	<td width="20%" class="tdright"><b>商家备注：</b></td>
+					<td width="30%" colspan="3" style="white-space: pre-line;">
+						${company.venMemo!''}
+	              	</td>
+				</tr>
+				
+				<tr class="">
+					<td colspan="4" style="height: 40px;color: #ACD6FF"><b>退货信息</b></td>
+				</tr>
+				
+				 <tr class="">
+					<td class="tdright"><b>收货人：</b></td>
+					<td>${company.receiver!''}</td>
+					<td class="tdright"><b>收货人电话：</b></td>
+					<td>${company.recvPhone!''}</td>
+				</tr>
+				
+				<tr class="">
+					<td class="tdright"><b>收货地址：</b></td>
+					<td colspan="3" style="white-space: inherit;">${company.recvAddress!''}</td>
+				</tr>
+				
+				<tr class="">
+					<td colspan="4" style="text-align:center;">
+						<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn1" id="button4" value="返回">
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			
+	
+
+</body>
+</html>

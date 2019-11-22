@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/WX_INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/common.js"></script> 
+</head>
+
+
+<body>
+<!--header 开始-->
+<div class="snyg_headdiv">
+	<span class="ico_ret"><a href="index.html"><img src="images/return.png" ></a></span>
+    <h2>参团</h2>
+    <span class="ico_home"><a href="个人中心.html"><img src="images/gruser.png"></a></span>
+</div>
+<!--header 结束-->
+<ul class="one_sp_list">
+    <li>
+        <div class="iconleft">          
+            <div class="iconl0">
+                <a href="wx?method=toQueryCommproductDetailByPriceId&priceId=${commproduct.priceId!''}" title="商品详情"><img title="" src="${rc.contextPath}/upload/wxpic/${commproduct.thumbPic!''}" alt="" /><i class="tgspbq">团</i></a>                   
+            </div>         
+        </div>
+        <div class="info">
+            <a href="wx?method=toQueryCommproductDetailByPriceId&priceId=${commproduct.priceId!''}" title="商品详情"><h4>${commproduct.productName!''}</h4></a>  
+            <p class="txt1"><span class="f4">${goodsPrice.priceName!''}</span></p>
+            <a href="wx?method=toQueryCommproductDetailByPriceId&priceId=${commproduct.priceId!''}" title="商品详情"><p class="txt">${commproduct.peopleNum!'1'}人团<span class="f2 ml10">&yen;${commproduct.price!''}</span></p>
+</a>
+        </div>
+    </li>
+</ul>
+
+<div class="snyg_contentb">
+    <div class="ctlist">
+
+	   <div class="ctuser">
+	   		<#if price1RefList?? && (price1RefList?size>0)>
+	    		<#list price1RefList as li>
+	    			<#if li_index==0>
+	    				<#if li.headPic??>
+		    				<span class="usertxtz"><img src="${li.headPic!''}"></span>    
+		    			<#else>
+		    				<span class="usertxtz"><img src="${rc.contextPath}/wx/images/tx.jpg"></span>    				
+	       				</#if>
+	    			<#else>
+		    			<#if li.headPic??>
+		    				<span class="usertxty"><img src="${li.headPic!''}"></span>    
+		    			<#else>
+		    				<span class="usertxty"><img src="${rc.contextPath}/wx/images/tx.jpg"></span>    				
+	       				</#if>
+	    			</#if>
+	    		</#list>
+	    	</#if>
+       </div>
+       <p class="f4">还差${num!''}人成团，快来购买吧</p>
+       <div class="sjdiv"><span class="f2" id="timeSpan"></span></div>        
+    </div>
+	<div class="snyg_footer" style="height:20px;"></div>
+
+</div>
+ 
+<div class="snyg_contentb">    
+    <ul class="ptxx">
+    	<#if price1RefList?? && (price1RefList?size>0)>
+    		<#list price1RefList as li>
+    			<#if li_index==0>
+    			<li class="tzli">
+    				<input type="hidden"  value="${li.priceEndDate!''}" id="priceEndDate">
+    			<#else>
+    			<li>
+    			</#if>
+    				<#if li.headPic??>
+	    				<div class="divleft"><i class="usertx"><img src="${li.headPic!''}"></i>${li.userName!''}</div>
+	    			<#else>
+	    				<div class="divleft"><i class="usertx"><img src="${rc.contextPath}/wx/images/tx.jpg"></i>${li.userName!''}</div>
+    				</#if>
+    				<#if li_index==0>
+		            	<div class="divright" style="width:55%; line-height:40px;"><p class="f4 fz12">${li.createTime!''} 开团</p></div>
+		            <#else>
+		            	<div class="divright" style="width:55%; line-height:40px;"><p class="f4 fz12">${li.createTime!''} 参团</p></div>
+		            </#if>
+		            <div style="clear:both;"></div>
+		        </li>  
+    		</#list>
+    	</#if>
+    </ul>
+    
+</div>   
+<div id="tcyddiv" class="spggdiv" style="display:none;">
+    <div class="snyg_content">
+    	<div id="picAndPrice">
+        </div>
+        <dl class="spggfl"  style="height:150px; overflow-y:auto; overflow-x:hidden;">
+            <dd><span>规格：</span>
+                <div id="goodsPriceDiv">
+                </div>
+            </dd>
+            <dd><span>数量：</span>
+                 <div class="sl">
+                    <button class="btnhui" onclick="changeNum('1')"></button>
+                    <input id="num" type="text" readonly="readonly" class="input_sl" value="1">
+                    <button class="btnadd" onclick="changeNum('2')"></button>
+	            </div>
+            </dd>
+            <div class="clear6"></div>
+        </dl>
+	<div align="center"><a href="javascript:void(0)" onclick="addShopCart()"><button class="btn-big">确定</button></a></div>
+    </div>
+</div>
+<input type="hidden" id="peopleNum" value="${num}"/>
+<input type="hidden" id="productId" value="${commproduct.productId}"/>
+<input type="hidden" id="priceId" value="${commproduct.priceId!''}"/>
+<input type="hidden" id="refPatchCode" value="${price1Ref.refPatchCode!''}"/>
+<div class="snyg_footer"></div>
+<!--预订menu开始--> 
+  <nav class="snyg_nav">
+        <a href="javascript:void(0)"  onclick="ydShow('2')" href="javascript:void(0)" title=""><span class="orange_btn wid1" >我也参团</span></a></nav>
+<!--预订menu结束--> 
+<!--商品规格--> 
+
+<form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+  <input type="hidden" name="userId" value="${userId!''}">
+</form>
+
+<script>
+var alertHtml = "";
+$(function(){
+	checkActiveDate();
+	getNumStr();
+	getSellPriceList();	
+})
+
+function submitOrder(){
+      var prepareOrderJson = new Object();
+	  var orderListList = new Array();
+	  var orderList1 = new Object();
+	  orderList1.priceId =checkPriceId; //销售id
+	  orderList1.num = $("#num").val(); //数量
+	  orderList1.cartId = ""; //购物车id
+	  //price_1_refPatchCode
+	  orderListList.push(orderList1);
+	  prepareOrderJson.orderListList = orderListList;
+	  
+	  var price = new Object();
+	  price.priceType="1";
+	  price.refPatchCode=$("#refPatchCode").val();
+	  if(refPatchCode==""){
+		  price.isBegin = "1";  
+	  }else{
+		  price.isBegin = "0";  
+	  }
+	  
+	  prepareOrderJson.price = price;
+	  
+	  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+	  $("#toCreateOrder").submit();
+}
+
+var showType = "";
+function ydShow(showTypeInfo)
+{
+	   showType = showTypeInfo;
+	   Alert.showBottomHtml(alertHtml);
+	$("#alert_show_3").css("height", "290");
+}
+
+function addShopCart(){
+	submitOrder();
+}
+
+function ydNone()
+{
+	closeBottomHtml();
+}
+var checkPriceId= "";
+
+
+function getSellPriceList(){
+	$.post("wx?method=queryGoodsPriceListForWx",{
+		productId:$("#productId").val(),
+		priceType:'1',
+		delFlag:'0'
+	},function(data){
+		if(data!=null && data.length>0){
+			var str = "";
+			var str1 = "";
+			for(var i=0;i<data.length;i++){
+				if($("#priceId").val() ==  data[i].priceId){
+					str+='<div class="spgg_title"';
+					if($("#priceId").val() ==  data[i].priceId){
+						checkPriceId = data[i].priceId;
+					}else{
+						str+="style='display:none;'"
+					}
+					str+=' id="pricePic'+data[i].priceId+'">';
+					str+='<div class="sptucss"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></div>';
+					str+='<span class="f1" style="margin-left:120px; line-height:50px;">&yen;'+data[i].price+'</span><a class="closdiv" onclick="ydNone()"></a>';      
+					str+='</div>';
+					
+					if($("#priceId").val() ==  data[i].priceId){
+						str1+='<button class="spggflon" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
+					}else{
+						str1+='<button class="spggfloff" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
+					}
+				}
+			}
+			$("#picAndPrice").html(str);
+			$("#goodsPriceDiv").html(str1);
+		}
+		
+		alertHtml = $("#tcyddiv").html();
+		$("#tcyddiv").remove();
+	},'json');
+}
+
+function changeNum(type){
+	var num = parseInt($("#num").val());
+	if(type=="1"){
+		if(num >1){
+			num --;
+		}else{
+			num = 1;
+		}
+	}else{
+		num++;
+	}
+	$("#num").val(num)
+}
+
+function getNumStr(){
+	var num = parseInt($("#peopleNum").val());
+	var str= "";
+	for(var i=0;i<num;i++){
+		str+="<span class=\"usertxk\"></span>";
+	}
+	$(".ctuser").append(str);
+}
+function checkActiveDate(){
+	var priceEndDate = $("#priceEndDate").val();  
+	var reg = new RegExp("-","g");
+	//当前时间
+	var currentTime = new Date().getTime();
+	priceEndDate = priceEndDate.replace(reg,"/");
+	//结束时间
+	var endTime = new Date(priceEndDate).getTime();
+		
+	var date = endTime - currentTime; 
+	var days = date / 1000 ;
+	timer(days);
+	
+}
+
+function timer(intDiff){
+	var timer =  window.setInterval(function(){
+    var day=0,
+        hour=0,
+        minute=0,
+        second=0;//时间默认值        
+    if(intDiff > 0){
+        day = Math.floor(intDiff / (60 * 60 * 24));
+        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+    }
+    if (minute <= 9) minute = '0' + minute;
+    if (second <= 9) second = '0' + second;
+    var str ="剩余  "+hour+":"+minute+":"+second+"  结束";
+   	$("#timeSpan").html(str);
+    intDiff--;
+    if(intDiff<=0){
+    	$(".snyg_nav").hide();
+    	clearInterval(timer)
+    }
+    }, 1000);
+} 
+</script>
+</body>
+</html>

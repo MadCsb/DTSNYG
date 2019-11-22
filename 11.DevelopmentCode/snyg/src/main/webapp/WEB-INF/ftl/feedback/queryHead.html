@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="tab-nav">
+         <ul class="nav">             
+             <li><a href="feedback.do?method=query&msgType=0" name="checkNode" id ="checkNode0" <#if feedback.msgType="0">class="active"<#else>class=""</#if>>文本</a></li>
+             <li><a href="feedback.do?method=query&msgType=2" name="checkNode" id ="checkNode0" <#if feedback.msgType="2">class="active"<#else>class=""</#if>>单图文</a></li>
+             <li><a href="feedback.do?method=query&msgType=6" name="checkNode" id ="checkNode0" <#if feedback.msgType="6">class="active"<#else>class=""</#if>>多图文</a></li>
+             <li><a href="feedback.do?method=query&msgType=7" name="checkNode" id ="checkNode0" <#if feedback.msgType="7">class="active"<#else>class=""</#if>>链接</a></li>
+             <li><a href="feedback.do?method=query&msgType=8" name="checkNode" id ="checkNode0" <#if feedback.msgType="8">class="active"<#else>class=""</#if>>系统消息</a></li>
+             <li><a href="feedback.do?method=query&msgType=" name="checkNode" id ="checkNode0" <#if feedback.msgType="">class="active"<#else>class=""</#if>>其它</a></li>            
+         </ul> 
+         <div style="clear:both;"></div>
+    </div>
+
+	
+	<script type="text/javascript">
+	
+	// 启用或停用（ delFlag 0：启用:1：停用）
+	function resetFeedbackDelFlag(feedBackId, delFlag) {
+		
+		var msg = "确定要停用该消息吗？";
+		if (delFlag == 0) {
+			msg = "确定要启用该消息吗？";
+		}
+		
+		parent.layer.confirm(msg, function() {
+			$.post("feedback.do?method=resetDelFlag",{
+				feedBackId : feedBackId,
+				delFlag : delFlag
+			},function(data){
+				if (data == "1") {
+					parent.layer.alert("操作成功！",function() {
+						parent.layer.closeAll();
+						window.location.href = '${Session.BACK_URL}';
+				    });
+				} else if (data == "0") {
+					parent.layer.alert("操作失败！");	
+				} else if (data == "2") {
+					parent.layer.alert("该消息已经被使用，不能停用！");	
+				}
+			})
+		});
+	}
+	
+	// 批量启用/停用
+	function batch(delFlag) {
+	
+		var chestr = getCheckedValues("delId");
+		if(chestr == "") {
+			parent.layer.alert("请至少选中一项");
+		} else {
+			
+		    var msg = "确定要启用所选中的记录？";
+		    
+		    if (delFlag == "1") {
+		    	msg = "确定要停用所选中的记录？";
+		    }
+
+			parent.layer.confirm(msg, function() {
+				$.post("feedback.do?method=batchResetDelFlag",{
+					checkedFeedbackIds : chestr,
+					delFlag : delFlag
+				},function(data){
+					if (data == "1") {
+						parent.layer.alert("操作成功！",function() {
+							parent.layer.closeAll();
+							window.location.href = '${Session.BACK_URL}';
+					    });
+					} else if (data == "0") {
+						parent.layer.alert("操作失败！");	
+					} else {
+						parent.layer.alert(data, function() {
+							parent.layer.closeAll();
+							window.location.href = '${Session.BACK_URL}';
+					    });
+					}
+				})
+			});
+		}
+	}
+	
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.travel.dao.RoleDao">
+
+	<!-- 查询单个详情 -->
+	<select id="queryRole" parameterType="Role"
+			resultType="Role">
+		SELECT
+		t.F_ROLEID as roleId ,
+		t.F_ROLENAME as roleName ,
+		t.F_IFPRIV as ifPriv ,
+		t.F_ISMULTI as isMulti ,
+		t.F_ROLEDESC as roleDesc
+		FROM
+		t_pub_role t
+		WHERE
+		t.F_ROLEID = #{roleId}
+	</select>
+
+	<!-- 按条件查询所有 -->
+	<select id="queryRoleList" parameterType="Role"
+			resultType="Role">
+		SELECT
+		t.F_ROLEID as roleId ,
+		t.F_ROLENAME as roleName ,
+		t.F_IFPRIV as ifPriv ,
+		t.F_ISMULTI as isMulti ,
+		t.F_ROLEDESC as roleDesc
+		FROM
+		t_pub_role t
+	</select>
+
+	<select id="queryRoleLinkUnitList" resultType="Role">
+		SELECT
+		F_ROLETYPE as roleType ,
+		F_UNIT_ID as unitId ,
+		F_UNIT_NAME as unitName ,
+		F_ACC_ID as accId
+		FROM
+		V_PUB_ROLEDATA
+		WHERE F_DELTAG=0
+		<if test="accId != null and accId != ''">
+			and F_ACC_ID = #{accId}
+		</if>
+		<if test="unitId != null and unitId != ''">
+			and F_UNIT_ID = #{unitId}
+		</if>
+		<if test="userRoleType != null and userRoleType != '' ">
+			and F_ROLETYPE = #{userRoleType}
+		</if>
+		<if test="unitName != null and unitName != '' ">
+			and F_UNIT_NAME like CONCAT('%', #{unitName}, '%')
+		</if>
+	</select>
+
+	<select id="queryRoleByRoleType" parameterType="String" resultType="Role">
+		select
+		r.F_ROLEID as roleId ,
+		r.F_ROLENAME as roleName ,
+		r.F_IFPRIV as ifPriv ,
+		r.F_ISMULTI as isMulti ,
+		r.F_ROLEDESC as roleDesc
+		from t_pub_role r
+		where r.f_roleid in (select rr.f_manaroleid
+		from t_pub_rolerange rr
+		where rr.f_roleid in (${_parameter}))
+
+	</select>
+</mapper>

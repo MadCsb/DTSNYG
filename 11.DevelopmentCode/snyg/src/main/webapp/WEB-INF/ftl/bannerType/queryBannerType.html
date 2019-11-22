@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("bannerTypeId");
+		document.getElementById("checkedBannerTypeIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+
+	<a href="bannerType?method=toAdd">添加用户</a>
+	<form id="queryFrm" action="bannerType?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<table border="1" style="width: 100%">
+			<tr>
+				<td></td> 
+				<td>bannerTypeId</td> 
+				<td>typeName</td> 
+				<td>spId</td> 
+				<td>createTime</td> 
+				<td>creatorUid</td> 
+				<td>creator</td> 
+				<td>updateTime</td> 
+				<td>updaterUid</td> 
+				<td>updater</td> 
+				<td>bannerTypeTag</td> 
+				<td>picUrl</td> 
+				<td>seqNum</td> 
+				<td>delFlag</td> 
+				<td>操作</td>
+			</tr>
+
+			<#list bannerTypelist as bannerType>
+			<tr>
+				<td>
+					<input type="checkbox" name="bannerTypeId" value="${bannerType.bannerTypeId!''}"></td> 
+				<td>${bannerType.bannerTypeId!''}</td> 
+				<td>${bannerType.typeName!''}</td> 
+				<td>${bannerType.spId!''}</td> 
+				<td>${bannerType.createTime!''}</td> 
+				<td>${bannerType.creatorUid!''}</td> 
+				<td>${bannerType.creator!''}</td> 
+				<td>${bannerType.updateTime!''}</td> 
+				<td>${bannerType.updaterUid!''}</td> 
+				<td>${bannerType.updater!''}</td> 
+				<td>${bannerType.bannerTypeTag!''}</td> 
+				<td>${bannerType.picUrl!''}</td> 
+				<td>${bannerType.seqNum!''}</td> 
+				<td>${bannerType.delFlag!''}</td> 
+				<td><a
+					href="bannerType?method=toUpdate&bannerTypeId=${bannerType.bannerTypeId!''}">修改</a>
+					&nbsp;&nbsp; <a
+					href="bannerType?method=delete&bannerTypeId=${bannerType.bannerTypeId!''}">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+
+		<#if bannerTypelist?? && (bannerTypelist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="bannerType?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedBannerTypeIds"
+			id="checkedBannerTypeIds">
+	</form>
+</body>
+</html>

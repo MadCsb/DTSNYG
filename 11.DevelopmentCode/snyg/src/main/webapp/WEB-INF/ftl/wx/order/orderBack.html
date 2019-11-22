@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">
+  <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+</head>
+<body>
+<form method="post" id="createOrderBack" action="wxorder?method=createOrderBack">
+<input id="orderId" type="hidden" name="orderId" value="${order.orderId!''}">
+<input id="serverIds" type="hidden" name="serverIds" value="">
+
+<!--header 开始-->
+<div class="snyg_headdiv">
+  <span class="ico_ret"><a onclick="javascript:history.back(-1);"><img src="${rc.contextPath}/wx/images/return.png" ></a></span>
+  <h2>退货申请</h2>
+  <span class="ico_home"><a onclick="toPersonal();"><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>
+</div>
+<!--header 结束-->
+
+<div class="snyg_contentb" >
+  <ul class="ddlist">
+    <li>
+      <a href="javascript:void(0);"><div>订单编号：${order.orderCode!''}<span class="ddzt1">已收货</span></div></a>
+      <#list orderListList as ol>
+      <div class="ddinfo">
+        <div class="iconleft">
+          <div class="icon">
+            <a onclick="toSellPrice('${ol.priceId}')">
+              <#if (ol.thumbPic)??>
+                <img title="" src="${rc.contextPath}/upload/wxpic/${ol.thumbPic}" alt="" />
+              <#else>
+                <img title="" src="${rc.contextPath}/images/no-tu.png" alt="" />
+              </#if>
+              <#if ol.sellPrice.priceType == '0'>
+
+              <#elseif ol.sellPrice.priceType == '1'>
+                <i class="tgspbq">团</i>
+              <#elseif ol.sellPrice.priceType == '2'>
+                <i class="tgspbq">秒</i>
+              </#if>
+            </a>
+          </div>
+        </div>
+        <div class="info">
+          <a onclick="toSellPrice('${ol.priceId}')"><h4>${ol.productName!''}</h4></a>
+          <p class="txt"><span class="f4">规格 ${ol.childName!''}</span></p>
+          <p class="txt"><span class="f4">数量 ${ol.num!''}</span></p>
+          <p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;${ol.money!''}</span></p></div>
+      </div>
+      </#list>
+      <div class="ddzf"><p class="txt1"><span class="f4">${order.createTime!''}</span></p></div>
+    </li>
+  </ul>
+</div>
+
+<div class="snyg_contentb">
+  <div class="thhxx"><span class="f2">退款金额：&yen;${order.money!''}</span></div>
+  <div class="thhxx"><span class="f2">退款数量：&yen;${order.num!''}</span></div>
+</div>
+
+<div class="snyg_contentb" >
+  <div class="ddbt_title">
+    <a href="">退款原因</a>
+  </div>
+  <div class="snyg_xccon" style="padding:0;">
+    <p>
+      <select class="txt-input0" id="backReasonType" name="backReasonType">
+        <#list pubmapList as pl>
+          <#if pl.mapKey?index_of("1-") == 0>
+            <option value="${pl.mapKey}">${pl.mapValue!''}</option>
+          </#if>
+        </#list>
+      </select>
+    </p>
+    <p><textarea name="backReason" cols="" rows="" class="txt-textarea0" placeholder="请填写退换货说明"></textarea></p>
+  </div>
+</div>
+
+<div class="snyg_contentb">
+  <div class="ddbt_title">
+    上传凭证<span class="f2">(最多上传9张)</span>
+  </div>
+  <ul class="sctu">
+    <li style="width:28%;height:80px;" onclick="wxSelectImg(this)"></li>
+  </ul>
+  <div class="clear"></div>
+</div>
+<div align="center"><button class="btn-big" id="submitBtn" onclick="beforeSubmit()">提交</button></div>
+</form>
+<script>
+  var localIds = null;//本地选择的文件
+  $(function () {
+    localIds = new Array();
+    //进入页面后获取微信js sdk权限
+    var url = encodeURIComponent(location.href.split('#')[0]);
+    $.post("wxorder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
+      if(ret!=''){
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: ret.appId, // 必填，公众号的唯一标识
+          timestamp: ret.timestamp , // 必填，生成签名的时间戳
+          nonceStr: ret.nonceStr, // 必填，生成签名的随机串
+          signature: ret.signature,// 必填，签名
+          jsApiList: ['chooseImage','uploadImage','getLocalImgData','downloadImage'] // 必填，需要使用的JS接口列表
+        });
+        wx.error(function(res){
+          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+          $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+        })
+        wx.ready(function(){
+          // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+          wx.checkJsApi({
+            jsApiList: [
+              'chooseImage',
+              'uploadImage',
+              'getLocalImgData',
+              'downloadImage'
+            ],
+            success: function (res) {
+              console.log(JSON.stringify(res));
+            },
+            error:function (res) {
+              alert("该版本微信不支持目前功能!");
+            }
+          });
+        });
+      }
+    },"json");
+  })
+
+  /**
+   * 微信选择文件
+   */
+  function wxSelectImg(obj)
+  {
+    wx.chooseImage({
+      count: 9-localIds.length,
+      needResult: 1,
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (data) {
+        if(data.errMsg == "chooseImage:ok")
+        {
+          for(var i=0;i<data.localIds.length && localIds.length<9;i++)
+          {
+            localIds.push(data.localIds[i]);
+            $(obj).before('<li style="width:28%;height:80px;" localId = "'+data.localIds[i]+'" onclick="removeImg(this)"><img src="'+data.localIds[i]+'"></li>');
+          }
+          if(localIds.length == 9)
+          {
+            $(obj).hide();
+          }
+        }else if(data.errMsg == "chooseImage:cancel")
+        {
+
+        }
+      },
+      fail: function (res) {
+//        alert("选取图片失败");
+      }
+    });
+  }
+
+  /**
+   * 删除图片
+   * @param obj
+   */
+  function removeImg(obj)
+  {
+    var localId = $(obj).attr("localId");
+    localIds.forEach(function(item, index, arr) {
+      if(item == localId) {
+        arr.splice(index, 1);
+      }
+    });
+    $(obj).remove();
+  }
+  function beforeSubmit()
+  {
+    $("#submitBtn").attr("disabled","disabled");
+    $("#serverIds").val("");
+    syncUpload();
+  }
+  function syncUpload() { //同步上传图片，上传结束提交表单
+    if (!localIds.length) {
+      $("#createOrderBack").submit();
+    } else {
+      var localId = localIds.pop();
+      wx.uploadImage({
+        localId: localId,
+        isShowProgressTips: 1,
+        success: function(res) {
+          var serverIds = $("#serverIds").val();
+          if(serverIds == "")
+          {
+            serverIds = res.serverId;
+          }else
+          {
+            serverIds = serverIds + ","+res.serverId;
+          }
+          $("#serverIds").val(serverIds);
+          syncUpload();
+        }
+      });
+    }
+  }
+</script>
+
+
+</body>
+</html>

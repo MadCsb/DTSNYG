@@ -1,0 +1,67 @@
+.seabtn {
+	margin: 5px 0px;
+	border: 0px;
+	background: #0099FF;
+	padding: 4px;
+	color: #fff;
+	line-height: 20px;
+	width: 60px;
+	vertical-align: middle;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.redbtn {
+	margin: 5px 0px;
+	border: 0px;
+	background: #ff0000;
+	padding: 4px;
+	color: #fff;
+	line-height: 20px;
+	width: 60px;
+	vertical-align: middle;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.bluebtn {
+	margin: 5px 0px;
+	border: 0px;
+	background: #0d6fb8;
+	padding: 4px;
+	color: #fff;
+	line-height: 20px;
+	width: 60px;
+	vertical-align: middle;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellowbtn {
+	margin: 5px 0px;
+	border: 0px;
+	background: #feac29;
+	padding: 4px;
+	color: #fff;
+	line-height: 20px;
+	vertical-align: middle;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+
+
+.noBorderTable td {
+	border: none;
+}
+
+.ico_btn_red {
+	margin: 0px 5px;
+	display: inline-block;
+	color: #F86281;
+	cursor: pointer;
+}
+
+.ico_btn_red:hover {
+	color: #3B4357;
+}

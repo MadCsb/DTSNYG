@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<div class="waybill-title">
+		<span>新增分类</span>
+	</div>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="pdcType?method=add" method="post"
+			id="createPdcType"  enctype="multipart/form-data">
+			<!--编辑区-->
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td width="16%" class="tdright"><b><font class="f2">*</font>类别名称：</b></td>
+					<td width="38%"><input name="typeName" type="text" class="validate[required,maxSize[10]] data-inputtxt" 
+						id="typeName" size="40" />
+						<span id="msg" style="color:red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%" class="tdright"><b>上级分类：</b></td>
+					<td>
+						<select name="ppdcTypeId" id="ppdcTypeId" class="data-inputtxt-select">
+							<option value="" level="0">请选择</option>
+							<#if parentPdcTypeList?? && (parentPdcTypeList?size>0)>
+								<#list parentPdcTypeList as  li>
+									<#if pdcType.ppdcTypeId?? && pdcType.ppdcTypeId==li.pdcTypeId> 
+									<option value="${li.pdcTypeId!''}" level="${li.level!''}" selected="selected">${li.typeName!''}</option>	
+									<#else>
+									<option value="${li.pdcTypeId!''}" level="${li.level!''}">${li.typeName!''}</option>	
+									</#if>
+								</#list>
+							</#if>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%" class="tdright"><b>缩略图：</b></td>
+					<td width="30%">
+						<img class="myimg" src="${rc.contextPath}/images/no-tu.png" id="img" style="max-width:400px;max-height:300px;display: block;"/>
+						<br/>
+						<input name="button3" onClick="uploadButton()" type="button" class="cbtn1" id="button3" value="上传图片">
+						<input name="button4" type="button" onClick="clean()" class="cbtn2" id="button4" value="清除">
+						<input style="display:none;" type="file" name="upload1" id="idFile1" class="validate[required] wabillText" style="cursor: pointer;" onChange="addImg();">
+						<span style="color:red">为保证前台商品图片展示效果，请上传400*300的商品图片</span>
+					</td>
+				</tr>
+			</table>
+			<div class="footerbtn">
+				<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	// 加载验证框架
+	$("#createPdcType").validationEngine();
+})
+
+function beforeSubmit(){
+	if ($("#createPdcType").validationEngine('validate')) {
+		var level = parseInt($("#ppdcTypeId option:selected").attr("level"))+1;
+		$.post("pdcType?method=queryPdcTypeNameExis",{
+			typeName:$("#typeName").val(),
+			ppdcTypeId:$("#ppdcTypeId").val(),
+			pdcTypeId:$("#pdcTypeId").val(),
+			level:level
+		},function(data){
+			if(data=="success"){
+				$("#createPdcType").submit();
+			}else{
+				$("#typeName").focus();
+				$("#msg").html("类别名称已存在");
+			}
+		})
+	}
+}
+
+//-----图片预览-----
+// 添加图片
+	function uploadButton(){
+		$("#idFile1").click();
+	}
+	function addImg() {
+		var idFile1 = document.getElementById("idFile1");
+		var fileext = idFile1.value.substring(idFile1.value.lastIndexOf("."),idFile1.value.length);
+			fileext = fileext.toLowerCase();
+			
+		// 判断图片格式
+		if (fileext!='' && fileext != '.jpg' && fileext != '.gif' 
+			&& fileext != '.jpeg' && fileext != '.png' ){
+			parent.layer.alert("对不起，系统仅支持jpg/gif/jpeg/png/bmp格式的照片，请您调整格式后重新上传，谢谢 ！", function() {
+				parent.layer.closeAll();
+	        	 clean();
+	         });
+	         return;
+	    }
+		$("#img").css('display', 'block'); 
+		var img = document.getElementById("img");
+		
+		if (idFile1.files && idFile1.files[0]) {       
+	        var reader = new FileReader();
+	        reader.onload = function (evt) {  
+	        	img.src = evt.target.result; 
+	        
+	        var  image= new Image();
+	        image.onload=function(){
+	            var width = image.width;
+	            var height = image.height;
+	            if(width != 800 && height != 600){
+	         /*   	art.dialog.alert("为保证前台商品图片展示效果，请上传800*600的商品图片",function(){
+	            		clean();
+	            	})*/
+	            }
+	        };
+	        image.src  = evt.target.result; 
+	        }
+	        reader.readAsDataURL(idFile1.files[0]);
+	        
+	        
+		} else {
+			 
+			clean();
+		}
+	}
+	// 清除图片
+	function clean(){
+	    var file = $("#idFile1");
+	    file.after(file.clone().val(""));
+	    file.remove(); 
+		$("#img").attr('src', '${rc.contextPath}/images/no-tu.png');
+		
+	}
+//-----图片预览----- end
+</script>
+</html>

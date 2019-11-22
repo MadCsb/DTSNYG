@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<#include "/INC_HEAD.html">
+
+<style type="text/css">
+.myimg {
+	max-width:400px;
+	max-height:300px;
+}
+</style>
+</head>
+<body>
+
+	<div class="waybill-title">
+		<span>修改广告图片</span>
+	</div>
+
+	<form action="carouselItem.do?method=update" method="post" id="updateCarouselItem" enctype="multipart/form-data">
+		<input type="hidden" id="itemId" name="itemId" value="${carouselItem.itemId!''}"/>
+		<input type="hidden" id="carouselId" name="carouselId" value="${carouselItem.carouselId!''}" />
+		<input type="hidden" id="picUrl" name="picUrl" value="${carouselItem.picUrl!''}"/>
+	   	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tbody>
+				<tr class="">
+					<td width="20%" class="tdright"><b><font class="f2">*</font>明细标题：</b></td>
+					<td width="30%">
+						<input id="title" name="title" type="text" class="validate[required,maxSize[100]] data-inputtxt" maxlength="100"
+							onblur="checkTitle(0);" value="${carouselItem.title!''}">
+						<br>
+						<font color="red" style="font-weight: bold;"><strong><span id="msg"></span></strong></font>
+	              	</td>
+	              	<td width="20%" class="tdright"><b><font class="f2">*</font>顺序：</b></td>
+					<td width="30%">
+						<input id="seqNum" name="seqNum" type="text" class="validate[required,maxSize[3],custom[integer]] data-inputtxt" maxlength="3" value="${carouselItem.seqNum!''}">
+	              	</td>  	
+				</tr>
+				
+				<tr class="">
+					<td class="tdright"><b><span class="f2">*</span>图片：</b></td>
+					<td colspan="3">
+						<#if carouselItem.picUrl??>
+        					<img class="myimg" src="${rc.contextPath}/upload/wxpic/${carouselItem.picUrl!''}" id="img" style="dispaly:block;"/>
+        					<input type="hidden" id="picUrl" name="picUrl" value="${carouselItem.picUrl!''}" />
+        				<#else>
+        					<img class="myimg" src="${rc.contextPath}/images/no-tu.png" id="img" style="dispaly:block;"/>
+        				</#if>
+						<div style="margin-top:2px">
+							<input type="file" name="picFile" id="picFile" class="wabillText" style="cursor: pointer;" onChange="addImg();">
+							<input type="button" id="btnqc" class="wabillText" style="cursor: pointer;" onClick="clean();" value=" 清 除 ">
+							<span style="color:red">为保证前台图片展示效果，请上传720*370的图片</span>
+						</div>
+					</td>
+				</tr>
+				
+				<tr class="">
+					<td class="tdright"><b><span class="f2"></span>关联URL：</b></td>
+					<td colspan="3">
+						<input id="linkUrl" name="linkUrl" type="text" class="validate[maxSize[500]] data-inputtxt" maxlength="500" value="${carouselItem.linkUrl!''}">
+					</td>
+				</tr> 
+			</tbody>
+		</table>
+	                 
+	<div class="footerbtn">   
+
+		<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+		<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
+	</div>
+	</form>
+  
+</body>
+<script type="text/javascript">
+
+// 页面初始化
+$(function(){
+ 		
+ 	// 加载验证框架
+	$("#updateCarouselItem").validationEngine();
+ 		
+});
+
+// 保存前
+function beforeSubmit(){
+	if($("#updateCarouselItem").validationEngine('validate')) {
+		//checkTitle(1);
+		if($("#picFile").val()=="" && $("#picUrl").val() == ""){
+			window.layer.alert("图片不能为空",function(){
+				window.layer.closeAll();
+			})
+		}else{
+			$("#updateCarouselItem").submit();	
+		}
+	}
+}
+
+function checkTitle(flag) {
+	var itemId = $("#itemId").val();
+	var carouselId = $("#carouselId").val();
+	var title = $("#title").val();
+
+	$.ajax({
+		type: "POST",
+		url:"carouselItem.do?method=checkCarouselItem",  
+		data: {
+			itemId : itemId,
+			carouselId : carouselId,
+			title : title
+		},
+		success: function(data){
+			if (data != null) {
+				if (data == "0") {
+					$("#msg").html("");
+					$("#msg").attr("title", "");
+					
+					if (flag == 1) {
+						// 提交保存
+		  				$("#updateCarouselItem").submit();
+					}
+				} else {
+					if(title!=null && title!=""){
+						$("#title").val("");
+						$("#msg").html("明细标题【" + title + "】已存在，请重新输入！");
+						$("#msg").attr("title", "明细标题【" + title + "】已存在，请重新输入！");
+					}
+				}			
+			}
+		}	
+	});
+}
+
+
+//添加图片
+function addImg() {
+	var picFile = document.getElementById("picFile");
+	var fileext = picFile.value.substring(picFile.value.lastIndexOf("."),picFile.value.length);
+		fileext = fileext.toLowerCase();
+		
+	//判断图片格式
+	if ( fileext!='' && fileext != '.jpg' && fileext != '.gif' 
+		&& fileext != '.jpeg' && fileext != '.png' ){
+         art.dialog.alert("对不起，系统仅支持jpg/gif/jpeg/png/bmp格式的照片，请您调整格式后重新上传，谢谢 ！", function() {
+        	 clean();
+         });
+         return;
+    }
+	$("#img").css('display', 'block'); 
+	var img = document.getElementById("img");
+	
+	if (picFile.files && picFile.files[0]) {       
+        var reader = new FileReader();
+        reader.onload = function (evt) {  
+        	var data = evt.target.result;
+        	//加载图片获取图片真实宽度和高度
+	      	var image = new Image();
+	      	image.onload = function(){
+	          	var width = image.width;
+	          	var height = image.height;
+
+	          //	if (width != 720 || height != 370) {
+	          //		art.dialog.alert("为保证前台图片展示效果，请上传720*370的图片");
+	        	//  	clean();
+	          //	} else {
+	        	 	img.src = evt.target.result;
+	         // 	}
+	      	};
+	      	image.src = data;
+        }
+        reader.readAsDataURL(picFile.files[0]);
+        
+	} else {
+		var MAXWIDTH = "480px";
+		var MAXHEIGHT = "270px";
+		
+		img.style.display = 'none';  
+		
+		picFile.select();
+		var imgSrc = document.selection.createRange().text;  
+		var localImagId = document.getElementById("localImag");  
+		localImagId.style.display="block";
+		localImagId.style.width = MAXWIDTH;          
+      　　	localImagId.style.height = MAXHEIGHT;  
+      　　	localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";  　　	  
+      　　	localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;  
+      　　	document.selection.empty();  
+	}
+}
+
+// 清除图片
+function clean(){
+    var file = $("#picFile");
+    file.after(file.clone().val(""));
+    file.remove(); 
+	$("#img").attr('src', '${rc.contextPath}/images/no-tu.png');
+	$("#picUrl").val("");
+}
+
+</script> 
+</html>

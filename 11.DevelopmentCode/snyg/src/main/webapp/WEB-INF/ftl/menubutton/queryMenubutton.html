@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("delId");
+		if(chestr == "") {
+			art.dialog.alert("请选择要删除的数据");
+		} else {
+			
+			art.dialog.confirm("确定要删除吗？", function() {
+				$.ajax({
+					type: "POST",
+					url:"menuButton.do?method=ajaxDeleteBatch",
+					data: {
+						checkedMenubuttonIds : chestr
+					},
+					success: function(data){
+
+						if (data == "1") {
+							window.location.href = "menuButton.do?method=toSuccess"
+						}else {
+							art.dialog.alert("对不起，同步按钮操作失败！");
+						}
+					}
+				});
+				$("#checkedMenuIds").val(chestr);
+				document.getElementById("checkedMenuIds").value = chestr;
+				document.getElementById("deleteBatch").submit();
+			}, function() {
+				
+			});
+		}
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+
+	function delButton(mess, url) {
+
+		if (mess == null) {
+			mess = '确定要删除这条记录吗？';
+		}
+		art.dialog.confirm(mess, function() {
+			$.ajax({
+				type: "GET",
+				url:url,
+				success: function(data){
+
+					if (data == "1") {
+						window.location.href = "menuButton.do?method=toSuccess"
+					}else {
+						art.dialog.alert("对不起，同步按钮操作失败！");
+					}
+				}
+			});
+			// art.dialog.close();
+		}, function() {
+			// art.dialog.tips('取消当前操作');
+		});
+	}
+</script>
+
+</head>
+<body>
+	 <form id="queryFrm" action="menuButton.do?method=query"  method="post" >
+	   <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
+	   <input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
+	   <input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
+	   <input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+	   <input type="hidden" id="menuIsAdmin" name="menuIsAdmin" value="${menu.menuIsAdmin!''}"> 
+	   <input type="hidden" id="menuId" name="menuId" value="${menu.menuId!''}"> 
+		<div class="data-requry">
+			<table border="0" align="left" cellpadding="0" cellspacing="0">
+		        <tr>
+		         <td>菜单名称：
+		          	<input  type="text" class="data-searchtxt" id="title" value="${menubutton.menuName!''}"  disabled="disabled">
+		          </td>
+		          <td>功能名称：
+		          	<input  name="menuButtonName" type="text" class="data-searchtxt" id="title" value="${menubutton.menuButtonName!''}">
+		          </td>
+		         
+		        </tr>
+		      </table>
+		      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+		</div>
+		<div class="waybill-title">
+		  	<div align="left">
+		     	<input name="button5" id="button5" type="button" class="cbtn1" value="新增" onClick="javascript:window.location.href='menuButton?method=toAdd&menuId=${menu.menuId!''}'">
+				<input type="button" class="cbtn1" value="删除" onclick="deleteBatch()" />
+				<input type="button" class="cbtn1" value="返回" onClick="window.location.href='menu.do?method=query&menuIsAdmin=${menubutton.menuIsAdmin}'" />
+		    </div>
+		  </div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="3%" style="text-align:center"><input type="checkbox" id="allcheck"></th>
+				<th>菜单名称</th>
+				<th>功能名称</th>
+				<th>标识</th>
+				<th>功能描述</th>
+				<th width="12%">操作</th>
+			</tr>
+
+			<#list menubuttonlist as menubutton>
+			<tr>
+				<td align="center"><input type="checkbox" name="delId" value="${menubutton.menuButtonId!''}"></td>
+				<td>${menubutton.menuName!''}</td> 
+				<td>${menubutton.menuButtonName!''}</td> 
+				<td>${menubutton.menuButtonTag!''}</td> 
+				<td>${menubutton.menuButtonDesc!''}</td> 
+				<td>
+					<a href="menuButton?method=toUpdate&menuButtonId=${menubutton.menuButtonId!''}" class="ico_btn1">修改</a>
+					<a onclick="delButton('确定要删除这条记录吗？','menuButton?method=ajaxDelete&menuButtonId=${menubutton.menuButtonId!''}')" class="ico_btn1">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+
+		<#if menubuttonlist?? && (menubuttonlist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="menuButton.?method=deleteBatch" id="deleteBatch" 
+		method="post">
+		<input type="hidden" name="checkedMenubuttonIds"
+			id="checkedMenuIds">
+	</form>
+</body>
+</html>

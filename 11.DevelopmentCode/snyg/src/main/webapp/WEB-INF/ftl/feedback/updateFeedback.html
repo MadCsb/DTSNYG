@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="feedback.do?method=update" method="post"
+			id="modifyFeedback">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="datalist-new">
+
+
+				<tr class="cs">
+
+					<td>wxServiceId：</td>
+					<td><input name="wxServiceId" type="text"
+						id="wxServiceId" size="40"
+						value="${feedback.wxServiceId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>feedBackId：</td>
+					<td><input name="feedBackId" type="text"
+						id="feedBackId" size="40"
+						value="${feedback.feedBackId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>msgName：</td>
+					<td><input name="msgName" type="text"
+						id="msgName" size="40"
+						value="${feedback.msgName!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>title：</td>
+					<td><input name="title" type="text"
+						id="title" size="40"
+						value="${feedback.title!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>magType：</td>
+					<td><input name="magType" type="text"
+						id="magType" size="40"
+						value="${feedback.magType!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>keyWord：</td>
+					<td><input name="keyWord" type="text"
+						id="keyWord" size="40"
+						value="${feedback.keyWord!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>keyWord2：</td>
+					<td><input name="keyWord2" type="text"
+						id="keyWord2" size="40"
+						value="${feedback.keyWord2!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>context：</td>
+					<td><input name="context" type="text"
+						id="context" size="40"
+						value="${feedback.context!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>mediaId：</td>
+					<td><input name="mediaId" type="text"
+						id="mediaId" size="40"
+						value="${feedback.mediaId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>summary：</td>
+					<td><input name="summary" type="text"
+						id="summary" size="40"
+						value="${feedback.summary!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>linkUrl：</td>
+					<td><input name="linkUrl" type="text"
+						id="linkUrl" size="40"
+						value="${feedback.linkUrl!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>mediaFileName：</td>
+					<td><input name="mediaFileName" type="text"
+						id="mediaFileName" size="40"
+						value="${feedback.mediaFileName!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>mediaUrl：</td>
+					<td><input name="mediaUrl" type="text"
+						id="mediaUrl" size="40"
+						value="${feedback.mediaUrl!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>hqMediaUrl：</td>
+					<td><input name="hqMediaUrl" type="text"
+						id="hqMediaUrl" size="40"
+						value="${feedback.hqMediaUrl!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>thumbId：</td>
+					<td><input name="thumbId" type="text"
+						id="thumbId" size="40"
+						value="${feedback.thumbId!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>delFlag：</td>
+					<td><input name="delFlag" type="text"
+						id="delFlag" size="40"
+						value="${feedback.delFlag!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>lastUpdate：</td>
+					<td><input name="lastUpdate" type="text"
+						id="lastUpdate" size="40"
+						value="${feedback.lastUpdate!''}" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>fxml：</td>
+					<td><input name="fxml" type="text"
+						id="fxml" size="40"
+						value="${feedback.fxml!''}" /></td>
+				</tr>
+
+
+			</table>
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="reset" class="cbtn2" value="取消"  onclick="javascript:location.href='{Session.BACK_URL!""}'"/>
+				<input type="submit" class="cbtn1" value="确定" /> 
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

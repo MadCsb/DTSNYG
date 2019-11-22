@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/INC_HEAD.html">
+
+		</head>
+<body>
+<div class="waybill-title">
+	<span>订单确认拒绝</span>
+</div>
+<form id="queryFrm" action="orderList?method=addExpress" method="post">
+	<input type="hidden" id="orderId" value="${order.orderId!''}">
+	<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+			<td width="13%" class="tdright">退货</td>
+			<td width="30%">
+				不需要
+			</td>
+			<td width="13%" class="tdright">退款</td>
+			<td width="30%">
+				需要
+			</td>
+		</tr>
+		<tr>
+			<td>申请退款金额</td>
+			<td>
+				${order.payMoney!''}
+			</td>
+			<td>退款原因类型</td>
+			<td width="30%">
+				<select class="data-inputtxt-select" id="backReasonType" name="backReasonType">
+					<#list pubmapList as pl>
+						<#if pl.mapKey?index_of("2-") == 0>
+							<option value="${pl.mapKey}">${pl.mapValue!''}</option>
+						</#if>
+					</#list>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>退款原因</td>
+			<td colspan="3">
+				<textarea name="backReason" rows="4" cols="60" id="backReason" class="data-text"></textarea>
+			</td>
+		</tr>
+	</table>
+</form>
+<div class="footerbtn">
+	<input name="button3" onClick="beforeSubmit();" type="button" class="add-new" id="btnSave" value="保存">
+	<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+</div>
+
+<script>
+  function beforeSubmit(){
+    $("#btnSave").attr("disabled", "disabled");
+
+    var backReasonType  = $("#backReasonType").val();
+    if(backReasonType==""){
+      $("#btnSave").attr("disabled", false);
+      parent.layer.alert("请选择退款原因类型");
+      return;
+    }
+    var backReason = $.trim($("#backReason").val());
+    if(backReason==""){
+      $("#btnSave").attr("disabled", false);
+      parent.layer.alert("退款原因不能为空");
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "order?method=refuseOrder",
+      data: {
+        d:new Date().getTime(),
+        orderId:$("#orderId").val(),
+        backReasonType:$("#backReasonType").val(),
+        backReason:$("#backReason").val()
+      },
+      success: function (data) {
+        if(data.resultCode =="0"){
+          parent.layer.alert("操作成功！",function() {
+            closeDialog();
+          });
+        }else
+        {
+          parent.layer.alert(data.resultMsg);
+        }
+      }
+    });
+  }
+
+  function closeDialog()
+  {
+    parent.layer.closeAll();
+  }
+</script>
+</body>
+</html>

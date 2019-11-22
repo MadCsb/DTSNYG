@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>游客投诉与建议</title>
+<style type="text/css">
+<!--
+body, td, th {
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #333333;
+}
+
+body {
+	background-color: #FFFFFF;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+.top {
+	background: url(${rc.contextPath}/images/top.jpg) no-repeat top center;
+	width: 100%;
+	margin: 0 auto;
+	height: 370px;
+}
+
+.main {
+	width: 800px;
+	margin: 0 auto;
+	padding: 0 20px;
+	line-height: 32px;
+}
+
+.main input {
+	margin: 0 10px;
+}
+
+.main .inspan {
+	display: inline-block;
+	width: 15%;
+}
+
+.qhdiv {
+	width: 900px;
+	margin: 0 auto;
+	border-bottom: 1px solid #ddd;
+	text-align: center
+}
+
+.qhbtn {
+	background: #14a2ff;
+	border-radius: 5px 5px 0 0;
+	width: 120px;
+	line-height: 40px;
+	text-align: center;
+	color: #FFFFFF;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+	cursor: pointer
+}
+
+.qhbtnhui {
+	background: #ddd;
+	border-radius: 5px 5px 0 0;
+	width: 120px;
+	line-height: 40px;
+	text-align: center;
+	color: #666;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+	cursor: pointer
+}
+
+.fred {
+	color: #FF0000
+}
+
+.inputtxt{ border:1px solid #dddddd; padding:8px 5px; width:40%;font-size:16px;-webkit-appearance: none;}
+.texta{border:1px solid #dddddd;width:92%; resize:none; height:150px; padding:8px 5px;font-size:16px;-webkit-appearance: none;}
+
+.tjdiv {
+	width: 900px;
+	margin: 10px auto;
+	border-top: 1px solid #ddd;
+	text-align: center;
+	padding: 20px;
+}
+
+.tjbtn {
+	background: #ffa200;
+	border-radius: 55px;
+	width: 180px;
+	line-height: 40px;
+	text-align: center;
+	color: #FFFFFF;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+	cursor: pointer
+}
+
+.tjbtnhui {
+	background: #dddddd;
+	border-radius: 55px;
+	width: 180px;
+	line-height: 40px;
+	text-align: center;
+	color: #666666;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+	cursor: pointer
+}
+
+.foot {
+	width: 100%;
+	height: 130px;
+	background: url(${rc.contextPath}/images/foot.jpg) bottom center
+		no-repeat;
+	background-size: 80%;
+}
+-->
+</style>
+<script src="${rc.contextPath}/js/jquery-1.8.3.min.js"></script>
+<script src="${rc.contextPath}/js/imgFileupload.js"></script> 
+<link href="${rc.contextPath}/css/imgFileupload.css" rel="stylesheet" type="text/css" />  
+<script type="text/javascript" src="${rc.contextPath}/js/jquery.form.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/jquery.mloading.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/artDialog.js?skin=idialog"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/jquery.artDialog.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/iframeTools.js"></script>
+<link href="${rc.contextPath}/css/jquery.mloading.css" rel="stylesheet" />
+<script type="text/javascript">
+function changeRadio(index)
+{
+	$("#complaints").attr("class","qhbtnhui");
+	$("#suggestions").attr("class","qhbtnhui");
+	$("#type").val(index);
+	$("#complaintsContent").val("");
+	$("#complaintsLink").val("");
+	$("#suggestionsContent").val("");
+	
+	if(index==1)
+	{
+		$("#complaints").attr("class","qhbtn");
+		$("#cns_complaints").show();
+		$("#cns_suggestions").hide();
+	}
+	else
+	{
+		$("#suggestions").attr("class","qhbtn");
+		$("#cns_complaints").hide();
+		$("#cns_suggestions").show();
+	}
+}
+</script>
+</head>
+<body>
+<form id="submitForm" enctype="multipart/form-data">
+	<div class="main">
+		<div id="cns_complaints">
+			<p>
+				附件:
+			</p>
+			<div class="review_img"></div>
+			<p>
+				<span class="fred">*注：图片数量为5张以内，单个图片不超过5M</span>
+			</p>
+		</div>
+	</div>
+	<div class="tjdiv">
+		<span class="tjbtn" onclick="beforeSubmit();">提交</span>
+		<span class="tjbtnhui">取消</span>
+	</div>
+	</form>
+<script type="text/javascript">
+$(function() {
+	var options = {
+		url : "common/testUploadPics",
+		type : "post",
+		dataType:"json",
+		success : function(data) {
+		}
+	}
+	$("#submitForm").ajaxForm(options);
+	var imgFile ;
+	imgFile = new ImgUploadeFiles('.review_img', function (e) {
+		this.init({
+			MAX: 5, //Limit the number of images
+			FileSize: 1024 * 1024 * 5,//单文件限制4MB(注意：单位KB)
+			callback: function (arr) {
+				console.log(arr)
+			}
+		});
+	});
+
+});
+
+function beforeSubmit()
+{
+	//控制层用String[] uploadPicList接收图片参数
+	$("#submitForm").submit();
+}
+</script>
+</body>
+</html>

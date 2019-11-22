@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	  $(function() { 
+	    	initCheckBox('checkbox','checkbox2'); 
+	    	//设置数据奇偶行背景色
+	    	//senfe("changecolor","#f6f6f6","","#e5f1f4","#ffff00");
+	    	});
+	  
+	//列表斑马线
+	  function senfe(o,a,b,c,d){
+		    var t=document.getElementById(o).getElementsByTagName("tr");
+		    for(var i=0;i<t.length;i++){
+		    	t[i].style.backgroundColor=(t[i].sectionRowIndex%2==0)?a:b;
+		    }
+		}
+
+	//单个删除
+	function deletepubUserLog(userid) {
+		art.dialog.confirm("确定删除该运输公司？", function() {
+			window.location.href = "pubUserLog.do?method=delete&pubUserLogId=" + userid;
+		});
+	}
+	
+	//重置
+	function clearValue(){
+		$("#userName").val("");
+		$("#userName").val("");
+	}
+	function lookDetail(objid){
+		art.dialog.open("pubUserLog.do?method=toLookPubUserLogDetail&logId="+objid, {
+			lock: true,
+			resize: false,
+			drag: false,
+			width: 650,
+			height: 350,
+			close: function() {}
+		});
+	}
+	
+	
+</script>
+
+</head>
+<body>
+
+	
+	
+	<form id="queryFrm" action="pubUserLog.do?method=query" method="post">
+	
+		<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
+	   	<input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
+	   	<input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
+	   	<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+			<div class="data-requry">
+			<table border="0" align="left" cellpadding="0" cellspacing="0">
+			        
+			        <tr>
+			          <td>登录名：
+			         	<input autocomplete="off"   name="userName" type="text" class="data-searchtxt" id="userName" value="${pubUserLog.userName!''}" >
+			 		  </td>
+			 		  <td>操作时间：
+           				  <input name="operationTime" value="${pubUserLog.operationTime!''}" type="text" class="data-searchtxt-time" id="operationTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" >
+           				 - <input name="operationTime2" value="${pubUserLog.operationTime2!''}" type="text" class="data-searchtxt-time" id="operationTime2" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" >
+      				  </td>
+			 		  <td>操作描述：
+			 		  	<input autocomplete="off"   name="operationContext" type="text" class="data-searchtxt" id="operationContext" value="${pubUserLog.operationContext!''}" >
+			 		  </td>
+			        </tr>
+			      </table>
+			      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+			</div>
+
+<div class="cont-div">
+
+		<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+			<tr>
+				<th width="20%">会话编号<a href="javascript:void(0);" onclick="sort('F_SESSION_ID')" id="F_SESSION_ID" class="ico_pxcs"></a></th> 
+				<th width="8%">登录名<a href="javascript:void(0);" onclick="sort('F_USER_NAME')" id="F_USER_NAME" class="ico_pxcs"></a></th> 
+				<th width="10%">操作名称<a href="javascript:void(0);" onclick="sort('F_OPERATION_NAME')" id="F_OPERATION_NAME" class="ico_pxcs"></a></th> 
+				<th width="8%">操作结果<a href="javascript:void(0);" onclick="sort('F_OPERATION_RESULT')" id="F_OPERATION_RESULT" class="ico_pxcs"></a></th> 
+				<th width="20%">操作描述<a href="javascript:void(0);" onclick="sort('F_OPERATION_CONTEXT')" id="F_OPERATION_CONTEXT" class="ico_pxcs"></a></th> 	
+				<th width="10%">用户IP<a href="javascript:void(0);" onclick="sort('F_IP')" id="F_IP" class="ico_pxcs"></a></th> 
+				<th width="18%">操作时间<a href="javascript:void(0);" onclick="sort('F_OPERATION_TIME')" id="F_OPERATION_TIME" class="ico_pxcs"></a></th>
+				<th width="8%">操作</th> 
+			</tr>
+
+			<#list pubUserLoglist as pubUserLog>
+			<tr onclick="selectTr(this)">
+				<td title="${pubUserLog.sessionId!""}">${pubUserLog.sessionId!""}</td> 		
+						<td>${pubUserLog.userName!""}</td> 	
+						<td>${pubUserLog.operationName!""}</td> 
+							<td>
+							<#if (pubUserLog.operationResult)??>
+	          					<#if pubUserLog.operationResult=="0">
+	           						操作失败
+	          					<#elseif pubUserLog.operationResult=="1">
+	          						操作成功
+	            				</#if>
+            				</#if>
+						</td> 				
+						<td title="${pubUserLog.operationContext!""}">${pubUserLog.operationContext!""}</td> 
+						<td>${pubUserLog.userIP!""}</td> 
+						<td align="center">${pubUserLog.operationTime!""}</td> 		
+						<td><a href="javascript:void(0);" class="ico_btn1" onclick="lookDetail('${pubUserLog.logId!''}')">查看</a></td> 
+			</tr>
+			</#list>
+		</table>
+		
+		<div class="page-div">
+				<#if pubUserLoglist?? && (pubUserLoglist?size>0)>
+				 <#include "/pagination.html">
+				<#else>
+				<div id='ListIsNullMsg' style="font-size:17px;color:red">
+					<script type="text/javascript">
+						showListIsNullMsg();
+					</script>
+				</div>
+				</#if>
+		</div>
+</div>
+	</form>
+		<form action="pubUserLog.do?method=deleteBatch" id="deleteBatch" method="post">
+		<input type="hidden" name="checkedPubUserLogIds" id="checkedPubUserLogIds">
+		</form>
+</body>
+</html>

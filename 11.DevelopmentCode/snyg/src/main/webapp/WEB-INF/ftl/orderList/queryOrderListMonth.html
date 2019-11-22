@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+<style type="text/css">
+
+td img {
+	width : 80px;
+	height : 50px;
+	float : left;
+	margin-right:5px;
+}
+
+.quickMenuOn {
+	width:127px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	cursor: pointer;
+	background-color: #0d6fb8;
+	color:#fff;
+	float:left;
+	border-right: 1px solid #fff;
+}
+
+.quickMenuOff {
+	width:127px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	cursor: pointer;
+	background-color: #e6e6e6;
+	float:left;
+	border-right: 1px solid #fff;
+}
+
+</style>
+
+</head>
+<body>
+
+	<form id="queryFrm" action="orderList.do?method=queryOrderListBill" method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="billType" name="billType" value="${orderList.billType!''}" />
+
+		<div class="cont-div">
+			<div class="tab-nav">
+				<ul class="nav">
+					<li><a href="orderList.do?method=queryOrderListBill&billType=month"  class="active">月汇总</a></li>
+					<li><a href="orderList.do?method=queryOrderListBill&billType=day">日汇总</a></li>
+					<li><a href="orderList.do?method=queryOrderListDetailList">账单明细</a></li>
+				</ul>
+                <div style="clear:both;"></div>
+			</div>
+		
+			<div class="data-requry">
+				<table border="0" align="left" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>商家名称：</td>
+                    <td>
+						<select name="venId" class="data-searchtxt-select" id="venId">
+							<option value="">请选择</option>
+							<#list companyList as li>
+							<#if  orderList.venId?? &&  li.venId==orderList.venId>
+								<option value="${li.venId!''}" selected>${li.venName!""}</option>
+							<#else>
+								<option value="${li.venId!''}">${li.venName!""}</option>
+							</#if>
+							</#list>
+						</select>
+					</td>
+					<td>日期：</td>
+                    <td>
+						<input name="payDateTimeStart" id="payDateTimeStart" value="${orderList.payDateTimeStart!''}" type="text" style="width:130px" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'payDateTimeEnd\')}'})" readonly="readonly">
+						-
+		           		<input name="payDateTimeEnd" id="payDateTimeEnd" value="${orderList.payDateTimeEnd!''}" type="text" style="width:130px" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'payDateTimeStart\')}'})" readonly="readonly">
+					</td>
+					<td valign="bottom" align="right">
+					
+					</td>
+				</tr>
+				</table>
+				<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+				<input name="button" type="button" class="data-searchbtn" style="width:80px;" id="button" value="导出Excel" onClick="exportList()"/>
+			</div>
+			
+			<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+				<tr>
+					<th width="25%">日期</th>
+					<th width="25%">收益总额（&yen;）</th>
+					<th width="25%">支出总额（&yen;）</th>
+					<th width="25%">当月结余（&yen;）</th>
+				</tr>
+				<#if orderListlist??>
+				<#list orderListlist as item>
+				<tr onClick="selectTr(this)">
+					<td title="${item.payDateTime!''}">${item.payDateTime!''}</td>
+					<td align="right" title="${item.money!''}">
+						<a href="orderList.do?method=queryOrderListDetailList&orderListType=0&payDateTimeStart=${item.payDateTime!''}&billType=${orderList.billType!''}">
+							${item.money!'0.00'}
+						</a>
+					</td>
+					<td align="right" title="${item.money!''}">
+						<a href="orderList.do?method=queryOrderListDetailList&orderListType=1&payDateTimeStart=${item.payDateTime!''}&billType=${orderList.billType!''}">
+							${item.backMoney!'0.00'}
+						</a>
+					</td>
+					<td align="right" title="${item.surplusMoney!''}">${item.surplusMoney!'0.00'}</td>
+				</tr>
+				</#list>
+				<tr onClick="selectTr(this)">
+					<td>合计</td>
+					<td align="right" title="${orderListSum.money!'0.00'}">
+						<a href="orderList.do?method=queryOrderListDetailList&orderListType=0&billType=${orderList.billType!''}">
+							${orderListSum.money!'0.00'}
+						</a>
+					</td>
+					<td align="right" title="${orderListSum.money!'0.00'}">
+						<a href="orderList.do?method=queryOrderListDetailList&orderListType=1&billType=${orderList.billType!''}">
+							${orderListSum.backMoney!'0.00'}
+						</a>
+					</td>
+					<td align="right" title="${orderListSum.surplusMoney!''}">${orderListSum.surplusMoney!'0.00'}</td>
+				</tr>
+				</#if>
+			</table>
+			<div class="page-div">
+				<#if orderListlist?? && (orderListlist?size>0)>
+					<#include "/pagination.html">
+				<#else>
+					<div id='ListIsNullMsg' style="font-size:17px;color:red">
+						<script type="text/javascript">
+							showListIsNullMsg();
+						</script>
+					</div>
+				</#if>
+			</div>
+		</div>
+		
+	</form>
+</body>
+
+<script type="text/javascript">
+
+$(function(){
+	
+});
+
+function exportList(){
+	//if(checkSubmit()){
+		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListBillExport");
+		$("#queryFrm").submit();
+		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListBill");
+	//}
+}
+
+function checkSubmit(){
+	var dateStart = $("#dateStart").val();
+	if(dateStart == null || dateStart == ""){
+		art.dialog.alert("开始日期未选择，请重新选择");
+		return false;
+	}
+	var dateEnd = $("#dateEnd").val();
+	if(dateEnd == null || dateEnd == ""){
+		art.dialog.alert("结束日期未选择，请重新选择");
+		return false;
+	}
+	dateStart = new Date(dateStart+"-01");
+	dateEnd = new Date(dateEnd+"-01");
+	dateEnd = new Date(dateEnd.getFullYear(), dateEnd.getMonth()+1, 0);
+	var dateDiff = dateEnd.getTime() - dateStart.getTime();//时间差的毫秒数
+	if(dateDiff < 0){
+		art.dialog.alert("开始日期大于结束日期，请重新选择");
+		return false;
+	} else {
+		var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+		if(dayDiff > 367){
+			art.dialog.alert("开始日期与结束日期超过1年，请重新选择");
+			return false;
+		} else {
+			return true;
+		}
+	} 
+}
+
+</script>
+</html>

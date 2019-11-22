@@ -1,0 +1,111 @@
+<link rel="stylesheet" href=""  type="text/css" />
+<script type="text/javascript" src="js/pagestransfer.js"></script>
+<div class="page-div"  >
+		<input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total!''}" />
+<div class="recordpage">共&nbsp;${pageInfo.total}&nbsp;条记录&nbsp;&nbsp;当前&nbsp;${pageInfo.pageNum}/${pageInfo.pages}&nbsp;页&nbsp;&nbsp;
+每页显示<select name="entityPage.rowsPerPage" id="entityPage.rowsPerPage" style="width:50px; height:30px; line-height:30px;" onchange="getSelectPage(${pageInfo.pageNum})" >
+              	<option value="5"  ${(pageInfo.pageSize==5)?string('selected=\"selected\"','')}>5</option>
+              	<option value="10" ${(pageInfo.pageSize==10)?string('selected=\"selected\"','')}>10</option>
+              	<option value="20" ${(pageInfo.pageSize==20)?string('selected=\"selected\"','')}>20</option>
+              	</select>
+				条
+</div>
+
+<div class="manu">
+<#if !pageInfo.isFirstPage>
+<a href="javascript:void(0)" onclick="javascript:getSelectPage(1)">首页</a>
+<a href="javascript:void(0)" onclick="javascript:getSelectPage(${pageInfo.pageNum - 1})">&lt;上一页</a>
+<#else>
+<a href="javascript:void(0)">首页</a>
+<a href="javascript:void(0)">&lt;上一页</a>
+</#if>
+
+<#if !pageInfo.isLastPage>
+<a href="javascript:void(0)" onclick="javascript:getSelectPage(${pageInfo.pageNum + 1})">下一页&gt;</a>
+<a href="javascript:void(0)" onclick="javascript:getSelectPage(${pageInfo.pages})">尾页</a>
+<#else>
+<a href="javascript:void(0)">下一页&gt;</a>
+<a href="javascript:void(0)">尾页</a>
+</#if>
+<input id="pageNumber" name="pageNumber" onkeypress="checkinput(event)"  
+	onkeyup="maskChange(event)" style="width:20px; height:20px; line-height:20px;" />
+<a href="#" id="goto" class="number" title="go" onclick="gotoPageByNumber()">跳转</a>
+</div>
+
+</div>
+<script type="text/javascript" >
+function gotoPageByNumber()
+{
+
+    var pageNumber = document.getElementById("pageNumber").value;
+    var pageLength = document.getElementById("entityPage.rowsPerPage").value;
+    var totalSize = document.getElementById("entityPage.totalSize").value;
+
+    var pageCount;
+    if(totalSize%pageLength == 0)
+    {
+        pageCount = totalSize/pageLength;
+    }
+    else
+    {
+        pageCount = totalSize/pageLength + 1;
+    }
+
+
+    if(pageNumber == 0 || pageNumber > pageCount ||isNaN(pageNumber))
+    {
+        art.dialog.alert("请输入正确的数值",function(){
+        	document.getElementById("pageNumber").select();
+            document.getElementById("pageNumber").focus();
+            });
+        
+        return false;
+    }
+
+    document.getElementById("entityPage.currentPage").value=pageNumber;
+
+    onSubmit();
+}
+
+function getSelectPage(currentPage)
+{
+
+	document.getElementById("entityPage.currentPage").value=currentPage;
+
+    onSubmit();
+}
+
+function onSubmit()
+{
+	document.forms[0].submit();
+}
+
+function  checkinput(objEvent)
+{
+
+	if (isIE) {
+		iKeyCode = objEvent.keyCode;
+	} else {
+		iKeyCode = objEvent.which;
+	}
+
+	strKey = String.fromCharCode(iKeyCode);
+
+
+	
+	if(iKeyCode==13)
+	{
+		if(!gotoPageByNumber()){
+			objEvent.preventDefault();
+		}
+	}
+
+	if ((!/[0-9]/.test(strKey))&&isIE)
+	{
+		
+		objEvent.keyCode=0;
+
+	}
+
+}
+</script>

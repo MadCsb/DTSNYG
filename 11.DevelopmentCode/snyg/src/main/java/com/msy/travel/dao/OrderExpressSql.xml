@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderExpressDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrderExpress" parameterType="orderExpress">
+		INSERT INTO 
+			t_sm_orderexpress  
+		(
+		F_ORDEREXPRESSID,
+			F_ORDERID ,
+			F_ORDERLISTID ,
+			F_SPID ,
+			F_VENID ,
+			F_EPMECOMPANY ,
+			F_EPMEORDCODE ,
+			F_DELTAG ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_STATUS
+		) VALUES (
+			#{orderExpressId},
+			#{orderId} ,
+			#{orderListId} ,
+			#{spId} ,
+			#{venId} ,
+			#{epmeCompany} ,
+			#{epmeOrdCode} ,
+			#{delTag} ,
+			#{createTime} ,
+			#{creatorUID} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updateUID} ,
+			#{updater} ,
+			#{status}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrderExpress" parameterType="orderExpress">
+		REPLACE INTO 
+			t_sm_orderexpress 
+		(
+			F_ORDEREXPRESSID ,
+			F_ORDERID ,
+			F_ORDERLISTID ,
+			F_SPID ,
+			F_VENID ,
+			F_EPMECOMPANY ,
+			F_EPMEORDCODE ,
+			F_DELTAG ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_STATUS
+		) VALUES (
+			#{orderExpressId} ,
+			#{orderId} ,
+			#{orderListId} ,
+			#{spId} ,
+			#{venId} ,
+			#{epmeCompany} ,
+			#{epmeOrdCode} ,
+			#{delTag} ,
+			#{createTime} ,
+			#{creatorUID} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updateUID} ,
+			#{updater} ,
+			#{status}
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrderExpress" parameterType="orderExpress">
+		UPDATE
+			t_sm_orderexpress
+		<set>
+			<if test="orderId !=null"> F_ORDERID = #{orderId} ,</if>
+			<if test="orderListId !=null"> F_ORDERLISTID = #{orderListId} ,</if>
+			<if test="spId !=null"> F_SPID = #{spId} ,</if>
+			<if test="venId !=null"> F_VENID = #{venId} ,</if>
+			<if test="epmeCompany !=null"> F_EPMECOMPANY = #{epmeCompany} ,</if>
+			<if test="epmeOrdCode !=null"> F_EPMEORDCODE = #{epmeOrdCode} ,</if>
+			<if test="delTag !=null"> F_DELTAG = #{delTag} ,</if>
+			<if test="createTime !=null"> F_CREATETIME = #{createTime} ,</if>
+			<if test="creatorUID !=null"> F_CREATORUID = #{creatorUID} ,</if>
+			<if test="creator !=null"> F_CREATOR = #{creator} ,</if>
+			<if test="updateTime !=null"> F_UPDATETIME = #{updateTime} ,</if>
+			<if test="updateUID !=null"> F_UPDATERUID = #{updateUID} ,</if>
+			<if test="updater !=null"> F_UPDATER = #{updater} ,</if>
+			<if test="status !=null"> F_STATUS = #{status} ,</if>
+		</set>
+		<where>
+			F_ORDEREXPRESSID = #{orderExpressId}
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrderExpress" parameterType="orderExpress">
+		DELETE FROM
+			t_sm_orderexpress 
+		<where>
+			F_ORDEREXPRESSID = #{orderExpressId}
+			
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrderExpress" parameterType="String" resultType="orderExpress">
+		SELECT
+			t.F_ORDEREXPRESSID as orderExpressId,
+			t.F_ORDERID as orderId ,
+			t.F_ORDERLISTID as orderListId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_EPMECOMPANY as epmeCompany ,
+			t.F_EPMEORDCODE as epmeOrdCode ,
+			t.F_DELTAG as delTag ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUID ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updateUID ,
+			t.F_UPDATER as updater ,
+			t.F_STATUS as status
+		FROM
+			t_sm_orderexpress t
+		<where>
+			F_ORDEREXPRESSID = #{orderExpressId}
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderExpressList" parameterType="orderExpress" resultType="orderExpress">
+		SELECT
+		  t.F_ORDEREXPRESSID as orderExpressId,
+			t.F_ORDERID as orderId ,
+			t.F_ORDERLISTID as orderListId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_EPMECOMPANY as epmeCompany ,
+			t.F_EPMEORDCODE as epmeOrdCode ,
+			t.F_DELTAG as delTag ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUID ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updateUID ,
+			t.F_UPDATER as updater  ,
+		  exp.F_MAPVALUE as epmeCompanyValue ,
+			t.F_STATUS as status
+		FROM
+		t_sm_orderexpress t
+		LEFT JOIN (SELECT F_MAPKEY,F_MAPVALUE FROM t_pub_map WHERE F_MAPTYPE = 'EXPRESS') exp on exp.F_MAPKEY = t.F_EPMECOMPANY
+		<where>
+			<if test="status!=null and status!=''">
+				and t.F_STATUS = #{status}
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				and t.F_ORDERID = #{orderId}
+			</if>
+			<if test="orderListId!=null and orderListId!=''">
+				and t.F_ORDERLISTID = #{orderListId}
+			</if>
+			<if test="oneOrderListId!=null and oneOrderListId!=''">
+				and FIND_IN_SET(#{oneOrderListId},t.F_ORDERLISTID)
+			</if>
+			<if test="delTag!=null and delTag!=''">
+				and t.F_DELTAG = #{delTag}
+			</if>
+			<if test="spId!=null and spId!=''">
+				and t.F_SPID = #{spId}
+			</if>
+			<if test="venId!=null and venId!=''">
+				and t.F_VENID = #{venId}
+			</if>
+			<if test="epmeCompany!=null and epmeCompany!=''">
+				and t.F_EPMECOMPANY = #{epmeCompany}
+			</if>
+			<if test="epmeOrdCode!=null and epmeOrdCode!=''">
+				and t.F_EPMEORDCODE = #{epmeOrdCode}
+			</if>
+			<if test="createTimeS!=null and createTimeS!=''">
+				and t.F_CREATETIME &gt;= #{createTimeS}
+			</if>
+			<if test="createTimeE!=null and createTimeE!=''">
+				and t.F_CREATETIME &lt;= #{createTimeE}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

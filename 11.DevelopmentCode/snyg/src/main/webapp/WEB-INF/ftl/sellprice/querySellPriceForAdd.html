@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+<body>
+
+<div style="height:400px;">
+	<iframe  marginheight="0" marginwidth="0" frameborder="0" width="100%" height=100% src="sellPrice?method=querySellPriceListForAdd&priceType=${priceType!''}&isSearch=0">
+	</iframe>
+</div>
+<div class="data-requry">
+	<table border="0" id="tableInfo" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>活动开始时间：</td><td>
+          	<input type="text" class="data-searchtxt-time" style="width:190px;" id="priceStartDate" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'priceEndDate\')}'})" readonly="readonly">
+          </td>
+          <td>活动结束时间：</td><td>
+          	<input type="text" class="data-searchtxt-time" style="width:190px;" id="priceEndDate" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'priceStartDate\')}'})" readonly="readonly">
+          </td>
+          <td><input name="button" type="button" class="cbtn1" id="button" onclick="setDate()" value="一键设置"/>
+          <input name="button" type="button" class="data-searchbtn" id="button" onclick="saveSellPrice()" value="保存"/>
+          </td>
+        </tr>
+        <tr>
+        	<td colspan="5">
+        	<input type="hidden" id="tag"  value="${tag!''}"/>
+        		<form id="priceForm"  method="post"  action="sellPrice?method=createOrUpdateSellPrice">
+        		<input type="hidden" id="priceType" name="priceType" value="${priceType!''}"/>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="saveTable">
+					<tr>
+						<th width="11%">商品编号</th> 
+						<th width="11%">商品名称</th> 
+						<th width="10%">商品规格</th> 
+						<th width="9%">团购价格（元）</th> 
+						<th width="16%">活动开始时间</th> 
+						<th width="16%">活动结束时间</th> 
+						<th width="7%">参团人数</th> 
+						<th width="7%">最少购买</th>
+						<th width="7%">最多购买</th> 
+						<th width="4%">操作</th> 
+					</tr>
+			<!-- 		<tr>
+						<td></td> 
+						<td></td> 
+						<td></td> 
+						<td><input name="" id="a" value="" type="text" class="data-inputtxt" style="width:70px;" onkeyup="value=value.replace(/[^\d]/g,'')"/></td> 
+						<td><input name="" id="b" value="" type="text" class="data-inputtxt-time" style="width:190px;"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'priceEndDate\')}'})" readonly="readonly"/></td> 
+						<td><input name="" id="c" value="" type="text" class="data-inputtxt-time" style="width:190px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'priceStartDate\')}'})" readonly="readonly"/></td>  
+						<td><input name="" id="d" value="" type="text" class="validate[required] data-inputtxt" style="width:100px;" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''"/></td>
+						<td><a href="javascript:void(0)" onclick="" title="移除" class="ico_btn1">移除</a></td>  
+					</tr> -->
+				</table>
+				</form>
+        	</td>
+        </tr>
+    </table>
+</div>
+<script>
+
+var checkIndex = 0;
+
+$(function() {
+	if($("#tag").val()=="1"){
+		parent.layer.alert("操作成功",function(){
+			parent.layer.closeAll();
+		});
+	}
+	$("#priceForm").validationEngine();
+});
+
+function delCheckSellPrice(checkId){
+	$("#"+checkId).remove();
+} 
+
+function saveSellPrice(){
+	if ($("#priceForm").validationEngine('validate')){
+		var priceType = $("#priceType").val();
+
+		if(priceType=="" || priceType=="undefined" || priceType==undefined){
+			parent.layer.alert("系统错误，请重新进入该页面");
+		}else{
+			var len = $("#saveTable tr").length;
+			if(len > 1){
+				$("#priceForm").submit();
+			}else{
+				parent.layer.alert("请选择活动商品");
+			}
+		}
+	}
+}
+
+function setDate(){
+	var priceStartDate = $("#priceStartDate").val();
+	var priceEndDate = $("#priceEndDate").val();
+	
+	$(".dateStartClass").each(function(i){
+		if($(this).val()==""){
+			$(this).val(priceStartDate);
+		}
+	});
+	
+	$(".dateEndClass").each(function(i){
+		if($(this).val()==""){
+			$(this).val(priceEndDate);
+		}
+	});
+}
+</script>
+</body>
+</html>

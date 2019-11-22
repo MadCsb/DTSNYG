@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/WX_INC_HEAD.html">
+    <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+    <style>
+      #navbar.navbar_fixed {
+        position:fixed;
+        top:0px;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:110px;
+      }
+      #navbar.navbar_absolute {
+        position: relative;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:110px;
+
+      }
+    </style>
+    </head>
+<body onLoad="javascript:window_onload();">
+<!--header 开始-->
+<div class="snyg_headdiv">
+  <span class="ico_ret"><a onclick="javascript:history.back(-1);"><img src="${rc.contextPath}/wx/images/return.png" ></a></span>
+  <h2>全部订单</h2>
+  <span class="ico_home"><a onclick="toPersonal();"><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>
+</div>
+<!--header 结束-->
+<div id="navbar" class="navbar_absolute">
+  <div class="snyg_topserch">
+    <form id="fm-1" action="wxorder?method=toOrderList" method="POST">
+      <a><input id="searchKey" name="searchKey" type="search" class="snyg_top_inputsech" placeholder="请输入检索关键字" value="${searchKey!''}"/></a>
+    </form>
+  </div>
+
+  <nav class="snyg_dd_nav">
+    <a onclick="changeOrderListType('0')"><span>全部</span></a>
+    <a onclick="changeOrderListType('1')"><span>待支付</span></a>
+    <a onclick="changeOrderListType('2')"><span>待发货</span></a>
+    <a onclick="changeOrderListType('3')"><span>待收货</span></a>
+    <a onclick="changeOrderListType('4')"><span>退换货</span></a>
+  </nav>
+</div>
+<div class="snyg_contentb" >
+  <ul class="ddlist">
+
+  </ul>
+</div>
+<div class="clear"></div>
+<div class="snyg_footer"></div>
+<div align="center"><span class="addMore">加载更多</span></div>
+<div class="snyg_footer"></div>
+<!--<#include "/wx/WX_FOOTER.html">-->
+
+<input type="hidden" id="userId" value="${(user.userId)!''}">
+<input type="hidden" id="orderListType" value="${orderListType!''}">
+<script>
+  var searchObject = new Object(); //查询对象
+  searchObject.userId = $("#userId").val();
+  var pageEntity = new Object(); //查询 分页对象
+  pageEntity.pageNum = null;
+  pageEntity.pageSize = 10; //每次查询十条订单
+  var loading = false; //是否加载中/加载完成
+
+  $(function () {
+    loading = false;
+    var orderListType = $("#orderListType").val();
+    $("#orderListType").val(""); //清空，防止缓存
+    if(orderListType == "")
+    {
+      orderListType = "0";
+    }
+    changeOrderListType(orderListType);
+    $(window).scroll(function(){
+      if(!loading && pageEntity.pageNum != null) {
+
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        if( scrollTop + windowHeight < scrollHeight-10) { //如果拉倒最底部
+          loading = true;
+          pageEntity.pageNum = pageEntity.pageNum + 1;
+          queryOrderList();
+        }
+      }
+    })
+  })
+
+  //修改orderListType,查询订单列表
+  function changeOrderListType(orderListType)
+  {
+    pageEntity.pageNum = null;
+    if(orderListType == $("#orderListType").val())//如果已经选中,不处理
+    {
+      return false;
+    }
+    //修改选中样式
+    $(".snyg_dd_nav").find("span").each(function (index) {
+      if(index == parseInt(orderListType)) //选中
+      {
+        $(this).attr("class","spanon");
+      }else //没选中
+      {
+        $(this).removeAttr("class");
+      }
+    })
+
+    //修改当前选中的订单类型
+    $("#orderListType").val(orderListType);
+    searchObject.searchKey = $("#searchKey").val();
+    if (orderListType == '0') // 全部订单
+    {
+      searchObject.payTag = "";
+      searchObject.beforePayStatus = "";
+      searchObject.status = ""
+      searchObject.haveBack = "";
+    }else if (orderListType == '1') // 待支付
+    {
+      searchObject.payTag = "0";
+      searchObject.beforePayStatus = "0";
+      searchObject.status = ""
+      searchObject.haveBack = "";
+    }else if (orderListType == '2') // 待发货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = "0";
+      searchObject.haveBack = "";
+    }else if (orderListType == '3') // 待收货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = "1"
+      searchObject.haveBack = "";
+    }else if (orderListType == '4') // 退换货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = ""
+      searchObject.haveBack = "1";
+    }
+    loading = true;
+    pageEntity.pageNum = 1; //第1页开始查询
+    queryOrderList();
+  }
+  //进入商品详情-anniu
+  function toOrderDetail(orderId)
+  {
+    window.location.href = "wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+$("#spId").val();
+  }
+  //查询订单列表，填充
+  function queryOrderList()
+  {
+    $('.addMore').text('正在加载...');
+
+    if (pageEntity.pageNum == 1) //如果0开始，表示从新开始
+    {
+      $(".ddlist").html("");
+    }
+    var orderList = new WxPerson().orderList(false,searchObject,pageEntity); //同步加载
+    if (orderList != null)
+    {
+      for(var i=0;i<orderList.length;i++)
+      {
+        var orderShowType = getOrderShowType(orderList[i]);
+
+        var liHtml = '<li orderId="'+orderList[i].orderId+'">'
+                    + '<a onclick="toOrder(\'' +orderList[i].orderId+ '\')"><div>订单编号：'+orderList[i].orderCode;
+        ////"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
+        if(orderShowType == "-")
+        {
+          liHtml += '<span class="ddzt1">已退款</span></div></a>'
+        }else if(orderShowType == "--")
+        {
+          liHtml += '<span class="ddzt1">退款中</span></div></a>'
+        }else if(orderShowType == "0-0")
+        {
+          liHtml += '<span class="ddzt1">待支付</span></div></a>'
+        }else if(orderShowType == "0-12")
+        {
+          liHtml += '<span class="ddzt1">已取消</span></div></a>'
+        }else if(orderShowType == "1-0")
+        {
+          liHtml += '<span class="ddzt1">待发货</span></div></a>'
+        }else if(orderShowType == "1-1")
+        {
+          liHtml += '<span class="ddzt1">待收货</span></div></a>'
+        }else if(orderShowType == "1-2")
+        {
+          liHtml += '<span class="ddzt1">已收货</span></div></a>'
+        }else if(orderShowType == "1-5")
+        {
+          liHtml += '<span class="ddzt1">订单关闭</span></div></a>'
+        }
+        liHtml += '</li>';
+        $(".ddlist").append(liHtml);
+        new WxPerson().orderDetail(true,orderList[i].orderId,orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+      }
+    }
+    if(orderList==null || orderList.length<pageEntity.pageSize)
+    {
+      loading = true;
+      $('.addMore').text('已全部加载完毕');
+    }else
+    {
+      loading = false;
+      $('.addMore').text('加载更多');
+    }
+  }
+
+  //获取订单分类
+  //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
+  function getOrderShowType(order)
+  {
+    var orderShowType = null;
+    if (order.backNum != null && order.backNum != '0') //"-"已退订
+    {
+      orderShowType="-";
+    }else if (order.backTimes != null && order.backTimes != '0') //退订中
+    {
+      orderShowType="--";
+    }else
+    {
+      if(order.payTag == "0" && order.beforePayStatus == "0") //"0-0"未支付未关闭
+      {
+        orderShowType = "0-0";
+      }else if(order.payTag == "0" && (order.beforePayStatus == "1" || order.beforePayStatus == "2")) //"0-12".未支付已关闭
+      {
+        orderShowType = "0-12";
+      }else if(order.payTag == "1" && order.status == "0") //"1-0"已支付待确认
+      {
+        orderShowType = "1-0";
+      }else if(order.payTag == "1" && order.status == "1") //"1-1"已支付已发货
+      {
+        orderShowType = "1-1";
+      }
+      else if(order.payTag == "1" && order.status == "2") //"1-2"已支付已收货
+      {
+        orderShowType = "1-2";
+      }else if(order.payTag == "1" && order.status == "3") //"1-3" 确认拒绝
+      {
+        orderShowType = "1-3";
+      }else if(order.payTag == "1" && order.status == "5") //"1-5"订单已关闭
+      {
+        orderShowType = "1-5";
+      }
+    }
+    return orderShowType;
+  }
+  //订单扩展显示
+  var orderDetailShow = function queryOrderDetail(orderDetail)
+  {
+    var orderListList = orderDetail.orderListList;
+    var order = orderDetail.order;
+
+    var li = $("li[orderId='" + order.orderId + "']");
+    var orderShowType = getOrderShowType(order);
+    for(var j=0;j<orderListList.length;j++)
+    {
+      //退订单，不显示
+      if(orderListList[j].orderListType == '1')
+      {
+        continue;
+      }
+      var liHtml =
+          '<div class="ddinfo">'
+          + '<div class="iconleft">'
+          + '<div class="icon">'
+          + '<a onclick="toSellPrice(\''+orderListList[j].priceId+'\')">';
+      if(orderListList[j].goodsPrice.thumbPic != null && orderListList[j].goodsPrice.thumbPic != '')
+      {
+        liHtml = liHtml + '<img src="${rc.contextPath}/upload/wxpic/'+ orderListList[j].goodsPrice.thumbPic+'" />'
+      }else
+      {
+        liHtml = liHtml + '<img class="myimg" src="${rc.contextPath}/images/no-tu.png"/>'
+      }
+
+      if(orderListList[j].sellPrice.priceType == '0')
+      {
+        liHtml = liHtml+ ''
+      }else if(orderListList[j].sellPrice.priceType == '1')
+      {
+        liHtml = liHtml+ '<i class="tgspbq">团</i>'
+      }else if(orderListList[j].sellPrice.priceType == '2')
+      {
+        liHtml = liHtml+ '<i class="tgspbq">秒</i>'
+      }
+
+      liHtml = liHtml+ '</a></div></div>'
+          + '<div class="info">'
+          + '<a onclick="toSellPrice(\''+orderListList[j].priceId+'\')">'
+          + '<h4>'+orderListList[j].productName+'</h4>'
+          + '</a>'
+          + '<p class="txt"><span class="f4">规格 '+ orderListList[j].childName +'</span></p>'
+          + '<p class="txt"><span class="f4">数量 '+ orderListList[j].num +'</span></p>'
+          + '<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;'+ orderListList[j].money +'</span></p></div>'
+          + '</div>'
+    }
+    liHtml = liHtml + '<div class="ddzf">'
+        + '<p class="txt1">'
+        + '<span class="f4">'+order.createTime+'</span>';
+    //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
+    if(orderShowType == "-")
+    {
+      liHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')"><span class="s_btn fr">查退款</span></a>'
+    }else if(orderShowType == "--")
+    {
+      liHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')"><span class="s_btn fr">查退款</span></a>'
+    }else if(orderShowType == "0-0")
+    {
+      liHtml += '<a onclick="toOrder(\''+order.orderId+'\')"><span class="s_btn fr">去支付</span></a>'
+    }else if(orderShowType == "0-12") //已取消
+    {
+    }else if(orderShowType == "1-0") //待发货
+    {
+      liHtml += '<a onclick="alertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')"><span class="s_btn fr">提醒</span></a>';
+    }else if(orderShowType == "1-1")
+    {
+      liHtml += '<a onclick="toOrderExpress(\''+order.orderId+'\')"><span class="s_btn fr">查物流</span></a>';
+    }else if(orderShowType == "1-2")
+    {
+      liHtml += '<a onclick="toOrderBack(\''+order.orderId+'\')"><span class="s_btn fr">申请退货</span></a>';
+    }else if(orderShowType == "1-3")
+    {
+
+    }else if(orderShowType == "1-5")
+    {
+
+    }
+    liHtml += '</p></div>';
+    $(li).append(liHtml);
+  }
+
+
+  function window_onload() {
+    window.addEventListener("scroll",navbar_reset_top,false);
+  }
+  var navbar_top=100;
+  function navbar_reset_top() {
+    var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+    if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+      document.getElementById("navbar").className="navbar_fixed";
+    }
+    else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+      document.getElementById("navbar").className="navbar_absolute";
+    }
+  }
+</script>
+
+
+</body>
+</html>

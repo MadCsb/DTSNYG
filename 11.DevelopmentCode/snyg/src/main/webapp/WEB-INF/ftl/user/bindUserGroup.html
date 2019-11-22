@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>      
+
+<body>
+ <form id="queryFrm" action="binkUserGroupLink"  method="post" >
+	<input type="hidden" id="checkedGroupIds" name="checkedGroupIds">
+	<input type="hidden" id="userId" name="userId" value="${user.userId!''}">
+	<input type="hidden" id="userState" name="userState" value="${user.userState!''}">
+		<div class="waybill-title"><span>分配角色</span></div>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+            <tbody>
+                	<tr class="">
+                		<td width="5%" class="tdleft"></td>
+                    	<td width="20%" class="tdleft"><b>角色名</b></td>
+                       	<td width="60%"><b>说明</b></td>
+                   </tr>
+                   		<#if userGroupList?? && (userGroupList?size>0)>
+       						<#list userGroupList as userGroup> 	
+       							<tr onclick="selectTr(this)">
+                    			<td class="tdleft"> 
+                    				<#if userGroup.idUsed?? && userGroup.idUsed == '1'>
+                    					<label>
+											<input type="CheckBox" id="${userGroup.userGroupId!''}" name="userGroupId" checked="checked" hidden value="${userGroup.userGroupId!''}">
+											<label for="${userGroup.userGroupId!''}" class="check"></label>
+										</label>
+                    				<#else>
+                    					<label>
+                    					<input type="CheckBox" id="${userGroup.userGroupId!''}" name="userGroupId" hidden value="${userGroup.userGroupId!''}">
+										<label for="${userGroup.userGroupId!''}" class="check"></label>
+										</label>
+                    				</#if>
+                    			</td>
+                       			<td title="${userGroup.userGroupName!''}">${userGroup.userGroupName!''}</td>
+                      
+                       			<td title="${userGroup.memo!''}" style="white-space: inherit;">${userGroup.memo!''}</td>
+                       			</tr>
+                       		</#list>
+                       	</#if>		
+                   
+     		</tbody>
+  		</table>
+
+<div class="footerbtn">
+	<input name="button4" type="button" class="cbtn2" id="button4" onclick="closeAll()" value="取消">
+	<input name="btnSave" type="button"  class="add-new" onclick="beforeSub();" id="btnSave" value="确定">
+</div>
+   </form>
+<script type="text/javascript">
+function closeAll(){
+	parent.layer.closeAll();
+}
+
+function beforeSub(){
+	var userId = $("#userId").html();
+	var strArray = new Array();
+	$("input[name=userGroupId]:checkbox:checked").each(function() {
+		var flag = $(this).attr("checked");
+		if (flag) {
+			strArray.push($(this).val());
+		}
+	});
+	if (strArray == "") {
+		$.ajax({
+			   type: "POST",
+			   url:"binkUserGroupLink",           
+			   data: {
+				   "userId":$("#userId").val()
+			   },
+			   success: function(data){           
+			    if("1" == data){
+			    	parent.layer.alert("操作成功");
+			    }else  if("2" == data){
+			    	parent.layer.closeAll();
+			    }else {
+			    	parent.layer.alert("操作失败"); 
+			    }
+			   }
+			 });
+	} else {
+		parent.layer.confirm('确认保存所选中用户角色吗？', function() {
+			$.ajax({
+				   type: "POST",
+				   url:"binkUserGroupLink",           
+				   data: {
+					   "userId":$("#userId").val(),
+					   "checkedGroupIds":strArray.toString()
+				   },
+				   success: function(data){           
+				    if("1" == data){
+				    	parent.layer.alert("操作成功", function() {
+				    		parent.layer.closeAll();
+					    	});
+				    }else {
+				    	parent.layer.alert("操作失败",function(){
+				    		parent.layer.closeAll();
+				    	}); 
+				    }
+				   }
+				 });
+		}, function() {
+		});
+	}
+}
+	</script>
+
+</body>
+</html>

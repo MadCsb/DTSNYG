@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.MsgNewsDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertMsgNews" parameterType="msgNews">
+		INSERT INTO 
+			t_wx_msgnews  
+		(
+			F_NEWSID ,
+			F_FEEDBACKID ,
+			F_TITLE ,
+			F_DESC ,
+			F_PICURL ,
+			F_URL ,
+			F_ISMAIN ,
+			F_SORTNUM 
+		) VALUES (
+			#{newsId} ,
+			#{feedbackId} ,
+			#{newsTitle} ,
+			#{newsDesc} ,
+			#{picUrl} ,
+			#{linkUrl} ,
+			#{isMain} ,
+			#{sortNum} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeMsgNews" parameterType="msgNews">
+		REPLACE INTO 
+			t_wx_msgnews 
+		(
+			F_NEWSID ,
+			F_FEEDBACKID ,
+			F_TITLE ,
+			F_DESC ,
+			F_PICURL ,
+			F_URL ,
+			F_ISMAIN ,
+			F_SORTNUM 
+		) VALUES (
+			#{newsId} ,
+			#{feedbackId} ,
+			#{newsTitle} ,
+			#{newsDesc} ,
+			#{picUrl} ,
+			#{linkUrl} ,
+			#{isMain} ,
+			#{sortNum} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateMsgNews" parameterType="msgNews">
+		UPDATE
+			t_wx_msgnews 
+		SET
+			F_FEEDBACKID = #{feedbackId} ,
+			F_TITLE = #{newsTitle} ,
+			F_DESC = #{newsDesc} ,
+			F_PICURL = #{picUrl} ,
+			F_URL = #{linkUrl} ,
+			F_ISMAIN = #{isMain} ,
+			F_SORTNUM = #{sortNum} 
+		<where>
+			F_NEWSID = #{newsId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteMsgNews" parameterType="msgNews">
+		DELETE FROM
+			t_wx_msgnews 
+		<where>
+			F_NEWSID = #{newsId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchMsgNews" parameterType="msgNews">
+		DELETE FROM 
+			t_wx_msgnews 
+		<where>
+			F_NEWSID in
+			<foreach collection="msgNewsIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryMsgNews" parameterType="String" resultType="msgNews">
+		SELECT
+			t.F_NEWSID as newsId ,
+			t.F_FEEDBACKID as feedbackId ,
+			t.F_TITLE as newsTitle ,
+			t.F_DESC as newsDesc ,
+			t.F_PICURL as picUrl ,
+			t.F_URL as linkUrl ,
+			t.F_ISMAIN as isMain ,
+			t.F_SORTNUM as sortNum 
+		FROM
+			t_wx_msgnews t
+		<where>
+			t.F_NEWSID = #{newsId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryMsgNewsList" parameterType="msgNews" resultType="msgNews">
+		SELECT
+			t.F_NEWSID as newsId ,
+			t.F_FEEDBACKID as feedbackId ,
+			t.F_TITLE as newsTitle ,
+			t.F_DESC as newsDesc ,
+			t.F_PICURL as picUrl ,
+			t.F_URL as linkUrl ,
+			t.F_ISMAIN as isMain ,
+			t.F_SORTNUM as sortNum 
+		FROM
+		t_wx_msgnews t
+		<where>
+			<if test="newsId!=null and newsId!=''">
+		    	t.F_NEWSID = #{newsId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 根据FeedbackId查找图文消息 -->
+	<select id="getMsgNewsByFeedbackId" parameterType="msgNews" resultType="msgNews">
+		SELECT
+			t.F_NEWSID as newsId ,
+			t.F_FEEDBACKID as feedbackId ,
+			t.F_TITLE as newsTitle ,
+			t.F_DESC as newsDesc ,
+			t.F_PICURL as picUrl ,
+			t.F_URL as linkUrl ,
+			t.F_ISMAIN as isMain ,
+			t.F_SORTNUM as sortNum 
+		FROM 
+			T_WX_MSGNEWS t
+			
+		<where>
+			<if test="feedbackId!=null and feedbackId!=''">
+		    	t.F_FEEDBACKID = #{feedbackId}
+		     </if>
+		</where>
+		
+		ORDER BY t.F_ISMAIN DESC,t.F_SORTNUM ASC
+	</select>
+	
+</mapper>	

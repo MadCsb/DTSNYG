@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+</head>
+<style type="text/css">
+/** FF和Chrome下支持max-width和max-height样式 */
+.myimg{ max-width:480px; max-height:270px; }
+/** IE下通过expression设置样式 **/
+#pict img { width:expression(this.width > 480 && this.width > this.height ?  480 : auto); height:expression(this.height > 270 ? 270 : auto); }
+</style>
+<body style="height:auto">
+<input type="hidden" name="code" id="code" value="${code!''}">
+
+<form action="rspic?method=merge" id="newModifyPic" method="post" enctype="multipart/form-data">
+  <table class="datalist-new" style="margin:0px auto 20px auto;width:98%;margin-top:10px">
+  	<input type="hidden" name="picId" id="picId" value="${rsPic.picId!''}"> 
+  	<input type="hidden" name="rsId" id="rsId" value="${rsPic.rsId!''}">
+  	<input type="hidden" name="rsType" id="rsType" value="${rsPic.rsType!''}">
+  	<input type="hidden" name="picFileName" id="picFileName" value="${rsPic.picFileName!''}" />
+    <tbody>
+      <tr>
+        <td style="width:100px;"><b><span style="color:red;">*</span>标题：</b></td>
+        <td><input id="picTitle" type="text" name="picTitle" value="${rsPic.picTitle!'图片标题'}" size="50" class="validate[maxSize[100]] data-searchtxt"></td>
+      </tr>
+      <tr>
+        <td style="width:100px;"><b><span style="color:red;">*</span>图片：</b></td>
+        <td>
+        	<div id="pict" align="left">
+        		<p>
+        			<#if rsPic.picFileName??>
+        				<img class="myimg" src="${rc.contextPath}/upload/wxpic/${rsPic.picFileName!''}"  id="img" />
+        			<#else>
+        				<img class="myimg" src="${rc.contextPath}/images/no-tu.png"  id="img" />
+        			</#if>
+        		</p>
+        		<p><img id="localImag" style="display: none"/></p>
+        		<p>
+        			<font color="red">图片尺寸建议720*370，<br>支持jpg,jpeg,gif,png图片格式</font>
+        		</p>
+        		<p>
+        			<input type="file" name="picFile" id="picFile" class="wabillText" style="cursor: pointer;"  onchange="addImg();" />
+        			<input type="button" id="btnqc"  class="wabillText"  style="cursor: pointer;"  onclick="clean();" value=" 清 除 "/>
+        		<p>
+        	
+           	</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footerbtn" style="margin-bottom:10px">   
+          <input type="button" onClick="CancleWindow();" value="取消" class="cbtn2">
+          <input type="button" onClick="beforeSub();" value="保存"  class="cbtn1">
+  </div> 
+  </form>
+ <script type="text/javascript">
+	$(function(){
+		var code =$("#code").val();
+		if("0" == code){
+			parent.layer.alert("上传成功", function() {
+				art.dialog.data('picId', $("#picId").val());// 存储数据  
+				art.dialog.data('picFileName', $("#picFileName").val())
+				art.dialog.data('picTitle', $("#picTitle").val())
+    			parent.layer.closeAll();
+			});
+			
+		}else if("1" == code){  
+			parent.layer.alert("请输入标题！", function() {
+			});
+		}else if("2" == code){
+			parent.layer.alert("请输入图片！", function() {
+			});
+		}
+	})
+	//返回
+	function CancleWindow()
+	{
+		art.dialog.data('picId', null);
+		art.dialog.data('picFileName', null)
+		parent.layer.closeAll();
+	}
+	
+	//清除图片
+    function clean(){
+    	//$("#picTitle").val(null);
+        var file = $("#picFile");
+        file.after(file.clone().val(""));
+        file.remove(); 
+    	$("#img").attr('src', '${rc.contextPath}/images/no-tu.png');
+	}
+	
+	function addImg()
+	{
+		var picFile = document.getElementById("picFile");
+		var fileext = picFile.value.substring(picFile.value.lastIndexOf("."),picFile.value.length);
+			fileext = fileext.toLowerCase();
+		//判断图片格式
+		if ( fileext!='' && fileext != '.jpg' && fileext != '.gif' 
+			&& fileext != '.jpeg' && fileext != '.png' ){
+			parent.layer.alert("对不起，系统仅支持jpg/gif/jpeg/png/bmp格式的照片，请您调整格式后重新上传，谢谢 ！", function() {
+            	 clean();
+             });
+             return;
+        }
+		$("#img").css('display','block'); 
+		var img = document.getElementById("img");
+		if (picFile.files && picFile.files[0]) {       
+			var reader = new FileReader();
+	        reader.onload = function (evt) { 
+	        					img.src = evt.target.result; 
+	        				}
+	        reader.readAsDataURL(picFile.files[0]);
+	        
+		}else{
+			var MAXWIDTH = "640px";
+			var MAXHEIGHT = "330px";
+			
+			img.style.display = 'none';  
+			
+			picFile.select();
+			var imgSrc = document.selection.createRange().text;  
+			var localImagId = document.getElementById("localImag");  
+			localImagId.style.display="block";
+			localImagId.style.width = MAXWIDTH;          
+	      　　	localImagId.style.height = MAXHEIGHT;  
+	      　　	localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";  　　	  
+	      　　	localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;  
+	      　　	document.selection.empty();  
+		}
+		
+	}
+	
+	function beforeSub()
+	{
+		var picTitle = $("#picTitle").val();
+		if(null == picTitle || '' == picTitle)
+		{
+			parent.layer.alert("请输入标题！");
+			return;
+		}
+		var picFile = $("#picFile").val();
+		var url = $("#img").attr("src");
+		var picId = $("#picId").val();
+		if(null != picId && "" != picId){
+			if(url.indexOf("no-tu.png") > 0){
+				parent.layer.alert("请选择图片！");
+				return;
+			}
+		}else{
+			if(( null == picFile || "" == picFile))
+			{
+				parent.layer.alert("请选择图片！");
+				return;
+			}
+		}
+		
+
+		if($("#picTitle").val().replace(/[^\x00-\xff]/g,"**").length>100)
+		{
+			parent.layer.alert("标题长度不能超过100，中文算两位数");
+			return;
+		}
+		$("#newModifyPic").submit();
+	}
+	</script>
+	 
+	</body>
+</html>

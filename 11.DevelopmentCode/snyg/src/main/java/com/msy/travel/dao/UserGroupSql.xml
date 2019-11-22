@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.travel.dao.UserGroupDao">
+	<delete id="deleteUserGroupLink" parameterType="UserGroup">
+		DELETE FROM
+		T_PUB_USERGROUPLINK
+		WHERE
+		F_USER_ID = #{userId}
+	</delete>
+
+
+	<!-- 获取总数 -->
+	<select id="getTotalCount" resultType="int" parameterType="UserGroup">
+		select
+		count(*)
+		from (
+		select
+		vd.*
+		from v_pub_roledata vd
+		where
+		(
+		(vd.F_ROLETYPE = #{createRoleType} and vd.F_ACC_ID = #{spId} and vd.F_UNIT_ID = #{createUnitId})
+		or
+		(vd.F_ACC_ID = #{spId} and vd.F_ROLETYPE != #{createRoleType} and	vd.F_ROLETYPE in (select
+		rr.f_roleid
+		from t_pub_rolerange rr
+		where rr.f_manaroleid = #{createRoleType})
+		)
+		or
+		(vd.F_ACC_ID = #{spId} and vd.F_ROLETYPE != #{createRoleType} and vd.F_ROLETYPE in (select
+		rr.f_manaroleid
+		from t_pub_rolerange rr
+		where rr.f_roleid = #{createRoleType})
+		)
+		)
+		) rd
+		left join (
+		select f_usergroup_id,
+		f_usergroup_name,
+		f_usergroup_state,
+		f_usergroup_create_date,
+		f_roletype,
+		f_memo,
+		f_spid,
+		IFNULL(f_createroletype, 3) as f_createroletype,
+		IFNULL(f_createunitid, f_spid) as f_createunitid
+		from t_pub_usergroup) t on (rd.F_ROLETYPE = t.f_createroletype and rd.F_UNIT_ID = t.f_createunitid and rd.F_ACC_ID = t.f_spid)
+		<where>
+			<if test="createRoleType != null and createRoleType != ''">
+				and t.f_roletype in (select rr.f_manaroleid from t_pub_rolerange rr where rr.f_roleid = #{createRoleType})
+			</if>
+			<if test="userGroupName !=null and userGroupName != '' ">
+				and t.F_USERGROUP_NAME like CONCAT('%', #{userGroupName}, '%')
+			</if>
+			<if test="allUserGroupName!=null and allUserGroupName != '' ">
+				and t.F_USERGROUP_NAME = #{allUserGroupName}
+			</if>
+			<if test="userGroupState != null and userGroupState != '' ">
+				and t.F_USERGROUP_STATE = #{userGroupState}
+			</if>
+			<if test="spId != null and spId != '' ">
+				and t.F_SPID = #{spId}
+			</if>
+			<if test="roleType != null and roleType != '' ">
+				and t.F_ROLETYPE = #{roleType}
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 按条件分页查询 -->
+	<select id="queryUserGroupListByPage" parameterType="UserGroup"
+			resultType="UserGroup">
+		SELECT
+		F_USERGROUP_ID as userGroupId ,
+		F_USERGROUP_NAME as userGroupName ,
+		F_USERGROUP_STATE as userGroupState ,
+		F_USERGROUP_CREATE_DATE as userGroupCreateDate ,
+		F_ROLETYPE as roleType,
+		f_rolename as roleName,
+		F_CREATEROLETYPE as createRoleType,
+		F_CREATEUNITID as createUnitId,
+		F_MEMO as memo,
+		F_SPID as spId ,
+		IFNULL(useNum,0) as useNum
+		FROM
+		(SELECT row_.* FROM (
+		select
+		t.*,user_group.useNum,r.f_rolename
+		from (
+		select
+		vd.*
+		from v_pub_roledata vd
+		where
+		(
+		(vd.F_ROLETYPE = #{createRoleType} and vd.F_ACC_ID = #{spId} and vd.F_UNIT_ID = #{createUnitId})
+		or
+		(vd.F_ACC_ID = #{spId} and vd.F_ROLETYPE != #{createRoleType} and	vd.F_ROLETYPE in (select rr.f_roleid from t_pub_rolerange rr where rr.f_manaroleid = #{createRoleType}))
+		or
+		(vd.F_ACC_ID = #{spId} and vd.F_ROLETYPE != #{createRoleType} and vd.F_ROLETYPE in (select
+		rr.f_manaroleid
+		from t_pub_rolerange rr
+		where rr.f_roleid = #{createRoleType}))
+		)
+		) rd
+		left join (
+		select
+		f_usergroup_id,
+		f_usergroup_name,
+		f_usergroup_state,
+		f_usergroup_create_date,
+		f_roletype,
+		f_memo,
+		f_spid,
+		IFNULL(f_createroletype, 3) as f_createroletype,
+		IFNULL(f_createunitid, f_spid) as f_createunitid
+		from t_pub_usergroup) t on (rd.F_ROLETYPE = t.f_createroletype and rd.F_UNIT_ID = t.f_createunitid and rd.F_ACC_ID = t.f_spid)
+		left join (select count(ug.f_usergroup_id) as useNum, ug.f_usergroup_id from T_PUB_USERGROUPLINK ug group by ug.f_usergroup_id) user_group on user_group.f_usergroup_id = t.F_USERGROUP_ID
+		left join t_pub_role r on t.f_roletype = r.f_roleid
+		<where>
+			<if test="createRoleType !=null and createRoleType != '' ">
+				and t.f_roletype in (select rr.f_manaroleid from t_pub_rolerange rr where rr.f_roleid = #{createRoleType})
+			</if>
+			<if test="userGroupName != null and userGroupName != '' ">
+				and t.F_USERGROUP_NAME like CONCAT('%', #{userGroupName}, '%')
+			</if>
+			<if test="allUserGroupName != null and allUserGroupName != '' ">
+				and t.F_USERGROUP_NAME = #{allUserGroupName}
+			</if>
+			<if test="userGroupState != null and userGroupState != '' ">
+				and t.F_USERGROUP_STATE = #{userGroupState}
+			</if>
+			<if test="spId != null and spId != '' ">
+				and t.F_SPID = #{spId}
+			</if>
+			<if test="roleType != null and roleType != '' ">
+				and t.F_ROLETYPE = #{roleType}
+			</if>
+		</where>
+		<if test="entityPage.sortField != null and entityPage.sortField != '' ">
+			ORDER BY ${entityPage.sortField}
+		</if>
+		<if test="entityPage.sortOrder != null and entityPage.sortOrder != '' ">
+			${entityPage.sortOrder}
+		</if>
+		)row_ )row_ 
+	</select>
+
+	<select id="queryUserGroupLinkList" parameterType="UserGroup" resultType="UserGroup">
+		SELECT
+		t1.F_USER_ID AS userId,
+		t1.F_USERGROUP_ID AS userGroupId ,
+		t2.F_USERGROUP_NAME as userGroupName
+		FROM T_PUB_USERGROUPLINK t1
+		LEFT JOIN t_pub_usergroup t2 on t1.F_USERGROUP_ID = t2.F_USERGROUP_ID
+		<where>
+			<if test="userId != null and userId != '' ">
+				F_USER_ID = #{userId}
+			</if>
+			<if test="userGroupId != null and userGroupId != '' ">
+				AND t1.F_USERGROUP_ID = #{userGroupId}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertUserGroupLink" parameterType="UserGroup">
+		INSERT INTO T_PUB_USERGROUPLINK (
+		F_USER_ID,
+		F_USERGROUP_ID
+		) VALUES (
+		#{userId},
+		#{userGroupId}
+		)
+	</insert>
+
+	<!-- 新增信息 -->
+	<insert id="insertUserGroup" parameterType="UserGroup">
+		INSERT INTO t_pub_usergroup (
+		F_USERGROUP_ID,
+		F_USERGROUP_NAME,
+		F_USERGROUP_STATE,
+		F_USERGROUP_CREATE_DATE,
+		F_ROLETYPE,
+		F_MEMO,
+		F_SPID,
+		F_CREATEROLETYPE,
+		F_CREATEUNITID
+		) VALUES (
+		#{userGroupId} ,
+		#{userGroupName,jdbcType=VARCHAR} ,
+		#{userGroupState,jdbcType=VARCHAR} ,
+		#{userGroupCreateDate,jdbcType=VARCHAR} ,
+		#{roleType,jdbcType=VARCHAR},
+		#{memo,jdbcType=VARCHAR},
+		#{spId,jdbcType=VARCHAR},
+		#{createRoleType,jdbcType=VARCHAR},
+		#{createUnitId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 查询单个详情 -->
+	<select id="queryUserGroup" parameterType="UserGroup"
+			resultType="UserGroup">
+		SELECT ug.F_USERGROUP_ID          as userGroupId,
+		ug.F_USERGROUP_NAME        as userGroupName,
+		ug.F_USERGROUP_STATE       as userGroupState,
+		ug.F_USERGROUP_CREATE_DATE as userGroupCreateDate,
+		ug.f_roletype              as roleType,
+		ug.f_memo                  as memo,
+		ug.f_spid                  as spId,
+		IFNULL(menu.useNum,0)         as useNum
+		FROM t_pub_usergroup ug
+		left join (select ugm.f_usergroup_id, count(1) as useNum
+		from T_PUB_UGMENULINK ugm
+		group by ugm.f_usergroup_id) menu
+		on menu.f_usergroup_id = ug.f_usergroup_id
+		WHERE
+		ug.F_USERGROUP_ID = #{userGroupId}
+	</select>
+
+
+	<!-- 按条件查询所有 -->
+	<select id="queryUserGroupList" parameterType="UserGroup"
+			resultType="UserGroup">
+		SELECT
+		ug.F_USERGROUP_ID as userGroupId ,
+		ug.F_USERGROUP_NAME as userGroupName ,
+		ug.F_USERGROUP_STATE as userGroupState ,
+		ug.F_USERGROUP_CREATE_DATE as userGroupCreateDate ,
+		ug.f_roletype as roleType,
+		ug.f_memo as memo,
+		ug.f_spid as spId,
+		pr.f_rolename as roleName,
+		pr.f_roledesc as roleDesc
+		FROM
+		t_pub_usergroup ug
+		left join t_pub_role pr on pr.f_roleid = ug.F_ROLETYPE
+		<where>
+			<if test="userGroupName != null and userGroupName != '' ">
+				and ug.F_USERGROUP_NAME like CONCAT('%', #{userGroupName}, '%')
+			</if>
+			<if test="allUserGroupName != null and allUserGroupName != '' ">
+				and ug.F_USERGROUP_NAME = #{allUserGroupName}
+			</if>
+			<if test="userGroupState != null and userGroupState != '' ">
+				and ug.F_USERGROUP_STATE = #{userGroupState}
+			</if>
+			<if test="spId != null and spId != '' ">
+				and ug.F_SPID = #{spId}
+			</if>
+			<if test="roleType != null and roleType != '' ">
+				and ug.F_ROLETYPE = #{roleType}
+			</if>
+		</where>
+	</select>
+
+	<!-- 修改信息 -->
+	<update id="updateUserGroup" parameterType="UserGroup">
+		UPDATE
+		t_pub_usergroup
+		SET
+		F_USERGROUP_NAME = #{userGroupName,jdbcType=VARCHAR} ,
+		F_USERGROUP_STATE = #{userGroupState,jdbcType=VARCHAR} ,
+		F_USERGROUP_CREATE_DATE = #{userGroupCreateDate,jdbcType=VARCHAR} ,
+		F_ROLETYPE = #{roleType,jdbcType=VARCHAR},
+		F_MEMO = #{memo,jdbcType=VARCHAR}
+		WHERE
+		F_USERGROUP_ID = #{userGroupId}
+	</update>
+
+	<!-- 删除消息 -->
+	<delete id="deleteUserGroup" parameterType="UserGroup">
+		UPDATE
+		t_pub_usergroup
+		SET
+		F_USERGROUP_STATE = '-1'
+		WHERE
+		F_USERGROUP_ID = #{userGroupId}
+	</delete>
+
+	<!-- 删除用户组关联的菜单 -->
+	<delete id="deleteUsergoupMenu" parameterType="Map">
+		delete
+		from
+		T_PUB_UGMENULINK
+		where
+		F_USERGROUP_ID = #{usergroupid}
+	</delete>
+	<!-- 删除用户组关联的菜单功能键 -->
+	<delete id="deleteUsergoupMenuButton" parameterType="Map">
+		delete
+		from
+		T_PUB_UGMENUBUTTONLINK
+		where
+		F_USERGROUP_ID = #{usergroupid}
+	</delete>
+
+	<!-- 插入用户组和菜单关联 -->
+	<insert id="insertUsergoupMenu" parameterType="Map">
+		insert into T_PUB_UGMENULINK(
+		F_USERGROUP_ID,
+		F_MENU_ID
+		) values (
+		#{ugid},
+		#{menuid}
+		)
+	</insert>
+
+	<!-- 插入用户组和菜单功能关联 -->
+	<insert id="insertUsergourpMenubutton" parameterType="Map">
+		insert into T_PUB_UGMENUBUTTONLINK(
+		F_USERGROUP_ID,
+		F_MENUBUTTON_ID
+		) values (
+		#{ugid},
+		#{menubutton}
+		)
+	</insert>
+</mapper>

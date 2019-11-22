@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="sharelog?method=add" method="post"
+			id="createSharelog">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
+
+				<tr class="cs">
+
+					<td>sopenId：</td>
+					<td><input name="sopenId" type="text"
+						id="sopenId" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>dopenId：</td>
+					<td><input name="dopenId" type="text"
+						id="dopenId" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>status：</td>
+					<td><input name="status" type="text"
+						id="status" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>url：</td>
+					<td><input name="url" type="text"
+						id="url" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>createDate：</td>
+					<td><input name="createDate" type="text"
+						id="createDate" size="40" /></td>
+				</tr>
+
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="submit" class="data-btnbg" value="确认" /> 
+				<input type="reset" class="data-btnbg" onclick="javascript:location.href='{Session.BACK_URL!""}'" value="取消" />
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

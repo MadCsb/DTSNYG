@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+</head>      
+
+<body>
+	<form action="bindUserRole" method="post" id="createUser">
+	<input type="hidden" id="userRoleType" name="userRoleType" value="${role.userRoleType!''}">
+		<div class="waybill-title"><span>所属单位</span></div>
+        	<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+            	<tbody>
+                	<tr class="">
+                    	<td class="tdright"><b>角色类型：</b></td>
+                       	<td >
+                       		<select name="roleType" class="data-searchtxt-select" id="ugId"  style="width:130px;" disabled="disabled">
+           						<option  value="">----请选择----</option>
+           						<#if roleList?? && (roleList?size>0)>
+       								<#list roleList as rl> 
+       									<#if rl.roleId?? >
+       										<#if role.userRoleType??>
+       											<#if rl.roleId == role.userRoleType >
+       												<option  value="${rl.roleId!''}" selected="selected">${rl.roleName!''}</option>
+       											</#if>
+       									 	</#if> 
+       									</#if>  
+       								</#list>
+       							</#if>	
+           					</select>
+                      	</td>
+                      	<td width="10%"><b>名称：</b></td>
+                       	<td width="30%">
+                       		<input name="unitName" type="text" class=" data-searchtxt" id="unitName" value ="${role.unitName!''}" style="width:150px;">
+                       	</td>
+                       	<td class="tdrght">
+                       		<input name="btnSave" type="submit"  class="add-new"  id="btnSave" value="查询">
+                       	</td>
+                   </tr>
+     		</tbody>
+  		</table>
+  		</form>
+  	<div style="height:300px;overflow-y:auto;">	
+	<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+                	<tr class="">
+                    	<td width="20%" class="tdleft"><b>选择绑定</b></td>
+                       	<td width="80%" class="tdleft"><b>名称</b></td>
+                   </tr>
+                   		<#if unitRoleList?? && (unitRoleList?size>0)>
+                   		
+       						<#list unitRoleList as url> 
+       						  <tr >	
+                    			<td class="tdleft"> 
+                    			<#if checkedUnitId?? && (checkedUnitId == url.unitId)>
+                    				<input type="radio" id="unitId" name="unitId" value="${url.unitId!''}" checked="checked">
+                    			<#else><input type="radio" id="unitId" name="unitId" value="${url.unitId!''}">
+                    			</#if>
+                    			</td>
+                       			<td id="${url.unitId!''}" title="${url.unitName!''}">${url.unitName!''}</td>
+                       		</tr>
+                       		</#list>
+                       		
+                       	</#if>		
+     		</tbody>
+  		</table>
+  		<div class="page-div">
+			<#if unitRoleList?? && (unitRoleList?size>0)>
+			<#else>
+				<div id='ListIsNullMsg' style="font-size:17px;color:red">
+					<script type="text/javascript">
+						showListIsNullMsg();
+					</script>
+				</div>
+			</#if>
+		</div>
+  	</div>	
+
+<div class="footerbtn">   
+	<input name="btnSave" type="button"  class="add-new" onclick="beforeSub();" id="btnSave" value="确定">
+	<input name="button4" type="button" class="cbtn2" id="button4" onclick="javascript:art.dialog.close();" value="取消">
+</div>
+<script type="text/javascript">
+function beforeSub(){
+	var id = $("input[type='radio']:checked").val();
+	if( id == null){
+		art.dialog.alert("请选择一条记录");
+		return;
+	}
+	var name = $("#"+id).html();
+	art.dialog.data("unitId",id);
+	art.dialog.data("unitName",name);
+	art.dialog.close();
+}
+	</script>
+
+</body>
+</html>

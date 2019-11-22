@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.AccessrecordDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertAccessrecord" parameterType="accessrecord">
+		INSERT INTO 
+			t_sm_accessrecord  
+		(
+			F_RECORDID ,
+			F_SPID ,
+			F_USERID ,
+			F_ACCESSTIME ,
+			F_PDCID ,
+			F_TYPE 
+		) VALUES (
+			#{recordId} ,
+			#{spId} ,
+			#{userId} ,
+			#{accessTime} ,
+			#{pdcId} ,
+			#{type} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeAccessrecord" parameterType="accessrecord">
+		REPLACE INTO 
+			t_sm_accessrecord 
+		(
+			F_RECORDID ,
+			F_SPID ,
+			F_USERID ,
+			F_ACCESSTIME ,
+			F_PDCID ,
+			F_TYPE 
+		) VALUES (
+			#{recordId} ,
+			#{spId} ,
+			#{userId} ,
+			#{accessTime} ,
+			#{pdcId} ,
+			#{type} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateAccessrecord" parameterType="accessrecord">
+		UPDATE
+			t_sm_accessrecord 
+		SET
+			F_RECORDID = #{recordId} ,
+			F_SPID = #{spId} ,
+			F_USERID = #{userId} ,
+			F_ACCESSTIME = #{accessTime} ,
+			F_PDCID = #{pdcId} ,
+			F_TYPE = #{type} 
+		<where>
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteAccessrecord" parameterType="accessrecord">
+		DELETE FROM
+			t_sm_accessrecord 
+		<where>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchAccessrecord" parameterType="accessrecord">
+		DELETE FROM 
+			t_sm_accessrecord 
+		<where>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryAccessrecord" parameterType="String" resultType="accessrecord">
+		SELECT
+			t.F_RECORDID as recordId ,
+			t.F_SPID as spId ,
+			t.F_USERID as userId ,
+			t.F_ACCESSTIME as accessTime ,
+			t.F_PDCID as pdcId ,
+			t.F_TYPE as type 
+		FROM
+			t_sm_accessrecord t
+		<where>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryAccessrecordList" parameterType="accessrecord" resultType="accessrecord">
+		SELECT
+			t.F_RECORDID as recordId ,
+			t.F_SPID as spId ,
+			t.F_USERID as userId ,
+			t.F_ACCESSTIME as accessTime ,
+			t.F_PDCID as pdcId ,
+			t.F_TYPE as type 
+		FROM
+		t_sm_accessrecord t
+		<where>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ArticleDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertArticle" parameterType="article">
+		INSERT INTO 
+			t_wx_article  
+		(
+			F_ARTICLEID ,
+			F_SPID ,
+			F_USER_ID ,
+			F_USERNAME ,
+			F_TYPE ,
+			F_TITLE ,
+			F_PUBLISHDATE ,
+			F_CONTEXT ,
+			F_FILENAME ,
+			F_PROLINK ,
+			F_PICURL ,
+			F_ISSHOWAPP ,
+			F_DELFLAG
+		) VALUES (
+			#{articleId} ,
+			#{spId} ,
+			#{userId} ,
+			#{userName} ,
+			#{type} ,
+			#{title} ,
+			#{publishDate} ,
+			#{context} ,
+			#{fileName} ,
+			#{proLink} ,
+			#{picUrl} ,
+			#{isShowApp} ,
+			#{delFlag}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeArticle" parameterType="article">
+		REPLACE INTO 
+			t_wx_article 
+		(
+			F_ARTICLEID ,
+			F_SPID ,
+			F_USER_ID ,
+			F_USERNAME ,
+			F_TYPE ,
+			F_TITLE ,
+			F_PUBLISHDATE ,
+			F_CONTEXT ,
+			F_FILENAME ,
+			F_PROLINK ,
+			F_PICURL ,
+			F_ISSHOWAPP 
+		) VALUES (
+			#{articleId} ,
+			#{spId} ,
+			#{userId} ,
+			#{userName} ,
+			#{type} ,
+			#{title} ,
+			#{publishDate} ,
+			#{context} ,
+			#{fileName} ,
+			#{proLink} ,
+			#{picUrl} ,
+			#{isShowApp} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateArticle" parameterType="article">
+		UPDATE
+			t_wx_article 
+		SET
+			F_SPID = #{spId} ,
+			F_USER_ID = #{userId} ,
+			F_USERNAME = #{userName} ,
+			F_TYPE = #{type} ,
+			F_TITLE = #{title} ,
+			F_PUBLISHDATE = #{publishDate} ,
+			F_CONTEXT = #{context} ,
+			F_FILENAME = #{fileName} ,
+			F_PROLINK = #{proLink} ,
+			F_PICURL = #{picUrl} ,
+			F_ISSHOWAPP = #{isShowApp} 
+		<where>
+			F_ARTICLEID = #{articleId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteArticle" parameterType="article">
+		DELETE FROM
+			t_wx_article 
+		<where>
+			F_ARTICLEID = #{articleId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchArticle" parameterType="article">
+		DELETE FROM 
+			t_wx_article 
+		<where>
+			F_ARTICLEID in
+			<foreach collection="articleIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryArticle" parameterType="String" resultType="article">
+		SELECT
+			t.F_ARTICLEID as articleId ,
+			t.F_SPID as spId ,
+			t.F_USER_ID as userId ,
+			t.F_USERNAME as userName ,
+			t.F_TYPE as type ,
+			t.F_TITLE as title ,
+			t.F_PUBLISHDATE as publishDate ,
+			t.F_CONTEXT as context ,
+			t.F_FILENAME as fileName ,
+			t.F_PROLINK as proLink ,
+			t.F_PICURL as picUrl ,
+			t.F_ISSHOWAPP as isShowApp ,
+			t.F_DELFLAG as delFlag
+		FROM
+			t_wx_article t
+		<where>
+			t.F_ARTICLEID = #{articleId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryArticleList" parameterType="article" resultType="article">
+		SELECT
+			t.F_ARTICLEID as articleId ,
+			t.F_SPID as spId ,
+			t.F_USER_ID as userId ,
+			t.F_USERNAME as userName ,
+			t.F_TYPE as type ,
+			t.F_TITLE as title ,
+			t.F_PUBLISHDATE as publishDate ,
+			t.F_CONTEXT as context ,
+			t.F_FILENAME as fileName ,
+			t.F_PROLINK as proLink ,
+			t.F_PICURL as picUrl ,
+			t.F_ISSHOWAPP as isShowApp ,
+			t.F_DELFLAG as delFlag 
+		FROM
+		t_wx_article t
+		<where>
+			<if test="articleId!=null and articleId!=''">
+		    	t.F_ARTICLEID = #{articleId}
+		    </if>
+			<if test="title!=null and title!=''">
+		    	and t.F_TITLE LIKE CONCAT('%', #{title}, '%')
+		    </if>
+		    <if test="type!=null and type!=''">
+		    	and t.F_TYPE = #{type}
+		    </if>
+		    <if test="spId!=null and spId!=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 修改信息 -->
+	<update id="setArticleDelFlag" parameterType="article">
+		UPDATE
+			t_wx_article 
+		SET
+			F_DELFLAG = #{delFlag}
+		WHERE
+			F_ARTICLEID = #{articleId} 	
+	</update>
+	
+	<!-- 检查标题重名 -->
+	<select id="checkArticle" parameterType="article" resultType="int">
+		SELECT
+			COUNT(t.F_ARTICLEID)
+		FROM
+		t_wx_article t
+		<where>
+			<if test="articleId!=null and articleId!=''">
+		    	t.F_ARTICLEID != #{articleId}
+		    </if>
+		    <if test="title!=null and title!=''">
+		    	and t.F_TITLE = #{title}
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		</where>
+	</select>
+</mapper>	

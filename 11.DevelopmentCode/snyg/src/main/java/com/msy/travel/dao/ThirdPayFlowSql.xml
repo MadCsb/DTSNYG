@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ThirdPayFlowDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertThirdPayFlow" parameterType="thirdPayFlow">
+		INSERT INTO 
+			t_sm_thirdpayflow  
+		(
+			F_FLOWID ,
+			F_PLATFORM_FLOW_CODE ,
+			F_CREATETIME ,
+			F_THIRD_FLOW_CODE ,
+			F_THIRD_CREATETIME ,
+			F_FLOW_STATE ,
+			F_FLOW_MONEY ,
+			F_PLATFORM_ORDERS ,
+			F_SPID
+		) VALUES (
+			#{flowId} ,
+			#{platformFlowCode} ,
+			#{createTime} ,
+			#{thirdFlowCode} ,
+			#{thirdCreateTime} ,
+			#{flowState} ,
+			#{flowMoney} ,
+			#{platformOrders} ,
+			#{spId}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeThirdPayFlow" parameterType="thirdPayFlow">
+		REPLACE INTO 
+			t_sm_thirdpayflow 
+		(
+			F_FLOWID ,
+			F_PLATFORM_FLOW_CODE ,
+			F_CREATETIME ,
+			F_THIRD_FLOW_CODE ,
+			F_THIRD_CREATETIME ,
+			F_FLOW_STATE ,
+			F_FLOW_MONEY ,
+			F_PLATFORM_ORDERS 
+		) VALUES (
+			#{flowId} ,
+			#{platformFlowCode} ,
+			#{createTime} ,
+			#{thirdFlowCode} ,
+			#{thirdCreateTime} ,
+			#{flowState} ,
+			#{flowMoney} ,
+			#{platformOrders} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateThirdPayFlow" parameterType="thirdPayFlow">
+		UPDATE
+			t_sm_thirdpayflow 
+		SET
+			F_PLATFORM_FLOW_CODE = #{platformFlowCode} ,
+			F_CREATETIME = #{createTime} ,
+			F_THIRD_FLOW_CODE = #{thirdFlowCode} ,
+			F_THIRD_CREATETIME = #{thirdCreateTime} ,
+			F_FLOW_STATE = #{flowState} ,
+			F_FLOW_MONEY = #{flowMoney} ,
+			F_PLATFORM_ORDERS = #{platformOrders} 
+		<where>
+			F_FLOWID = #{flowId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteThirdPayFlow" parameterType="thirdPayFlow">
+		DELETE FROM
+			t_sm_thirdpayflow 
+		<where>
+			F_FLOWID = #{flowId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchThirdPayFlow" parameterType="thirdPayFlow">
+		DELETE FROM 
+			t_sm_thirdpayflow 
+		<where>
+			F_FLOWID in
+			<foreach collection="thirdPayFlowIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryThirdPayFlow" parameterType="String" resultType="thirdPayFlow">
+		SELECT
+			t.F_FLOWID as flowId ,
+			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
+			t.F_CREATETIME as createTime ,
+			t.F_THIRD_FLOW_CODE as thirdFlowCode ,
+			t.F_THIRD_CREATETIME as thirdCreateTime ,
+			t.F_FLOW_STATE as flowState ,
+			t.F_FLOW_MONEY as flowMoney ,
+			t.F_PLATFORM_ORDERS as platformOrders ,
+			t.F_SPID as spId
+		FROM
+			t_sm_thirdpayflow t
+		<where>
+			t.F_FLOWID = #{flowId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryThirdPayFlowList" parameterType="thirdPayFlow" resultType="thirdPayFlow">
+		SELECT
+			t.F_FLOWID as flowId ,
+			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
+			t.F_CREATETIME as createTime ,
+			t.F_THIRD_FLOW_CODE as thirdFlowCode ,
+			t.F_THIRD_CREATETIME as thirdCreateTime ,
+			t.F_FLOW_STATE as flowState ,
+			t.F_FLOW_MONEY as flowMoney ,
+			t.F_PLATFORM_ORDERS as platformOrders ,
+		  t.F_SPID as spId
+		FROM
+		t_sm_thirdpayflow t
+		<where>
+			<if test="platformFlowCode!=null and platformFlowCode!=''">
+				and t.F_PLATFORM_FLOW_CODE = #{platformFlowCode}
+			</if>
+			<if test="flowState!=null and flowState!=''">
+				and t.F_FLOW_STATE = #{flowState}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

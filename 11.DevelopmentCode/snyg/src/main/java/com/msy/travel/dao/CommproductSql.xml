@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CommproductDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCommproduct" parameterType="commproduct">
+		INSERT INTO 
+			t_sm_commproduct  
+		(
+			F_PRODUCTID ,
+			F_SPID ,
+			F_VENID ,
+			F_VENNAME ,
+			F_PRODUCTNAME ,
+			F_PRODUCTINFO ,
+			F_FEEMEMO ,
+			F_TIGINFO ,
+			F_STATE ,
+			F_THUMBPIC ,
+			F_REORDER ,
+			F_SUBJECT ,
+			F_SALENUM ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_CREATETIME ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_RECOMMEND ,
+			F_TYPE ,
+			F_SUBTYPE,
+			F_PRODUCTCODE
+		) VALUES (
+			#{productId} ,
+			#{spId} ,
+			#{venId} ,
+			#{venName} ,
+			#{productName} ,
+			#{productInfo} ,
+			#{feeMemo} ,
+			#{tigInfo} ,
+			#{state} ,
+			#{thumbPic} ,
+			#{reorder} ,
+			#{subject} ,
+			#{saleNum} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{createrTime} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{recommend} ,
+			#{type} ,
+			#{subType},
+			#{productCode}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCommproduct" parameterType="commproduct">
+		REPLACE INTO 
+			t_sm_commproduct 
+		(
+			F_PRODUCTID ,
+			F_SPID ,
+			F_VENID ,
+			F_VENNAME ,
+			F_PRODUCTNAME ,
+			F_PRODUCTINFO ,
+			F_FEEMEMO ,
+			F_TIGINFO ,
+			F_STATE ,
+			F_THUMBPIC ,
+			F_REORDER ,
+			F_SUBJECT ,
+			F_SALENUM ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_CREATETIME ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_RECOMMEND ,
+			F_TYPE ,
+			F_SUBTYPE,
+			F_PRODUCTCODE
+		) VALUES (
+			#{productId} ,
+			#{spId} ,
+			#{venId} ,
+			#{venName} ,
+			#{productName} ,
+			#{productInfo} ,
+			#{feeMemo} ,
+			#{tigInfo} ,
+			#{state} ,
+			#{thumbPic} ,
+			#{reorder} ,
+			#{subject} ,
+			#{saleNum} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{createrTime} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{recommend}  ,
+			#{type} ,
+			#{subType},
+			#{productCode}
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCommproduct" parameterType="commproduct">
+		UPDATE
+			t_sm_commproduct 
+		SET
+			F_VENID = #{venId} ,
+			F_VENNAME = #{venName} ,
+			F_PRODUCTNAME = #{productName} ,
+			F_PRODUCTINFO = #{productInfo} ,
+			F_FEEMEMO = #{feeMemo} ,
+			F_TIGINFO = #{tigInfo} ,
+			F_STATE = #{state} ,
+			F_THUMBPIC = #{thumbPic} ,
+			F_REORDER = #{reorder} ,
+			F_SUBJECT = #{subject} ,
+			F_SALENUM = #{saleNum} ,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} ,
+			F_DELFLAG = #{delFlag} ,
+			F_RECOMMEND = #{recommend} ,
+			F_TYPE = #{type},
+			F_SUBTYPE = #{subType}
+		<where>
+			F_PRODUCTID = #{productId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCommproduct" parameterType="commproduct">
+		DELETE FROM
+			t_sm_commproduct 
+		<where>
+			F_PRODUCTID = #{productId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCommproduct" parameterType="commproduct">
+		DELETE FROM 
+			t_sm_commproduct 
+		<where>
+			F_PRODUCTID in
+			<foreach collection="commproductIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCommproduct" parameterType="String" resultType="commproduct">
+		SELECT
+			t.F_PRODUCTID as productId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRODUCTINFO as productInfo ,
+			t.F_FEEMEMO as feeMemo ,
+			t.F_TIGINFO as tigInfo ,
+			t.F_STATE as state ,
+			t.F_THUMBPIC as thumbPic ,
+			t.F_REORDER as reorder ,
+			t.F_SUBJECT as subject ,
+			t.F_SALENUM as saleNum ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_CREATETIME as createrTime ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECOMMEND as recommend ,
+			t.F_TYPE as type ,
+			t.F_SUBTYPE as subType,
+			t.F_PRODUCTCODE as productCode
+		FROM
+			t_sm_commproduct t
+		<where>
+			t.F_PRODUCTID = #{productId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCommproductList" parameterType="commproduct" resultType="commproduct">
+		SELECT
+			t.F_PRODUCTID as productId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRODUCTINFO as productInfo ,
+			t.F_FEEMEMO as feeMemo ,
+			t.F_TIGINFO as tigInfo ,
+			t.F_STATE as state ,
+			t.F_THUMBPIC as thumbPic ,
+			t.F_REORDER as reorder ,
+			t.F_SUBJECT as subject ,
+			t.F_SALENUM as saleNum ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_CREATETIME as createrTime ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECOMMEND as recommend ,
+			t.F_TYPE as type ,
+			t.F_SUBTYPE as subType,
+			t.F_PRODUCTCODE as productCode,
+			p.F_TYPENAME as typeName
+		FROM
+		t_sm_commproduct t
+		LEFT JOIN t_sm_pdctype p on t.F_TYPE = p.F_PDCTYPEID
+		<where>
+			<if test="productId !=null and productId !=''">
+		    	and t.F_PRODUCTID = #{productId}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="productName !=null and productName !=''">
+		    	and t.F_PRODUCTNAME like concat('%',#{productName},'%')
+		    </if>
+		    <if test="productCode !=null and productCode !=''">
+		    	and t.F_PRODUCTCODE like concat('%',#{productCode},'%')
+		    </if>
+		    <if test="type !=null and type !=''">
+		    	and t.F_TYPE = #{type}
+		    </if>
+		    <if test="venId !=null and venId !=''">
+		    	and t.F_VENID = #{venId}
+		    </if>
+		    <if test="state !=null and state !=''">
+		    	and t.F_STATE = #{state}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 查询单个详情 微信端-->
+	<select id="queryCommproductForWx" parameterType="String" resultType="commproduct">
+		SELECT
+			t.F_PRODUCTID as productId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRODUCTINFO as productInfo ,
+			t.F_FEEMEMO as feeMemo ,
+			t.F_TIGINFO as tigInfo ,
+			t.F_STATE as state ,
+			t.F_THUMBPIC as thumbPic ,
+			t.F_REORDER as reorder ,
+			t.F_SUBJECT as subject ,
+			t.F_SALENUM as saleNum ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_CREATETIME as createrTime ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECOMMEND as recommend ,
+			t.F_TYPE as type ,
+			t.F_SUBTYPE as subType,
+			t.F_PRODUCTCODE as productCode,
+			s.F_PRICETYPE as priceType,
+			s.F_PRICEID AS priceId,
+			s.F_PRICE as price ,
+			s.F_PRICESTARTDATE as priceStartDate ,
+			s.F_PRICEENDDATE as priceEndDate ,
+			s.F_PEOPLENUM as peopleNum  
+		FROM
+			t_sm_sellprice s
+		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID
+		<where>
+			<if test="priceId !=null and priceId !=''">
+		    	and s.F_PRICEID = #{priceId}
+		    </if>
+		</where>
+	</select>
+	
+	<!-- 查询单个详情 PC端-->
+	<select id="queryCommproductForPc" parameterType="String" resultType="commproduct">
+		SELECT
+			t.F_PRODUCTID as productId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRODUCTINFO as productInfo ,
+			t.F_FEEMEMO as feeMemo ,
+			t.F_TIGINFO as tigInfo ,
+			t.F_STATE as state ,
+			t.F_THUMBPIC as thumbPic ,
+			t.F_REORDER as reorder ,
+			t.F_SUBJECT as subject ,
+			t.F_SALENUM as saleNum ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_CREATETIME as createrTime ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECOMMEND as recommend ,
+			t.F_TYPE as type ,
+			t.F_SUBTYPE as subType,
+			t.F_PRODUCTCODE as productCode,
+			s.F_PRICETYPE as priceType,
+			s.F_PRICEID AS priceId,
+			s.F_PRICE as price   
+		FROM
+			t_sm_sellprice s
+		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID
+		<where>
+			<if test="priceId !=null and priceId !=''">
+		    	and s.F_PRICEID = #{priceId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

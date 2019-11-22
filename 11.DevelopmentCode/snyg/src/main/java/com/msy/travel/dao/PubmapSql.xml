@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.travel.dao.PubmapDao">
+
+	<!-- 根据map类型获取所有的pubmap -->
+	<select id="getPubmapListByType" parameterType="String"  resultType="Map">
+		SELECT
+		F_MAPID as mapId ,
+		F_MAPTYPE as mapType ,
+		F_MAPKEY as mapKey ,
+		F_MAPVALUE as mapValue ,
+		F_MAPDESC as mapDesc ,
+		F_SYS as sys
+		FROM
+		T_PUB_MAP
+		<where>
+			F_MAPTYPE = #{_parameter}
+		</where>
+		ORDER BY (F_MAPKEY+0),F_MAPKEY
+	</select>
+</mapper>

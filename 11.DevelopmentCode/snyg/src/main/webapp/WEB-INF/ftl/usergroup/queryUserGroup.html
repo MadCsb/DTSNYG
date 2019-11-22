@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+	<#include "/INC_HEAD.html">
+
+		</head>
+<body>
+<div class="cont-div">
+	<form id="queryFrm" action="userGroup.do?method=query"  method="post" >
+		<div class="data-requry">
+			<table border="0" align="left" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>角色名：
+						<input  name="userGroupName" type="text" class="data-searchtxt" id="userGroupName" value="${userGroup.userGroupName!''}">
+					</td>
+					
+				</tr>
+			</table>
+			
+				<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+
+		</div>
+		<div class="gl-menu">
+			<a href="userGroup?method=toAdd" pa="ADDUSERGROUP"><input type="button" class="cbtn1" value="新增"></a>
+	
+			<a href="javascript:void(0)" onclick="toEdit()" pa="MODIFYUSERGROUP"><input type="button" class="cbtn1" value="修改"></a>
+
+			<a href="javascript:void(0)" onclick="toDelete()" pa="DELETEUSERGROUP"><input type="button" class="cbtn1" value="删除"></a>
+	
+			<a href="javascript:void(0)" onclick="toEditMenu()" pa="MANAGESERGROUP"><input type="button" class="cbtn1" value="分配操作模块"></a>
+
+		</div>
+		<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
+	   	<input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
+	   	<input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
+	   	<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+	   	<input type="hidden" id="loginUserRoleType"  value="${loginUserRoleType!''}" />
+		<input type="hidden" id="loginUserUnitId"  value="${loginUserUnitId!''}" />
+
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="userGroupTable">
+			<tr>
+				<th width="8%">角色名<a href="javascript:void(0);" onclick="sort('F_USERGROUP_NAME')" id="F_USERGROUP_NAME" class="ico_pxcs"></a></th>
+				<th width="13%">说明<a href="javascript:void(0);" onclick="sort('f_memo')" id="f_memo" class="ico_pxcs"></a></th>
+			</tr>
+			<#list userGrouplist as ugl>
+			<tr userGroupId="${ugl.userGroupId!''}" useNum = "${ugl.useNum!''}" createRoleType="${ugl.createRoleType!''}" createUnitId = "${ugl.createUnitId!''}">
+				<td title='${ugl.userGroupName!""}'>${ugl.userGroupName!""}</td>
+				<td title='${ugl.memo!""}'>${ugl.memo!""}</td>
+			</tr>
+			</#list>
+        </table>
+		<div class="page-div">
+			<#if userGrouplist?? && (userGrouplist?size>0)>
+				<#include "/pagination.html">
+					<#else>
+						<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+			</#if>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	var oddColor = "#ffffff"; //奇数颜色
+	var evenColor = "#ffffff";//"#f6f6f6";//偶数行背景
+    var mouseOverColor = "#e7e7e7";//鼠标经过背景
+    var mouseClickColor = "#e5f1f4";//"#e7e7e7"; //点击后背景
+
+	var queryDialog = null;
+	/**
+	 * 初始化页面效果
+	 */
+	function init(){
+		$("#userGroupTable").find("tr").each(function (index,trDoom) {
+			if(index >0)
+			{
+				//默认初始未选中
+				$(this).attr("hashCheck","no");
+				if(index %2 == 0) //偶数行
+				{
+					$(trDoom).css("background-color",evenColor);
+				}else { //奇数行
+					$(trDoom).css("background-color",oddColor);
+				}
+//				$(trDoom).mouseover(function () {
+//				$(this).css("background-color",mouseOverColor);
+//				});
+				$(trDoom).mouseleave(function () {
+					if($(this).attr("hashCheck") == "no")
+					{
+						if($("#userGroupTable").find("tr").index($(this))%2 == 0)
+						{
+							$(this).css("background-color",evenColor);
+						}else {
+							$(this).css("background-color",oddColor);
+						}
+					}
+				});
+				$(trDoom).click(function () {
+					//还原已经选中的tr
+                    var checkEdTr = $("tr[hashCheck='yes']");
+                    $(checkEdTr).attr("hashCheck","no");
+					$(checkEdTr).mouseleave();
+
+					//标识当前tr选中
+					$(this).css("background-color",mouseClickColor);
+                    $(this).attr("hashCheck","yes");
+				});
+			}
+		});
+	}
+
+    /**
+     * 编辑数据
+     */
+    function toEdit(){
+        var checkEdTr = $("tr[hashCheck='yes']");
+        if(checkEdTr.length != 1)
+        {
+            parent.layer.alert("请选择一条记录");
+			return;
+        }
+      /*  if(!checkPri(checkEdTr[0]))
+		{
+        	parent.layer.alert("不能修改此角色！");
+			return false;
+		}*/
+
+        var userGroupId = $(checkEdTr[0]).attr("userGroupId");
+        var url = "userGroup?method=toUpdate&userGroupId="+userGroupId;
+        window.location.href=url;
+    }
+
+    /**
+	 * 验证权限
+	 * true通过
+	 * false 不通过
+	 */
+    function checkPri(checkEdTr) {
+		var createRoleType = $(checkEdTr).attr("createRoleType");
+		var createUnitId = $(checkEdTr).attr("createUnitId");
+		if(createUnitId == $("#loginUserUnitId").val() && createRoleType == $("#loginUserRoleType").val())
+		{
+			return true;
+		}
+		return false;
+	}
+
+
+    /**
+     * 编辑数据
+     */
+    function toEditMenu(){
+        var checkEdTr = $("tr[hashCheck='yes']");
+        if(checkEdTr.length != 1)
+        {
+        	parent.layer.alert("请选择一条记录");
+			return;
+        }
+		/*if(!checkPri(checkEdTr[0]))
+		{
+			parent.layer.alert("不能修改此角色！");
+			return false;
+		}*/
+        var userGroupId = $(checkEdTr[0]).attr("userGroupId");
+        var url = "userGroup?method=toUpdateMenu&userGroupId="+userGroupId;
+        window.location.href=url;
+    }
+
+
+
+    /**
+     * 编辑数据
+     */
+    function toDelete(){
+
+        var checkEdTr = $("tr[hashCheck='yes']");
+        if(checkEdTr.length != 1)
+        {
+        	parent.layer.alert("请选择一条记录");
+			return;
+        }
+	/*	if(!checkPri(checkEdTr[0]))
+		{
+			parent.layer.alert("不能删除此角色！");
+			return false;
+		}*/
+        var userGroupId = $(checkEdTr[0]).attr("userGroupId");
+        parent.layer.confirm("确认删除这条记录吗？", function() {
+            $.post("userGroup?method=delete",{
+                "userGroupId":userGroupId
+            },function(data){
+                if(data=="success"){
+                	parent.layer.alert("操作成功！", function(){
+                		parent.layer.closeAll();
+                        $("#queryFrm").submit();
+                    });
+                } else if(data=="fail"){
+                	parent.layer.alert("角色已经绑定用户，无法删除！",function(){
+                		parent.layer.closeAll();
+                	});
+                }
+            })
+        });
+    }
+
+	$(function () {
+        init();
+    })
+</script>
+</body>
+</html>

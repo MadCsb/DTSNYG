@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CarouselItemDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCarouselItem" parameterType="carouselItem">
+		INSERT INTO 
+			t_pub_carouselitem  
+		(
+			F_ITEMID ,
+			F_CAROUSELID ,
+			F_TITLE ,
+			F_PICURL ,
+			F_LINKURL ,
+			F_SEQNUM 
+		) VALUES (
+			#{itemId} ,
+			#{carouselId} ,
+			#{title} ,
+			#{picUrl} ,
+			#{linkUrl} ,
+			#{seqNum} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCarouselItem" parameterType="carouselItem">
+		REPLACE INTO 
+			t_pub_carouselitem 
+		(
+			F_ITEMID ,
+			F_CAROUSELID ,
+			F_TITLE ,
+			F_PICURL ,
+			F_LINKURL ,
+			F_SEQNUM 
+		) VALUES (
+			#{itemId} ,
+			#{carouselId} ,
+			#{title} ,
+			#{picUrl} ,
+			#{linkUrl} ,
+			#{seqNum} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCarouselItem" parameterType="carouselItem">
+		UPDATE
+			t_pub_carouselitem 
+		SET
+			F_CAROUSELID = #{carouselId} ,
+			F_TITLE = #{title} ,
+			F_PICURL = #{picUrl} ,
+			F_LINKURL = #{linkUrl} ,
+			F_SEQNUM = #{seqNum} 
+		<where>
+			F_ITEMID = #{itemId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCarouselItem" parameterType="carouselItem">
+		DELETE FROM
+			t_pub_carouselitem 
+		<where>
+			F_ITEMID = #{itemId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCarouselItem" parameterType="carouselItem">
+		DELETE FROM 
+			t_pub_carouselitem 
+		<where>
+			F_ITEMID in
+			<foreach collection="carouselItemIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCarouselItem" parameterType="String" resultType="carouselItem">
+		SELECT
+			t.F_ITEMID as itemId ,
+			t.F_CAROUSELID as carouselId ,
+			t.F_TITLE as title ,
+			t.F_PICURL as picUrl ,
+			t.F_LINKURL as linkUrl ,
+			t.F_SEQNUM as seqNum 
+		FROM
+			t_pub_carouselitem t
+		<where>
+			t.F_ITEMID = #{itemId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCarouselItemList" parameterType="carouselItem" resultType="carouselItem">
+		SELECT
+			t.F_ITEMID as itemId ,
+			t.F_CAROUSELID as carouselId ,
+			t.F_TITLE as title ,
+			t.F_PICURL as picUrl ,
+			t.F_LINKURL as linkUrl ,
+			t.F_SEQNUM as seqNum 
+		FROM
+		t_pub_carouselitem t
+		<where>
+			<if test="itemId!=null and itemId!=''">
+		    	t.F_ITEMID = #{itemId}
+		    </if>
+			<if test="carouselId !=null and carouselId !=''">
+		    	t.F_CAROUSELID = #{carouselId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

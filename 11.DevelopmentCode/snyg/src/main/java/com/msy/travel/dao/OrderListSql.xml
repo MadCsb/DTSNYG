@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderListDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrderList" parameterType="orderList">
+		INSERT INTO 
+			t_sm_orderlist  
+		(
+			F_ORDERLISTID ,
+			F_ORDERID ,
+			F_SPID ,
+			F_VENID ,
+			F_VENNAME ,
+			F_PRICEID ,
+			F_PRODUCTID ,
+			F_PRODUCTNAME ,
+			F_PRICE ,
+			F_NUM ,
+			F_MONEY ,
+			F_PAYMONEY ,
+			F_BACKNUM ,
+			F_GOODSPRICEID ,
+			F_CHILDNAME ,
+			F_TRANSFEE ,
+			F_DELFLAG ,
+			F_ORDERLISTTYPE 
+		) VALUES (
+			#{orderListId} ,
+			#{orderId} ,
+			#{spId} ,
+			#{venId} ,
+			#{venName} ,
+			#{priceId} ,
+			#{productId} ,
+			#{productName} ,
+			#{price} ,
+			#{num} ,
+			#{money} ,
+			#{payMoney} ,
+			#{backNum} ,
+			#{goodsPriceId} ,
+			#{childName} ,
+			#{transFee} ,
+			#{delFlag} ,
+			#{orderListType} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrderList" parameterType="orderList">
+		REPLACE INTO 
+			t_sm_orderlist 
+		(
+			F_ORDERLISTID ,
+			F_ORDERID ,
+			F_SPID ,
+			F_VENID ,
+			F_VENNAME ,
+			F_PRICEID ,
+			F_PRODUCTNAME ,
+			F_PRICE ,
+			F_NUM ,
+			F_MONEY ,
+			F_PAYMONEY ,
+			F_BACKNUM ,
+			F_GOODSPRICEID ,
+			F_CHILDNAME ,
+			F_TRANSFEE ,
+			F_DELFLAG ,
+			F_ORDERLISTTYPE 
+		) VALUES (
+			#{orderListId} ,
+			#{orderId} ,
+			#{spId} ,
+			#{venId} ,
+			#{venName} ,
+			#{priceId} ,
+			#{productName} ,
+			#{price} ,
+			#{num} ,
+			#{money} ,
+			#{payMoney} ,
+			#{backNum} ,
+			#{goodsPriceId} ,
+			#{childName} ,
+			#{transFee} ,
+			#{delFlag} ,
+			#{orderListType} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrderList" parameterType="orderList">
+		UPDATE
+			t_sm_orderlist
+		<set>
+			<if test="orderId !=null">F_ORDERID  = #{orderId} ,</if>
+			<if test="spId !=null">F_SPID  = #{spId} ,</if>
+			<if test="venId !=null">F_VENID  = #{venId} ,</if>
+			<if test="venName !=null">F_VENNAME  = #{venName} ,</if>
+			<if test="priceId !=null">F_PRICEID  = #{priceId} ,</if>
+			<if test="productId !=null">F_PRODUCTID  = #{productId} ,</if>
+			<if test="productName !=null">F_PRODUCTNAME  = #{productName} ,</if>
+			<if test="price !=null">F_PRICE  = #{price} ,</if>
+			<if test="num !=null">F_NUM  = #{num} ,</if>
+			<if test="money !=null">F_MONEY  = #{money} ,</if>
+			<if test="payMoney !=null">F_PAYMONEY  = #{payMoney} ,</if>
+			<if test="backNum !=null">F_BACKNUM  = #{backNum} ,</if>
+			<if test="goodsPriceId !=null">F_GOODSPRICEID  = #{goodsPriceId} ,</if>
+			<if test="childName !=null">F_CHILDNAME = #{childName} ,</if>
+			<if test="transFee !=null">F_TRANSFEE  = #{transFee} ,</if>
+			<if test="delFlag !=null">F_DELFLAG  = #{delFlag} ,</if>
+			<if test="orderListType !=null">F_ORDERLISTTYPE  = #{orderListType} ,</if>
+		</set>
+		<where>
+			F_ORDERLISTID = #{orderListId}
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrderList" parameterType="orderList">
+		DELETE FROM
+			t_sm_orderlist 
+		<where>
+			F_ORDERLISTID = #{orderListId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchOrderList" parameterType="orderList">
+		DELETE FROM 
+			t_sm_orderlist 
+		<where>
+			F_ORDERLISTID in
+			<foreach collection="orderListIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrderList" parameterType="String" resultType="orderList">
+		SELECT
+			t.F_ORDERLISTID as orderListId ,
+			t.F_ORDERID as orderId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRICEID as priceId ,
+		  t.F_PRODUCTID as productId ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRICE as price ,
+			t.F_NUM as num ,
+			t.F_MONEY as money ,
+			t.F_PAYMONEY as payMoney ,
+			t.F_BACKNUM as backNum ,
+			t.F_GOODSPRICEID as goodsPriceId ,
+			t.F_CHILDNAME as childName ,
+			t.F_TRANSFEE as transFee ,
+			t.F_DELFLAG as delFlag ,
+			t.F_ORDERLISTTYPE as orderListType ,
+			gs.F_THUMBPIC as thumbPic
+		FROM
+			t_sm_orderlist t
+		LEFT JOIN t_sm_goodsprice gs on t.F_GOODSPRICEID = gs.F_GOODSPRICEID
+		<where>
+			t.F_ORDERLISTID = #{orderListId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderListList" parameterType="orderList" resultType="orderList">
+		SELECT
+			t.F_ORDERLISTID as orderListId ,
+			t.F_ORDERID as orderId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRICEID as priceId ,
+		  t.F_PRODUCTID as productId ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRICE as price ,
+			t.F_NUM as num ,
+			t.F_MONEY as money ,
+			t.F_PAYMONEY as payMoney ,
+			t.F_BACKNUM as backNum ,
+			t.F_GOODSPRICEID as goodsPriceId ,
+			t.F_CHILDNAME as childName ,
+			t.F_TRANSFEE as transFee ,
+			t.F_DELFLAG as delFlag ,
+			t.F_ORDERLISTTYPE as orderListType ,
+		  gs.F_THUMBPIC as thumbPic
+		FROM
+		t_sm_orderlist t
+		LEFT JOIN t_sm_goodsprice gs on t.F_GOODSPRICEID = gs.F_GOODSPRICEID
+		<where>
+			<if test="orderId!=null and orderId!=''">
+		    	AND t.F_ORDERID = #{orderId}
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				AND t.F_DELFLAG = #{delFlag}
+			</if>
+			<if test="orderListType!=null and orderListType!=''">
+				AND t.F_ORDERLISTTYPE = #{orderListType}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+	<!-- 按条件查询规格 统计 -->
+	<select id="queryGoodPriceCount" parameterType="orderList" resultType="orderList">
+		SELECT
+		IFNULL(sum(t.F_NUM),0) as num ,
+		IFNULL(sum(t.F_MONEY),0) as money ,
+		IFNULL(sum(t.F_PAYMONEY),0) as payMoney ,
+		IFNULL(sum(t.F_BACKNUM),0) as backNum ,
+		IFNULL(sum(t.F_TRANSFEE),0) as transFee
+		FROM
+		t_sm_orderlist t
+		LEFT JOIN t_sm_order o on  t.F_ORDERID = o.F_ORDERID
+		<where>
+			<if test="goodsPriceId!=null and goodsPriceId!=''">
+				AND t.F_GOODSPRICEID = #{goodsPriceId}
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				AND (t.F_DELFLAG = #{delFlag} AND o.F_DELFLAG = #{delFlag})
+			</if>
+			<if test="orderListType!=null and orderListType!=''">
+				AND t.F_ORDERLISTTYPE = #{orderListType}
+			</if>
+			<if test="payTag!=null and payTag!=''">
+				AND o.F_PAYTAG = #{payTag}
+			</if>
+			<if test="priceId!=null and priceId!=''">
+				AND t.F_PRICEID = #{priceId}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 账单清单 -->
+	<select id="queryOrderListBill" parameterType="orderList" resultType="orderList">
+		select 
+			orderTemp.F_MONEY as money,
+			ifnull(backTemp.F_BACKMONEY,0) as backMoney,
+			orderTemp.F_PAYDATEMONTH as payDateTime,
+			orderTemp.F_MONEY - ifnull(backTemp.F_BACKMONEY,0) as surplusMoney
+		from (
+			 SELECT
+				<if test='billType !=null and billType !="" and billType=="month"'>
+					DATE_FORMAT(o.F_PAYDATE,'%Y-%m') as F_PAYDATEMONTH,
+				</if>
+				<if test='billType !=null and billType !="" and billType=="day"'>
+					DATE_FORMAT(o.F_PAYDATE,'%Y-%m-%d') as F_PAYDATEMONTH,
+				</if>
+				IFNULL(sum(t.F_MONEY),0) AS F_MONEY
+			FROM
+				t_sm_orderlist t
+			LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+			where t.F_ORDERLISTTYPE='0' 
+				and o.F_PAYTAG='1' 
+				<if test="venId !=null and venId !=''">
+					AND t.F_VENID = #{venId}
+				</if>
+				<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+					AND o.F_PAYDATE &gt;= #{payDateTimeStart}
+				</if>
+				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+					AND o.F_PAYDATE &lt;= #{payDateTimeEnd}
+				</if>
+				GROUP BY F_PAYDATEMONTH ) orderTemp
+		LEFT JOIN (
+			SELECT
+				<if test='billType !=null and billType !="" and billType=="month"'>
+					DATE_FORMAT(b.F_APPLYTIME,'%Y-%m') as F_PAYDATEMONTH,
+				</if>
+				<if test='billType !=null and billType !="" and billType=="day"'>
+					DATE_FORMAT(b.F_APPLYTIME,'%Y-%m-%d') as F_PAYDATEMONTH,
+				</if>
+				IFNULL(sum(t.F_MONEY),0) AS F_BACKMONEY
+			FROM
+				t_sm_orderlist t
+			LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+			LEFT JOIN t_sm_orderback b on t.F_ORDERID = b.F_ORDERID and t.F_ORDERLISTTYPE='1'
+			where (t.F_ORDERLISTTYPE='1' or t.F_ORDERLISTTYPE='2') 
+				and o.F_PAYTAG='1' 
+				<if test="venId !=null and venId !=''">
+					AND t.F_VENID = #{venId}
+				</if>
+				<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+					AND b.F_APPLYTIME &gt;= concat(#{payDateTimeStart},' 00:00:00')
+				</if>
+				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+					AND b.F_APPLYTIME &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+				</if>
+				GROUP BY F_PAYDATEMONTH ) backTemp 
+		on orderTemp.F_PAYDATEMONTH = backTemp.F_PAYDATEMONTH
+		order by orderTemp.F_PAYDATEMONTH DESC
+	</select>
+	
+	<!-- 账单清单 合计 -->
+	<select id="queryOrderListBillSum" parameterType="orderList" resultType="orderList">
+		SELECT
+			SUM(F_MONEY) AS money,
+			SUM(F_BACKMONEY) AS backMoney,
+			SUM(F_MONEY) - SUM(F_BACKMONEY) AS surplusMoney
+		FROM
+			(
+				SELECT
+					IFNULL(sum(t.F_MONEY), 0) AS F_MONEY,
+					0 as F_BACKMONEY
+				FROM
+					t_sm_orderlist t
+				LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+				WHERE
+					t.F_ORDERLISTTYPE = '0'
+				AND o.F_PAYTAG = '1'
+				<if test="venId !=null and venId !=''">
+					AND t.F_VENID = #{venId}
+				</if>
+				<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+					AND o.F_PAYDATE &gt;= concat(#{payDateTimeStart},' 00:00:00')
+				</if>
+				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+					AND o.F_PAYDATE &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+				</if>
+		UNION ALL 
+			SELECT
+				0 as F_MONEY,
+				IFNULL(sum(t.F_MONEY), 0) AS F_BACKMONEY
+			FROM
+				t_sm_orderlist t
+			LEFT JOIN t_sm_order o ON t.F_ORDERID = o.F_ORDERID
+			WHERE
+				(
+					t.F_ORDERLISTTYPE = '1'
+					OR t.F_ORDERLISTTYPE = '2'
+				)
+			AND o.F_PAYTAG = '1'
+			<if test="venId !=null and venId !=''">
+				AND t.F_VENID = #{venId}
+			</if>
+			<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+				AND o.F_PAYDATE &gt;= concat(#{payDateTimeStart},' 00:00:00')
+			</if>
+			<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+				AND o.F_PAYDATE &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+			</if>
+		)a  
+	</select>
+	
+	
+	<!-- 按条件查询所有  账单明细-->
+	<select id="queryOrderListDetailList" parameterType="orderList" resultType="orderList">
+	select * from (
+		SELECT
+			ol.F_ORDERLISTTYPE as orderListType,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_PAYDATE
+				WHEN '1' THEN ob.F_APPLYTIME
+				WHEN '2' THEN otmp.F_CREATETIME
+				END
+			) AS createTime,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_ORDERCODE
+				WHEN '1' THEN ob.F_BACKCODE
+				WHEN '2' THEN o.F_ORDERCODE
+				END
+			) AS orderCode,
+			ol.F_VENID as venId,
+			ol.F_MONEY as money,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_ORDERID
+				WHEN '1' THEN ob.F_BACKID
+				WHEN '2' THEN o.F_ORDERID
+				END
+			) AS orderListId
+		FROM
+			t_sm_orderlist ol
+		LEFT JOIN t_sm_order o ON ol.F_ORDERID = o.F_ORDERID AND ol.F_ORDERLISTTYPE = '0'
+		LEFT JOIN t_sm_order otmp ON ol.F_ORDERID = otmp.F_ORDERID AND ol.F_ORDERLISTTYPE = '2'
+		LEFT JOIN t_sm_orderback ob ON ol.F_ORDERID = ob.F_ORDERID AND ol.F_ORDERLISTTYPE = '1'
+		LEFT JOIN t_sm_order od ON ol.F_ORDERID = od.F_ORDERID
+		<where>
+			<if test="venId !=null and venId !=''">
+		    	AND ol.F_VENID = #{venId}
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				AND ol.F_DELFLAG = #{delFlag}
+			</if>
+			<if test="payTag !=null and payTag !=''">
+				AND od.F_PAYTAG = #{payTag}
+			</if>
+		</where>)olTemp
+		<where>
+			<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+				AND createTime &gt;= concat(#{payDateTimeStart},' 00:00:00')
+			</if>
+			<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+				AND createTime &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+			</if>
+			<if test="orderListType !=null and orderListType !=''">
+				AND orderListType = #{orderListType}
+			</if>
+		</where>
+		ORDER BY createTime DESC 
+	</select>
+</mapper>	

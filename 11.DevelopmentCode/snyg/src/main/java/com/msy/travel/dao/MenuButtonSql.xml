@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.MenuButtonDao" >
+	<!-- 获取用户菜单按钮 根据用户ID-->
+	<select id="queryMenubuttonListByUserid" parameterType="String" resultType="menuButton">
+		select
+		mb.F_MENUBUTTON_NAME as menuButtonName,
+		mb.F_MENUBUTTON_DESC as menuButtonDesc,
+		mb.F_MENUBUTTON_TAG as menuButtonTag,
+		mb.F_MENUBUTTON_ID as menuButtonId,
+		mb.F_MENU_ID as menuId,
+		IFNULL(hashChecked.Checked, '0') as hashChecked
+		from T_PUB_MENUBUTTON mb
+		left join (select distinct ugmb.f_menubutton_id, '1' as checked
+		from T_PUB_UGMENUBUTTONLINK ugmb
+		where ugmb.f_usergroup_id in
+		(select ug.f_usergroup_id
+		from T_PUB_USERGROUPLINK ug
+		where ug.f_user_id = #{userId})) hashChecked
+		on mb.f_menubutton_id = hashChecked.f_Menubutton_Id
+		where mb.f_menu_id in (select distinct ugm.f_menu_id
+		from T_PUB_UGMENULINK ugm
+		where ugm.f_usergroup_id in
+		(select ug.f_usergroup_id
+		from T_PUB_USERGROUPLINK ug
+		where ug.f_user_id = #{_parameter}))
+	</select>
+	
+	
+	
+	<!-- 获取用户菜单按钮  根据用户登录名-->
+	<select id="queryMenubuttonListByUserLoginName" parameterType="String" resultType="menuButton">
+		select
+	    mb.F_MENUBUTTON_NAME as menuButtonName,
+	    mb.F_MENUBUTTON_DESC as menuButtonDesc,
+	    mb.F_MENUBUTTON_TAG as menuButtonTag,
+	    mb.F_MENUBUTTON_ID as menuButtonId,
+	    mb.F_MENU_ID as menuId,
+	    IFNULL(hashChecked.Checked, '0') as hashChecked
+	    from T_PUB_MENUBUTTON mb
+	    left join (select distinct ugmb.f_menubutton_id, '1' as checked
+	    from T_PUB_UGMENUBUTTONLINK ugmb
+	    where ugmb.f_usergroup_id in
+	    (select ug.f_usergroup_id
+	    from T_PUB_USERGROUPLINK ug left join t_pub_user u on ug.f_user_id = u.f_user_id
+	    where u.f_user_loginname = #{userLoginName})) hashChecked
+	    on mb.f_menubutton_id = hashChecked.f_Menubutton_Id
+	    where mb.f_menu_id in (select distinct ugm.f_menu_id
+	    from T_PUB_UGMENULINK ugm
+	    where ugm.f_usergroup_id in
+	    (select ug.f_usergroup_id
+	    from T_PUB_USERGROUPLINK ug left join t_pub_user u on ug.f_user_id = u.f_user_id
+	    where u.f_user_loginname = #{_parameter}))
+	    AND IFNULL(hashChecked.Checked, '0') = '1'
+	</select>
+	
+	
+	
+
+	<!-- 查询所有 -->
+	<select id="getAll" parameterType="menubutton" resultType="menubutton">
+		SELECT
+		F_MENUBUTTON_ID as menuButtonId ,
+		F_MENU_ID as menuid ,
+		F_MENUBUTTON_NAME as menuButtonName ,
+		F_MENUBUTTON_DESC as menuButtonDesc ,
+		F_MENUBUTTON_TAG as menuButtonTag ,
+		(
+		case when F_MENUBUTTON_ID in (select mb.F_MENUBUTTON_ID
+		from T_PUB_MENUBUTTON mb
+		left join T_PUB_UGMENUBUTTONLINK umb on mb.F_MENUBUTTON_ID = umb.F_MENUBUTTON_ID
+		where umb.F_USERGROUP_ID = #{usergroupId}
+		) then '1'
+		else '2' end
+		) as checked
+		FROM
+		T_PUB_MENUBUTTON
+		<where>
+			<if test="menuId!=null and menuId !=''">
+		    	F_MENU_ID = #{menuId}
+		     </if>
+		</where>
+	</select>
+	
+	
+	<!-- 新增信息 -->
+	<insert id="insertMenubutton" parameterType="menubutton">
+		INSERT INTO 
+			t_pub_menubutton  
+		(
+			F_MENUBUTTON_ID ,
+			F_MENU_ID ,
+			F_PRIV_ID ,
+			F_MENUBUTTON_NAME ,
+			F_MENUBUTTON_DESC ,
+			F_MENUBUTTON_TAG 
+		) VALUES (
+			#{menuButtonId} ,
+			#{menuId} ,
+			#{privId} ,
+			#{menuButtonName} ,
+			#{menuButtonDesc} ,
+			#{menuButtonTag} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeMenubutton" parameterType="menubutton">
+		REPLACE INTO 
+			t_pub_menubutton 
+		(
+			F_MENUBUTTON_ID ,
+			F_MENU_ID ,
+			F_PRIV_ID ,
+			F_MENUBUTTON_NAME ,
+			F_MENUBUTTON_DESC ,
+			F_MENUBUTTON_TAG 
+		) VALUES (
+			#{menuButtonId} ,
+			#{menuId} ,
+			#{privId} ,
+			#{menuButtonName} ,
+			#{menuButtonDesc} ,
+			#{menuButtonTag} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateMenubutton" parameterType="menubutton">
+		UPDATE
+			t_pub_menubutton 
+		SET
+			F_MENU_ID = #{menuId} ,
+			F_PRIV_ID = #{privId} ,
+			F_MENUBUTTON_NAME = #{menuButtonName} ,
+			F_MENUBUTTON_DESC = #{menuButtonDesc} ,
+			F_MENUBUTTON_TAG = #{menuButtonTag} 
+		<where>
+			F_MENUBUTTON_ID = #{menuButtonId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteMenubutton" parameterType="menubutton">
+		DELETE FROM
+			t_pub_menubutton 
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	F_MENU_ID = #{menuId}
+		     </if>
+			<if test="menuButtonId!=null and menuButtonId!=''">
+		    	and F_MENUBUTTON_ID = #{menuButtonId}
+		     </if>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchMenubutton" parameterType="menubutton">
+		DELETE FROM 
+			t_pub_menubutton 
+		<where>
+			F_MENUBUTTON_ID in
+			<foreach collection="menuButtonIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryMenubutton" parameterType="String" resultType="menubutton">
+		SELECT
+			t.F_MENUBUTTON_ID as menuButtonId ,
+			t.F_MENU_ID as menuId ,
+			t.F_PRIV_ID as privId ,
+			t.F_MENUBUTTON_NAME as menuButtonName ,
+			t.F_MENUBUTTON_DESC as menuButtonDesc ,
+			t.F_MENUBUTTON_TAG as menuButtonTag ,
+			menu.F_MENU_NAME as menuName	
+		FROM
+			t_pub_menubutton t
+		left join T_PUB_MENU menu on menu.F_MENU_ID = t.F_MENU_ID
+		<where>
+			t.F_MENUBUTTON_ID = #{menuButtonId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryMenubuttonList" parameterType="menubutton" resultType="menubutton">
+		SELECT
+			t.F_MENUBUTTON_ID as menuButtonId ,
+			t.F_MENU_ID as menuId ,
+			t.F_PRIV_ID as privId ,
+			t.F_MENUBUTTON_NAME as menuButtonName ,
+			t.F_MENUBUTTON_DESC as menuButtonDesc ,
+			t.F_MENUBUTTON_TAG as menuButtonTag ,
+			menu.F_MENU_NAME as menuName
+		FROM
+		t_pub_menubutton t
+		left join T_PUB_MENU menu on menu.F_MENU_ID = t.F_MENU_ID
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	t.F_MENU_ID = #{menuId}
+		     </if>
+			<if test="menuName!=null and menuName!=''">
+		    	and menu.F_MENU_NAME = #{menuName}
+		     </if>
+		     <if test="menuButtonName!=null and menuButtonName!=''">
+		    	and t.F_MENUBUTTON_NAME like CONCAT('%', #{menuButtonName}, '%')
+		     </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 验证重名 -->
+	<select id="isExistName" parameterType="Menubutton" resultType="Menubutton">
+		select
+			F_MENUBUTTON_ID as menuButtonId
+		from 
+			t_pub_menubutton
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	F_MENU_ID = #{menuId}
+		     </if>
+			<if test="menuButtonId!=null and menuButtonId!=''">
+		    	and F_MENUBUTTON_ID &lt;&gt; #{menuButtonId}
+		     </if>
+		     <if test="menuButtonName!=null and menuButtonName!=''">
+		    	and F_MENUBUTTON_NAME = #{menuButtonName}
+		     </if>
+		</where>
+	</select>
+	
+	<!-- 验证重tag -->
+	<select id="isExistTag" parameterType="Menubutton" resultType="Menubutton">
+		select
+			F_MENUBUTTON_ID as menuButtonId
+		from 
+			t_pub_menubutton
+		
+		<where>
+			<if test="menuId!=null and menuId!=''">
+		    	F_MENU_ID = #{menuId}
+		     </if>
+			<if test="menuButtonId!=null and menuButtonId!=''">
+		    	and F_MENUBUTTON_ID &lt;&gt; #{menuButtonId}
+		     </if>
+		     <if test="menuButtonTag!=null and menuButtonTag!=''">
+		    	and F_MENUBUTTON_TAG = #{menuButtonTag}
+		     </if>
+		</where>
+	</select>
+
+	<!-- 按条件查询所有 -->
+	<select id="queryAllSynButton" parameterType="menubutton" resultType="menubutton">
+		SELECT
+		t.F_MENUBUTTON_ID as menuButtonId ,
+		t.F_MENU_ID as menuId ,
+		t.F_PRIV_ID as privId ,
+		t.F_MENUBUTTON_NAME as menuButtonName ,
+		t.F_MENUBUTTON_DESC as menuButtonDesc ,
+		t.F_MENUBUTTON_TAG as menuButtonTag ,
+		menu.F_MENU_NAME as menuName
+		FROM
+		t_pub_menubutton t
+		join T_PUB_MENU menu on menu.F_MENU_ID = t.F_MENU_ID
+		<where>
+			menu.F_ISSYN = '1'
+		</where>
+	</select>
+	
+	
+	<select id="queryMenubuttonListByUserId" parameterType="String" resultType="menuButton">
+		select
+	    mb.F_MENUBUTTON_NAME as menuButtonName,
+	    mb.F_MENUBUTTON_DESC as menuButtonDesc,
+	    mb.F_MENUBUTTON_TAG as menuButtonTag,
+	    mb.F_MENUBUTTON_ID as menuButtonId,
+	    mb.F_MENU_ID as menuId,
+	    IFNULL(hashChecked.Checked, '0') as hashChecked
+	    from T_PUB_MENUBUTTON mb
+	    left join (select distinct ugmb.f_menubutton_id, '1' as checked
+	    from T_PUB_UGMENUBUTTONLINK ugmb
+	    where ugmb.f_usergroup_id in
+	    (select ug.f_usergroup_id
+	    from T_PUB_USERGROUPLINK ug
+	    where ug.f_user_id = #{userId})) hashChecked
+	    on mb.f_menubutton_id = hashChecked.f_Menubutton_Id
+	    where mb.f_menu_id in (select distinct ugm.f_menu_id
+	    from T_PUB_UGMENULINK ugm
+	    where ugm.f_usergroup_id in
+	    (select ug.f_usergroup_id
+	    from T_PUB_USERGROUPLINK ug
+	    where ug.f_user_id = #{userId}))
+	    AND IFNULL(hashChecked.Checked, '0') = '1'
+	</select>
+	
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.PrintPicDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertPrintPic" parameterType="printPic">
+		INSERT INTO 
+			t_wx_printpic  
+		(
+			F_PICID ,
+			F_WXSERVICEID ,
+			F_OPENID ,
+			F_PICURL 
+		) VALUES (
+			#{picId} ,
+			#{wxServiceId} ,
+			#{openId} ,
+			#{picUrl} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergePrintPic" parameterType="printPic">
+		REPLACE INTO 
+			t_wx_printpic 
+		(
+			F_PICID ,
+			F_WXSERVICEID ,
+			F_OPENID ,
+			F_PICURL 
+		) VALUES (
+			#{picId} ,
+			#{wxServiceId} ,
+			#{openId} ,
+			#{picUrl} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updatePrintPic" parameterType="printPic">
+		UPDATE
+			t_wx_printpic 
+		SET
+			F_WXSERVICEID = #{wxServiceId} ,
+			F_OPENID = #{openId} ,
+			F_PICURL = #{picUrl} 
+		<where>
+			F_PICID = #{picId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletePrintPic" parameterType="printPic">
+		DELETE FROM
+			t_wx_printpic 
+		<where>
+			F_PICID = #{picId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchPrintPic" parameterType="printPic">
+		DELETE FROM 
+			t_wx_printpic 
+		<where>
+			F_PICID in
+			<foreach collection="printPicIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryPrintPic" parameterType="String" resultType="printPic">
+		SELECT
+			t.F_PICID as picId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_OPENID as openId ,
+			t.F_PICURL as picUrl 
+		FROM
+			t_wx_printpic t
+		<where>
+			t.F_PICID = #{picId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryPrintPicList" parameterType="printPic" resultType="printPic">
+		SELECT
+			t.F_PICID as picId ,
+			t.F_WXSERVICEID as wxServiceId ,
+			t.F_OPENID as openId ,
+			t.F_PICURL as picUrl 
+		FROM
+		t_wx_printpic t
+		<where>
+			<if test="picId!=null and picId!=''">
+		    	t.F_PICID = #{picId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

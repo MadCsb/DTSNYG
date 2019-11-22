@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+<style type="text/css">
+	.myimg { 
+		width:100px; 
+		height:100px; 
+	}
+</style>
+
+</head>
+
+<body>
+	<div class="waybill-title">
+	<span>编辑多图文回复</span></div>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="feedback.do?method=updateFeedbackDuotuwen" method="post" id="createFeedback">
+			
+			<input type="hidden" name="msgType" id="msgType" value="${feedback.msgType}"/>
+			<input type="hidden" name="url" id="url" value="${feedback.url}"/>
+			<input type="hidden" name="spId" id="spId" value="${feedback.spId}"/>
+			<input type="hidden" name="feedBackId" id="feedBackId" value="${feedback.feedBackId}"/>
+			
+			<input type="hidden" name="delFlag" id="delFlag" value="${feedback.delFlag}"/>
+			
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed;">
+				<tbody>
+					<tr class="">
+						<td width="15%" class="tdright"><b><span class="f2"><b>*</b></span>消息名称：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="msgName" id="msgName" type="text" value="${feedback.msgName!''}" class="validate[required,maxSize[100]] data-inputtxt" maxlength="50">
+							</span>
+						</td>
+					</tr>
+					
+					<tr class="">
+						<td class="tdright"><b><span class="f2"></span>完全匹配关键词：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="keyWord" id="keyWord" type="text" value="${feedback.keyWord!''}" class="validate[maxSize[100]] data-inputtxt" maxlength="50">
+							</span>
+						</td>
+					</tr>
+					<!-- 
+					<tr class="">
+						<td class="tdright"><b><span class="f2"></span>包含匹配关键词：</b></td>
+						<td>
+							<span class="Validform_checktip">
+								<input name="keyWord2" id="keyWord2" type="text" value="${feedback.keyWord2!''}" class="validate[maxSize[100]] data-inputtxt" maxlength="50">
+								<span style="color:red">多个关键词请用","格开；例如：美丽,漂亮,好看 </span>
+							</span>
+						</td>
+					</tr>
+					 -->
+					<tr class="" >
+		                <td class="tdright"><b>图文列表管理：</b></td>
+		                <td>
+		                	<a href="javascript:void(0);" title="增加一条" class="ico_btn" onClick="toAddMsgNew()">增加一条</a>
+		                </td>
+		            </tr>
+		            
+		            <tr class="none">
+						<td colspan="2" class="addcal2 noshare">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="twList">
+			     				<tr>
+			     					<th width="0%"></th>
+			     					<th width="0%"></th>
+					           		<th width="20%">图片</th>
+					           		<th width="30%">标题</th>
+					           		<th width="20%">封面</th>
+					           		<th width="30%">操作</th>
+					           	</tr>
+			         			
+			         			<#if msgNewsList??>
+			         				<#list msgNewsList as msgNews>
+			         				<tr>
+			         					<td></td>
+				         				<td><input type="hidden" name="newsIds" value="${msgNews.newsId!''}"></td>
+				         				<td align="center">
+				         					<#if msgNews.picUrl?? && msgNews.picUrl != ''>
+				         						<img class='myimg' src='${rc.contextPath}/upload/wxpic/${msgNews.picUrl!''}' />
+				         					</#if>
+				         				</td>
+				         				<td>${msgNews.newsTitle!''}</td>
+				         				<td>
+				         					<#if msgNews.isMain?? && msgNews.isMain == '0'>
+				         					否
+				         					<#else>
+				         					是
+				         					</#if>
+				         				</td> 
+				         				<td>
+				         					<a href="javascript:void(0);" onClick="moveUpCom(this,'twList')" class="ico_btn">上移</a>
+											<a href="javascript:void(0);" onClick="moveDownCom(this,'twList')" class="ico_btn">下移</a>
+											<a href="javascript:void(0);" onClick="upItem(this,'${msgNews.newsId!''}','${rc.contextPath!''}','twList')" class="ico_btn">编辑</a>
+											<a href="javascript:void(0);" onClick="deleteItem('${msgNews.newsId!''}',this,'twList')" class="ico_btn">删除</a>
+										</td>
+									</tr>
+			         				</#list>
+			         				
+			         			</#if>
+			     			</table>
+	                   	</td>
+					</tr>
+
+					<tr class="">
+						<td class="tdright"><b><span class="f2"></span>使用状态：</b></td>
+						<td>
+						    <#if feedback.delFlag = '0'>
+								正常
+						    <#else>
+						    	停用
+						    </#if>
+						</td>
+					</tr>
+	
+				</tbody>
+			</table>
+
+			<div class="footerbtn">
+				<input type="button" class="cbtn2" onClick="javascript:location.href='${Session.BACK_URL!''}'" value="取消">
+				<!--  <input type="button" class="cbtn1" onclick="previewGroupMsg()" value="预览群发消息">-->
+				<input type="button" class="cbtn1" onClick="beforeSubmit()" value="确定">
+			</div>
+		</form>
+	</div>
+	
+	<input type="hidden" name="contextPath" id="contextPath" value="${rc.contextPath!''}"/>
+	
+</body>
+<script type="text/javascript">
+
+$(function() {
+	$("#createFeedback").validationEngine();// 验证
+});
+
+// 保存前
+function beforeSubmit() {
+	if ($("#createFeedback").validationEngine('validate')) {
+
+		var trLength = $("#twList").find("tr").length;
+		if (trLength < 2) {
+			parent.layer.alert("图文至少有1条！");
+			return false;
+		}
+		
+		if (trLength > 9) {
+			parent.layer.alert("图文最多不能超过8条！");
+			return false;
+		}
+		
+		$("#createFeedback").submit();
+	}
+}
+
+// 添加一条
+function toAddMsgNew() {
+	
+	addItemDialog = art.dialog.open('msgNews.do?method=toAdd',{
+		lock: true,
+    	resize: false,
+  	    width: 800,
+        height: 600,
+        close : function(){
+        	
+        	var newsId = art.dialog.data('newsId'); 
+        	if (newsId != null && newsId != "") {
+        		var newsTitle = art.dialog.data('newsTitle'); 
+        		var picUrl = art.dialog.data('picUrl'); 
+        		var isMain = art.dialog.data('isMain'); 
+        		var trHtml = addItem(newsId,newsTitle,picUrl,isMain);
+        		$("#twList").append(trHtml);
+        	}
+		}
+	});
+}
+
+// 添加行
+function addItem(newsId,newsTitle,picUrl,isMain) {
+	var imgHtml = "";
+	var isMainText = "";
+	if (picUrl !=  null && picUrl != "") {
+		imgHtml = "<img class='myimg' src='${rc.contextPath}/upload/wxpic/"+picUrl+"' />";
+	}
+	
+	if (isMain != null && isMain != "") {
+		if (isMain == "0") {
+			isMainText = "否";
+		} else {
+			isMainText = "是";
+		}
+	}
+		
+	var tableName = "twList";
+	var contextPath = $("#contextPath").val();
+	var trHtml = '<tr><td></td>'
+	+ '<td><input type="hidden" name="newsIds" value="' + newsId + '"</td>'
+	+ '<td align="center">' + imgHtml + '</td>'
+	+ '<td>' + newsTitle + '</td>'
+	+ '<td>' + isMainText + '</td>'
+	+ '<td>'
+ 	+ '<a href="javascript:void(0);" onclick="moveUpCom(this,\''+tableName+'\')" class="ico_btn">上移</a>&nbsp;'
+ 	+ '<a href="javascript:void(0);" onclick="moveDownCom(this,\''+tableName+'\')" class="ico_btn">下移</a>&nbsp;' 
+ 	+ '<a href="javascript:void(0);" onclick="upItem(this,\''+newsId+'\',\''+contextPath+'\',\''+tableName+'\')" class="ico_btn">编辑</a>&nbsp;' 
+ 	+ '<a href="javascript:void(0);" onclick="deleteItem(\''+newsId+'\',this,\''+tableName+'\')" class="ico_btn">删除</a>';
+	+ "</td></tr>";
+	
+	return trHtml;
+}
+
+// 编辑列表
+function upItem(obj, newsId, contextPath, tableName) {
+	
+	addItemDialog = art.dialog.open('msgNews.do?method=toAdd&newsId='+newsId,{
+		lock: true,
+    	resize: false,
+  	    width: 800,
+        height: 600,
+        close : function(){
+        	var newsId = art.dialog.data('newsId'); 
+        	if (newsId != null && newsId != "") {
+        		var newsTitle = art.dialog.data('newsTitle'); 
+        		var picUrl = art.dialog.data('picUrl'); 
+        		var isMain = art.dialog.data('isMain'); 
+        		
+        		var tr = obj.parentNode.parentNode;
+        		tr.innerHTML = addItem(newsId, newsTitle, picUrl, isMain);
+        	}
+		}
+	});
+}
+
+// 删除
+function deleteItem(newsId,obj,tableName)
+{
+	parent.layer.confirm("确定要删除这条记录吗？", function() {
+		var tr = obj.parentNode.parentNode;
+		tr.parentNode.removeChild(tr);
+		$.post('msgNews.do?method=delete',{'newsId':newsId},function(data){
+			parent.layer.closeAll();
+			reSetIndexCom(tableName);
+		});
+	}, function() {
+	});
+}
+
+</script>
+</html>

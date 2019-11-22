@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.travel.dao.UserDao">
+	<!-- 按条件查询所有 -->
+	<select id="queryUserList" parameterType="User"
+			resultType="User">
+		SELECT
+		u.F_USER_ID as userId ,
+		u.F_USER_LOGINNAME as userLoginName ,
+		u.F_USER_NAME as userName ,
+		u.F_USER_DESC as userDesc ,
+		u.F_USER_PWD as userPwd ,
+		u.F_USER_TEL as userTel ,
+		u.F_USER_MOBILE as userMobile ,
+		u.F_USER_EMAIL as userEmail ,
+		u.F_USER_ADDR as userAddr ,
+		u.F_USER_REG_DATE as userRegDate ,
+		u.F_USER_STATE as userState ,
+		u.F_USER_IP as userIp ,
+		u.F_USER_LOCKED as userLocked ,
+		u.F_USER_LOCKTIME as userLockTime ,
+		u.F_USER_ROLETYPE as userRoleType ,
+		u.F_ACCID as accId ,
+		u.F_UNIT_ID as unitId ,
+		u.F_STOREID as storeId ,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type,
+		tg.F_UNIT_NAME as unitName,
+		u.F_COUNTRY as country,
+		u.F_CITY as city,
+		u.F_PROVINCE as province,
+		u.F_SEX as sex,
+		u.F_UPDATETIME as updateTime
+		FROM
+		t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+		<where>
+		
+			<if test="userName!=null and userName!='' ">
+				u.F_USER_NAME like concat('%',#{userName},'%') 
+			</if>
+			<if test="userLoginName!=null and userLoginName!='' ">
+				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%')
+			</if>
+			<if test="unitId!=null and unitId!='' ">
+				and u.F_UNIT_ID = #{unitId}
+			</if>
+			<if test="userId!=null and userId!='' ">
+				and u.F_USER_ID = #{userId}
+			</if>
+			<if test='delFlag != null and delFlag =="0" '>
+				and u.f_user_state != '-1'
+			</if>
+			
+			<if test="userRoleType!=null and userRoleType!='' ">
+				and u.F_USER_ROLETYPE = #{userRoleType}
+			</if>
+			
+			<if test="accId != null and accId != ''">
+				and u.F_ACCID = #{accId}
+			</if>
+		</where>
+		<if test="entityPage!=null">
+			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
+				ORDER BY ${entityPage.sortField}
+			</if>
+		</if>
+		<if test="entityPage!=null">
+			<if test="entityPage!=null and entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+				 ${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+	<!-- 修改信息 -->
+	<update id="updateUser" parameterType="User">
+		UPDATE
+		t_pub_user
+		SET
+		F_USER_NAME = #{userName,jdbcType=VARCHAR} ,
+		F_USER_DESC = #{userDesc,jdbcType=VARCHAR} ,
+		F_USER_TEL = #{userTel,jdbcType=VARCHAR} ,
+		F_USER_MOBILE = #{userMobile,jdbcType=VARCHAR} ,
+		F_USER_EMAIL = #{userEmail,jdbcType=VARCHAR} ,
+		F_USER_ADDR = #{userAddr,jdbcType=VARCHAR} ,
+		F_USER_STATE = #{userState,jdbcType=VARCHAR} ,
+		F_USER_IP = #{userIp,jdbcType=VARCHAR} ,
+		F_USER_LOCKED = #{userLocked,jdbcType=VARCHAR} ,
+		F_USER_LOCKTIME = #{userLockTime,jdbcType=VARCHAR} ,
+		F_USER_ROLETYPE = #{userRoleType,jdbcType=VARCHAR} ,
+		F_ACCID = #{accId,jdbcType=VARCHAR} ,
+		F_UNIT_ID = #{unitId,jdbcType=VARCHAR} ,
+		F_STOREID = #{storeId,jdbcType=VARCHAR} ,
+		F_WXSERVICEID = #{wxServiceId,jdbcType=VARCHAR},
+		F_TYPE = #{type,jdbcType=VARCHAR},
+		F_COUNTRY = #{country,jdbcType=VARCHAR},
+		F_CITY= #{city,jdbcType=VARCHAR} ,
+		F_PROVINCE = #{province,jdbcType=VARCHAR},
+		F_SEX = #{sex,jdbcType=VARCHAR} ,
+		F_UPDATETIME = #{updateTime,jdbcType=VARCHAR} ,
+		F_HEADPIC = #{headPic,jdbcType=VARCHAR} 
+		WHERE
+		F_USER_ID = #{userId}
+	</update>
+
+	<select id="getUserCount" resultType="int" parameterType="User">
+		SELECT
+		COUNT(*)
+		from t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+		<where>
+			<if test="delFlag != null and delFlag =='0' ">
+				and u.f_user_state != '-1'
+			</if>
+			<if test="userState != null and userState != '' ">
+				and u.f_user_state = #{userState}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and u.F_USER_NAME like concat('%',#{userName},'%') 
+			</if>
+			<if test="userLoginName != null and userLoginName != '' ">
+				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%') 
+			</if>
+			<if test="unitId != null and unitId != '' ">
+				and u.F_UNIT_ID = #{unitId}
+			</if>
+			<if test="userRoleType != null and userRoleType != '' ">
+				and u.F_USER_ROLETYPE = #{userRoleType}
+			</if>
+			<if test="accId != null and accId != '' ">
+				and u.F_ACCID = #{accId}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryUserByPage" parameterType="User" resultType="User">
+		SELECT
+		f_user_id as userId,
+		f_user_name as userName,
+		f_user_loginname as userLoginName,
+		f_user_mobile as userMobile,
+		f_user_tel as userTel,
+		f_user_email as userEmail,
+		f_user_reg_date as userRegDate,
+		f_user_state as userState,
+		f_unit_id as unitId,
+		f_storeid as storeId,
+		F_USER_LOCKED as userLocked ,
+		F_UNIT_NAME as unitName ,
+		F_WXSERVICEID as wxServiceId ,
+		F_TYPE as type
+		FROM
+		(SELECT row_.*, rownum rownum_ FROM (
+		select
+		u.f_user_id,
+		u.f_user_name,
+		u.f_user_loginname,
+		u.f_user_tel,
+		u.f_user_mobile,
+		u.f_user_email,
+		u.f_user_reg_date,
+		u.f_user_state,
+		u.f_unit_id,
+		u.f_storeid,
+		u.F_USER_LOCKED,
+		tg.F_UNIT_NAME,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type
+		from t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+
+		<where>
+			<if test=" delFlag != null and delFlag == '0' ">
+				and u.f_user_state != '-1'
+			</if>
+			<if test="userState !=null and userState != '' ">
+				and u.f_user_state=#userState#
+			</if>
+			<if test="userName != null and userName != '' ">
+				and u.F_USER_NAME like concat('%',#{userName},'%') 
+			</if>
+			<if test="userLoginName != null and userLoginName != '' ">
+				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%') 
+			</if>
+			<if test="unitId != null and unitId != '' ">
+				and u.F_UNIT_ID = #{unitId}
+			</if>
+			<if test="userRoleType != null and userRoleType != '' ">
+				and u.F_USER_ROLETYPE = #{userRoleType}
+			</if>
+			<if test="accId != null and accId != '' ">
+				and u.F_ACCID = #{accId}
+			</if>
+		</where>
+		<if test="entityPage!=null">
+			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
+				ORDER BY ${entityPage.sortField}
+			</if>
+		</if>
+		<if test="entityPage!=null">
+			<if test="entityPage!=null and entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+				 ${entityPage.sortOrder}
+			</if>
+		</if>
+		)row_ WHERE rownum &lt;= ${entityPage.rowsPerPage})row_ WHERE rownum_ &gt;
+		${entityPage.pageBegin}
+	</select>
+
+	<!-- 查询单个详情 -->
+	<select id="queryUser" parameterType="User"
+			resultType="User">
+		SELECT
+		u.F_USER_ID as userId ,
+		u.F_USER_LOGINNAME as userLoginName ,
+		u.F_USER_NAME as userName ,
+		u.F_USER_DESC as userDesc ,
+		u.F_USER_PWD as userPwd ,
+		u.F_USER_TEL as userTel ,
+		u.F_USER_MOBILE as userMobile ,
+		u.F_USER_EMAIL as userEmail ,
+		u.F_USER_ADDR as userAddr ,
+		u.F_USER_REG_DATE as userRegDate ,
+		u.F_USER_STATE as userState ,
+		u.F_USER_IP as userIp ,
+		u.F_USER_LOCKED as userLocked ,
+		u.F_USER_LOCKTIME as userLockTime ,
+		u.F_USER_ROLETYPE as userRoleType ,
+		u.F_ACCID as accId ,
+		u.F_UNIT_ID as unitId ,
+		u.F_STOREID as storeId ,
+		tg.F_UNIT_NAME as unitName,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type,
+		u.F_COUNTRY as country,
+		u.F_CITY as city,
+		u.F_PROVINCE as province,
+		u.F_SEX as sex,
+		u.F_UPDATETIME as updateTime
+		FROM
+		t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+		WHERE
+		F_USER_ID = #{userId}
+	</select>
+
+	<!-- 新增信息 -->
+	<insert id="insertUser" parameterType="User">
+		INSERT INTO t_pub_user (
+		F_USER_ID,
+		F_USER_LOGINNAME,
+		F_USER_NAME,
+		F_USER_DESC,
+		F_USER_PWD,
+		F_USER_TEL,
+		F_USER_MOBILE,
+		F_USER_EMAIL,
+		F_USER_ADDR,
+		F_USER_REG_DATE,
+		F_USER_STATE,
+		F_USER_IP,
+		F_USER_LOCKED,
+		F_USER_LOCKTIME,
+		F_USER_ROLETYPE,
+		F_ACCID,
+		F_UNIT_ID,
+		F_STOREID,
+		F_WXSERVICEID ,
+		F_TYPE ,
+		F_COUNTRY ,
+		F_CITY ,
+		F_PROVINCE ,
+		F_SEX  ,
+		F_UPDATETIME   ,
+		F_HEADPIC 
+		) VALUES (
+		#{userId,jdbcType=VARCHAR} ,
+		#{userLoginName,jdbcType=VARCHAR} ,
+		#{userName,jdbcType=VARCHAR} ,
+		#{userDesc,jdbcType=VARCHAR} ,
+		#{userPwd,jdbcType=VARCHAR} ,
+		#{userTel,jdbcType=VARCHAR} ,
+		#{userMobile,jdbcType=VARCHAR} ,
+		#{userEmail,jdbcType=VARCHAR} ,
+		#{userAddr,jdbcType=VARCHAR} ,
+		#{userRegDate,jdbcType=VARCHAR} ,
+		#{userState,jdbcType=VARCHAR} ,
+		#{userIp,jdbcType=VARCHAR} ,
+		#{userLocked,jdbcType=VARCHAR} ,
+		#{userLockTime,jdbcType=VARCHAR} ,
+		#{userRoleType,jdbcType=VARCHAR} ,
+		#{accId,jdbcType=VARCHAR} ,
+		#{unitId,jdbcType=VARCHAR} ,
+		#{storeId,jdbcType=VARCHAR} ,
+		#{wxServiceId,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{country,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{province,jdbcType=VARCHAR},
+		#{sex,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=VARCHAR},
+		#{headPic,jdbcType=VARCHAR} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateUserPWD" parameterType="User">
+		UPDATE
+		t_pub_user
+		SET
+		F_USER_PWD = #{userPwd}
+		WHERE
+		F_USER_ID = #{userId}
+	</update>
+	
+	<!-- 登录时查询  -->
+	<select id="queryUserListByLogin" parameterType="User" resultType="User">
+		SELECT
+		u.F_USER_ID as userId ,
+		u.F_USER_LOGINNAME as userLoginName ,
+		u.F_USER_NAME as userName ,
+		u.F_USER_DESC as userDesc ,
+		u.F_USER_PWD as userPwd ,
+		u.F_USER_TEL as userTel ,
+		u.F_USER_MOBILE as userMobile ,
+		u.F_USER_EMAIL as userEmail ,
+		u.F_USER_ADDR as userAddr ,
+		u.F_USER_REG_DATE as userRegDate ,
+		u.F_USER_STATE as userState ,
+		u.F_USER_IP as userIp ,
+		u.F_USER_LOCKED as userLocked ,
+		u.F_USER_LOCKTIME as userLockTime ,
+		u.F_USER_ROLETYPE as userRoleType ,
+		u.F_ACCID as accId ,
+		u.F_UNIT_ID as unitId ,
+		u.F_STOREID as storeId ,
+		tg.F_UNIT_NAME as unitName,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type ,
+		u.F_COUNTRY as country,
+		u.F_CITY as city,
+		u.F_PROVINCE as province,
+		u.F_SEX as sex,
+		u.F_UPDATETIME as updateTime
+		FROM
+		t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+		<where>
+			u.F_USER_STATE = '1'
+			<if test="userLoginName!=null and userLoginName!='' ">
+			AND u.F_USER_LOGINNAME = #{userLoginName} AND LENGTH(u.F_USER_LOGINNAME) = LENGTH(#{userLoginName})
+			</if>
+		</where>
+	</select>
+	
+
+
+	<!-- 根据用户登录名查询单个User信息 -->
+	<select id="selectUserByUserLoginName" parameterType="User"
+			resultType="User">
+		SELECT
+		u.F_USER_ID as userId ,
+		u.F_USER_LOGINNAME as userLoginName ,
+		u.F_USER_NAME as userName ,
+		u.F_USER_DESC as userDesc ,
+		u.F_USER_PWD as userPwd ,
+		u.F_USER_TEL as userTel ,
+		u.F_USER_MOBILE as userMobile ,
+		u.F_USER_EMAIL as userEmail ,
+		u.F_USER_ADDR as userAddr ,
+		u.F_USER_REG_DATE as userRegDate ,
+		u.F_USER_STATE as userState ,
+		u.F_USER_IP as userIp ,
+		u.F_USER_LOCKED as userLocked ,
+		u.F_USER_LOCKTIME as userLockTime ,
+		u.F_USER_ROLETYPE as userRoleType ,
+		u.F_ACCID as accId ,
+		u.F_UNIT_ID as unitId ,
+		u.F_STOREID as storeId ,
+		tg.F_UNIT_NAME as unitName,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type ,
+		u.F_COUNTRY as country,
+		u.F_CITY as city,
+		u.F_PROVINCE as province,
+		u.F_SEX as sex,
+		u.F_UPDATETIME as updateTime,
+		u.F_HEADPIC as headPic
+		FROM
+		t_pub_user u
+		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+		<where>
+			1=1
+			<if test="userLoginName!=null and userLoginName!=''">
+				and u.F_USER_LOGINNAME = #{userLoginName}
+			</if>
+			<if test="userState!=null and userState!=''">
+				and u.F_USER_STATE = #{userState}
+			</if>
+			<if test="wxServiceId !=null and wxServiceId !=''">
+				and u.F_WXSERVICEID = #{wxServiceId}
+			</if>
+		</where>
+	</select>
+<!-- 按条件查询所有 -->
+	<select id="queryUserListByType" parameterType="User"
+			resultType="User">
+	SELECT
+		u.F_USER_ID as userId ,
+		u.F_USER_LOGINNAME as userLoginName ,
+		u.F_USER_NAME as userName ,
+		u.F_USER_DESC as userDesc ,
+		u.F_USER_PWD as userPwd ,
+		u.F_USER_TEL as userTel ,
+		u.F_USER_MOBILE as userMobile ,
+		u.F_USER_EMAIL as userEmail ,
+		u.F_USER_ADDR as userAddr ,
+		u.F_USER_REG_DATE as userRegDate ,
+		u.F_USER_STATE as userState ,
+		u.F_USER_IP as userIp ,
+		u.F_USER_LOCKED as userLocked ,
+		u.F_USER_LOCKTIME as userLockTime ,
+		u.F_USER_ROLETYPE as userRoleType ,
+		u.F_ACCID as accId ,
+		u.F_UNIT_ID as unitId ,
+		u.F_STOREID as storeId ,
+		u.F_WXSERVICEID as wxServiceId ,
+		u.F_TYPE as type,
+		u.F_COUNTRY as country,
+		u.F_CITY as city,
+		u.F_PROVINCE as province,
+		u.F_SEX as sex,
+		u.F_UPDATETIME as updateTime,
+		u.F_HEADPIC as headPic
+		FROM
+		t_pub_user u
+		<where>
+			<if test="userName!=null and userName!='' ">
+				u.F_USER_NAME like concat('%',#{userName},'%') 
+			</if>
+			<if test="userLoginName!=null and userLoginName!='' ">
+				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%')
+			</if>
+			<if test="city != null and city != ''">
+				and (u.F_CITY like concat('%',#{city},'%') or u.F_PROVINCE like concat('%',#{city},'%') or u.F_COUNTRY like concat('%',#{city},'%'))
+			</if>
+			<if test="type != null and type != ''">
+				and u.F_TYPE = #{type}
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.F_SEX = #{sex}
+			</if>
+			<if test="updateTimeStart != null and updateTimeStart != ''">
+				and u.F_UPDATETIME &gt;= concat(#{updateTimeStart},' 00:00:00')
+			</if>
+			<if test="updateTimeEnd != null and updateTimeEnd != ''">
+				and u.F_UPDATETIME &lt;= concat(#{updateTimeEnd},' 23:59:59')
+			</if>
+		</where>
+		<if test="entityPage!=null">
+			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
+				ORDER BY ${entityPage.sortField}
+			</if>
+		</if>
+		<if test="entityPage!=null">
+			<if test="entityPage!=null and entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+				 ${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	
+	<select id="getUserCountFromAdd" resultType="int" parameterType="User">
+		SELECT
+		COUNT(*)
+		from t_pub_user u
+		<where>
+			<if test='delFlag != null and delFlag =="0" '>
+				and u.f_user_state != '-1'
+			</if>
+			<if test="userState != null and userState != '' ">
+				and u.f_user_state = #{userState}
+			</if>
+			<if test="userLoginName != null and userLoginName != '' ">
+				and u.F_USER_LOGINNAME = #{userLoginName} 
+			</if>
+		</where>
+	</select>
+</mapper>

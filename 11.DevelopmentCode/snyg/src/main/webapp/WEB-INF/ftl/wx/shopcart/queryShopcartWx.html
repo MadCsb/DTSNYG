@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/WX_INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/common.js"></script> 
+</head>
+
+
+<body>
+
+<!--header 开始-->
+<div class="snyg_headdiv">
+	<span class="ico_ret"><a href="index.html"><img src="images/return.png"></a></span><h2>购物车</h2><span class="ico_home"><a href="个人中心.html"><img src="images/gruser.png"></a></span>
+</div> 
+<!--header 结束-->
+<input type="hidden" id="spId" name="spId" value="${spId!''}"/>
+<input type="hidden" id="userId" name="userId" value="${user.userId!''}"/>
+<ul class="one_sp_list" id="shopCartUl">
+
+</ul>
+ 
+
+<div class="snyg_content" style="display:none">
+    <div class="snyg_details_title">
+       您可能还喜欢<div></div>       
+    </div>
+ 
+ 	<ul class="snyg_data_details">
+
+	</ul>
+    <div class="clear"></div>
+    <div align="center"><span class="addMore">加载更多</span></div>
+    </div>
+</div>
+
+<div class="snyg_footer"></div>
+<div class="wzpcss" id="divHasData">
+  <div align="center"><img src="${rc.contextPath}/wx/images/ts.png" width="60%" style="margin:20% 0 40px 0;"> </div>
+  <p style=" font-size:16px; color:#aaa;text-align:center">购物车是空的，快去选点儿东西吧~~</p> 
+</div>
+<!--预订menu开始--> 
+  <nav class="snyg_nav" style="display:none;">
+  <span class="wid4"></span>
+  <!-- 
+ 		<span class="wid4">
+             <label>
+            <input name="" type="checkbox" id="adviceRadio" value="1" hidden/>
+            <label for="adviceRadio" class="check"></label>
+     </label>全选 -->
+        </span>	
+        <span class="wid5 text_c"><p class="f2 lh24">合计：<b id="priceAll">&yen;0.00</b></p><p class="tswz">不含运费</p></span>
+        <a href="javascript:void(0)" onclick="toOrder()" title=""><span class="green_btn wid3" >结算</span></a>
+</nav>
+<!--预订menu结束--> 
+
+<form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+  <input type="hidden" name="userId" value="${user.userId!''}">
+</form>
+<script>
+$(function(){
+	getShopCartList();
+	changeBottomClass('3');
+	
+})
+
+
+function getShopCartList(){
+	$.post("wx?method=getShopCartListWx",{
+		userId:$("#userId").val()
+	},function(data){
+		if(data!=null && data.length>0){
+			$("#shopCartUl").html(getShopCartStr(data));	
+			$(".snyg_nav").show();
+			$("#divHasData").hide();
+		}else{
+			$(".snyg_nav").hide();
+			$("#divHasData").show();
+		}		
+	},'json')
+}
+function getShopCartStr(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+		str+='<li class="lics">';
+		str+='<div class="iconleft">';
+		str+='<div class="leftdivf">';
+		str+='<label>';
+		str+='<input name="checkCart" onclick="checkCartList()" type="checkbox" id="adviceRadio'+data[i].cartId+'" value="'+data[i].cartId+'" hidden/>';
+		str+='<label for="adviceRadio'+data[i].cartId+'" class="check"></label>';
+		str+='</label>';
+		str+='</div>';
+            
+		str+='<div class="icon">';
+		str+='<a href="javascript:void(0)" title="商品详情">';
+		str+='<img title="" src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="" /></a>';                   
+		str+='</div>';         
+		str+='</div>';
+		str+='<div class="info">';
+		str+='<a href="javascript:void(0)" title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
+		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
+		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
+		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
+		str+='<p class="txt"><span class="f2">&yen;'+data[i].price+'</span></p>';
+		str+='<div class="sl">';
+		str+='<button class="btnhui"  onclick="changeNum(\'1\',\''+data[i].cartId+'\')"></button>';
+		str+='<input name="" readonly id="num'+data[i].cartId+'" type="text" class="input_sl" value="'+data[i].num+'">';
+		str+='<button class="btnadd"  onclick="changeNum(\'2\',\''+data[i].cartId+'\')"></button></div>';
+		str+='</div>';
+		str+='</li>';
+	}
+	return str;
+}
+
+function changeNum(type,cartId){
+	var num = parseInt($("#num"+cartId).val());
+	if(type=="1"){
+		if(num >1){
+			num --;
+		}else{
+			num = 1;
+		}
+	}else{
+		num++;
+	}
+	changeCartNum(cartId,num)
+	$("#num"+cartId).val(num);
+	checkCartList();
+}
+
+function checkCartList(){
+	var priceAll = 0.00;
+	$("input[name='checkCart']:checked").each(function(i){
+		var cartId = $(this).val();
+		var num = parseFloat($("#num"+cartId).val());
+		var price = parseFloat($("#price"+cartId).val());
+		var p = num * price;
+		priceAll+=p;
+	});
+	$("#priceAll").html("&yen;"+priceAll.toFixed(2));
+}
+
+function changeCartNum(cartId,num){
+	$.post("wx?method=changeShopCartNum",{
+		cartId:cartId,
+		num:num
+	},function(data){
+		
+	})
+}
+
+function toOrder() {
+	if($("input[name='checkCart']:checked").length>0){
+		var prepareOrderJson = new Object();
+		prepareOrderJson.consigneeId = ""; //收货地址，可为空
+		var orderListList = new Array();
+		$("input[name='checkCart']:checked").each(function(i){
+			var cartId = $(this).val();
+			var num = parseFloat($("#num"+cartId).val());
+			var priceId = $("#priceId"+cartId).val();
+		
+			var orderList1 = new Object();
+			orderList1.priceId =priceId; //销售id
+		    orderList1.num = num; //数量
+		    orderList1.cartId = cartId; //购物车id
+		    orderListList.push(orderList1);
+		});
+	  prepareOrderJson.orderListList = orderListList;
+	  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+	  $("#toCreateOrder").submit();	
+	}
+}
+</script>
+</body>
+</html>

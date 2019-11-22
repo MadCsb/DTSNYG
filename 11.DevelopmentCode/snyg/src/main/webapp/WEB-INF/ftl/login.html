@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+	<title>三农壹购管理平台</title>
+<link type="text/css" rel="stylesheet" href="${rc.contextPath}/css/ladda.min.css" />
+<link type="text/css" rel="stylesheet" href="${rc.contextPath}/css/login.css" />
+<link type="text/css" rel="stylesheet" href="${rc.contextPath}/css/validationEngine.jquery.css" />
+<script language="javascript" src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/jquery.validationEngine.js"></script> 
+</head>
+<body>
+<div class="l-main">
+	<form action="login" method="post" id="syslogin">
+		<div class="login">
+			<h2>用户登陆</h2>
+			<h4>三农壹购管理平台</h4>
+			<ul class="ulinfo">
+				<li>
+					<input id="userName" name="userLoginName" type="text" class="validate[required] u-input" value="" placeholder="请输入您的用户名" />
+				</li>
+				<li>
+					<input id="userPWD" name="userPwd" type="password" class="validate[required] p-input" value="" placeholder="请输入您的密码" />
+					<div id="capital" style="display:none;color:#fe8b69;position: absolute;top:22px;right: 55px; font-size:12px;">大写锁定已开启</div>
+				</li>
+				<li>
+					<input type="text" maxlength="4" id="securityCode" name="securityCode" class="validate[required] yzm-input" placeholder="请输入验证码" />
+					<span class="yzm"><img id="picsss" src="${rc.contextPath}/verify_code.jsp" title="更换验证码" onClick="replaceCode()" /></span>
+				</li>
+				<li>
+					<!---错误提示信息，默认不显示---->
+				<#if errorMsg??&&errorMsg!=''>
+					<p class="wrong-tip">${errorMsg!''}</p>
+				<#else>
+					<p class="wrong-tip">用户名和密码区分大小写，请确认大小写功能是否打开</p>
+				</#if>
+				</li>
+				<li>
+					<section class="button-demo">
+					<button class="ladda-button" type="submit" data-color="green" data-style="expand-left">登录</button></section>
+				</li>
+			</ul>
+			<h4>版本号：V1.0.0.0</h4>
+		</div>
+	</form>
+</div>
+<div class="r-main">
+	<div class="login-info">
+		<h5>Hi, 欢迎回来,今天也要继续加油啊</h5>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+$( function() {
+	$("#syslogin").validationEngine({
+		validationEventTrigger : "blur"
+	});
+});
+
+var checkLength = function(dom, maxLength){
+    var l = 0;
+    for(var i=0; i<dom.value.length; i++) {
+        if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+            l+=2;
+        } else {
+            l++;
+        }
+        if (l > maxLength) {
+            dom.value = dom.value.substr(0,i);
+            break;
+        }
+    }
+};
+
+//点击更换验证码
+function replaceCode()
+{
+	d = new Date().getTime();
+	document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
+};
+
+//登陆
+function initLogin()
+{
+	var validateCode = document.getElementById("validateCode").value;
+	if (validateCode=="验证码错误")
+	{
+		document.getElementById("securityCode").focus();
+	}
+	else
+	{
+		document.getElementById("userName").focus();
+		document.getElementById("userName").select();
+	}
+};
+
+
+/* 检测输入框的大小写是否开启 */  
+window.onload=function(){  
+  function isIE(){   
+    if(!!window.ActiveXObject || "ActiveXObject" in window){   
+      return true;   
+    }     
+    else{   
+     return false;   
+    }   
+  }   
+  (function(){   
+    var inputPWD=document.getElementById('userPWD');   
+    var capital=false;   
+    var capitalTip={   
+      elem:document.getElementById('capital'),   
+      toggle:function(s){   
+        var sy=this.elem.style;   
+        var d=sy.display;   
+        if(s){   
+          sy.display = s;   
+        }  
+        else{   
+          sy.display=d=='none'?'':'none';   
+        }   
+      }   
+    }   
+    var detectCapsLock=function(event){   
+      if(capital){return};   
+      var e = event||window.event;   
+      var keyCode = e.keyCode||e.which;  
+      var isShift = e.shiftKey ||(keyCode == 16 ) || false ;  
+      if(((keyCode>=65&&keyCode<=90 )&&!isShift)||((keyCode>=97&&keyCode<=122 )&&isShift)){  
+        capitalTip.toggle('block');  
+        capital=true  
+      }   
+      else{  
+        capitalTip.toggle('none');  
+      }   
+    }   
+    if(!isIE()){  
+      inputPWD.onkeypress=detectCapsLock;   
+      inputPWD.onkeyup=function(event){   
+        var e = event||window.event;   
+        if(e.keyCode == 20 && capital){   
+          capitalTip.toggle();   
+          return false;   
+        }   
+      }   
+   }  
+  })()  
+}  
+
+window.onload=function(){
+	setTimeout("replaceCode()", 100);
+}
+
+</script>
+
+
+</html>

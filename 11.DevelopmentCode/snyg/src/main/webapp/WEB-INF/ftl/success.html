@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
+<script>
+$(function(){	
+	history.replaceState("pay_forword", null, "forword.html");
+})
+</script>
+
+	<script type="text/javascript">
+			$(function(){
+			
+				$(window.top.document).scrollTop(0);			
+			})
+			
+			function subform(){
+				
+				document.getElementById("BackForm").submit();
+			}
+			
+			
+	</script>
+<style type="text/css">
+body {
+	margin: 0px;
+}
+
+.success {
+	background-image: url(/images/success.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 400px
+}
+
+body, td, th {
+	font-size: 12px;
+}
+
+.look {
+	margin: 100px;
+	text-align: center;
+}
+
+a {
+	color: #666;
+}
+.cbtn1:hover {
+    background: rgba(67,203,131,0.8);
+}
+.cbtn1 {
+    cursor: pointer;
+    border: 0px;
+    border-radius: 4px;
+    width: 120px;
+    height: 40px;
+    background: rgba(67,203,131,1);
+    color: #fff;
+    margin: 0 10px 0 0;
+}
+</style>
+</head>
+
+<body>
+	<#if otherUrl??>
+		<form id="BackForm" action="${otherUrl!""}" method="POST">
+		<#else>
+		<form id="BackForm" action="${Session.BACK_URL!""}" method="POST">
+	</#if>
+	
+
+		<div class="success"
+			style="background-image: url(${rc.contextPath}/images/success.jpg);">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="265" align="center" valign="bottom"><a
+						href="javascript:subform();">返回</a></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</body>
+</html>

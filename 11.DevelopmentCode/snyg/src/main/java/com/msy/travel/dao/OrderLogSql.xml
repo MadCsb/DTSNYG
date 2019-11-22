@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.OrderLogDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertOrderLog" parameterType="orderLog">
+		INSERT INTO 
+			t_sm_orderlog  
+		(
+			F_ORDERLOGID ,
+			F_LINKID ,
+			F_OPTIME ,
+			F_OPER ,
+			F_OPCONTENT ,
+			F_TYPE ,
+			F_RESULT 
+		) VALUES (
+			#{orderLogId} ,
+			#{linkId} ,
+			#{opTime} ,
+			#{oper} ,
+			#{opContent} ,
+			#{type} ,
+			#{result} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeOrderLog" parameterType="orderLog">
+		REPLACE INTO 
+			t_sm_orderlog 
+		(
+			F_ORDERLOGID ,
+			F_LINKID ,
+			F_OPTIME ,
+			F_OPER ,
+			F_OPCONTENT ,
+			F_TYPE ,
+			F_RESULT 
+		) VALUES (
+			#{orderLogId} ,
+			#{linkId} ,
+			#{opTime} ,
+			#{oper} ,
+			#{opContent} ,
+			#{type} ,
+			#{result} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateOrderLog" parameterType="orderLog">
+		UPDATE
+			t_sm_orderlog 
+		SET
+			F_LINKID = #{linkId} ,
+			F_OPTIME = #{opTime} ,
+			F_OPER = #{oper} ,
+			F_OPCONTENT = #{opContent} ,
+			F_TYPE = #{type} ,
+			F_RESULT = #{result} 
+		<where>
+			F_ORDERLOGID = #{orderLogId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteOrderLog" parameterType="orderLog">
+		DELETE FROM
+			t_sm_orderlog 
+		<where>
+			F_ORDERLOGID = #{orderLogId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchOrderLog" parameterType="orderLog">
+		DELETE FROM 
+			t_sm_orderlog 
+		<where>
+			F_ORDERLOGID in
+			<foreach collection="orderLogIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryOrderLog" parameterType="String" resultType="orderLog">
+		SELECT
+			t.F_ORDERLOGID as orderLogId ,
+			t.F_LINKID as linkId ,
+			t.F_OPTIME as opTime ,
+			t.F_OPER as oper ,
+			t.F_OPCONTENT as opContent ,
+			t.F_TYPE as type ,
+			t.F_RESULT as result 
+		FROM
+			t_sm_orderlog t
+		<where>
+			t.F_ORDERLOGID = #{orderLogId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryOrderLogList" parameterType="orderLog" resultType="orderLog">
+		SELECT
+			t.F_ORDERLOGID as orderLogId ,
+			t.F_LINKID as linkId ,
+			t.F_OPTIME as opTime ,
+			t.F_OPER as oper ,
+			t.F_OPCONTENT as opContent ,
+			t.F_TYPE as type ,
+			t.F_RESULT as result 
+		FROM
+		t_sm_orderlog t
+		<where>
+
+			<if test="linkId!=null and linkId!=''">
+		   and t.F_LINKID = #{linkId}
+			</if>
+			<if test="oper!=null and oper!=''">
+				and t.F_OPER = #{oper}
+			</if>
+			<if test="type!=null and type!=''">
+				and t.F_TYPE = #{type}
+			</if>
+			<if test="result!=null and result!=''">
+				and t.F_RESULT = #{result}
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

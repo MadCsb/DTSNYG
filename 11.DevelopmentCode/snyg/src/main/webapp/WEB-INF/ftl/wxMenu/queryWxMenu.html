@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("wxMenuId");
+		document.getElementById("checkedwxMenuIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+
+	<a href="wxMenu?method=toAdd">添加用户</a>
+	<form id="queryFrm" action="wxMenu?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<table border="1" style="width: 100%">
+			<tr>
+				<td></td> 
+				<td>menuId</td> 
+				<td>wxServiceId</td> 
+				<td>feedBackId</td> 
+				<td>menuName</td> 
+				<td>menuLevel</td> 
+				<td>pmenuId</td> 
+				<td>menuUrl</td> 
+				<td>menuOrder</td> 
+				<td>menuDesc</td> 
+				<td>fxml</td> 
+				<td>操作</td>
+			</tr>
+
+			<#list wxMenulist as wxMenu>
+			<tr>
+				<td>
+					<input type="checkbox" name="wxMenuId" value="${wxMenu.wxMenuId!''}"></td> 
+				<td>${wxMenu.menuId!''}</td> 
+				<td>${wxMenu.wxServiceId!''}</td> 
+				<td>${wxMenu.feedBackId!''}</td> 
+				<td>${wxMenu.menuName!''}</td> 
+				<td>${wxMenu.menuLevel!''}</td> 
+				<td>${wxMenu.pmenuId!''}</td> 
+				<td>${wxMenu.menuUrl!''}</td> 
+				<td>${wxMenu.menuOrder!''}</td> 
+				<td>${wxMenu.menuDesc!''}</td> 
+				<td>${wxMenu.fxml!''}</td> 
+				<td><a
+					href="wxMenu?method=toUpdate&wxMenuId=${wxMenu.wxMenuId!''}">修改</a>
+					&nbsp;&nbsp; <a
+					href="wxMenu?method=delete&wxMenuId=${wxMenu.wxMenuId!''}">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+
+		<#if wxMenulist?? && (wxMenulist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="wxMenu?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedwxMenuIds"
+			id="checkedwxMenuIds">
+	</form>
+</body>
+</html>

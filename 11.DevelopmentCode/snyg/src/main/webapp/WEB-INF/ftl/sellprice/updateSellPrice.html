@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="sellPrice?method=updateSellPriceForPriceId" method="post" id="createSellprice">
+			<input type="hidden" name="priceId"  value="${sellPrice.priceId!''}"/>
+			<input type="hidden" name="tag" id="tag" value="${tag!''}"/>
+			<input type="hidden" name="priceType" id="priceType" value="${sellPrice.priceType!''}"/>
+			<!--编辑区-->
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr >
+					<td width="20%" class="tdright"><b><font class="f2">*</font>规格名称：</b></td>
+					<td width="30%">${sellPrice.priceName!''}
+					</td>
+					<td width="20%" class="tdright"><b><font class="f2">*</font>
+					<#if sellPrice.priceType=='1'>团购价格：<#elseif sellPrice.priceType=='2'>秒杀价格：</#if>
+					</b></td>
+					<td width="30%">
+						<input style="width:185px;" name="price" value="${sellPrice.price!''}" type="text" class="validate[required,custom[num6point2]] data-inputtxt" 
+					id="price" size="40" onkeyup="value=value.replace(/[^\d].[^\d]/g,'')"/>
+					</td>
+				</tr>
+				<tr>
+					<td width="16%" class="tdright"><b>活动开始时间：</b></td>
+					<td width="38%">
+						<input style="width:185px;" value="${sellPrice.priceStartDate!''}" name="priceStartDate" type="text" class="validate[required,maxSize[23]] data-searchtxt-time"  
+					id="priceStartDate" size="40" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'priceEndDate\')}'})" readonly="readonly" />
+					</td>
+					<td width="16%" class="tdright"><b>活动结束时间：</b></td>
+					<td width="38%">
+						<input style="width:185px;" value="${sellPrice.priceEndDate!''}"  name="priceEndDate" type="text" class="validate[required,maxSize[23]] data-searchtxt-time" 
+					id="priceEndDate" size="40" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'priceStartDate\')}'})" readonly="readonly" />
+					</td>
+				</tr>
+				<tr>
+					<td width="16%" class="tdright"><b>最多购买数量：</b></td>
+					<td width="38%">
+						<input style="width:185px;" value="${sellPrice.maxBuyCount!''}" name="maxBuyCount" type="text" class="validate[custom[integer]] data-inputtxt" 
+					id="maxBuyCount" size="40"  onkeyup="value=value.replace(/[^\d]/g,'')"/>
+					</td>
+					<td width="16%" class="tdright"><b>最少购买数量：</b></td>
+					<td width="38%">
+						<input style="width:185px;" value="${sellPrice.limitBuyCount!''}"  name="limitBuyCount" type="text" class="validate[custom[integer]] data-inputtxt" 
+					id="limitBuyCount" size="40"  onkeyup="value=value.replace(/[^\d]/g,'')"/>
+					</td>
+				</tr>
+				<#if sellPrice.priceType=='1'>
+				<tr>
+					<td width="16%" class="tdright"><b>成团人数：</b></td>
+					<td width="38%" colspan="3">
+						<input style="width:185px;" value="${sellPrice.peopleNum!''}" name="peopleNum" type="text" class="validate[custom[integer]] data-inputtxt" 
+					id="peopleNum" size="40"  onkeyup="value=value.replace(/[^\d]/g,'')"/>
+					</td>
+				</tr>
+				</#if>
+				
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div class="footerbtn">   
+				<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="btnSave" value="保存">
+
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+//var oldPriceIds=art.dialog.data("oldPriceIds");
+$(function(){
+	var tag = $("#tag").val();
+	if(tag=="1"){
+		parent.layer.alert("操作成功！",function() {
+			closeDialog();
+	    });
+	}
+})
+	function beforeSubmit()
+	{
+		$("#btnSave").attr("disabled", "disabled");
+		var regPrice = new RegExp("^[0-9]{1,8}(\.[0-9]{0,2})?$");
+		
+		if($("#price").val()==""||!regPrice.test($("#price").val()))
+		{
+			$("#btnSave").attr("disabled", false);
+			parent.layer.alert("销售价不能为空,并且整数位最多八位数小数点后二位");
+			return;
+		}
+		$("#createSellprice").submit();
+	}
+	
+	function closeDialog(){
+		parent.layer.closeAll();
+	}
+	</script>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("pdcTypeId");
+		document.getElementById("checkedPdcTypeIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<form id="queryFrm" action="pdcType?method=querySubPdcType"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="ppdcTypeId" name="ppdcTypeId" value="${pdcType.ppdcTypeId!''}" />
+		<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td>类别名称：</td><td>
+	          	<input name="typeName" type="text" class="data-searchtxt" id="title" value="${pdcType.typeName!''}">
+	          </td>
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+	      	                
+	    <div class="getMore">展开更多 ▼</div>  
+		</div>
+	<div class="cont-div">
+		<div class="waybill-title">
+		  	<div align="left">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="新增" onClick="javascript:window.location.href='pdcType?method=toAdd&ppdcTypeId=${pdcType.ppdcTypeId!''}'">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="返回" onClick="javascript:location.href='${Session.subTypeBack!""}'">
+		    </div>
+		  </div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th>类别名称</th> 
+				<th>缩略图</th> 
+				<th>操作</th>
+			</tr>
+
+			<#list pdcTypelist as pdcType>
+			<tr  onclick="selectTr(this)">
+				<td>${pdcType.typeName!''}</td> 
+				<td>
+					<#if pdcType.picUrl?? && pdcType.picUrl!=''>
+	                    <img class="myimg" style="width:40px;height:40px;" src="${rc.contextPath}/upload/wxpic/${pdcType.picUrl!''}"  id="idImg1" />
+	                <#else>
+	                    <img class="myimg"  src="${rc.contextPath}/images/no-tu.png" id="idImg1" />
+	                </#if>
+				</td> 
+				<td>
+					<a href="pdcType?method=toUpdate&pdcTypeId=${pdcType.pdcTypeId!''}">修改</a>
+					<a href="javascript:void(0)" onclick="deletePdcType('${pdcType.pdcTypeId!''}')">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+	</div>
+
+		<#if pdcTypelist?? && (pdcTypelist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="pdcType?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedPdcTypeIds"
+			id="checkedPdcTypeIds">
+	</form>
+<script>
+	function deletePdcType(pdcTypeId){
+		$.post("pdcType?method=queryPdcTypeProduct",{
+			pdcTypeId:pdcTypeId
+		},function(data){
+			if(data=="1"){
+				parent.layer.alert("请先删除该类别子类",function(){
+					parent.layer.closeAll();
+				});
+			}else if(data=="2"){
+				parent.layer.alert("该类型下有商品，无法删除",function(){
+					parent.layer.closeAll();
+				});
+			}else{
+				parent.layer.confirm("确定要删除该商品类别吗",function(){
+					window.location.href='pdcType?method=delete&pdcTypeId='+pdcTypeId;
+					parent.layer.closeAll();
+				});
+			}
+		})
+	}
+</script>
+</body>
+</html>

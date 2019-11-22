@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<#include "/INC_HEAD.html"/>
+</head>
+<body>
+
+<div class="waybill-title"><span>编辑角色</span> </div>
+<form action="userGroup.do?method=update" method="post" id="updateUserGroup">
+	<input type="hidden" name="userGroupId" id="userGroupId" value="${userGroup.userGroupId!''}"/>
+	<input type="hidden" name="userGroupState" id="userGroupState" value="${userGroup.userGroupState!''}"/>
+	<input type="hidden" name="userGroupCreateDate" id="userGroupCreateDate" value="${userGroup.userGroupCreateDate!''}"/>
+
+
+	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tbody>
+		<tr class="">
+			<td  width="15%" class="tdright"><b><span class="f2"><b>*</b></span>角色名：</b></td>
+			<td><span class="Validform_checktip">
+					<input name="userGroupName" value="${userGroup.userGroupName!''}" id="userGroupName"  type="text" class="validate[required,maxSize[30] data-searchtxt" style="width:218px;">
+				</span>
+			</td>
+		</tr>
+
+
+		<tr class="">
+			<td valign="top" class="tdright"><b>说明：</b></td>
+			<td>
+				<textarea name="memo" id="memo" cols="40" rows="5" class="validate[maxSize[500]] data-searchtxt" style="width:600px;height:60px; resize:none;">${userGroup.memo!''}</textarea>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<div class="footerbtn">
+		<input type="button" class="cbtn2" onclick="javascript:location.href='${Session.BACK_URL!''}'" value="取消">
+		<input type="button" class="add-new" onclick="beforeSubmit()" value="确定">
+	</div>
+</form>
+<script type="text/javascript">
+	$( function() {
+		$("#createUserGroup").validationEngine();
+	});
+	function beforeSubmit(){
+		if ($("#updateUserGroup").validationEngine('validate')) {
+			//验证重名
+			$.ajax({
+				type : "POST",
+				async : true,
+				dataType : "json",
+				url: "userGroup?method=ajaxList&allUserGroupName="+ encodeURI(encodeURI($("#userGroupName").val())),
+				success: function(data){
+					if(data.length>1)
+					{
+						art.dialog.alert('角色名重复，请重新选择！');
+						return;
+					}else
+					{
+						if(data.length == 1 && data[0].userGroupId != $("#userGroupId").val())
+						{
+							art.dialog.alert('角色名重复，请重新选择！');
+							return;
+						}else {
+						}
+					}
+					$("#updateUserGroup").submit();
+				}
+			});
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+	<script type="text/javascript" src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+</head>
+<body>
+
+<div class="waybill-title"><span>订单信息</span></div>
+<input type="hidden" name="orderId" id="orderId" value="${order.orderId!''}"/>
+<input type="hidden" name="payTag" id="payTag" value="${order.payTag!''}">
+<input type="hidden" name="readOnly" id="readOnly" value="${readOnly!''}">
+
+<div class="tab-nav">
+    <ul class="nav">
+    <li><a href="order?method=toDetail&orderId=${order.orderId!''}&readOnly=${readOnly!''}" class="active">基本信息</a></li>
+    <li><a href="orderLog?method=queryAll&linkId=${order.orderId!''}&type=1" >操作日志</a></li>
+    </ul>
+    <div style="clear:both;"></div>
+</div>
+
+<div id="info1">
+<div class="waybill-title"><span>订单信息</span></div>
+<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tbody>
+  	<col style="width:15%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:35%" />
+    <tr class="">
+      <td  width="10%" class="tdright"><b>订单编号：</b></td>
+      <td colspan="3">${order.orderCode!''}</td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>下单时间：</b></td>
+      <td width="40%">${order.createTime!''}</td>
+      <td width="10%" class="tdright"><b>支付时间：</b></td>
+      <td width="40%">${order.payDate!''}</td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>订单状态：</b></td>
+      <td>
+				<#if order.backNum?? && order.backNum != "0">
+					已退款
+					<#elseif order.backTimes?? && order.backTimes != "0">
+						退款中
+					<#elseif order.payTag?? && order.payTag == "0">
+						未支付
+						<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "0">
+							待确认
+							<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "1">
+								已发货
+								<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "3">
+									确认拒绝
+									<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "2">
+										已收货
+										<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "5">
+											已关闭
+				</#if>
+      </td>
+      <td class="tdright"><b>付款方式：</b></td>
+      <td>
+				<#if order.payTag?? && (order.payTag=='1')>
+					<#if order.payType?? && (order.payType=='0')>
+						微信支付
+					</#if>
+					<#if order.payType?? && (order.payType=='1')>
+						支付宝
+					</#if>
+				</#if>
+			</td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>下单用户：</b></td>
+      <td colspan="3">${order.creator!''}</td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>用户备注：</b></td>
+      <td colspan="3">${order.memo!''}</td>
+    </tr>
+		<tr class="">
+			<td class="tdright"><b>平台备注：</b></td>
+			<td colspan="3">${order.companyRemark!''}</td>
+		</tr>
+  </tbody>
+</table>
+<div class="waybill-title"><span>收货人信息</span></div>
+<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tbody>
+    	<col style="width:15%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:35%" />
+    <tr class="">
+      <td width="10%" class="tdright"><b>收货人姓名：</b></td>
+      <td width="40%">${orderCustomer.custName!''}</td>
+      <td width="10%" class="tdright"><b>收货人联系方式：</b></td>
+      <td width="40%">${orderCustomer.custPhone!''}</td>
+    </tr>
+
+    <tr class="">
+      <td class="tdright"><b>收货地址：</b></td>
+      <td colspan="3" style="white-space:normal;" title="${orderCustomer.recAddress!'-'}">${orderCustomer.recAddress!'-'}</td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>证件类型：</b></td>
+      <td colspan="3"><#if orderCustomer.custCard??>身份证<#else>-</#if></td>
+    </tr>
+    <tr class="">
+      <td class="tdright"><b>证件号码：</b></td>
+      <td colspan="3">${orderCustomer.cardType!'-'}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="waybill-title"><span>商品信息</span></div>
+<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+<col style="width:15%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:35%" />
+  <tbody>
+    <#if orderListList?? && (orderListList?size>0)>
+		<#list orderListList as o>
+					<tr class="">
+				      <td width="10%" class="tdright"><b>商品名称：</b></td>
+				      <td width="40%">
+				      	<a href="javascript:void(0)"   style="white-space:normal;" title="${o.productName!''}">${o.productName!''}</a>
+				      </td>
+				      <td width="10%" class="tdright"><b>规格名称：</b></td>
+				      <td width="40%">
+				      	<a href="javaScript:void(0)" style="white-space:normal;" title="${o.childName!''}">${o.childName!''}</a>
+				      </td>
+				    </tr>
+							<tr class="">
+								<td class="tdright"><b>商品合计：</b></td>
+								<td>${o.price!''}*${o.num!''}</td>
+								<td class="tdright"><b>运费合计：</b></td>
+								<td>${o.transFee!''}</td>
+							</tr>
+							<tr class="">
+								<td class="tdright"><b>支付费用：</b></td>
+								<td colspan="3">${o.payMoney!''}</td>
+							</tr>
+						<#if o.backNum != '0'>
+							<tr class="">
+								<td class="tdright"><b>退订数量：</b></td>
+								<td colspan="3">${o.backNum!''}</td>
+							</tr>
+						</#if>
+    	</#list>
+		</#if>
+  </tbody>
+</table>
+
+<div class="waybill-title"><span>快递信息</span></div>
+	<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+		<col style="width:15%" />
+		<col style="width:35%" />
+		<col style="width:15%" />
+		<col style="width:35%" />
+		<tbody>
+		<#if orderExpressList?? && (orderExpressList?size>0)>
+			<#list orderExpressList as oel>
+				<tr class="">
+					<td class="tdright"><b>快递单号：</b></td>
+					<td><a onclick="showOrderExpress('${order.orderId}')">${oel.epmeOrdCode!''}</a></td>
+					<td class="tdright"><b>快递公司：</b></td>
+					<td>${oel.epmeCompanyValue!''}</td>
+				</tr>
+			</#list>
+		</#if>
+		</tbody>
+	</table>
+</div>
+
+<div class="footerbtn" style="text-align:center;">
+	<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn1" id="button4" value="返回">
+	<#if readOnly?? && readOnly != ''>
+
+	<#else>
+	<input type="button" onClick="addOrderRemark('${order.orderId!''}')" class="cbtn1" value="修改备注">
+	<#if order.backNum?? && order.backNum != "0">
+		<!--已退货-->
+		<#elseif order.payTag?? && order.payTag == "0">
+			<!--未支付-->
+			<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "0">
+				<!--待确认-->
+				<input type="button" onClick="addExpress('${order.orderId!''}')" class="cbtn1" value="发货">
+				<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "1">
+					<!--已发货-->
+					<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "3">
+						<!--确认拒绝-->
+						<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "2">
+							<input type="button" onClick="artConfirmUrl('确定要关闭该订单吗？','order?method=closeOrder&orderId=${order.orderId!''}');" class="cbtn1" value="关闭订单">
+							<!--已收货-->
+							<#elseif order.payTag?? && order.payTag == "1" && order.status?? && order.status == "5">
+								<!--已关闭-->
+	</#if>
+	</#if>
+</div>
+
+
+<script>
+
+  //修改备注
+  function addOrderRemark(orderId){
+    var url = 'order.do?method=toAddCompanyRemark&orderId='+orderId;
+    parent.layer.open({
+      type : 2,
+      title : '修改备注',
+      area : [ '625px', '275px' ],
+      fix : true,
+      content :url,
+      end: function(){
+        window.location.reload();
+      }
+    });
+
+  }
+
+  //确认拒绝
+  function refuseOrder(orderId){
+    var url = 'order.do?method=toRefuseOrder&orderId='+orderId;
+    parent.layer.open({
+      type : 2,
+      title : '拒绝',
+      area : [ '625px', '500px'],
+      fix : true,
+      content :url,
+      end: function(){
+        window.location.reload();
+      }
+    });
+  }
+
+  /**
+	 * 查看快递
+   * @param orderId
+   */
+	function showOrderExpress(orderId)
+	{
+    var url = 'wxorder?method=toOrderExpress&orderId='+orderId;
+    parent.layer.open({
+      type : 2,
+      title : '快递信息',
+      area : [ '800px', '600px'],
+      fix : true,
+      content :url,
+      end: function(){
+        window.location.reload();
+      }
+    });
+	}
+  function addExpress(orderId,obj){
+    var now = new DateTimeUtil().getStringDateTime(new DateTimeUtil().sdf19,new Date());
+    var createTime = $(obj).parent().parent().children().eq(2).html();
+    if(createTime>now)
+    {
+      art.dialog.alert("当前团购商品还未成团，请稍后重试！");
+      return false;
+    }
+    var url = 'order.do?method=toAddExpress&orderId='+orderId;
+    parent.layer.open({
+      type : 2,
+      title : '修改备注',
+      area : [ '800px', '400px' ],
+      fix : true,
+      content :url,
+      end: function(){
+        window.location.reload();
+      }
+    });
+  }
+</script>
+</body>
+</html>
