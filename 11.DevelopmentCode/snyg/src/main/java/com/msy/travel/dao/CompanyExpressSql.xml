@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CompanyExpressDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCompanyExpress" parameterType="companyExpress">
+		INSERT INTO 
+			t_sm_companyexpress  
+		(
+			F_COMPANYEXPRESSID ,
+			F_COMPANYID ,
+			F_FENNAME ,
+			F_EPMECOMPANY,
+			F_UPDATETIME,
+			F_SPID
+		) VALUES (
+			#{companyExpressId} ,
+			#{companyId} ,
+			#{feeName} ,
+			#{epmeCompany},
+			#{updateTime},
+			#{spId}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCompanyExpress" parameterType="companyExpress">
+		REPLACE INTO 
+			t_sm_companyexpress 
+		(
+			F_COMPANYEXPRESSID ,
+			F_COMPANYID ,
+			F_FENNAME ,
+			F_EPMECOMPANY,
+			F_UPDATETIME,
+			F_SPID
+		) VALUES (
+			#{companyExpressId} ,
+			#{companyId} ,
+			#{feeName} ,
+			#{epmeCompany},
+			#{updateTime},
+			#{spId}
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCompanyExpress" parameterType="companyExpress">
+		UPDATE
+			t_sm_companyexpress 
+		SET
+			F_COMPANYID = #{companyId} ,
+			F_FENNAME = #{feeName} ,
+			F_EPMECOMPANY = #{epmeCompany} ,
+			F_UPDATETIME = #{updateTime} 
+		<where>
+			F_COMPANYEXPRESSID = #{companyExpressId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCompanyExpress" parameterType="companyExpress">
+		DELETE FROM
+			t_sm_companyexpress 
+		<where>
+			F_COMPANYEXPRESSID = #{companyExpressId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCompanyExpress" parameterType="companyExpress">
+		DELETE FROM 
+			t_sm_companyexpress 
+		<where>
+			F_COMPANYEXPRESSID in
+			<foreach collection="companyExpressIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCompanyExpress" parameterType="String" resultType="companyExpress">
+		SELECT
+			t.F_COMPANYEXPRESSID as companyExpressId ,
+			t.F_COMPANYID as companyId ,
+			t.F_FENNAME as feeName  ,
+			t.F_EPMECOMPANY as epmeCompany,
+			t.F_UPDATETIME as updateTime,
+			t.F_SPID as spId
+		FROM
+			t_sm_companyexpress t
+		<where>
+			t.F_COMPANYEXPRESSID = #{companyExpressId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCompanyExpressList" parameterType="companyExpress" resultType="companyExpress">
+		SELECT
+			t.F_COMPANYEXPRESSID as companyExpressId ,
+			t.F_COMPANYID as companyId ,
+			t.F_FENNAME as feeName  ,
+			t.F_EPMECOMPANY as epmeCompany,
+			t.F_UPDATETIME as updateTime,
+			t.F_SPID as spId,
+     		c.F_VENNAME as venName
+		FROM
+		t_sm_companyexpress t
+		left join t_sm_company c on t.F_COMPANYID = c.F_VENID
+		<where>
+			<if test="companyExpressId!=null and companyExpressId!=''">
+		    	t.F_COMPANYEXPRESSID = #{companyExpressId}
+		    </if>
+			<if test="companyId !=null and companyId !=''">
+		    	t.F_COMPANYID = #{companyId}
+		    </if>
+		    <if test="feeName !=null and feeName !=''">
+		    	t.F_FENNAME like concat('%',#{feeName},'%')
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	t.F_SPID = #{spId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

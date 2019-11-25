@@ -108,7 +108,7 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setUnitId(Destsp.currentSpId);
 					userService.createUser(user);
 				} else {
-					user.setUserState("-2");
+					// user.setUserState("-2");
 					userService.updateUser(user);
 				}
 
@@ -172,5 +172,4 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 		return xmlstr;
 
 	}
-
 }

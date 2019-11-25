@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="expressPrice?method=add" method="post"
+			id="createExpressPrice">
+			<!--编辑区-->
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+				<td width="24%" class="tdright" colspan="2">
+				<input name="button3" onClick="addAllInfo()" type="button" class="cbtn1" id="saveButton" value="一键设置">
+				</td>
+				<td width="10%" class="tdright">默认运费</td>
+				<td width="6%"><input type="text" id="expressNumAll" size="20" value="" style="width:60px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[maxSize[100],custom[num6point2]] data-inputtxt"/></td>
+				<td width="6%">件内，</td>
+				<td width="6%"><input type="text" id="expressPriceAll" size="20" value="" style="width:60px;"  onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[custom[integer],maxSize[6]] data-inputtxt"/></td>
+				<td width="3%">元。</td>
+				<td width="7%" class="tdright">每增加</td>
+				<td width="6%"><input type="text" id="expressNumAll" size="20" value="" style="width:60px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[custom[integer],maxSize[6]] data-inputtxt"/></td>
+				<td width="3%">件，</td>
+				<td width="7%" class="tdright">增加运费</td>
+				<td width="6%"><input type="text" id="expressPriceAll" size="20" value="" style="width:60px;" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[maxSize[100],custom[num6point2]] data-inputtxt"/></td><td>元。</td>
+				</tr>
+				<#if provList?? && (provList?size>0)>
+					<#list provList as li>
+						<tr>
+						<td width="10%" class="tdright"><b>收货地：</b></td>
+						<td width="12%">
+							<input name="province[${li_index}]" type="hidden" id="province" size="40" value="${li.cityId!''}"/>
+							${li.cityName!''}
+						</td>
+						<td width="10%" class="tdright">默认运费</td>
+						<td><input name="expressNum[${li_index}]" type="text" id="expressNum[${li_index}]" size="20" value="" style="width:60px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[maxSize[100],custom[num6point2]] data-inputtxt"/></td>
+						<td width="6%">件内，</td>
+						<td><input name="expressPrice[${li_index}]" type="text" id="expressPrice[${li_index}]" size="20" value="" style="width:60px;" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[custom[integer],maxSize[6]] data-inputtxt"/></td>
+						<td width="3%">元。</td>
+						<td width="7%" class="tdright">每增加</td>
+						<td><input name="expressNum[${li_index}]" type="text" id="expressNum[${li_index}]" size="20" value="" style="width:60px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[custom[integer],maxSize[6]] data-inputtxt"/></td>
+						<td width="3%">件，</td>
+						<td width="7%" class="tdright">增加运费</td>
+						<td><input name="expressPrice[${li_index}]" type="text" id="expressPrice[${li_index}]" size="20" value="" style="width:60px;"  onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[maxSize[100],custom[num6point2]] data-inputtxt"/></td><td>元。</td>
+						</tr>
+					</#list>
+				</#if>
+			</table>
+		</form>
+		<div class="footerbtn">
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+			<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="saveButton" value="保存">
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function addAllInfo(){
+		
+	}
+</script>
+</html>

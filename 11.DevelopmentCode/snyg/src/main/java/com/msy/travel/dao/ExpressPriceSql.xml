@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ExpressPriceDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertExpressPrice" parameterType="expressPrice">
+		INSERT INTO 
+			t_sm_expressprice  
+		(
+			F_EXPRESSPRICEID ,
+			F_COMPANYEXPRESSID ,
+			F_PROVINCE ,
+			F_EXPRESSNUM ,
+			F_EXPRESSPRICE ,
+			F_EXPRESSNUMADD ,
+			F_EXPRESSPRICEADD 
+		) VALUES (
+			#{expressPriceId} ,
+			#{companyExpressId} ,
+			#{province} ,
+			#{expressNum} ,
+			#{expressPrice} ,
+			#{expressNumAdd} ,
+			#{expressPriceAdd} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeExpressPrice" parameterType="expressPrice">
+		REPLACE INTO 
+			t_sm_expressprice 
+		(
+			F_EXPRESSPRICEID ,
+			F_COMPANYEXPRESSID ,
+			F_PROVINCE ,
+			F_EXPRESSNUM ,
+			F_EXPRESSPRICE ,
+			F_EXPRESSNUMADD ,
+			F_EXPRESSPRICEADD 
+		) VALUES (
+			#{expressPriceId} ,
+			#{companyExpressId} ,
+			#{province} ,
+			#{expressNum} ,
+			#{expressPrice} ,
+			#{expressNumAdd} ,
+			#{expressPriceAdd} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateExpressPrice" parameterType="expressPrice">
+		UPDATE
+			t_sm_expressprice 
+		SET
+			F_COMPANYEXPRESSID = #{companyExpressId} ,
+			F_PROVINCE = #{province} ,
+			F_EXPRESSNUM = #{expressNum} ,
+			F_EXPRESSPRICE = #{expressPrice} ,
+			F_EXPRESSNUMADD = #{expressNumAdd} ,
+			F_EXPRESSPRICEADD = #{expressPriceAdd} 
+		<where>
+			F_EXPRESSPRICEID = #{expressPriceId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteExpressPrice" parameterType="expressPrice">
+		DELETE FROM
+			t_sm_expressprice 
+		<where>
+			F_EXPRESSPRICEID = #{expressPriceId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchExpressPrice" parameterType="expressPrice">
+		DELETE FROM 
+			t_sm_expressprice 
+		<where>
+			F_EXPRESSPRICEID in
+			<foreach collection="expressPriceIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryExpressPrice" parameterType="String" resultType="expressPrice">
+		SELECT
+			t.F_EXPRESSPRICEID as expressPriceId ,
+			t.F_COMPANYEXPRESSID as companyExpressId ,
+			t.F_PROVINCE as province ,
+			t.F_EXPRESSNUM as expressNum ,
+			t.F_EXPRESSPRICE as expressPrice ,
+			t.F_EXPRESSNUMADD as expressNumAdd ,
+			t.F_EXPRESSPRICEADD as expressPriceAdd 
+		FROM
+			t_sm_expressprice t
+		<where>
+			t.F_EXPRESSPRICEID = #{expressPriceId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryExpressPriceList" parameterType="expressPrice" resultType="expressPrice">
+		SELECT
+			t.F_EXPRESSPRICEID as expressPriceId ,
+			t.F_COMPANYEXPRESSID as companyExpressId ,
+			t.F_PROVINCE as province ,
+			t.F_EXPRESSNUM as expressNum ,
+			t.F_EXPRESSPRICE as expressPrice ,
+			t.F_EXPRESSNUMADD as expressNumAdd ,
+			t.F_EXPRESSPRICEADD as expressPriceAdd 
+		FROM
+		t_sm_expressprice t
+		<where>
+			<if test="expressPriceId!=null and expressPriceId!=''">
+		    	t.F_EXPRESSPRICEID = #{expressPriceId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

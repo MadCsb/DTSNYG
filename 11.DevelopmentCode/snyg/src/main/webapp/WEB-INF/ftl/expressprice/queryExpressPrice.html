@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("expressPriceId");
+		document.getElementById("checkedExpressPriceIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+
+	<a href="expressPrice?method=toAdd">添加用户</a>
+	<form id="queryFrm" action="expressPrice?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<table border="1" style="width: 100%">
+			<tr>
+				<td></td> 
+				<td>expressPriceId</td> 
+				<td>companyExpressId</td> 
+				<td>province</td> 
+				<td>expressNum</td> 
+				<td>expressPrice</td> 
+				<td>expressNumAdd</td> 
+				<td>expressPriceAdd</td> 
+				<td>操作</td>
+			</tr>
+
+			<#list expressPricelist as expressPrice>
+			<tr>
+				<td>
+					<input type="checkbox" name="expressPriceId" value="${expressPrice.expressPriceId!''}"></td> 
+				<td>${expressPrice.expressPriceId!''}</td> 
+				<td>${expressPrice.companyExpressId!''}</td> 
+				<td>${expressPrice.province!''}</td> 
+				<td>${expressPrice.expressNum!''}</td> 
+				<td>${expressPrice.expressPrice!''}</td> 
+				<td>${expressPrice.expressNumAdd!''}</td> 
+				<td>${expressPrice.expressPriceAdd!''}</td> 
+				<td><a
+					href="expressPrice?method=toUpdate&expressPriceId=${expressPrice.expressPriceId!''}">修改</a>
+					&nbsp;&nbsp; <a
+					href="expressPrice?method=delete&expressPriceId=${expressPrice.expressPriceId!''}">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+
+		<#if expressPricelist?? && (expressPricelist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="expressPrice?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedExpressPriceIds"
+			id="checkedExpressPriceIds">
+	</form>
+</body>
+</html>

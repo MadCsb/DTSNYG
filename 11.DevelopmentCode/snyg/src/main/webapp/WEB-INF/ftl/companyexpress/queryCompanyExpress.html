@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("companyExpressId");
+		document.getElementById("checkedCompanyExpressIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<form id="queryFrm" action="companyExpress?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td>运费名称：</td><td>
+	          	<input name="feeName" type="text" class="data-searchtxt" id="title" value="${companyExpress.feeName!''}">
+	          </td>
+                <td align="right">　商家名称：</td><td>
+				<select name="companyId" id="companyId" class="validate[required] data-inputtxt-select">
+					<option value="">请选择</option>
+				    <#if companyList??>
+               		<#list companyList as company>
+               			<#if companyExpress.companyId?? && companyExpress.companyId == company.venId>
+							<option value="${company.venId!''}" selected>${company.venName!""}</option>
+						<#else>
+							<option value="${company.venId!''}">${company.venName!""}</option>
+						</#if>
+					</#list>
+					</#if>
+               	</select>
+			</td>
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+
+		</div>
+		<div class="waybill-title">
+		  	<div align="left">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="新增" onClick="javascript:window.location.href='companyExpress?method=toAdd'">
+		    </div>
+		  </div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th>运费名称</th> 
+				<th>商家名称</th> 
+				<th>操作</th>
+			</tr>
+
+			<#list companyExpresslist as companyExpress>
+			<tr onclick="selectTr(this)">
+				<td>${companyExpress.feeName!''}</td> 
+				<td>${companyExpress.venName!''}</td> 
+				<td><a href="companyExpress?method=toUpdate&companyExpressId=${companyExpress.companyExpressId!''}">修改</a>
+					<a onclick="delCompanyExpress('${companyExpress.companyExpressId!''}')" href="javascript:void(0)">删除</a>
+					<a onclick="editCompanyExpressPrice('${companyExpress.companyExpressId!''}')" href="javascript:void(0)">设置运费价格</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+
+		<#if companyExpresslist?? && (companyExpresslist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="companyExpress?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedCompanyExpressIds"
+			id="checkedCompanyExpressIds">
+	</form>
+<script>
+function delCompanyExpress(companyExpressId){
+	parent.layer.confirm("确认要删除这条记录吗？删除记录后商品绑定的运费默认包邮", function() {
+		window.location.href="companyExpress?method=delete&companyExpressId="+companyExpressId;
+		parent.layer.closeAll();
+	}, function() {
+		parent.layer.closeAll();
+	});
+}
+
+function editCompanyExpressPrice(companyExpressId){
+	window.location.href="expressPrice.do?method=toUpdateOrAdd";
+}
+</script>
+</body>
+</html>

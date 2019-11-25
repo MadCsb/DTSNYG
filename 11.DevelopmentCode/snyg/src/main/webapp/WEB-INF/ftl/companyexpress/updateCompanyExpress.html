@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<div class="waybill-title">
+		<span>修改商家运费信息</span>
+	</div>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="companyExpress?method=update" method="post"
+			id="createCompanyExpress">
+			<input type="hidden" name="companyExpressId" id="companyExpressId" value="${companyExpress.companyExpressId!''}"/>
+			<!--编辑区-->
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			   <tr>
+				<td width="20%" class="tdright"><b><font class="f2">*</font>商家：</b></td>
+				<td width="30%">
+					<select  id="companyId"  name="companyId" class="validate[required] data-inputtxt-select">
+					<option value="">请选择</option>
+					<#if companyList?? && (companyList?size>0)>
+						<#list companyList as  li>
+						<option <#if companyExpress.companyId?? && companyExpress.companyId==li.venId >selected="selected" </#if> value="${li.venId!''}">${li.venName!''}</option>	
+						</#list>
+					</#if>
+					</select>
+				</td>
+				<tr class="cs">
+					<td width="16%" class="tdright"><b><font class="f2">*</font>运费名称：</b></td>
+					<td><input name="feeName" type="text" value="${companyExpress.feeName!''}"
+						id="feeName" size="40" class="validate[required,maxSize[100]] data-inputtxt" />
+					<span id="msg" style="color:red"></span>	
+					</td>
+				</tr>
+				<tr>
+				<td width="16%" class="tdright"><b>快递公司：</b></td>
+				<td width="30%">
+					<select name="epmeCompany" id="epmeCompany" class="data-inputtxt-select">
+					<option value="">请选择</option>
+					<#if expressList?? && (expressList?size>0)>
+						<#list expressList as  li>
+						<option <#if companyExpress.epmeCompany?? && companyExpress.epmeCompany==li.mapKey >selected="selected" </#if>  value="${li.mapKey!''}">${li.mapValue!''}</option>	
+						</#list>
+					</#if>
+					</select>
+				</td>
+			</table>
+		</form>
+		<div class="footerbtn">
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+			<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="saveButton" value="保存">
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+$(function() {
+	// 加载验证框架
+	$("#createCompanyExpress").validationEngine();
+});
+
+function beforeSubmit(){
+	if ($("#createCompanyExpress").validationEngine('validate')) {
+		$("#saveButton").attr("disabled","disabled");
+		$("#createCompanyExpress").submit();
+	}
+}
+</script>
+</html>
