@@ -73,6 +73,10 @@ function navbar_reset_top() {
 
 </script>
 
+<!--地方特产-->
+<ul class="four-menu" id="pdcTypeUl" style="margin-bottom:0;">
+</ul> 
+
 <!--整点秒杀-->
 <a href="秒杀商品列表.html"><div class="snyg_details_title">整点秒杀</div></a>
 <ul class="mssjlist">
@@ -118,7 +122,34 @@ $(function(){
 	getDataList('0','20','DESC','s.F_UPDATETIME',currentPage);
 
   setCarousel();
+  
+  getPdcTypeData('2','ad32d09aaa4a49049b47d598b7d9016f');  
 });
+
+
+function getPdcTypeData(level,ppdcTypeId){
+	$.post("wx?method=getPdcTypeListForWx",{
+		spId:$("#spId").val(),
+		level:level,
+		ppdcTypeId:ppdcTypeId
+	},function(data){
+		if(data!=null && data.length>0){
+			$("#pdcTypeUl").html(getDataStr2(data));
+		}else{
+			$("#pdcTypeUl").html("");
+		}
+	},'json');
+}
+
+
+function getDataStr2(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+		//str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
+		str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';
+	}
+	return str;
+}
 
 //广告位管理
 function setCarousel()

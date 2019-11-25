@@ -53,9 +53,9 @@ html[xmlns] .slides {display: block;}
 
 /* FlexSlider Default Theme
 *********************************/
-.flexslider { margin: 0px; background: #fff; border:0px none; position: relative;  zoom: 1; }
+.flexslider { margin:0; box-sizing:border-box;0overflow:hidden; border:0px none; position: relative;  zoom: 1; }
 .flex-viewport { max-height: 2000px; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; -o-transition: all 1s ease; transition: all 1s ease; }
-.loading .flex-viewport { max-height: 300px; }
+.loading .flex-viewport { max-height: 400px; }
 .flexslider .slides { zoom: 1; }
 .carousel li { margin-right: 5px; }
 
@@ -78,11 +78,11 @@ html[xmlns] .slides {display: block;}
 .flex-pauseplay a.flex-play:before { content: '\f003'; }
 
 /* Control Nav */
-.flex-control-nav {width: 100%; position: absolute; bottom: 0px; text-align: center;}
-.flex-control-nav li {margin: 0 5px; display: inline-block; zoom: 1; *display: inline;}
-.flex-control-paging li a {width: 10px; height: 10px; display: block; background: #fff; background: rgba(255,255,255,0.5); border:1px solid #FFa900; cursor: pointer; text-indent: -9999px; -webkit-border-radius: 20px; -moz-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; }
-.flex-control-paging li a:hover { background: #00c3ac; background: rgba(0,211,196,0.5);border:1px solid #00c3ac;}
-.flex-control-paging li a.flex-active {  background: #00c3ac; background: rgba(0,211,196,0.5);border:1px solid #00c3ac; }
+.flex-control-nav {width: 100%; position: absolute; bottom: 5px; text-align: center;}
+.flex-control-nav li {margin: 0 2px; display: inline-block; zoom: 1; *display: inline;}
+.flex-control-paging li a {width: 10px; height: 10px; display: block; background: #fff; background: rgba(255,255,255,0.8); border:0px solid #FFa900; cursor: pointer; text-indent: -9999px; -webkit-border-radius: 20px; -moz-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; }
+.flex-control-paging li a:hover { background: #1b8c14; background: rgba(252,81,31,0.5);border:0px solid #00c3ac;}
+.flex-control-paging li a.flex-active {  background: #1b8c14; background: rgba(27,140,20,1);border:0px solid #00c3ac; }
 
 .flex-control-thumbs {margin: 5px 0 0; position: static; overflow: hidden;}
 .flex-control-thumbs li {width: 25%; float: left; margin: 0;}

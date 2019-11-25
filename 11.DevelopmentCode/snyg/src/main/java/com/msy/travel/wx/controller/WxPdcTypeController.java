@@ -19,6 +19,9 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.PdcType;
+import com.msy.travel.pojo.ServiceCode;
+import com.msy.travel.service.IServiceCodeService;
+import com.msy.travel.service.IUserService;
 import com.msy.travel.service.PdcTypeService;
 
 @Controller
@@ -32,6 +35,12 @@ public class WxPdcTypeController extends BaseController {
 
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
+
+	@Resource(name = "serviceCodeServiceImpl")
+	private IServiceCodeService serviceCodeService;
+
+	@Resource(name = "userServiceImpl")
+	private IUserService userService;
 
 	/**
 	 * 跳转分类列表
@@ -50,6 +59,8 @@ public class WxPdcTypeController extends BaseController {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("wx/pdcType/queryPdcType");
+			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
+			wxSetViewObjects(view, request, serviceCode, userService);
 			view.addObject("spId", Destsp.currentSpId);
 		} catch (Exception e) {
 			view = new ModelAndView("error");

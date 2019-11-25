@@ -1445,3 +1445,43 @@ white-space: nowrap; height:24px; }
 /*查看更多*/
 .ckgd{ margin:0 auto 20px auto; text-align:center;}
 .morebtn{ display:inline-block; padding:2px 20px; text-align:center; border:1px solid #eee; background:#FFFFFF;}
+
+
+.ydbtn-ico {
+	background: #5ECF88;
+	border-radius: 3px;
+	width: 90px;
+	height: 28px;
+	line-height: 28px;
+	display: inline-block;
+	color: #ffffff;
+	font-size: 14px;
+	text-align: center;
+	cursor: pointer;
+	margin: 0 0 0 1px;
+	border: 0;
+
+}
+
+.ckbtn-ico {
+	background: #bbb;
+	border-radius: 3px;
+	width: 90px;
+	height: 28px;
+	line-height: 28px;
+	display: inline-block;
+	color: #ffffff;
+	font-size: 14px;
+	text-align: center;
+	cursor: pointer;
+	margin: 0 0 0 1px;
+	border: 0;
+}
+
+
+/*四个*/
+.four-menu{ width: 100%;display: table; overflow: hidden;background-color: #fff;padding:10px 0;margin-bottom:8px;}
+.four-menu li{display: table-cell;text-align: center;}
+.four-menu li img{ width: 60px; height:60px;}
+.four-menu li p{ margin: 0;margin-top: 4px;font-size:14px ;color: #333;}
+.four-menu li a{display: block;width: 100%;text-shadow: none;margin: 0;border-radius: 0;text-decoration: none; text-align:center;}

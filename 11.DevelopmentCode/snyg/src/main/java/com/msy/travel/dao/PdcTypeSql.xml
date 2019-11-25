@@ -15,7 +15,8 @@
 			F_DELFLAG ,
 			F_PICURL ,
 			F_LEVEL ,
-			F_SPID
+			F_SPID,
+			F_SORT
 		) VALUES (
 			#{pdcTypeId} ,
 			#{typeName} ,
@@ -23,7 +24,8 @@
 			#{delFlag} ,
 			#{picUrl} ,
 			#{level} ,
-			#{spId}
+			#{spId},
+			#{sort}
 		)
 	</insert>
 
@@ -38,7 +40,8 @@
 			F_DELFLAG ,
 			F_PICURL ,
 			F_LEVEL ,
-			F_SPID
+			F_SPID,
+			F_SORT
 		) VALUES (
 			#{pdcTypeId} ,
 			#{typeName} ,
@@ -46,7 +49,8 @@
 			#{delFlag} ,
 			#{picUrl} ,
 			#{level} ,
-			#{spId}
+			#{spId},
+			#{sort}
 		)
 	</insert>
 
@@ -58,7 +62,8 @@
 			F_TYPENAME = #{typeName} ,
 			F_PPDCTYPEID = #{ppdcTypeId} ,
 			F_PICURL = #{picUrl} ,
-			F_LEVEL = #{level} 
+			F_LEVEL = #{level} ,
+			F_SORT = #{sort}
 		<where>
 			<if test="pdcTypeId !=null and pdcTypeId !=''">
 		    	F_PDCTYPEID = #{pdcTypeId}
@@ -103,7 +108,8 @@
 			t.F_DELFLAG as delFlag ,
 			t.F_PICURL as picUrl ,
 			t.F_LEVEL as level ,
-			t.F_SPID as spId
+			t.F_SPID as spId,
+			t.F_SORT as sort
 		FROM
 			t_sm_pdctype t
 		<where>
@@ -121,7 +127,8 @@
 			t.F_PICURL as picUrl ,
 			t.F_LEVEL as level ,
 			t.F_SPID as spId  ,
-			p.F_TYPENAME as ppdcTypeName
+			p.F_TYPENAME as ppdcTypeName,
+			t.F_SORT as sort
 		FROM
 		t_sm_pdctype t
 		left join t_sm_pdctype p on t.F_PPDCTYPEID = p.F_PDCTYPEID
@@ -145,16 +152,7 @@
 		    	and t.F_TYPENAME like concat('%',#{typeName},'%') 
 		    </if>
 		</where>
-		<if test="entityPage != null">
-			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
-		    	ORDER BY ${entityPage.sortField}
-			</if>
-		</if>	
-		<if test="entityPage != null">	
-			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
-		    	${entityPage.sortOrder}
-			</if>
-		</if>
+		ORDER BY ISNULL(t.F_SORT),t.F_SORT ASC 
 	</select>
 	
 	<!-- 按条件查询所有 -->

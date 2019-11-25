@@ -1,18 +1,8 @@
 package com.msy.travel.wx.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.msy.travel.common.EntityPage;
-import com.msy.travel.pojo.Carousel;
-import com.msy.travel.pojo.CarouselItem;
-import com.msy.travel.pojo.Order;
-import com.msy.travel.service.CarouselItemService;
-import com.msy.travel.service.CarouselService;
-import com.msy.travel.service.impl.CarouselItemServiceImpl;
-import com.msy.travel.service.impl.CarouselServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,10 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.EntityPage;
+import com.msy.travel.pojo.Carousel;
+import com.msy.travel.pojo.CarouselItem;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.ServiceCode;
+import com.msy.travel.service.CarouselItemService;
+import com.msy.travel.service.CarouselService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
@@ -67,6 +63,12 @@ public class WxIndexController extends BaseController {
 			String currentDay = DateTimeUtil.getDateTime10();
 			view = new ModelAndView("wx/index");
 
+			wxSetViewObjects(view, request, serviceCode, userService);
+
+			// User user = new User();
+			// user.setUserId("5cb674732c2f488f8bb1f3dc0b6fc8c0");
+			// view.addObject("user", user);
+
 			view.addObject("spId", Destsp.currentSpId);
 			view.addObject("serviceCode", serviceCode);
 			view.addObject("currentDay", currentDay);
@@ -82,7 +84,7 @@ public class WxIndexController extends BaseController {
 	 * ajax 获取订单列表
 	 */
 	@RequestMapping(params = "method=wxAjaxCarouselDetail")
-	public void wxAjaxCarouselDetail(Carousel carousel,HttpServletRequest request,HttpServletResponse response) {
+	public void wxAjaxCarouselDetail(Carousel carousel, HttpServletRequest request, HttpServletResponse response) {
 		List<CarouselItem> carouselItemList = new ArrayList<>();
 		try {
 			carousel = carouselService.displayCarousel(carousel);
@@ -94,16 +96,14 @@ public class WxIndexController extends BaseController {
 			carouselItem.setEntityPage(entityPage);
 
 			carouselItemList = carouselItemService.queryCarouselItemList(carouselItem);
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error(e);
 		}
 		try {
 			response.setContentType("text/json;charset=utf-8");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(JSON.toJSONString(carouselItemList));
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error(e);
 		}
 	}

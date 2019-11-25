@@ -139,4 +139,31 @@ public class WxShopcartController extends BaseController {
 			log.error(e, e);
 		}
 	}
+
+	/**
+	 * 获取购物车数量
+	 * 
+	 * @author wzd
+	 * @date 2019年11月25日 下午1:27:06
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @param spId
+	 * @param userId
+	 * @return void
+	 */
+	@RequestMapping(params = "method=getShopCartListLength")
+	public void getShopCartListLength(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
+		try {
+			shopcart.setDelFlag("0");
+			EntityPage en = new EntityPage();
+			en.setSortOrder("DESC");
+			en.setSortField("t.F_UPDATETIME");
+			shopcart.setEntityPage(en);
+			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+			response.getWriter().print(shopCartList.size());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
 }

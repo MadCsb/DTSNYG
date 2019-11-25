@@ -53,6 +53,19 @@ public class PdcType extends BaseEntity implements java.io.Serializable {
 	 */
 	private String spId;
 
+	/**
+	 * F_SORT
+	 */
+	private String sort;
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
 	public String getPpdcTypeName() {
 		return ppdcTypeName;
 	}
