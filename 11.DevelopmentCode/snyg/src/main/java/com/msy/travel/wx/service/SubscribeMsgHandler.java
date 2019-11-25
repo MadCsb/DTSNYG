@@ -134,7 +134,7 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setUserName(wxuser.getNickname());
 					user.setUserState("1");
 					user.setCountry(wxuser.getCountry());
-					user.setProvince(wxuser.getCountry());
+					user.setProvince(wxuser.getProvince());
 					user.setCity(wxuser.getCity());
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
