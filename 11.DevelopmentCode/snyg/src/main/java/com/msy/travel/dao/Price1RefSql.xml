@@ -181,9 +181,11 @@
 			temp on t.F_REF_PATCHCODE = temp.F_REF_PATCHCODE
 		LEFT JOIN (SELECT IFNULL(F_PEOPLENUM,1) as F_PEOPLENUM,F_PRICEID from t_sm_sellprice where F_PRICEID=#{priceId}) 
 			sellPrice on t.F_PRICEID = sellPrice.F_PRICEID
+		LEFT JOIN t_sm_orderlist ol on t.F_ORDERLISTID = ol.F_ORDERLISTID 
+		LEFT JOIN t_sm_order o on ol.F_ORDERID = o.F_ORDERID
 		<where>
 			 t.F_ISBEGIN = 1 and t.F_PRICEID =#{priceId} and (t.F_PRICESTARTDATE &lt;= #{validateDate} and t.F_PRICEENDDATE &gt;= #{validateDate})
-			and temp.F_ORDERCOUNT &lt; sellPrice.F_PEOPLENUM
+			and temp.F_ORDERCOUNT &lt; sellPrice.F_PEOPLENUM and o.F_PAYTAG='1'
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
