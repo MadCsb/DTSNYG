@@ -20,7 +20,10 @@ import com.github.pagehelper.PageHelper;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.pojo.Consignee;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.CompanyExpressService;
+import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
@@ -43,6 +46,12 @@ public class WxSellPriceController extends BaseController {
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
+
+	@Resource(name = "consigneeServiceImpl")
+	private ConsigneeService consigneeService;
+
+	@Resource(name = "companyExpressServiceImpl")
+	private CompanyExpressService companyExpressService;
 
 	/**
 	 * 微信端获取商品列表
@@ -100,6 +109,23 @@ public class WxSellPriceController extends BaseController {
 				sellPrice.setPriceDate(DateTimeUtil.getDateTime19());
 			}
 			List<SellPrice> sellPricelist = sellPriceService.queryGoodsPriceListForWx(sellPrice);
+
+			if (sellPricelist != null && sellPricelist.size() > 0) {
+				String userId = request.getParameter("userId");
+				Consignee c = new Consignee();
+				c.setUserId(userId);
+				c.setEntityPage(new EntityPage());
+				c.getEntityPage().setSortField("t.F_ISDEFAULT");
+				c.getEntityPage().setSortOrder("DESC");
+				List<Consignee> cList = consigneeService.queryConsigneeList(c);
+
+				if (cList != null && cList.size() > 0) {
+					c = cList.get(0);
+					for (int i = 0; i < sellPricelist.size(); i++) {
+						sellPricelist.get(i).setFreight(companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" "))));
+					}
+				}
+			}
 
 			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
 			response.getWriter().print(jsonArray.toString());

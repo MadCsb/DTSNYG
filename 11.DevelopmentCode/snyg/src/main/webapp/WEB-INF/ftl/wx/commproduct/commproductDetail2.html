@@ -370,6 +370,7 @@ var alertHtml = "";
 	
 	function getSellPriceList(){
 		$.post("wx?method=queryGoodsPriceListForWx",{
+			userId:$("#userId").val(),
 			productId:$("#productId").val(),
 			priceType:$("#priceType").val(),
 			delFlag:'0'

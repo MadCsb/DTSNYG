@@ -137,6 +137,9 @@
 		    <if test="delFlag !=null and delFlag !=''">
 		    	and s.F_DELFLAG=#{delFlag} and c.F_DELFLAG=#{delFlag} and g.F_DELFLAG=#{delFlag}
 		    </if>
+		    <if test="state !=null and state !=''">
+		    	and c.F_STATE=#{state}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

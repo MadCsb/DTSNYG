@@ -134,13 +134,14 @@
 				<td title="${li.updateTime!''}" style="word-wrap: break-word;white-space:normal;">${li.updateTime!''}</td> 
 				<td >
 					<a href="commproduct?method=toDetail&productId=${li.productId!''}&priceType=${priceType!''}" title="详情" class="ico_btn1">详情</a>
-					<a href="commproduct?method=toUpdate&productId=${li.productId!''}&priceType=${priceType!''}"  class="ico_btn1">修改</a>
 					<#if li.state?? && li.state=='0'>
+						<a href="commproduct?method=toUpdate&productId=${li.productId!''}&priceType=${priceType!''}"  class="ico_btn1">修改</a>
 	                	<a href="javascript:void(0);" title="上架" class="ico_btn1" onClick="changeState('${li.productId!''}',1)">上架</a>
+	                	<a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo('${li.productId!''}');" >删除</a>
 	                <#elseif li.state?? && li.state=='1'>
 	                	<a href="javascript:void(0);" title="下架" class="ico_btn1"  onclick="changeState('${li.productId!''}',0)">下架</a>
 					</#if>
-					<a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo('${li.productId!''}');" >删除</a>
+					
 					<a href="javascript:void(0)" onclick="copyUrl('${li.productId!''}','${li.priceId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
 						
 					<input type="text" style="border:0px;width:1px;" id="productIdHidden${li.productId!''}" value="" ></input>

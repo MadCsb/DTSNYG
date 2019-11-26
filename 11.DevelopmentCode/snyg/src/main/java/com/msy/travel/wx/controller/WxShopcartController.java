@@ -105,6 +105,7 @@ public class WxShopcartController extends BaseController {
 	public void getShopCartListWx(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
 		try {
 			shopcart.setDelFlag("0");
+			shopcart.setState("1");
 			EntityPage en = new EntityPage();
 			en.setSortOrder("DESC");
 			en.setSortField("t.F_UPDATETIME");

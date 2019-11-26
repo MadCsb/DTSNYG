@@ -227,7 +227,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 	 * @return String
 	 */
 	public String getCompanyPrice(String priceId, String num, String province) throws Exception {
-		String money = "0.00";
+		String money = "";
 		SellPrice sellPrice = new SellPrice();
 		sellPrice.setPriceId(priceId);
 		sellPrice = sellPriceDao.querySellPrice(sellPrice);
@@ -258,12 +258,11 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 					String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
 
 					money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
+					return money;
 				}
 			} else {
 				return money;
 			}
 		}
-
-		return money;
 	}
 }

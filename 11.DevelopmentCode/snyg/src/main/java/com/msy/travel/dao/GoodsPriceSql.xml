@@ -126,30 +126,27 @@
 	<!-- 按条件查询所有 -->
 	<select id="queryGoodsPriceList" parameterType="goodsPrice" resultType="goodsPrice">
 		SELECT
-			t.F_GOODSPRICEID as goodsPriceId ,
-			t.F_PRODUCTID as productId ,
-			t.F_PRICENAME as priceName ,
-			t.F_STORECOUNT as storeCount ,
-			t.F_THUMBPIC as thumbPic ,
-			t.F_CREATETIME as createTime ,
-			s.F_PRICE as price,
-			s.F_LIMITBUYCOUNT as limitBuyCount,
-		 	s.F_MAXBUYCOUNT as maxBuyCount,
-		 	s.F_PRICESTARTDATE as priceStartDate,
-			s.F_PRICEENDDATE as priceEndDate,
-		  	s.F_PEOPLENUM as peopleNum,
-		  	t.F_DELFLAG as delFlag,
-		  	s.F_PRICEID as priceId,
-			t.F_FREIGHT as freight,
-			t.F_COMPANYEXPRESSID as companyExpressId,
-			ce.F_FENNAME as feeName
+			t.F_GOODSPRICEID AS goodsPriceId,
+			t.F_PRODUCTID AS productId,
+			t.F_PRICENAME AS priceName,
+			t.F_STORECOUNT AS storeCount,
+			t.F_THUMBPIC AS thumbPic,
+			t.F_CREATETIME AS createTime,
+			s.F_PRICE AS price,
+			s.F_LIMITBUYCOUNT AS limitBuyCount,
+			s.F_MAXBUYCOUNT AS maxBuyCount,
+			s.F_PRICESTARTDATE AS priceStartDate,
+			s.F_PRICEENDDATE AS priceEndDate,
+			s.F_PEOPLENUM AS peopleNum,
+			t.F_DELFLAG AS delFlag,
+			s.F_PRICEID AS priceId,
+			t.F_FREIGHT AS freight,
+			t.F_COMPANYEXPRESSID AS companyExpressId,
+			ce.F_FENNAME AS feeName
 		FROM
-		t_sm_goodsprice t
-		left join t_sm_sellprice s on t.F_GOODSPRICEID = s.F_GOODSPRICEID 
+			t_sm_sellprice s 
+		LEFT JOIN t_sm_goodsprice t ON t.F_GOODSPRICEID = s.F_GOODSPRICEID 
 		left join t_sm_companyexpress ce on t.F_COMPANYEXPRESSID = ce.F_COMPANYEXPRESSID
-		<if test="priceType !=null and priceType !=''">
-	    	and s.F_PRICETYPE = #{priceType}
-	    </if>
 		<where>
 			<if test="goodsPriceId !=null and goodsPriceId !=''">
 		    	t.F_GOODSPRICEID = #{goodsPriceId}
@@ -167,6 +164,9 @@
 		     </if>
 		     <if test="priceId !=null and priceId !=''">
 		    	and s.F_PRICEID = #{priceId}
+		     </if>
+			 <if test="priceType !=null and priceType !=''">
+		    	and s.F_PRICETYPE = #{priceType}
 		     </if>
 		</where>
 		<if test="entityPage != null">

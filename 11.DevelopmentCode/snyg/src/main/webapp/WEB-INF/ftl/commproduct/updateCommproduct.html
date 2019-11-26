@@ -11,7 +11,6 @@
 		<input type="hidden" name="priceIds" id="priceIds" value="${commproduct.priceIds!''}"/>
 		<input type="hidden" name="productId" id="productId" value="${commproduct.productId!''}" />
 		<input type="hidden" id="thumbPic" name="thumbPic" value="${commproduct.thumbPic!''}"> 
-		<input type="hidden" name="priceIds" id="priceIds" value="${commproduct.priceIds!''}"/>
 		<input type="hidden" id="priceType" name="priceType" value="${priceType!''}">
 		<!--编辑区-->
 		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -25,18 +24,13 @@
 
 				<td width="16%" class="tdright"><b><font class="f2">*</font>商家：</b></td>
 				<td width="30%">
-					<select name="venId" id="venId" class="validate[required] data-inputtxt-select">
-					<option value="">请选择</option>
 					<#if companyList?? && (companyList?size>0)>
 						<#list companyList as  li>
 						<#if commproduct.venId?? && commproduct.venId==li.venId>
-							<option value="${li.venId!''}" selected="selected">${li.venName!''}</option>
-						<#else>
-							<option value="${li.venId!''}">${li.venName!''}</option>		
+							<input type="text" readonly="readonly" value="${li.venName!''}" class="data-inputtxt" style="border:0px;">
 						</#if>
 						</#list>
 					</#if>
-					</select>
 				</td>
 			</tr>
 			<tr>
@@ -376,19 +370,25 @@
  	 }
  	 
  	function getPriceList() {
-		if ($("#priceIds").val().length > 0) {
 			$.post("goodsPrice?method=toDetailForList",{
-				goodsPriceIdList : $("#priceIds").val(),
-				priceType:$("#priceType").val()
+				priceType:$("#priceType").val(),
+				productId:$("#productId").val()
 			},
 			function(ret) {
 				if (ret.length > 0) {
+					
 					$("#priceList").html("");
 
 					var str = "<table id=\"priceTable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"datalist\">";
 					str += "<tr><th width=\"15%\">商品规格名称</th><th width=\"15%\">缩略图</th><th width=\"11%\">销售价</th><th width=\"11%\">最多购买数量</th><th width=\"11%\">最少购买数量</th><th width=\"11%\">库存</th><th width=\"11%\">运费</th><th width=\"13%\">操作</th></tr>";
 
+
+					var priceIds = "";
 					for ( var i = 0; i < ret.length; i++) {
+							if(priceIds !=""){
+								priceIds +=",";
+							}
+							priceIds += ret[i].priceId;
 							str += "<tr id='price"+ret[i].goodsPriceId+"'><td width=\"15%\" class=\"tdleft\">"
 							+ ret[i].priceName
 							+ "</td>"
@@ -426,14 +426,14 @@
 					str += " </table>";
 		
 					$("#priceList").html(str);
+					
+					$("#priceIds").val(priceIds);
 				}else{
 					$("#priceList").html("")
 				}
 
 			}, "json")
-		}else{
-			$("#priceList").html("")
-		}
+		
 	}
 
 	/*删除价格*/

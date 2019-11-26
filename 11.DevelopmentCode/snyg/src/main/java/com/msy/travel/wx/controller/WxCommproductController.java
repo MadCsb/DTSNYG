@@ -103,6 +103,8 @@ public class WxCommproductController extends BaseController {
 	public ModelAndView toQueryCommproductDetailByPriceId(Commproduct commproduct, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
+			// commproduct = new Commproduct();
+			// commproduct.setPriceId("a9b082e73d8a4d4bab956a6d01a342ab");
 			commproduct = commproductService.queryCommproductForWx(commproduct);
 
 			if ("0".equals(commproduct.getPriceType())) {
@@ -113,6 +115,7 @@ public class WxCommproductController extends BaseController {
 				view = new ModelAndView("wx/commproduct/commproductDetail2");
 			}
 
+			// view.addObject("user", new User());
 			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
 			wxSetViewObjects(view, request, serviceCode, userService);
 
@@ -133,6 +136,7 @@ public class WxCommproductController extends BaseController {
 			ol = orderListService.queryGoodPriceCount(ol);
 
 			User user = (User) view.getModel().get("user");
+
 			Accessrecord accessrecord = new Accessrecord();
 			accessrecord.setSpId(commproduct.getSpId());
 			accessrecord.setUserId(user.getUserId());

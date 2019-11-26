@@ -316,8 +316,8 @@
  	function getPriceList() {
 		if ($("#priceIds").val().length > 0) {
 			$.post("goodsPrice?method=toDetailForList",{
-				goodsPriceIdList : $("#priceIds").val(),
-				priceType:$("#priceType").val()
+				priceType:$("#priceType").val(),
+				productId:$("#productId").val()
 			},
 			function(ret) {
 				if (ret.length > 0) {
@@ -326,7 +326,13 @@
 					var str = "<table id=\"priceTable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"datalist\">";
 					str += "<tr><th width=\"15%\">商品规格名称</th><th width=\"15%\">缩略图</th><th width=\"11%\">销售价</th><th width=\"11%\">最多购买数量</th><th width=\"11%\">最少购买数量</th><th width=\"11%\">库存</th><th width=\"11%\">运费</th><th width=\"13%\">操作</th></tr>";
 
+					var priceIds = "";
 					for ( var i = 0; i < ret.length; i++) {
+						if(priceIds !=""){
+							priceIds +=",";
+						}
+						priceIds += ret[i].priceId;
+						
 							str += "<tr id='price"+ret[i].goodsPriceId+"'><td width=\"15%\" class=\"tdleft\">"
 							+ ret[i].priceName
 							+ "</td>"
@@ -364,6 +370,7 @@
 					str += " </table>";
 		
 					$("#priceList").html(str);
+					$("#priceIds").val(priceIds);
 				}else{
 					$("#priceList").html("")
 				}

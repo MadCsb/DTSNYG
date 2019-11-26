@@ -163,20 +163,22 @@ public class CommproductController extends BaseController {
 			List<RsPic> rsPicList = rsPicService.queryRsPicList(rsPic);
 
 			// 处理价格规格
-			GoodsPrice goodsPrice = new GoodsPrice();
-			goodsPrice.setProductId(commproduct.getProductId());
-			goodsPrice.setPriceType("0");
-
-			List<GoodsPrice> goodsPriceList = goodsPriceService.queryGoodsPriceList(goodsPrice);
-			String priceIds = "";
-			if (goodsPriceList != null && goodsPriceList.size() > 0) {
-				for (int i = 0; i < goodsPriceList.size(); i++) {
-					if (priceIds.length() > 0)
-						priceIds += ",";
-					priceIds += goodsPriceList.get(i).getGoodsPriceId();
-				}
-			}
-			objCommproduct.setPriceIds(priceIds);
+			// GoodsPrice goodsPrice = new GoodsPrice();
+			// goodsPrice.setProductId(commproduct.getProductId());
+			// goodsPrice.setPriceType("0");
+			// goodsPrice.setDelFlag("0");
+			//
+			// List<GoodsPrice> goodsPriceList =
+			// goodsPriceService.queryGoodsPriceList(goodsPrice);
+			// String priceIds = "";
+			// if (goodsPriceList != null && goodsPriceList.size() > 0) {
+			// for (int i = 0; i < goodsPriceList.size(); i++) {
+			// if (priceIds.length() > 0)
+			// priceIds += ",";
+			// priceIds += goodsPriceList.get(i).getGoodsPriceId();
+			// }
+			// }
+			// objCommproduct.setPriceIds(priceIds);
 
 			Subject subject = new Subject();
 			subject.setSpId(getLoginUser(request).getAccId());
@@ -187,7 +189,7 @@ public class CommproductController extends BaseController {
 			view.addObject("companyList", companyList);
 			view.addObject("pdcTypeList", pdcTypeList);
 			view.addObject("rsPicList", rsPicList);
-			view.addObject("goodsPriceList", goodsPriceList);
+			// view.addObject("goodsPriceList", goodsPriceList);
 			view.addObject("subPdcTypeList", subPdcTypeList);
 			view.addObject("subjectList", subjectList);
 			view.addObject("rsType", SysConsts.RSTYPE_COMMPRODUCT);

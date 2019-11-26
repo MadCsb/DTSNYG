@@ -137,6 +137,16 @@ public class Commproduct extends BaseEntity implements java.io.Serializable {
 
 	private String peopleNum;
 
+	private String expressNum;
+
+	public String getExpressNum() {
+		return expressNum;
+	}
+
+	public void setExpressNum(String expressNum) {
+		this.expressNum = expressNum;
+	}
+
 	public String getPriceStartDate() {
 		return priceStartDate;
 	}

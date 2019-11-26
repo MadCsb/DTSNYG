@@ -60,7 +60,7 @@
          <p>${commproduct.productName!''}</p>
          <div class="ztwz">${commproduct.subject!''}</div>
 		 <div class="jgwz">&yen;${commproduct.price!''}</div>
-         <div class="zswz"><span id="kuaidi">快递 免运费</span><span style="float: right;">销量  ${commproduct.saleNum!'0'}</span></div>
+         <div class="zswz"><span id="kuaidi"></span><span style="float: right;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
 </div>
 <!-- 
@@ -227,6 +227,7 @@ var alertHtml = "";
 	
 	function getSellPriceList(){
 		$.post("wx?method=queryGoodsPriceListForWx",{
+			userId:$("#userId").val(),
 			productId:$("#productId").val(),
 			priceType:$("#priceType").val(),
 			delFlag:'0'
@@ -238,6 +239,7 @@ var alertHtml = "";
 					str+='<div class="spgg_title"';
 					if($("#priceId").val() ==  data[i].priceId){
 						checkPriceId = data[i].priceId;
+						alert(data[i].freight);
 						if(data[i].freight == ""){
 							$("#kuaidi").html("快递 免运费");
 						}else{

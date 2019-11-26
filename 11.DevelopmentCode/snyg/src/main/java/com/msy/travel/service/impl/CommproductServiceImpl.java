@@ -156,6 +156,7 @@ public class CommproductServiceImpl implements CommproductService {
 		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
 			commproduct.setSaleNum(null);
 		}
+		commproduct.setState("0");
 
 		commproductDao.insertCommproduct(commproduct);
 
@@ -193,6 +194,7 @@ public class CommproductServiceImpl implements CommproductService {
 		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
 			commproduct.setSaleNum(null);
 		}
+		commproduct.setState("0");
 		commproductDao.updateCommproduct(commproduct);
 		rsPicService.saveRsPic(picIds, commproduct.getProductId());
 	}
