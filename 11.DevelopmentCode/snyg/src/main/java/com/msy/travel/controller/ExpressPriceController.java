@@ -22,6 +22,7 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
+import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.pojo.City;
 import com.msy.travel.pojo.ExpressPrice;
 import com.msy.travel.service.ExpressPriceService;
@@ -229,27 +230,104 @@ public class ExpressPriceController extends BaseController {
 	public ModelAndView toUpdateOrAdd(ExpressPrice expressPrice, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			List<ExpressPrice> expressPriceList = expressPriceService.queryExpressPriceList(expressPrice);
+			List<ExpressPrice> expressPriceList = expressPriceService.queryExpressPriceListGroup(expressPrice);
 
-			if (expressPriceList == null || expressPriceList.size() == 0) {
-				// 加载省
-				City city = new City();
-				city.setCityLevel("1");// 1:省
-				city.setForeigh("0");// 0:国内
-				EntityPage entityPage = new EntityPage();
-				city.setEntityPage(entityPage);
-				entityPage.setSortField("t.F_PY");// 按拼音排列
-				entityPage.setSortOrder("ASC");
-				List<City> provList = cityService.queryCityList(city);
+			view = new ModelAndView("expressprice/addExpressPrice");
+			view.addObject("expressPriceList", expressPriceList);
+			view.addObject("expressPrice", expressPrice);
 
-				view = new ModelAndView("expressprice/addExpressPrice");
-				view.addObject("expressPrice", expressPrice);
-				view.addObject("provList", provList);
-			} else {
-				view = new ModelAndView("expressprice/updateExpressPrice");
-				view.addObject("expressPriceList", expressPriceList);
-				view.addObject("expressPrice", expressPrice);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 新增或修改打开地区选择
+	 * 
+	 * @author wzd
+	 * @date 2019年11月26日 上午10:02:36
+	 * @param expressPrice
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=getCityList")
+	public ModelAndView getCityList(ExpressPrice expressPrice, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+
+			view = new ModelAndView("expressprice/queryCity");
+
+			// 加载省
+			City city = new City();
+			city.setCityLevel("1");// 1:省
+			city.setForeigh("0");// 0:国内
+			EntityPage entityPage = new EntityPage();
+			city.setEntityPage(entityPage);
+			entityPage.setSortField("t.F_PY");// 按拼音排列
+			entityPage.setSortOrder("ASC");
+			List<City> provList = cityService.queryCityList(city);
+
+			view.addObject("provList", provList);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 新增或修改
+	 * 
+	 * @author wzd
+	 * @date 2019年11月26日 上午11:01:51
+	 * @param expressPrice
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=addOrUpdate")
+	public ModelAndView addOrUpdate(ExpressPrice expressPrice, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			ExpressPrice oldEP = new ExpressPrice();
+			oldEP.setCompanyExpressId(expressPrice.getCompanyExpressId());
+			expressPriceService.deleteExpressPrice(oldEP);
+
+			List<ExpressPrice> expressPriceList = expressPrice.getExpressPriceList();
+			if (expressPriceList != null && expressPriceList.size() > 0) {
+				for (int i = 0; i < expressPriceList.size(); i++) {
+					ExpressPrice e = expressPriceList.get(i);
+					if (e.getProvinceId() != null && !"".equals(e.getProvinceId())) {
+						String[] provinceIds = e.getProvinceId().split(",");
+						String[] provinceNames = e.getProvince().split(",");
+
+						String groupNum = PrimaryKeyUtil.generateNumCode();
+
+						for (int j = 0; j < provinceIds.length; j++) {
+							ExpressPrice newExpressPrice = new ExpressPrice();
+							newExpressPrice.setExpressPriceId(PrimaryKeyUtil.generateKey());
+							newExpressPrice.setCompanyExpressId(expressPrice.getCompanyExpressId());
+							newExpressPrice.setProvince(provinceNames[j]);
+							newExpressPrice.setProvinceId(provinceIds[j]);
+							newExpressPrice.setExpressNum(e.getExpressNum());
+							newExpressPrice.setExpressPrice(e.getExpressPrice());
+							newExpressPrice.setExpressNumAdd(e.getExpressNumAdd());
+							newExpressPrice.setExpressPriceAdd(e.getExpressPriceAdd());
+							newExpressPrice.setGroupNum(groupNum);
+							expressPriceService.createExpressPrice(newExpressPrice);
+						}
+					}
+				}
 			}
+
+			view = new ModelAndView("success");
 
 		} catch (Exception e) {
 			view = new ModelAndView("error");

@@ -15,7 +15,9 @@
 			F_EXPRESSNUM ,
 			F_EXPRESSPRICE ,
 			F_EXPRESSNUMADD ,
-			F_EXPRESSPRICEADD 
+			F_EXPRESSPRICEADD ,
+			F_GROUPNUM,
+			F_PROVINCEID
 		) VALUES (
 			#{expressPriceId} ,
 			#{companyExpressId} ,
@@ -23,7 +25,9 @@
 			#{expressNum} ,
 			#{expressPrice} ,
 			#{expressNumAdd} ,
-			#{expressPriceAdd} 
+			#{expressPriceAdd} ,
+			#{groupNum},
+			#{provinceId}
 		)
 	</insert>
 
@@ -38,7 +42,9 @@
 			F_EXPRESSNUM ,
 			F_EXPRESSPRICE ,
 			F_EXPRESSNUMADD ,
-			F_EXPRESSPRICEADD 
+			F_EXPRESSPRICEADD ,
+			F_GROUPNUM,
+			F_PROVINCEID
 		) VALUES (
 			#{expressPriceId} ,
 			#{companyExpressId} ,
@@ -46,7 +52,9 @@
 			#{expressNum} ,
 			#{expressPrice} ,
 			#{expressNumAdd} ,
-			#{expressPriceAdd} 
+			#{expressPriceAdd} ,
+			#{groupNum},
+			#{provinceId}
 		)
 	</insert>
 
@@ -60,7 +68,9 @@
 			F_EXPRESSNUM = #{expressNum} ,
 			F_EXPRESSPRICE = #{expressPrice} ,
 			F_EXPRESSNUMADD = #{expressNumAdd} ,
-			F_EXPRESSPRICEADD = #{expressPriceAdd} 
+			F_EXPRESSPRICEADD = #{expressPriceAdd} ,
+			F_GROUPNUM =  #{groupNum} ,
+			F_PROVINCEID = #{provinceId}
 		<where>
 			F_EXPRESSPRICEID = #{expressPriceId} 
 			
@@ -71,8 +81,12 @@
 		DELETE FROM
 			t_sm_expressprice 
 		<where>
-			F_EXPRESSPRICEID = #{expressPriceId}
-			
+			<if test="expressPriceId !=null and expressPriceId !=''">
+		    	F_EXPRESSPRICEID = #{expressPriceId}
+		    </if>
+		    <if test="companyExpressId !=null and companyExpressId !=''">
+		    	and F_COMPANYEXPRESSID = #{companyExpressId}
+		    </if>
 		</where>
 	</delete>
 	<!-- 批量删除消息 -->
@@ -95,7 +109,9 @@
 			t.F_EXPRESSNUM as expressNum ,
 			t.F_EXPRESSPRICE as expressPrice ,
 			t.F_EXPRESSNUMADD as expressNumAdd ,
-			t.F_EXPRESSPRICEADD as expressPriceAdd 
+			t.F_EXPRESSPRICEADD as expressPriceAdd ,
+			t.F_GROUPNUM as groupNum ,
+			t.F_PROVINCEID as provinceId
 		FROM
 			t_sm_expressprice t
 		<where>
@@ -112,7 +128,9 @@
 			t.F_EXPRESSNUM as expressNum ,
 			t.F_EXPRESSPRICE as expressPrice ,
 			t.F_EXPRESSNUMADD as expressNumAdd ,
-			t.F_EXPRESSPRICEADD as expressPriceAdd 
+			t.F_EXPRESSPRICEADD as expressPriceAdd ,
+			t.F_GROUPNUM as groupNum,
+			t.F_PROVINCEID as provinceId
 		FROM
 		t_sm_expressprice t
 		<where>
@@ -131,5 +149,39 @@
 		    	${entityPage.sortOrder}
 			</if>
 		</if>
+	</select>
+	
+	<!-- 按条件查询所有  分组-->
+	<select id="queryExpressPriceListGroup" parameterType="expressPrice" resultType="expressPrice">
+		SELECT
+			t.F_COMPANYEXPRESSID AS companyExpressId,
+			group_concat(t.F_PROVINCE) AS province,
+			t.F_EXPRESSNUM AS expressNum,
+			t.F_EXPRESSPRICE AS expressPrice,
+			t.F_EXPRESSNUMADD AS expressNumAdd,
+			t.F_EXPRESSPRICEADD AS expressPriceAdd,
+			t.F_GROUPNUM AS groupNum,
+			group_concat(t.F_PROVINCEID) AS provinceId
+		FROM
+		t_sm_expressprice t
+		<where>
+			<if test="expressPriceId!=null and expressPriceId!=''">
+		    	t.F_EXPRESSPRICEID = #{expressPriceId}
+		    </if>
+			<if test="companyExpressId !=null and companyExpressId !=''">
+		    	t.F_COMPANYEXPRESSID = #{companyExpressId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+		group by t.F_GROUPNUM
 	</select>
 </mapper>	

@@ -2,88 +2,85 @@
 <html>
 <head><#include "/INC_HEAD.html">
 </head>
+
 <body>
+	<div class="waybill-title">
+		<span>运费价格</span>
+	</div>
 	<!--主窗体-->
 	<div class="cont-div">
-		<form action="expressPrice?method=update" method="post"
-			id="modifyExpressPrice">
+		<form action="expressPrice?method=addOrUpdate" method="post"
+			id="createExpressPrice">
+			<input type="hidden" name="companyExpressId" id="companyExpressId" value="${expressPrice.companyExpressId!''}"/>
 			<!--编辑区-->
-			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
-
-
-				<tr class="cs">
-
-					<td>expressPriceId：</td>
-					<td><input name="expressPriceId" type="text"
-						id="expressPriceId" size="40"
-						value="${expressPrice.expressPriceId!''}" /></td>
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="1" width="100%" id="cityTable">
+				<tr>
+					<th width="20%">运送到</th>
+					<th width="10%">首件数(件)</th>
+					<th width="10%">首费(元)</th>
+					<th width="10%">续件数(件)</th>
+					<th width="10%">续费(元)</th>
+					<th width="10%">操作</th>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>companyExpressId：</td>
-					<td><input name="companyExpressId" type="text"
-						id="companyExpressId" size="40"
-						value="${expressPrice.companyExpressId!''}" /></td>
+				
+				
+				<tr>
+					<td colspan="6"><a href="javascript:void(0)" onclick="addCityTr()">增加一条</a></td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>province：</td>
-					<td><input name="province" type="text"
-						id="province" size="40"
-						value="${expressPrice.province!''}" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>expressNum：</td>
-					<td><input name="expressNum" type="text"
-						id="expressNum" size="40"
-						value="${expressPrice.expressNum!''}" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>expressPrice：</td>
-					<td><input name="expressPrice" type="text"
-						id="expressPrice" size="40"
-						value="${expressPrice.expressPrice!''}" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>expressNumAdd：</td>
-					<td><input name="expressNumAdd" type="text"
-						id="expressNumAdd" size="40"
-						value="${expressPrice.expressNumAdd!''}" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>expressPriceAdd：</td>
-					<td><input name="expressPriceAdd" type="text"
-						id="expressPriceAdd" size="40"
-						value="${expressPrice.expressPriceAdd!''}" /></td>
-				</tr>
-
-
 			</table>
-			<!--操作区-->
-			<div class="data-btn">
-				<input type="submit" class="data-btnbg" value="确认" /> 
-				<input type="reset" class="data-btnbg" value="取消"  onclick="javascript:location.href='{Session.BACK_URL!""}'"/>
-			</div>
 		</form>
+		<div class="footerbtn">
+			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+			<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="saveButton" value="保存">
+		</div>
 	</div>
 </body>
 <script type="text/javascript">
+var areaListLen = 0;
+function addCityTr(){
+	var index = areaListLen;
+	var str = "";
+	str+='<tr>';
+	str+='<td width="24%">';
+	str+='<input type="hidden" id="provinceId'+index+'" name="expressPriceList['+index+'].provinceId" value="" >';
+	str+='<input type="hidden" id="province'+index+'" name="expressPriceList['+index+'].province" value="" >';
+	str+='<span id="areaName'+index+'"></span>';
+	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">编辑</a>';
+	str+='</td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNum" id="expressNum'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPrice" id="expressPrice'+index+'" size="20" value="" style="width:100px;"  onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNumAdd" id="expressNumAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPriceAdd" id="expressPriceAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>';
+	str+='<td>删除</td>';
+	str+='</tr>';
 	
+	areaListLen++;
+	
+	$("#cityTable").append(str);
+}
+
+	function addCity(index){
+		parent.layer.open({
+ 			type : 2,
+ 			title : '选择地区',
+ 			area : [ '750px', '550px' ],
+ 			fix : true,
+ 			content :"expressPrice.do?method=getCityList",
+ 			end: function(){
+ 				var cityIds = art.dialog.data("cityIds");
+ 				var cityNames = art.dialog.data("cityNames");
+ 				
+ 				$("#areaName"+index).html(cityNames+"&nbsp;&nbsp;")
+ 				$("#provinceId"+index).val(cityIds);
+ 				$("#province"+index).val(cityNames);
+ 			}
+ 		});
+	}
+	
+	function beforeSubmit(){
+		if ($("#createExpressPrice").validationEngine('validate')) {
+			$("#createExpressPrice").submit();
+		}
+	}
 </script>
 </html>

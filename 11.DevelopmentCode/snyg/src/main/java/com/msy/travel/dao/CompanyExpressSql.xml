@@ -114,13 +114,13 @@
 		    	t.F_COMPANYEXPRESSID = #{companyExpressId}
 		    </if>
 			<if test="companyId !=null and companyId !=''">
-		    	t.F_COMPANYID = #{companyId}
+		    	and t.F_COMPANYID = #{companyId}
 		    </if>
 		    <if test="feeName !=null and feeName !=''">
-		    	t.F_FENNAME like concat('%',#{feeName},'%')
+		    	and t.F_FENNAME like concat('%',#{feeName},'%')
 		    </if>
 		    <if test="spId !=null and spId !=''">
-		    	t.F_SPID = #{spId}
+		    	and t.F_SPID = #{spId}
 		    </if>
 		</where>
 		<if test="entityPage != null">

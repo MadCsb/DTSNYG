@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="expressPrice?method=add" method="post"
+			id="createExpressPrice">
+				<#if provList?? && (provList?size>0)>
+					<#list provList as li>
+						<input class="cityIdClass" type="checkbox" value="${li.cityId!''}" cityName="${li.cityName!''}">${li.cityName!''}
+					</#list>
+				</#if>
+		</form>
+		<div class="footerbtn">
+			<input name="button4" type="button" onClick="closeLayer()" class="cbtn2" id="button4" value="取消">
+			<input name="button3" onClick="beforeSubmit()" type="button" class="cbtn1" id="saveButton" value="保存">
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+var cityIdsOld = art.dialog.data("cityIds");		
+var cityNamesOld = art.dialog.data("cityIds");		
+
+$(function(){
+	var cityIdsOldArray = cityIdsOld.split(",");
+	if(cityIdsOldArray!=null && cityIdsOldArray.length>0){
+		$(".cityIdClass").each(function(i) {
+			for(var i=0;i<cityIdsOldArray.length;i++){
+				if($(this).val()==cityIdsOldArray[i]){
+					$(this).prop("checked","checked");
+				}
+			}
+		})
+	}
+
+})
+function closeLayer(){
+//	art.dialog.data("cityIds",cityIds);
+//	art.dialog.data("cityNames",cityNames);
+	parent.layer.closeAll();
+}
+function beforeSubmit(){
+	var cityIds = "";
+	var cityNames="";
+	$(".cityIdClass").each(function (i) {
+		if ($(this).prop("checked")) {
+			if(cityIds !=""){
+				cityIds +=",";
+				cityNames+=",";
+			}
+			var cityId = $(this).val();
+			var cityName = $(this).attr("cityName")
+			cityIds+=cityId;
+			cityNames+=cityName;
+		}
+	})
+	
+	if(cityIds == ""){
+		parent.layer.alert("请选择地区");
+	}else{
+		art.dialog.data("cityIds",cityIds);
+		art.dialog.data("cityNames",cityNames);
+		parent.layer.closeAll();
+	}
+}
+
+</script>
+</html>

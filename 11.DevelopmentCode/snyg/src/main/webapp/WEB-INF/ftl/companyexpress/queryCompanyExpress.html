@@ -18,7 +18,7 @@
 
 </head>
 <body>
-	<form id="queryFrm" action="companyExpress?method=query"
+	<form id="queryFrm" action="companyExpress.do?method=query"
 		method="post">
        	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
 		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
@@ -99,7 +99,7 @@ function delCompanyExpress(companyExpressId){
 }
 
 function editCompanyExpressPrice(companyExpressId){
-	window.location.href="expressPrice.do?method=toUpdateOrAdd";
+	window.location.href="expressPrice.do?method=toUpdateOrAdd&companyExpressId="+companyExpressId;
 }
 </script>
 </body>
