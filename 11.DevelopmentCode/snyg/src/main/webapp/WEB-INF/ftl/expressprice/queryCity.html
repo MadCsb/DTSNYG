@@ -8,11 +8,119 @@
 	<div class="cont-div">
 		<form action="expressPrice?method=add" method="post"
 			id="createExpressPrice">
-				<#if provList?? && (provList?size>0)>
-					<#list provList as li>
-						<input class="cityIdClass" type="checkbox" value="${li.cityId!''}" cityName="${li.cityName!''}">${li.cityName!''}
-					</#list>
-				</#if>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="21" cityName="广东">广东
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="4" cityName="安徽">安徽
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="22" cityName="广西壮族自治区">广西壮族自治区
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="9" cityName="北京">北京
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="34" cityName="重庆">重庆
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="5" cityName="福建">福建
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="29" cityName="甘肃">甘肃
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="25" cityName="贵州">贵州
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="19" cityName="湖北">湖北
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="11" cityName="河北">河北
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="1" cityName="黑龙江">黑龙江
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="20" cityName="湖南">湖南
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="8" cityName="河南">河南
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="23" cityName="海南">海南
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="15" cityName="吉林">吉林
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="2" cityName="江苏">江苏
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="6" cityName="江西">江西
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="14" cityName="辽宁">辽宁
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="13" cityName="内蒙古自治区">内蒙古自治区
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="31" cityName="宁夏回族自治区">宁夏回族自治区
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="30" cityName="青海">青海
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="24" cityName="四川">四川
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="7" cityName="山东">山东
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="33" cityName="上海">上海
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="28" cityName="陕西">陕西
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="12" cityName="山西">山西
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="10" cityName="天津">天津
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="27" cityName="西藏自治区">西藏自治区
+					</td>	
+					<td>
+					<input class="cityIdClass" type="checkbox" value="32" cityName="新疆维吾尔自治区">新疆维吾尔自治区
+					</td>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="26" cityName="云南">云南
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input class="cityIdClass" type="checkbox" value="3" cityName="浙江">浙江
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
 		</form>
 		<div class="footerbtn">
 			<input name="button4" type="button" onClick="closeLayer()" class="cbtn2" id="button4" value="取消">

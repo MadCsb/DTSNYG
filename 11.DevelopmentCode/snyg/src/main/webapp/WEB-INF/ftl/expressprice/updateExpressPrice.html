@@ -45,7 +45,7 @@ function addCityTr(){
 	str+='<input type="hidden" id="provinceId'+index+'" name="expressPriceList['+index+'].provinceId" value="" >';
 	str+='<input type="hidden" id="province'+index+'" name="expressPriceList['+index+'].province" value="" >';
 	str+='<span id="areaName'+index+'"></span>';
-	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">编辑</a>';
+	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">添加收货地</a>';
 	str+='</td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNum" id="expressNum'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPrice" id="expressPrice'+index+'" size="20" value="" style="width:100px;"  onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>';
@@ -63,7 +63,7 @@ function addCityTr(){
 		parent.layer.open({
  			type : 2,
  			title : '选择地区',
- 			area : [ '750px', '550px' ],
+ 			area : [ '750px', '450px' ],
  			fix : true,
  			content :"expressPrice.do?method=getCityList",
  			end: function(){

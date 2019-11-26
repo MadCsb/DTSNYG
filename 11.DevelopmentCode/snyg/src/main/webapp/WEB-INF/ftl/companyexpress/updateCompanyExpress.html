@@ -63,7 +63,7 @@
 							<input class="provinceIdClass" type="hidden" id="provinceId${li_index}" name="expressPriceList[${li_index}].provinceId" value="${li.provinceId!''}" >
 							<input type="hidden" id="province${li_index}" name="expressPriceList[${li_index}].province" value="${li.province!''}" >
 							<span id="areaName${li_index}">${li.province!''}&nbsp;&nbsp;</span>
-							<a href="javascript:void(0)" onclick="addCity('${li_index}')">编辑</a>
+							<a href="javascript:void(0)" onclick="addCity('${li_index}')">收货地</a>
 						</td>
 						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressNum" id="expressNum${li_index}" size="20" value="${li.expressNum!''}" style="width:100px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[required,maxSize[100],custom[integer]] data-inputtxt"/></td>
 						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressPrice" id="expressPrice${li_index}" size="20" value="${li.expressPrice!''}" style="width:100px;"  onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[required,custom[num6point2],maxSize[6]] data-inputtxt"/></td>
@@ -147,7 +147,7 @@ function addCityTr(){
 	str+='<input class="provinceIdClass" type="hidden" id="provinceId'+index+'" name="expressPriceList['+index+'].provinceId" value="" >';
 	str+='<input type="hidden" id="province'+index+'" name="expressPriceList['+index+'].province" value="" >';
 	str+='<span id="areaName'+index+'"></span>';
-	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">编辑</a>';
+	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">收货地</a>';
 	str+='</td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNum" id="expressNum'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,maxSize[100],custom[integer]] data-inputtxt"/></td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPrice" id="expressPrice'+index+'" size="20" value="" style="width:100px;"  onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,custom[num6point2],maxSize[6]] data-inputtxt"/></td>';
