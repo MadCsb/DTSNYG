@@ -253,7 +253,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 					// 续重数量
 					String numAdd = BigDecimalUtil.subtract(ex.getExpressNum(), num);
 					// 续重数量/续重件数
-					String numAddForPrice = BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd());
+					String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
 					// 续重需要计算的数量*续重价格
 					String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
 
