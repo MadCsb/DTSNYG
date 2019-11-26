@@ -2,6 +2,7 @@ package com.msy.travel.service;
 
 import java.util.List;
 
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.CompanyExpress;
 import com.msy.travel.pojo.ExpressPrice;
 
@@ -120,5 +121,5 @@ public interface CompanyExpressService {
 	 * @throws Exception
 	 * @return String
 	 */
-	public String getCompanyPrice(String priceId, String num, String province) throws Exception;
+	public Result getCompanyPrice(String priceId, String num, String province);
 }

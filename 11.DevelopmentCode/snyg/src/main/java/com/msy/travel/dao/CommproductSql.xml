@@ -301,7 +301,8 @@
 			s.F_PRICE as price ,
 			s.F_PRICESTARTDATE as priceStartDate ,
 			s.F_PRICEENDDATE as priceEndDate ,
-			s.F_PEOPLENUM as peopleNum  
+			s.F_PEOPLENUM as peopleNum  ,
+			s.F_GOODSPRICEID as goodsPriceId
 		FROM
 			t_sm_sellprice s
 		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID

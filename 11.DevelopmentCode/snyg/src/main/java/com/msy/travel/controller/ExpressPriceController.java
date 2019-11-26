@@ -23,7 +23,6 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.PrimaryKeyUtil;
-import com.msy.travel.pojo.City;
 import com.msy.travel.pojo.ExpressPrice;
 import com.msy.travel.service.ExpressPriceService;
 import com.msy.travel.service.ICityService;
@@ -262,17 +261,17 @@ public class ExpressPriceController extends BaseController {
 
 			view = new ModelAndView("expressprice/queryCity");
 
-			// 加载省
-			City city = new City();
-			city.setCityLevel("1");// 1:省
-			city.setForeigh("0");// 0:国内
-			EntityPage entityPage = new EntityPage();
-			city.setEntityPage(entityPage);
-			entityPage.setSortField("t.F_PY");// 按拼音排列
-			entityPage.setSortOrder("ASC");
-			List<City> provList = cityService.queryCityList(city);
-
-			view.addObject("provList", provList);
+			// // 加载省
+			// City city = new City();
+			// city.setCityLevel("1");// 1:省
+			// city.setForeigh("0");// 0:国内
+			// EntityPage entityPage = new EntityPage();
+			// city.setEntityPage(entityPage);
+			// entityPage.setSortField("t.F_PY");// 按拼音排列
+			// entityPage.setSortOrder("ASC");
+			// List<City> provList = cityService.queryCityList(city);
+			//
+			// view.addObject("provList", provList);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

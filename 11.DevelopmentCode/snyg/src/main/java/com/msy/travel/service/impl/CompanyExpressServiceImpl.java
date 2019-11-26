@@ -4,11 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.dao.CompanyExpressDao;
 import com.msy.travel.dao.ExpressPriceDao;
 import com.msy.travel.dao.SellPriceDao;
@@ -26,6 +29,8 @@ import com.msy.travel.service.CompanyExpressService;
 @Service
 @Transactional
 public class CompanyExpressServiceImpl implements CompanyExpressService {
+
+	public static final Log log = LogFactory.getLog(CompanyExpressService.class);
 
 	@Resource(name = "companyExpressDao")
 	private CompanyExpressDao companyExpressDao;
@@ -226,43 +231,60 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 	 * @throws Exception
 	 * @return String
 	 */
-	public String getCompanyPrice(String priceId, String num, String province) throws Exception {
-		String money = "";
-		SellPrice sellPrice = new SellPrice();
-		sellPrice.setPriceId(priceId);
-		sellPrice = sellPriceDao.querySellPrice(sellPrice);
+	public Result getCompanyPrice(String priceId, String num, String province) {
+		Result result = new Result();
+		try {
+			String money = "";
+			SellPrice sellPrice = new SellPrice();
+			sellPrice.setPriceId(priceId);
+			sellPrice = sellPriceDao.querySellPrice(sellPrice);
 
-		if (sellPrice.getCompanyExpressId() == null || "".equals(sellPrice.getCompanyExpressId())) {
-			return money;
-		} else {
-			ExpressPrice ex = new ExpressPrice();
-			ex.setCompanyExpressId(sellPrice.getCompanyExpressId());
-			ex.setProvince(province);
-			List<ExpressPrice> expressPriceList = expressPriceDao.queryExpressPriceList(ex);
-
-			if (expressPriceList != null && expressPriceList.size() > 0) {
-				ex = expressPriceList.get(0);
-				int expressNum = Integer.parseInt(ex.getExpressNum());
-				// 如果数量少于首件 返回首件价格
-				if (Integer.parseInt(num) <= expressNum) {
-					money = ex.getExpressPrice();
-					return money;
-				} else {
-					// 首重价格
-					String expressPrice = ex.getExpressPrice();
-					// 续重数量
-					String numAdd = BigDecimalUtil.subtract(ex.getExpressNum(), num);
-					// 续重数量/续重件数
-					String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
-					// 续重需要计算的数量*续重价格
-					String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
-
-					money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
-					return money;
-				}
+			if (sellPrice.getCompanyExpressId() == null || "".equals(sellPrice.getCompanyExpressId())) {
+				result.setResultCode("0");
+				result.setResultMsg("");
+				result.setResultPojo(money);
 			} else {
-				return money;
+				ExpressPrice ex = new ExpressPrice();
+				ex.setCompanyExpressId(sellPrice.getCompanyExpressId());
+				ex.setProvince(province);
+				List<ExpressPrice> expressPriceList = expressPriceDao.queryExpressPriceList(ex);
+
+				if (expressPriceList != null && expressPriceList.size() > 0) {
+					ex = expressPriceList.get(0);
+					int expressNum = Integer.parseInt(ex.getExpressNum());
+					// 如果数量少于首件 返回首件价格
+					if (Integer.parseInt(num) <= expressNum) {
+						money = ex.getExpressPrice();
+						result.setResultCode("0");
+						result.setResultMsg("");
+						result.setResultPojo(money);
+					} else {
+						// 首重价格
+						String expressPrice = ex.getExpressPrice();
+						// 续重数量
+						String numAdd = BigDecimalUtil.subtract(ex.getExpressNum(), num);
+						// 续重数量/续重件数
+						String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
+						// 续重需要计算的数量*续重价格
+						String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
+
+						money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
+						result.setResultCode("0");
+						result.setResultMsg("");
+						result.setResultPojo(money);
+					}
+				} else {
+					result.setResultCode("0");
+					result.setResultMsg("");
+					result.setResultPojo(money);
+				}
 			}
+		} catch (Exception e) {
+			log.error(e, e);
+			result.setResultCode("1");
+			result.setResultMsg("获取运费出错");
+			result.setResultPojo("");
 		}
+		return result;
 	}
 }

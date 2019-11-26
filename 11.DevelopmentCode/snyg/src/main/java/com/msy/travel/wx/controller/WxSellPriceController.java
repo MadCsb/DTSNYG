@@ -20,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Consignee;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.service.CompanyExpressService;
@@ -122,7 +123,10 @@ public class WxSellPriceController extends BaseController {
 				if (cList != null && cList.size() > 0) {
 					c = cList.get(0);
 					for (int i = 0; i < sellPricelist.size(); i++) {
-						sellPricelist.get(i).setFreight(companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" "))));
+						Result result = companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" ")));
+						if (result.getResultCode().equals("0")) {
+							sellPricelist.get(i).setFreight((String) result.getResultPojo());
+						}
 					}
 				}
 			}
