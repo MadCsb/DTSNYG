@@ -8,6 +8,6 @@
   </body>
   
   <script type="text/javascript">
-    location.href="<%=request.getContextPath()%>/tologin";
+    location.href="http://www.3nong1gou.com/web/index.html";
   </script>
 </html>
