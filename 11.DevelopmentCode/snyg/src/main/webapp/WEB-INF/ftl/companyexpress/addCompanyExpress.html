@@ -45,6 +45,20 @@
 					</select>
 				</td>
 			</table>
+			
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="1" width="100%" id="cityTable">
+				<tr>
+					<th width="20%">运送到</th>
+					<th width="10%">首件数(件)</th>
+					<th width="10%">首费(元)</th>
+					<th width="10%">续件数(件)</th>
+					<th width="10%">续费(元)</th>
+					<th width="10%">操作</th>
+				</tr>
+				<tr id="addTr">
+					<td colspan="6"><a href="javascript:void(0)" onclick="addCityTr()">增加一条</a></td>
+				</tr>
+			</table>
 		</form>
 		<div class="footerbtn">
 			<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
@@ -59,10 +73,91 @@ $(function() {
 });
 
 function beforeSubmit(){
+	$("#saveButton").attr("disabled","disabled");
 	if ($("#createCompanyExpress").validationEngine('validate')) {
-		$("#saveButton").attr("disabled","disabled");
-		$("#createCompanyExpress").submit();
+			if($(".provinceIdClass").length==0){
+				parent.layer.alert("请选择运送地区");
+				$('#saveButton').removeAttr("disabled");
+			}else{
+				var isSubmit = true;
+				$(".provinceIdClass").each(function(){
+					if($(this).val()==""){
+						isSubmit = false;
+					}
+				});
+				if(isSubmit){
+					$.post("companyExpress.do?method=queryCompanyExpressExis",{
+						companyId:$("#companyId").val(),
+						feeName:$("#feeName").val()
+					},function(data){
+						if(parseInt(data)>0){
+							$("#feeName").focus();
+							$("#msg").html("运费名称已存在");
+						}else{
+							$("#createCompanyExpress").submit();
+						}
+					})
+				}else{
+					parent.layer.alert("请选择运送地区");
+					$('#saveButton').removeAttr("disabled");
+				}
+			}
+		
+	}else{
+		$('#saveButton').removeAttr("disabled");
 	}
 }
+
+var areaListLen =0;
+function addCityTr(){
+	var index = areaListLen;
+	var str = "";
+	str+='<tr id="cityTr'+index+'">';
+	str+='<td width="24%">';
+	str+='<input class="provinceIdClass" type="hidden" id="provinceId'+index+'" name="expressPriceList['+index+'].provinceId" value="" >';
+	str+='<input type="hidden" id="province'+index+'" name="expressPriceList['+index+'].province" value="" >';
+	str+='<span id="areaName'+index+'"></span>';
+	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">编辑</a>';
+	str+='</td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNum" id="expressNum'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,maxSize[100],custom[integer]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPrice" id="expressPrice'+index+'" size="20" value="" style="width:100px;"  onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,custom[num6point2],maxSize[6]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNumAdd" id="expressNumAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>';
+	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPriceAdd" id="expressPriceAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>';
+	str+='<td><a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo(\''+index+'\');" >删除</a></td>';
+	str+='</tr>';
+	
+	areaListLen++;
+	
+	$("#addTr").before(str);
+}
+function deleteInfo(index){
+	parent.layer.confirm("确认删除该条运费价格记录吗?",function(){
+		$("#cityTr"+index).remove();
+		parent.layer.closeAll();
+	})
+}
+	function addCity(index){
+		var cityIdsOld = $("#provinceId"+index).val();		
+		var cityNamesOld = $("#province"+index).val();		
+		
+		art.dialog.data("cityIds",cityIdsOld);
+		art.dialog.data("cityNames",cityNamesOld);
+		
+		parent.layer.open({
+ 			type : 2,
+ 			title : '选择地区',
+ 			area : [ '750px', '550px' ],
+ 			fix : true,
+ 			content :"expressPrice.do?method=getCityList",
+ 			end: function(){
+ 				var cityIds = art.dialog.data("cityIds");
+ 				var cityNames = art.dialog.data("cityNames");
+ 				
+ 				$("#areaName"+index).html(cityNames+"&nbsp;&nbsp;")
+ 				$("#provinceId"+index).val(cityIds);
+ 				$("#province"+index).val(cityNames);
+ 			}
+ 		});
+	}
 </script>
 </html>

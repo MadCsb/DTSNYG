@@ -134,7 +134,8 @@
 			g.F_PRICENAME as priceName ,
 			g.F_STORECOUNT as storeCount ,
 			g.F_THUMBPIC as thumbPic ,
-			g.F_FREIGHT as freight
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g on t.F_GOODSPRICEID = g.F_GOODSPRICEID
@@ -169,7 +170,8 @@
 			p.F_STATE as state,
 			p.F_PRODUCTCODE as productCode,
 		    su.F_SUBJECT as subject ,
-			g.F_FREIGHT as freight
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
@@ -240,7 +242,8 @@
 			g.F_THUMBPIC as thumbPic,
 			t.F_DELFLAG as delFlag,
 			t.F_UPDATETIME as updateTime ,
-			g.F_FREIGHT as freight
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g ON t.F_GOODSPRICEID = g.F_GOODSPRICEID

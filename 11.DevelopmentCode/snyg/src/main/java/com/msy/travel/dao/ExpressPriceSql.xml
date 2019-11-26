@@ -115,8 +115,18 @@
 		FROM
 			t_sm_expressprice t
 		<where>
-			t.F_EXPRESSPRICEID = #{expressPriceId} 
-			
+			<if test="expressPriceId !=null and expressPriceId !=''">
+				t.F_EXPRESSPRICEID = #{expressPriceId} 
+		    </if>
+		    <if test="companyExpressId !=null and companyExpressId !=''">
+				and t.F_COMPANYEXPRESSID = #{companyExpressId} 
+		    </if>
+		    <if test="province !=null and province !=''">
+				and t.F_PROVINCE = #{province} 
+		    </if>
+		    <if test="provinceId !=null and provinceId !=''">
+				and t.F_PROVINCEID = #{provinceId} 
+		    </if>
 		</where>
 	</select>
 	<!-- 按条件查询所有 -->
@@ -134,10 +144,18 @@
 		FROM
 		t_sm_expressprice t
 		<where>
-			<if test="expressPriceId!=null and expressPriceId!=''">
-		    	t.F_EXPRESSPRICEID = #{expressPriceId}
-		     </if>
-			
+			<if test="expressPriceId !=null and expressPriceId !=''">
+				t.F_EXPRESSPRICEID = #{expressPriceId} 
+		    </if>
+		    <if test="companyExpressId !=null and companyExpressId !=''">
+				and t.F_COMPANYEXPRESSID = #{companyExpressId} 
+		    </if>
+		    <if test="province !=null and province !=''">
+				and t.F_PROVINCE = #{province} 
+		    </if>
+		    <if test="provinceId !=null and provinceId !=''">
+				and t.F_PROVINCEID = #{provinceId} 
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

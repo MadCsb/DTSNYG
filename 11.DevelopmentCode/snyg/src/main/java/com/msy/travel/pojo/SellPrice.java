@@ -103,6 +103,19 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 	 */
 	private String freight;
 
+	/**
+	 * F_COMPANYEXPRESSID 运费模板ID
+	 */
+	private String companyExpressId;
+
+	public String getCompanyExpressId() {
+		return companyExpressId;
+	}
+
+	public void setCompanyExpressId(String companyExpressId) {
+		this.companyExpressId = companyExpressId;
+	}
+
 	public String getFreight() {
 		return freight;
 	}

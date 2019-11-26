@@ -134,4 +134,36 @@
 			</if>
 		</if>
 	</select>
+	
+	<!--重名查询 -->
+	<select id="queryCompanyExpressExis" parameterType="companyExpress" resultType="int">
+		SELECT
+			count(1)
+		FROM
+		t_sm_companyexpress t
+		<where>
+			<if test="companyId !=null and companyId !=''">
+		    	and t.F_COMPANYID = #{companyId}
+		    </if>
+		    <if test="feeName !=null and feeName !=''">
+		    	and t.F_FENNAME = #{feeName}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="companyExpressId !=null and companyExpressId !=''">
+		    	and t.F_COMPANYEXPRESSID &lt;&gt; #{companyExpressId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
 </mapper>	

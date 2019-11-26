@@ -88,6 +88,29 @@ public class GoodsPrice extends BaseEntity implements java.io.Serializable {
 	 */
 	private String freight;
 
+	/**
+	 * F_COMPANYEXPRESSID 运费模板ID
+	 */
+	private String companyExpressId;
+
+	private String feeName;
+
+	public String getFeeName() {
+		return feeName;
+	}
+
+	public void setFeeName(String feeName) {
+		this.feeName = feeName;
+	}
+
+	public String getCompanyExpressId() {
+		return companyExpressId;
+	}
+
+	public void setCompanyExpressId(String companyExpressId) {
+		this.companyExpressId = companyExpressId;
+	}
+
 	public String getFreight() {
 		return freight;
 	}

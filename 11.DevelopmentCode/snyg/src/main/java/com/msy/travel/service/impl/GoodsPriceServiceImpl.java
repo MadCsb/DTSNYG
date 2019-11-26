@@ -141,6 +141,7 @@ public class GoodsPriceServiceImpl implements GoodsPriceService {
 		} else {
 			g.setFreight(goodsPrice.getFreight());
 		}
+		g.setCompanyExpressId(goodsPrice.getCompanyExpressId());
 
 		goodsPriceDao.insertGoodsPrice(g);
 
@@ -208,6 +209,7 @@ public class GoodsPriceServiceImpl implements GoodsPriceService {
 		} else {
 			g.setFreight(goodsPrice.getFreight());
 		}
+		g.setCompanyExpressId(goodsPrice.getCompanyExpressId());
 		goodsPriceDao.updateGoodsPrice(g);
 
 		SellPrice sellPrice = new SellPrice();

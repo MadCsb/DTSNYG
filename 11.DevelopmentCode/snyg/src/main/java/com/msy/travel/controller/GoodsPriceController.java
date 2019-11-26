@@ -29,7 +29,9 @@ import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.UploadFileCom;
 import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.pojo.CompanyExpress;
 import com.msy.travel.pojo.GoodsPrice;
+import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.GoodsPriceService;
 
 @Controller
@@ -44,13 +46,31 @@ public class GoodsPriceController extends BaseController {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@Resource(name = "companyExpressServiceImpl")
+	private CompanyExpressService companyExpressService;
+
 	/**
 	 * 跳转到新增页面
 	 */
 	@RequestMapping(params = "method=toAdd")
 	public ModelAndView toAddGoodsPrice(GoodsPrice goodsPrice, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
-		view = new ModelAndView("goodsprice/addGoodsPrice");
+		try {
+			view = new ModelAndView("goodsprice/addGoodsPrice");
+
+			CompanyExpress companyExpress = new CompanyExpress();
+			companyExpress.setSpId(getLoginUser(request).getAccId());
+			companyExpress.setEntityPage(new EntityPage());
+			companyExpress.getEntityPage().setSortField("t.F_UPDATETIME");
+			companyExpress.getEntityPage().setSortOrder("DESC");
+			// companyExpress.setCompanyId(companyId);
+			List<CompanyExpress> companyExpressList = companyExpressService.queryCompanyExpressList(companyExpress);
+
+			view.addObject("companyExpressList", companyExpressList);
+
+		} catch (Exception e) {
+			log.error(e, e);
+		}
 		return view;
 	}
 
@@ -80,9 +100,19 @@ public class GoodsPriceController extends BaseController {
 		ModelAndView view = null;
 		try {
 			GoodsPrice objGoodsPrice = goodsPriceService.queryGoodsPriceByPriceId(goodsPrice);
+
+			CompanyExpress companyExpress = new CompanyExpress();
+			companyExpress.setSpId(getLoginUser(request).getAccId());
+			companyExpress.setEntityPage(new EntityPage());
+			companyExpress.getEntityPage().setSortField("t.F_UPDATETIME");
+			companyExpress.getEntityPage().setSortOrder("DESC");
+			// companyExpress.setCompanyId(companyId);
+			List<CompanyExpress> companyExpressList = companyExpressService.queryCompanyExpressList(companyExpress);
+
 			view = new ModelAndView("goodsprice/updateGoodsPrice");
 			view.addObject("goodsPrice", objGoodsPrice);
 			view.addObject("priceType", priceType);
+			view.addObject("companyExpressList", companyExpressList);
 
 		} catch (Exception e) {
 			view = new ModelAndView("error");

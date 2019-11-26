@@ -16,7 +16,8 @@
 			F_THUMBPIC ,
 			F_CREATETIME ,
 			F_DELFLAG,
-			F_FREIGHT
+			F_FREIGHT,
+			F_COMPANYEXPRESSID
 		) VALUES (
 			#{goodsPriceId} ,
 			#{productId} ,
@@ -25,7 +26,8 @@
 			#{thumbPic} ,
 			#{createTime} ,
 			#{delFlag},
-			#{freight}
+			#{freight},
+			#{companyExpressId}
 		)
 	</insert>
 
@@ -41,7 +43,8 @@
 			F_THUMBPIC ,
 			F_CREATETIME ,
 			F_DELFLAG,
-			F_FREIGHT
+			F_FREIGHT,
+			F_COMPANYEXPRESSID
 		) VALUES (
 			#{goodsPriceId} ,
 			#{productId} ,
@@ -50,7 +53,8 @@
 			#{thumbPic} ,
 			#{createTime} ,
 			#{delFlag},
-			#{freight}
+			#{freight},
+			#{companyExpressId}
 		)
 	</insert>
 
@@ -63,7 +67,8 @@
 			F_STORECOUNT = #{storeCount} ,
 			F_THUMBPIC = #{thumbPic} ,
 			F_DELFLAG = #{delFlag},
-			F_FREIGHT = #{freight}
+			F_FREIGHT = #{freight},
+			F_COMPANYEXPRESSID = #{companyExpressId}
 		<where>
 			F_GOODSPRICEID = #{goodsPriceId} 
 			
@@ -108,7 +113,8 @@
 			t.F_THUMBPIC as thumbPic ,
 			t.F_CREATETIME as createTime ,
 		  	t.F_DELFLAG as delFlag,
-			t.F_FREIGHT as freight
+			t.F_FREIGHT as freight,
+			t.F_COMPANYEXPRESSID as companyExpressId
 		FROM
 			t_sm_goodsprice t
 		<where>
@@ -134,10 +140,13 @@
 		  	s.F_PEOPLENUM as peopleNum,
 		  	t.F_DELFLAG as delFlag,
 		  	s.F_PRICEID as priceId,
-			t.F_FREIGHT as freight
+			t.F_FREIGHT as freight,
+			t.F_COMPANYEXPRESSID as companyExpressId,
+			ce.F_FENNAME as feeName
 		FROM
 		t_sm_goodsprice t
 		left join t_sm_sellprice s on t.F_GOODSPRICEID = s.F_GOODSPRICEID 
+		left join t_sm_companyexpress ce on t.F_COMPANYEXPRESSID = ce.F_COMPANYEXPRESSID
 		<if test="priceType !=null and priceType !=''">
 	    	and s.F_PRICETYPE = #{priceType}
 	    </if>
@@ -189,7 +198,8 @@
 			g.F_PRICENAME as priceName ,
 			g.F_STORECOUNT as storeCount ,
 			g.F_THUMBPIC as thumbPic ,
-			g.F_FREIGHT as freight
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g on t.F_GOODSPRICEID = g.F_GOODSPRICEID

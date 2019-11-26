@@ -25,9 +25,11 @@ import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.pojo.Company;
 import com.msy.travel.pojo.CompanyExpress;
+import com.msy.travel.pojo.ExpressPrice;
 import com.msy.travel.pojo.Pubmap;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.CompanyService;
+import com.msy.travel.service.ExpressPriceService;
 import com.msy.travel.service.IPubmapService;
 
 @Controller
@@ -44,6 +46,9 @@ public class CompanyExpressController extends BaseController {
 
 	@Resource(name = "pubmapServiceImpl")
 	private IPubmapService pubmapService;
+
+	@Resource(name = "expressPriceServiceImpl")
+	private ExpressPriceService expressPriceService;
 
 	/**
 	 * 跳转到新增页面
@@ -74,13 +79,13 @@ public class CompanyExpressController extends BaseController {
 	 * 新增CompanyExpress
 	 */
 	@RequestMapping(params = "method=add")
-	public ModelAndView addCompanyExpress(CompanyExpress companyExpress, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView addCompanyExpress(CompanyExpress companyExpress, HttpServletRequest request, HttpServletResponse response, ExpressPrice expressPrice) {
 		ModelAndView view = null;
 		try {
 			companyExpress.setCompanyExpressId(PrimaryKeyUtil.generateKey());
 			companyExpress.setUpdateTime(DateTimeUtil.getDateTime19());
 			companyExpress.setSpId(getLoginUser(request).getAccId());
-			companyExpressService.createCompanyExpress(companyExpress);
+			companyExpressService.createCompanyExpressAndExpressPrice(companyExpress, expressPrice);
 			view = new ModelAndView("success");
 
 		} catch (Exception e) {
@@ -108,10 +113,14 @@ public class CompanyExpressController extends BaseController {
 
 			List<Pubmap> expressList = pubmapService.getPubmapListByType("EXPRESS");
 
+			ExpressPrice expressPrice = new ExpressPrice();
+			expressPrice.setCompanyExpressId(objCompanyExpress.getCompanyExpressId());
+			List<ExpressPrice> expressPriceList = expressPriceService.queryExpressPriceListGroup(expressPrice);
+
 			view.addObject("companyList", companyList);
 			view.addObject("companyExpress", objCompanyExpress);
 			view.addObject("expressList", expressList);
-
+			view.addObject("expressPriceList", expressPriceList);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -124,11 +133,11 @@ public class CompanyExpressController extends BaseController {
 	 * 修改CompanyExpress
 	 */
 	@RequestMapping(params = "method=update")
-	public ModelAndView updateCompanyExpress(CompanyExpress companyExpress, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView updateCompanyExpress(CompanyExpress companyExpress, HttpServletRequest request, HttpServletResponse response, ExpressPrice expressPrice) {
 		ModelAndView view = null;
 		try {
 			companyExpress.setUpdateTime(DateTimeUtil.getDateTime19());
-			companyExpressService.updateCompanyExpress(companyExpress);
+			companyExpressService.updateCompanyExpressAndExpressPrice(companyExpress, expressPrice);
 			view = new ModelAndView("success");
 
 		} catch (Exception e) {
@@ -257,6 +266,30 @@ public class CompanyExpressController extends BaseController {
 			if (pwe.export()) {
 				downloadFile(request, response, path, tempName);
 			}
+
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 重名校验
+	 * 
+	 * @author wzd
+	 * @date 2019年11月26日 下午3:44:14
+	 * @param companyExpress
+	 * @param request
+	 * @param response
+	 * @param expressPrice
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryCompanyExpressExis")
+	public void queryCompanyExpressExis(CompanyExpress companyExpress, HttpServletRequest request, HttpServletResponse response, ExpressPrice expressPrice) {
+		try {
+			companyExpress.setSpId(getLoginUser(request).getAccId());
+			int count = companyExpressService.queryCompanyExpressExis(companyExpress);
+			response.getWriter().print(count);
 
 		} catch (Exception e) {
 			log.error(e, e);
