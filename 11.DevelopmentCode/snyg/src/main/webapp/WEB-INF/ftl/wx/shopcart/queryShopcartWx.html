@@ -86,7 +86,7 @@ function getShopCartList(){
 function getShopCartStr(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){
-		str+='<li class="lics">';
+		str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
 		str+='<div class="iconleft">';
 		str+='<div class="leftdivf">';
 		str+='<label>';
@@ -102,7 +102,8 @@ function getShopCartStr(data){
 		str+='</div>';
 		str+='<div class="info">';
 		str+='<a href="javascript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')"  title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
-		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
+		//str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
+		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span><span class="fr del_btn1" style="top:24px;" onclick="delShopCart(\''+data[i].cartId+'\')"></span></p>';
 		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
 		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
 		str+='<p class="txt"><span class="f2">&yen;'+data[i].price+'</span></p>';
@@ -114,6 +115,23 @@ function getShopCartStr(data){
 		str+='</li>';
 	}
 	return str;
+}
+
+var delCartId = "";
+function delShopCart(cartId){
+	delCartId = cartId;
+	Alert.showConfirmMsg("确定要删除商品吗?", 'delInfoClear');
+}
+
+function delInfoClear(){
+	$("#alert_dialog_show_confirm_box").remove();
+	removeUnScroll();
+	$.post("wx.do?method=deleteShopCart", {
+		cartId:delCartId
+	}, function (data) {
+		$("#shopCartLi" + delCartId).remove();
+		checkCartList();
+	})
 }
 
 function changeNum(type,cartId){
