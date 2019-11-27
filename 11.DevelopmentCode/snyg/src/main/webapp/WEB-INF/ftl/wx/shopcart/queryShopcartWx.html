@@ -67,7 +67,6 @@ $(function(){
 function productDetail(priceId){
 	var detailUrl = 'wx?method=toQueryCommproductDetailByPriceId&priceId='+priceId+"&spId="+$("#spId").val();
 	window.location.href=detailUrl;
-	//wxAuthorizeBase(detailUrl);
 }
 	
 function getShopCartList(){
@@ -96,13 +95,13 @@ function getShopCartStr(data){
 		str+='</label>';
 		str+='</div>';
             
-		str+='<div class="icon" onclick="productDetail(\''+data[i].priceId+'\')">';
+		str+='<div class="icon" >';
 		str+='<a href="javascript:void(0)" title="商品详情">';
 		str+='<img title="" src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="" /></a>';                   
 		str+='</div>';         
 		str+='</div>';
-		str+='<div class="info" onclick="productDetail(\''+data[i].priceId+'\')" >';
-		str+='<a href="javascript:void(0)" title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
+		str+='<div class="info">';
+		str+='<a href="javascript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')"  title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
 		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
 		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
 		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
@@ -131,6 +130,7 @@ function changeNum(type,cartId){
 	changeCartNum(cartId,num)
 	$("#num"+cartId).val(num);
 	checkCartList();
+	event.cancelBubble=true;
 }
 
 function checkCartList(){

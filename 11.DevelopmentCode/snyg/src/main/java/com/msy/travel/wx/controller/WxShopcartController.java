@@ -167,4 +167,25 @@ public class WxShopcartController extends BaseController {
 			log.error(e, e);
 		}
 	}
+
+	/**
+	 * 修改购物车数量
+	 * 
+	 * @author wzd
+	 * @date 2019年10月20日 下午6:54:39
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=deleteShopCart")
+	public void deleteShopCart(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			shopcart = shopcartService.displayShopcart(shopcart);
+			shopcartService.deleteShopcart(shopcart);
+			response.getWriter().print("success");
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
 }
