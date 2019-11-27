@@ -196,6 +196,7 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	private OrderCustomer orderCustomer;
 
+
 	//搜索类型
 
 	private String orderCodeLike;//订单编码like
@@ -217,6 +218,7 @@ public class Order extends BaseEntity implements java.io.Serializable
 	private String searchKey;
 	private String custPhone;
 	private String custName;
+	private String recAddress;
 
 	private String type;
 
@@ -225,6 +227,7 @@ public class Order extends BaseEntity implements java.io.Serializable
 	private String outTicketTimeS;
 	private String outTicketTimeE;
 	private String backId;
+	private String priceType; //销售类型
 	//columns END
 	private List<String> orderIdList;
 	public void setOrderId(String orderId) {
@@ -638,6 +641,22 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setBackId(String backId) {
 		this.backId = backId;
+	}
+
+	public String getPriceType() {
+		return priceType;
+	}
+
+	public void setPriceType(String priceType) {
+		this.priceType = priceType;
+	}
+
+	public String getRecAddress() {
+		return recAddress;
+	}
+
+	public void setRecAddress(String recAddress) {
+		this.recAddress = recAddress;
 	}
 }
 

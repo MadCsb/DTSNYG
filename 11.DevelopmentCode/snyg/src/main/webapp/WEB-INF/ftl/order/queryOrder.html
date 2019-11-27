@@ -11,6 +11,7 @@
 		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" />
 		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
 		<input type="hidden" id="shortCuts" name="shortCuts" value="${shortCuts!''}" />
+		<input type="text" style="border:0px;width:1px;" id="copyCustomer" value="" />
 
 		<div class="data-requry">
 		<table border="0" align="left" cellpadding="0" cellspacing="0">
@@ -71,6 +72,15 @@
 					<option value="7" <#if queryOrderStatus?? && queryOrderStatus =="7">selected</#if>>已关闭</option>
 				</select>
 			</td>
+			<td>活动类型：</td>
+			<td>
+				<select id="priceType" name="priceType" class="data-searchtxt-select">
+					<option value="">请选择</option>
+					<option value="0" <#if order.priceType?? && order.priceType =="0">selected</#if>>普通销售</option>
+					<option value="1" <#if order.priceType?? && order.priceType =="1">selected</#if>>团购活动</option>
+					<option value="2" <#if order.priceType?? && order.priceType =="2">selected</#if>>秒杀活动</option>
+				</select>
+			</td>
 		</tr>
 		</table>
         <input type="button" class="data-searchbtn" onClick="search()" value="查询"/>
@@ -99,7 +109,7 @@
 					<th width="21%">商品名称</th>
 					<th width="7%">订单价格</th>
 					<th width="8%">下单时间</th>
-					<th width="8%">买家手机号</th>
+					<th width="8%">活动类型</th>
 					<th width="7%">买家名称</th>
 					<th width="7%">订单状态</th>
 					<th width="13%">操作</th>
@@ -131,8 +141,16 @@
 								</#if>
 							</td>
 							<td title="${orderMain.createTime!''}" align="center" style="white-space: inherit;">${orderMain.createTime!""}</td>
-							<td title="${orderMain.custNameLike!''}">${orderMain.custNameLike!''}</td>
-							<td title="${orderMain.custPhoneLike!''}">${orderMain.custPhoneLike!''}</td>
+							<td title="${orderMain.custNameLike!''}">
+								<#if orderMain.priceType?? && orderMain.priceType =="0">
+									普通销售
+									<#elseif orderMain.priceType?? && orderMain.priceType =="1">
+										团购活动
+										<#elseif orderMain.priceType?? && orderMain.priceType =="2">
+											秒杀活动
+								</#if>
+							</td>
+							<td title="收货人：${orderMain.custName!''}&#13;收货地址：${orderMain.recAddress!''}&#13;联系电话：${orderMain.custPhone!''}">${orderMain.custName!''}</td>
 							<td title='<#if orderMain.backNum?? && orderMain.backNum != "0">已退款<#elseif orderMain.payTag?? && orderMain.payTag == "0">未支付<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "0">待确认<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "1">已发货<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "3">确认拒绝<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "2">已收货<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "5">已关闭</#if>'>
 								<#if orderMain.backNum?? && orderMain.backNum != "0">
 									已退款
@@ -178,6 +196,7 @@
 									<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "5">
 										<!--已关闭-->
 									</#if>
+								<a class="ico_btn1" onclick="copyCustomer('${orderMain.custName!''}','${orderMain.custPhone!''}','${orderMain.recAddress!''}')">复制买家信息</a>
 							</td>
 						</tr>
 					</#list>
@@ -289,6 +308,15 @@ $(function () {
   //多个查询条件样式
   showHideQuery();
 });
+
+function copyCustomer(custName,custPhone,recAddress){
+  $("#copyCustomer").val("收货人："+custName+"    收货地址："+recAddress+"    联系电话："+custPhone);
+  var copyText = $("#copyCustomer");//获取对象
+  copyText.select();//选择
+  document.execCommand("Copy");//执行复制
+  parent.layer.alert("复制成功！");
+}
+
 //
 //// 多个查询条件样式
 //	 $(function () {

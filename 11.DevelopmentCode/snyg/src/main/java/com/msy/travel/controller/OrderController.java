@@ -228,7 +228,7 @@ public class OrderController extends BaseController{
 				}else //查询条件
 				{
 					searchOrder.setOrderCodeLike(order.getOrderCodeLike());
-
+					searchOrder.setPriceType(order.getPriceType());
 					searchOrder.setOrderCodeLike(order.getOrderCodeLike());
 					searchOrder.setProductNameLike(order.getProductNameLike());
 					searchOrder.setCustPhoneLike(order.getCustPhoneLike());
