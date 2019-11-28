@@ -164,4 +164,5 @@ public class WxSellPriceController extends BaseController {
 			log.error(e, e);
 		}
 	}
+
 }
