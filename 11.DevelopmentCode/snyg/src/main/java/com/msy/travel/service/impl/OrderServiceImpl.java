@@ -10,6 +10,7 @@ import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.controller.OrderController;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Company;
 import com.msy.travel.pojo.Consignee;
@@ -25,6 +26,7 @@ import com.msy.travel.pojo.Shopcart;
 import com.msy.travel.pojo.ThirdPayFlow;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
+import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IUserService;
@@ -50,6 +52,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.Resource;
 import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.msy.travel.pojo.Order;
@@ -66,6 +70,8 @@ import com.msy.travel.service.OrderService;
 @Transactional
 public class OrderServiceImpl implements OrderService
 {
+    public static final Log log = LogFactory.getLog(OrderServiceImpl.class);
+
     @Resource(name = "userServiceImpl")
     private IUserService userService;
 
@@ -105,6 +111,9 @@ public class OrderServiceImpl implements OrderService
 
     @Resource(name = "orderBackServiceImpl")
     private OrderBackService orderBackService;
+
+    @Resource(name = "companyExpressServiceImpl")
+    private CompanyExpressService companyExpressService;
 
 	  @Resource(name="orderDao")
     private OrderDao orderDao;
@@ -484,11 +493,14 @@ public class OrderServiceImpl implements OrderService
                 orderList.setGoodsPriceId(goodsPrice.getGoodsPriceId());
                 orderList.setChildName(goodsPrice.getPriceName());
 
-                double orderListTransFee = 0;
-                if(null != goodsPrice.getFreight() && !"".equals(goodsPrice.getFreight()))
+                Result expressResult = companyExpressService.getCompanyPrice(priceId,String.valueOf(orderListNum),consignee.getPcx().split(" ")[0]);
+                if(expressResult.getResultCode().equals("1")) //获取运费失败
                 {
-                    orderListTransFee = Double.valueOf(goodsPrice.getFreight())*orderListNum;
+                    throw new LogicException("获取运费失败【"+expressResult.getResultMsg()+"】");
                 }
+                Double orderListTransFee = 0.0;
+                JSONObject expressResultPojo = (JSONObject) expressResult.getResultPojo();
+                orderListTransFee =  Double.valueOf(expressResultPojo.getString("expressFee"));
                 orderList.setTransFee(df.format(orderListTransFee));
 
                 double price = Double.valueOf(sellPrice.getPrice());
@@ -1002,5 +1014,21 @@ public class OrderServiceImpl implements OrderService
             orderLogService.createOrderLog(orderLog);
         }
         return result;
+    }
+
+    public static void main(String[] args)
+    {
+        //x{"resultCode":"0","resultMsg":"","resultPojo":{"expressCode":"","expressFee":"0.00"}}
+        Result result = new Result();
+        result.setResultCode("0");
+        result.setResultMsg("");
+        JSONObject object = new JSONObject();
+        object.put("expressCode","");
+        object.put("expressFee","0.00");
+        result.setResultPojo(object);
+
+        JSONObject expressResultPojo = (JSONObject) result.getResultPojo();
+        Double orderListTransFee =  Double.valueOf(expressResultPojo.getString("expressFee"));
+        log.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+orderListTransFee);
     }
 }

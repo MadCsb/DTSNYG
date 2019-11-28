@@ -197,8 +197,10 @@
       }
       else if (orderShowType == "1-2") //已支付已收货
       {
-        $("#toBackBtn").show();
-        $("#money1").parent().parent().attr("class","wid2 text_c");
+        //暂时注销，不需要退货申请
+        $("#money1").parent().parent().attr("class","wid1 text_c");
+//        $("#toBackBtn").show();
+//        $("#money1").parent().parent().attr("class","wid2 text_c");
 
         $("#orderTitle").html("已收货订单");
         $("#orderInfo").html("您的订单已收货");

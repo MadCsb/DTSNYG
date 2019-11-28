@@ -1,6 +1,7 @@
 package com.msy.travel.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
@@ -11,6 +12,7 @@ import com.msy.travel.pojo.OrderCustomer;
 import com.msy.travel.pojo.OrderExpress;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.Pubmap;
+import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.IPubmapService;
 import com.msy.travel.service.OrderBackService;
 import com.msy.travel.service.OrderCustomerService;
@@ -62,6 +64,9 @@ public class OrderController extends BaseController{
 
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
+
+	@Resource(name = "companyExpressServiceImpl")
+	private CompanyExpressService companyExpressService;
 
 	@Resource(name = "orderExpressServiceImpl")
 	private OrderExpressService orderExpressService;
@@ -326,8 +331,12 @@ public class OrderController extends BaseController{
 		ModelAndView view = null;
 		try {
 			List<Pubmap> expressList = pubmapService.getPubmapListByType("EXPRESS");
+
+			order = orderService.displayOrder(order);
+
 			OrderList orderList = new OrderList();
 			orderList.setOrderId(order.getOrderId());
+			orderList.setOrderListType("0");
 			List<OrderList> orderListList = orderListService.queryOrderListList(orderList);
 			for (int i=0;i<orderListList.size();i++)
 			{
@@ -338,8 +347,16 @@ public class OrderController extends BaseController{
 				List<OrderExpress> orderExpressList = orderExpressService.queryOrderExpressList(orderExpress);
 				orderListList.get(i).setOrderExpressList(orderExpressList);
 			}
+			Result result = companyExpressService.getCompanyPrice(orderListList.get(0).getPriceId(),orderListList.get(0).getNum(),order.getRecAddress().split(" ")[0]);
+			String expressCode = null;
+			if (result.getResultCode().equals("0"))
+			{
+				JSONObject expressResultPojo = (JSONObject) result.getResultPojo();
+				expressCode = expressResultPojo.getString("expressCode");
+			}
 			view = new ModelAndView("order/addOrderListExpress");
 			view.addObject("order", order);
+			view.addObject("expressCode", expressCode);
 			view.addObject("orderListList", orderListList);
 			view.addObject("expressList", expressList);
 		} catch (Exception e) {

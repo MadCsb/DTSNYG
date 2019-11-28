@@ -150,7 +150,15 @@
 											秒杀活动
 								</#if>
 							</td>
-							<td title="收货人：${orderMain.custName!''}&#13;收货地址：${orderMain.recAddress!''}&#13;联系电话：${orderMain.custPhone!''}">${orderMain.custName!''}</td>
+							<td custTd="true" style="overflow:visible;white-space:inherit;" title="收货人：${orderMain.custName!''}&#13;收货地址：${orderMain.recAddress!''}&#13;联系电话：${orderMain.custPhone!''}">
+								<span custSpan="true">${orderMain.custName!''}</span>
+								<div custDiv="true" id="custDiv${orderMain_index}" style=" position: absolute; z-index:99; background:#FFFFFF; padding:10px; border:1px solid #ddd; width:200px; height:auto;display: none;text-align:left">
+									收货人：${orderMain.custName!''}<br>
+									地址：${orderMain.recAddress!''}<br>
+									电话：${orderMain.custPhone!''}
+									<a custA="true" onclick="copyCustomer('${orderMain.custName!''}','${orderMain.custPhone!''}','${orderMain.recAddress!''}')">[复制]</a>
+								</div>
+							</td>
 							<td title='<#if orderMain.backNum?? && orderMain.backNum != "0">已退款<#elseif orderMain.payTag?? && orderMain.payTag == "0">未支付<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "0">待确认<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "1">已发货<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "3">确认拒绝<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "2">已收货<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "5">已关闭</#if>'>
 								<#if orderMain.backNum?? && orderMain.backNum != "0">
 									已退款
@@ -196,7 +204,6 @@
 									<#elseif orderMain.payTag?? && orderMain.payTag == "1" && orderMain.status?? && orderMain.status == "5">
 										<!--已关闭-->
 									</#if>
-								<a class="ico_btn1" onclick="copyCustomer('${orderMain.custName!''}','${orderMain.custPhone!''}','${orderMain.recAddress!''}')">复制买家信息</a>
 							</td>
 						</tr>
 					</#list>
@@ -213,7 +220,49 @@
 	</form>
 
 	<script type="text/javascript">
+    $(document).on('click',function(e) {
+      var custTdNum = $(e.target).closest('td[custTd]').length;
+      if(custTdNum == 0) //不是点击TD
+			{
+        hideCustDiv(null); //隐藏所有
+			}else  //点击TD，关闭其他，显示当前TD的明细
+			{
+			  var nodeName = e.target.nodeName.toUpperCase();
+			  var Td = $(e.target);
+			  if(nodeName == 'SPAN')
+				{
+          Td = $(e.target).parent();
+				}else if(nodeName == 'DIV')
+				{
+          return;
+				}else if(nodeName == 'A')
+        {
+          return;
+        }
+        hideCustDiv($(Td).find("div[custDiv]").eq(0));
+			}
+    });
 
+    /**
+		 * 隐藏非obj之外的custDiv
+     */
+    function hideCustDiv(obj)
+		{
+		  var id = null;
+		  if(obj != null)
+			{
+			  id = $(obj).attr("id");
+			}
+      $('div[custDiv]').each(function () {
+				if($(this).attr("id") != id)
+				{
+          $(this).hide();
+				}else
+				{
+          $(this).show();
+				}
+      })
+		}
 function search(){
 //	var createTimeS = $("#createTimeS").val();
 //	var createTimeE = $("#createTimeE").val();
@@ -309,8 +358,9 @@ $(function () {
   showHideQuery();
 });
 
+//复制收货人信息
 function copyCustomer(custName,custPhone,recAddress){
-  $("#copyCustomer").val("收货人："+custName+"    收货地址："+recAddress+"    联系电话："+custPhone);
+  $("#copyCustomer").val("收货人："+custName+"    地址："+recAddress+"    电话："+custPhone);
   var copyText = $("#copyCustomer");//获取对象
   copyText.select();//选择
   document.execCommand("Copy");//执行复制

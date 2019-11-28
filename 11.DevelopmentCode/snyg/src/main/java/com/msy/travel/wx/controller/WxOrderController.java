@@ -14,6 +14,7 @@ import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
 import com.msy.travel.pojo.Commproduct;
+import com.msy.travel.pojo.CompanyExpress;
 import com.msy.travel.pojo.Consignee;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.GoodsPrice;
@@ -28,6 +29,8 @@ import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
+import com.msy.travel.service.CompanyExpressService;
+import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IDestspService;
@@ -108,6 +111,9 @@ public class WxOrderController extends BaseController {
 
   @Resource(name = "orderBackServiceImpl")
   private OrderBackService orderBackService;
+
+	@Resource(name = "companyExpressServiceImpl")
+	private CompanyExpressService companyExpressService;
 
 	@Resource(name = "rsPicServiceImpl")
 	private IRsPicService rsPicService;
@@ -687,4 +693,48 @@ public class WxOrderController extends BaseController {
 		}
 	}
 
+
+	/*
+	 * 获取用户默认的收货地址
+	 * @param consignee.userId
+	 */
+	@RequestMapping(params = "method=getPriceExpress")
+	public void getPriceExpress(String priceId,String num,String consigneeId,HttpServletResponse response)
+	{
+		Result result = new Result();
+		result.setResultCode("0");
+		try {
+			if(priceId == null || priceId.trim().equals(""))
+			{
+				throw new LogicException("请确认销售物品");
+			}
+			if(num == null || num.trim().equals(""))
+			{
+				throw new LogicException("请确认销售数量");
+			}
+			if(consigneeId == null || consigneeId.trim().equals(""))
+			{
+				throw new LogicException("请确认收货地址");
+			}
+			Consignee consignee = new Consignee();
+			consignee.setConsigneeId(consigneeId);
+			consignee = consigneeService.displayConsignee(consignee);
+			result = companyExpressService.getCompanyPrice(priceId,num,consignee.getPcx().split(" ")[0]);
+		}catch (LogicException le)
+		{
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}
+		catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("系统内部异常");
+			log.error(e, e);
+		}
+		try {
+			response.getWriter().write(JSON.toJSONString(result).toString());
+		}catch (Exception e)
+		{
+
+		}
+	}
 }

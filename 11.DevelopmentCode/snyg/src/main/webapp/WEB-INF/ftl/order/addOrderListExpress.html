@@ -18,7 +18,7 @@
 					<select name="epmeCompany"  id="epmeCompany" class=" data-inputtxt-select">
 						<option value="">请选择</option>
 						<#list expressList as li>
-						<option value="${li.mapKey!''}">${li.mapValue!''}</option>
+						<option <#if expressCode?? && expressCode == li.mapKey>selected</#if>	value="${li.mapKey!''}">${li.mapValue!''}</option>
 						</#list>
 					</select>
 				</td>

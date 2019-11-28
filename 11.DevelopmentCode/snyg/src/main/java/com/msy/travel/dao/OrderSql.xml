@@ -218,9 +218,13 @@
 			t.F_UPDATERUID as updateUid ,
 			t.F_UPDATER as updater ,
 			t.F_COMPANYREMARK as companyRemark ,
+			oc.F_CUSTPHONE  as custPhone ,
+			oc.F_CUSTNAME  as custName ,
+			oc.F_RECADDRESS  as recAddress ,
 			IFNULL(orderBack.F_BACKTIMES,0) as backTimes
 		FROM
 			t_sm_order t
+		  LEFT JOIN t_sm_ordercustomer oc on t.F_ORDERID = oc.F_ORDERID
 			LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
 		<where>
 			t.F_ORDERID = #{orderId}
