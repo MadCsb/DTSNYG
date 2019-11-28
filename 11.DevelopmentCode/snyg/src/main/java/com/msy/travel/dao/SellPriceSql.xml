@@ -139,6 +139,7 @@
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g on t.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_sm_commproduct p ON t.F_PRODUCTID = p.F_PRODUCTID
 		<where>
 			<if test="priceId !=null and priceId !=''">
 		    	and t.F_PRICEID = #{priceId}
@@ -148,6 +149,12 @@
 		    </if>
 		    <if test="priceType !=null and priceType !=''">
 		    	and t.F_PRICETYPE = #{priceType}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag} and p.F_DELFLAG = #{delFlag} and g.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="state !=null and state !=''">
+		    	and p.F_STATE = #{state}
 		    </if>
 		</where>
 	</select>

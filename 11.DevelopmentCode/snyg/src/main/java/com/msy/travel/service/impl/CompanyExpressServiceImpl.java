@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -234,50 +236,85 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 	public Result getCompanyPrice(String priceId, String num, String province) {
 		Result result = new Result();
 		try {
-			String money = "";
-			SellPrice sellPrice = new SellPrice();
-			sellPrice.setPriceId(priceId);
-			sellPrice = sellPriceDao.querySellPrice(sellPrice);
-
-			if (sellPrice.getCompanyExpressId() == null || "".equals(sellPrice.getCompanyExpressId())) {
-				result.setResultCode("0");
-				result.setResultMsg("");
-				result.setResultPojo(money);
+			if (priceId == null || "".equals(priceId)) {
+				result.setResultCode("1");
+				result.setResultMsg("商品priceId为空");
+				result.setResultPojo("");
+			} else if (province == null || "".equals(province)) {
+				result.setResultCode("1");
+				result.setResultMsg("省份province为空");
+				result.setResultPojo("");
+			} else if (num == null || "".equals(num)) {
+				result.setResultCode("1");
+				result.setResultMsg("数量num为空");
+				result.setResultPojo("");
 			} else {
-				ExpressPrice ex = new ExpressPrice();
-				ex.setCompanyExpressId(sellPrice.getCompanyExpressId());
-				ex.setProvince(province);
-				List<ExpressPrice> expressPriceList = expressPriceDao.queryExpressPriceList(ex);
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setPriceId(priceId);
+				sellPrice.setDelFlag("0");
+				sellPrice.setState("1");
+				sellPrice = sellPriceDao.querySellPrice(sellPrice);
 
-				if (expressPriceList != null && expressPriceList.size() > 0) {
-					ex = expressPriceList.get(0);
-					int expressNum = Integer.parseInt(ex.getExpressNum());
-					// 如果数量少于首件 返回首件价格
-					if (Integer.parseInt(num) <= expressNum) {
-						money = ex.getExpressPrice();
-						result.setResultCode("0");
-						result.setResultMsg("");
-						result.setResultPojo(money);
-					} else {
-						// 首重价格
-						String expressPrice = ex.getExpressPrice();
-						// 续重数量
-						String numAdd = BigDecimalUtil.subtract(ex.getExpressNum(), num);
-						// 续重数量/续重件数
-						String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
-						// 续重需要计算的数量*续重价格
-						String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
-
-						money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
-						result.setResultCode("0");
-						result.setResultMsg("");
-						result.setResultPojo(money);
-					}
+				if (sellPrice == null || sellPrice.getPriceId() == null || "".equals(sellPrice.getPriceId())) {
+					result.setResultCode("1");
+					result.setResultMsg("商品已下架或者已删除");
+					result.setResultPojo("");
 				} else {
-					result.setResultCode("0");
-					result.setResultMsg("");
-					result.setResultPojo(money);
+					JSONObject jsonObject = new JSONObject();
+					if (sellPrice.getCompanyExpressId() == null || "".equals(sellPrice.getCompanyExpressId())) {
+						result.setResultCode("0");
+						result.setResultMsg("");
+						jsonObject.put("expressFee", "0.00");
+						jsonObject.put("expressCode", "");
+						result.setResultPojo(jsonObject.toString());
+					} else {
+						CompanyExpress companyExpress = new CompanyExpress();
+						companyExpress.setCompanyExpressId(sellPrice.getCompanyExpressId());
+						companyExpress = companyExpressDao.queryCompanyExpress(companyExpress);
+
+						ExpressPrice ex = new ExpressPrice();
+						ex.setCompanyExpressId(sellPrice.getCompanyExpressId());
+						ex.setProvince(province);
+						List<ExpressPrice> expressPriceList = expressPriceDao.queryExpressPriceList(ex);
+
+						if (expressPriceList != null && expressPriceList.size() > 0) {
+							ex = expressPriceList.get(0);
+							int expressNum = Integer.parseInt(ex.getExpressNum());
+							// 如果数量少于首件 返回首件价格
+							if (Integer.parseInt(num) <= expressNum) {
+								result.setResultCode("0");
+								result.setResultMsg("");
+								jsonObject.put("expressFee", ex.getExpressPrice());
+								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
+								result.setResultPojo(jsonObject.toString());
+							} else {
+								// 首重价格
+								String expressPrice = ex.getExpressPrice();
+								// 续重数量
+								String numAdd = BigDecimalUtil.subtract(ex.getExpressNum(), num);
+								// 续重数量/续重件数
+								String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
+								// 续重需要计算的数量*续重价格
+								String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
+
+								String money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
+
+								result.setResultCode("0");
+								result.setResultMsg("");
+								jsonObject.put("expressFee", money);
+								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
+								result.setResultPojo(jsonObject.toString());
+							}
+						} else {
+							result.setResultCode("0");
+							result.setResultMsg("");
+							jsonObject.put("expressFee", "0.00");
+							jsonObject.put("expressCode", "");
+							result.setResultPojo(jsonObject.toString());
+						}
+					}
 				}
+
 			}
 		} catch (Exception e) {
 			log.error(e, e);

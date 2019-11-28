@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -125,7 +126,8 @@ public class WxSellPriceController extends BaseController {
 					for (int i = 0; i < sellPricelist.size(); i++) {
 						Result result = companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" ")));
 						if (result.getResultCode().equals("0")) {
-							sellPricelist.get(i).setFreight((String) result.getResultPojo());
+							JSONObject json = JSONObject.fromObject(result.getResultPojo());
+							sellPricelist.get(i).setFreight(json.getString("expressFee"));
 						}
 					}
 				}
