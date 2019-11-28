@@ -126,7 +126,7 @@ public class WxSellPriceController extends BaseController {
 					for (int i = 0; i < sellPricelist.size(); i++) {
 						Result result = companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" ")));
 						if (result.getResultCode().equals("0")) {
-							JSONObject json = JSONObject.fromObject(result.getResultPojo());
+							JSONObject json = (JSONObject) result.getResultPojo();
 							sellPricelist.get(i).setFreight(json.getString("expressFee"));
 						}
 					}

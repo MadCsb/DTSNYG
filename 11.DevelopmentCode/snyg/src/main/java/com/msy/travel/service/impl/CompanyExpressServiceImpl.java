@@ -266,7 +266,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 						result.setResultMsg("");
 						jsonObject.put("expressFee", "0.00");
 						jsonObject.put("expressCode", "");
-						result.setResultPojo(jsonObject.toString());
+						result.setResultPojo(jsonObject);
 					} else {
 						CompanyExpress companyExpress = new CompanyExpress();
 						companyExpress.setCompanyExpressId(sellPrice.getCompanyExpressId());
@@ -286,7 +286,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 								result.setResultMsg("");
 								jsonObject.put("expressFee", ex.getExpressPrice());
 								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
-								result.setResultPojo(jsonObject.toString());
+								result.setResultPojo(jsonObject);
 							} else {
 								// 首重价格
 								String expressPrice = ex.getExpressPrice();
@@ -303,14 +303,14 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 								result.setResultMsg("");
 								jsonObject.put("expressFee", money);
 								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
-								result.setResultPojo(jsonObject.toString());
+								result.setResultPojo(jsonObject);
 							}
 						} else {
 							result.setResultCode("0");
 							result.setResultMsg("");
 							jsonObject.put("expressFee", "0.00");
 							jsonObject.put("expressCode", "");
-							result.setResultPojo(jsonObject.toString());
+							result.setResultPojo(jsonObject);
 						}
 					}
 				}
