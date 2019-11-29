@@ -170,19 +170,26 @@ function setCarousel()
         carouselId:carouselIds[i]
       },
       success: function (data) {
+        var linkUrl = "";
         for(var j=0;j<data.length;j++)
         {
+          if(data[j].linkUrl == null || data[j].linkUrl == "")
+					{
+            linkUrl = 'javascript:void(0)';
+					}else
+					{
+            linkUrl = data[j].linkUrl;
+					}
           if(data[j].carouselId == carouselIds[0])
 					{
-            $(".slides").append('<li><a href="'+data[j].linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a></li>');
+            $(".slides").append('<li><a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a></li>');
 					}else if(data[j].carouselId == carouselIds[1])
 					{
-            $(".snyg_flbanner:eq(0)").html('<a href="'+data[0].linkUrl+'" title="'+data[0].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[0].picUrl +'" alt="" title="" /></a>');
+            $(".snyg_flbanner:eq(0)").html('<a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a>');
 					}else if(data[j].carouselId == carouselIds[2])
 					{
-            $(".snyg_flbanner:eq(1)").html('<a href="'+data[0].linkUrl+'" title="'+data[0].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[0].picUrl +'" alt="" title="" /></a>');
+            $(".snyg_flbanner:eq(1)").html('<a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a>');
 					}
-
         }
       }
     });
