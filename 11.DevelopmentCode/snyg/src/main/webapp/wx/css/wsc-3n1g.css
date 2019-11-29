@@ -1252,7 +1252,7 @@ input[type="checkbox"]:checked + .check{
 .ptxx .tzli{ border-bottom:2px solid #00ae60; margin:0 auto 10px auto;padding:10px 0; font-size:13px;}
 .ptxx li .divleft{ width:45%; float:left; line-height:40px; overflow:hidden; vertical-align:middle;}
 .usertx{ display:inline-block; width:40px; height:40px; overflow:hidden; border-radius:40px; vertical-align:middle; margin-right:10px;}
-
+.usertx img{ width:100%;}
 .ptxx li .divcen{ width:35%; float:left; line-height:20px;}
 .ptxx li .divright{width:20%; float:left; text-align:right; position:relative;}
 .s_btn{ font-size: 14px;display:inline-block;height:24px; border-radius:30px; padding:0 10px; vertical-align:middle; line-height:22px; text-align:center; background:#ffbb32; color:#fff; position:absolute; top:6px; right:0; width:50px;}
