@@ -308,7 +308,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 							result.setResultCode("0");
 							result.setResultMsg("");
 							jsonObject.put("expressFee", "0.00");
-							jsonObject.put("expressCode", "");
+							jsonObject.put("expressCode", companyExpress.getEpmeCompany());
 							result.setResultPojo(jsonObject);
 						}
 					}
