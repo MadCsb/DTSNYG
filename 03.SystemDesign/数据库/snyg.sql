@@ -10,10 +10,29 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-10-02 15:11:00
+Date: 2019-11-29 11:01:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for test
+-- ----------------------------
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `F_ORDERID` varchar(50) DEFAULT NULL,
+  `F_PRICEID` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of test
+-- ----------------------------
+INSERT INTO `test` VALUES ('a', 'b1');
+INSERT INTO `test` VALUES ('a', 'b2');
+INSERT INTO `test` VALUES ('b', 'b3');
+INSERT INTO `test` VALUES ('b', 'b4');
+INSERT INTO `test` VALUES ('c', 'b5');
+INSERT INTO `test` VALUES ('a', 'b11');
 
 -- ----------------------------
 -- Table structure for t_pub_areacode
@@ -4775,12 +4794,16 @@ CREATE TABLE `t_pub_carousel` (
   `F_UPDATERUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
   `F_UPDATER` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
   `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否删除0-未删除1-已删除',
+  `F_TYPE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`F_CAROUSELID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='轮播图表';
 
 -- ----------------------------
 -- Records of t_pub_carousel
 -- ----------------------------
+INSERT INTO `t_pub_carousel` VALUES ('867bfc98ad0042c5bcc4bed562c7f1b1', 'da14b98e-cb26-4169-9b58-babe98b98047', '首页轮播图', null, '2019-11-16 16:06:26', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 19:49:53', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('bcc7d3090117413a9f4271656ebe6543', 'da14b98e-cb26-4169-9b58-babe98b98047', '首页拼团专区', null, '2019-11-16 16:06:46', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 20:02:47', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('e326d5f032f74d7e95573ab52ab77229', 'da14b98e-cb26-4169-9b58-babe98b98047', '首页商品精选', null, '2019-11-16 16:06:52', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 20:03:06', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
 
 -- ----------------------------
 -- Table structure for t_pub_carouselitem
@@ -4799,6 +4822,13 @@ CREATE TABLE `t_pub_carouselitem` (
 -- ----------------------------
 -- Records of t_pub_carouselitem
 -- ----------------------------
+INSERT INTO `t_pub_carouselitem` VALUES ('86198a339acd43a68128f749eb7c149c', 'e326d5f032f74d7e95573ab52ab77229', '1', 'e745042c168c4ff8a2728813553bf87f.jpg', 'http://www.baidu.com', '2');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e206', '867bfc98ad0042c5bcc4bed562c7f1b1', '1', '376d00ab78b9464c80b74b352fc47b7e.png', 'http://www.3nong1gou.com/wx.do?method=toQueryCommproductDetailByPriceId&priceId=8275258891e74fb7b1662fdc02c4dde8', '1');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e207', '867bfc98ad0042c5bcc4bed562c7f1b1', '2', 'baed141c631045b387592a803ab977eb.jpg', 'https://www.baidu.com/', '2');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e208', '867bfc98ad0042c5bcc4bed562c7f1b1', '3', 'c91b25850e784e0f9d9dc7ee14824a9d.jpg', 'https://www.baidu.com/', '3');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e209', '867bfc98ad0042c5bcc4bed562c7f1b1', '4', '8ff33327b626423ca0455b1f3c272ee3.jpg', 'https://www.baidu.com/', '4');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e210', '867bfc98ad0042c5bcc4bed562c7f1b1', '5', '2a92fd2010234644b9f02dbedc65dbeb.jpg', 'https://www.baidu.com/', '5');
+INSERT INTO `t_pub_carouselitem` VALUES ('ef7fe35865e54fcaab45c6821a50e211', 'bcc7d3090117413a9f4271656ebe6543', '6666', 'edb38e38b9864b3caaf92cab94f03d85.jpg', 'www.baidu.com', '1');
 
 -- ----------------------------
 -- Table structure for t_pub_childsystem
@@ -8339,25 +8369,103 @@ CREATE TABLE `t_pub_destsp` (
 -- ----------------------------
 -- Records of t_pub_destsp
 -- ----------------------------
-INSERT INTO `t_pub_destsp` VALUES ('da14b98e-cb26-4169-9b58-babe98b98047', '6fd281d0-872c-4a3a-89bd-de93305c5df1', null, '测试运营商', '', '', '', '', '', '', null, null, '', '镇江', null, null, '0', '0', '0', null, null, null, null, null, '0', null, null, null, null, '');
+INSERT INTO `t_pub_destsp` VALUES ('da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '测试运营商', '', '', '', '', '', '', null, null, '', '镇江', null, null, '0', '0', '0', null, null, null, null, null, '0', null, null, null, null, '');
 
 -- ----------------------------
 -- Table structure for t_pub_map
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pub_map`;
 CREATE TABLE `t_pub_map` (
-  `F_MAPID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字典编号',
-  `F_MAPTYPE` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字典类别',
-  `F_MAPKEY` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字典键',
-  `F_MAPVALUE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典值',
-  `F_MAPDESC` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典描述',
+  `F_MAPID` varchar(50) NOT NULL COMMENT '字典编号',
+  `F_MAPTYPE` varchar(10) NOT NULL COMMENT '字典类别',
+  `F_MAPKEY` varchar(100) NOT NULL COMMENT '字典键',
+  `F_MAPVALUE` varchar(100) DEFAULT NULL COMMENT '字典值',
+  `F_MAPDESC` varchar(255) DEFAULT NULL COMMENT '字典描述',
   `F_SYS` decimal(1,0) DEFAULT NULL COMMENT '0-否1-是',
   PRIMARY KEY (`F_MAPID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统字典表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商类别 VENTYPE :0-旅行社 1-酒店 2-景区\r\n产品类别PDCTYPE:0-旅游线路1-门票2';
 
 -- ----------------------------
 -- Records of t_pub_map
 -- ----------------------------
+INSERT INTO `t_pub_map` VALUES ('034ef557-7c55-4d4b-9ec8-a9291875fbbb', 'BANNERTAG', '2', '门票推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('03543014-0adf-4e41-a101-ff38e5ba6a96', 'MESSTYPE', '%{orderDate}', '微信下单：下单时间', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('04faad0f-0bbe-4777-bae0-0960231af488', 'BANNERTAG', '4', '酒店推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('07edf18d-9b75-40aa-aac1-e5441ed8e96e', 'GOODSTYPE', '7', '6666测试三四五', '商品类型', '0');
+INSERT INTO `t_pub_map` VALUES ('0bee2420-aa58-49bd-a1cf-ccc0df14466c', 'BANKTYPE', '3', '农业银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('0d769037-3f8a-40f0-8798-3d00042c23a9', 'ARTTYPE', '0', '商品介绍', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('0e3ad792-1d1b-4954-af55-5669e80397fe', 'BANKTYPE', '5', '邮政储蓄银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('1', 'BACKREASON', '2-1', '库存不足', '退款原因', null);
+INSERT INTO `t_pub_map` VALUES ('1b6c66ef-de1e-4996-9c92-efb1d6d0b704', 'BOOKLIMIT', '1', '1', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('1c0bfdc9-0519-4c3a-a8f0-73380383b97b', 'BACKREASON', '1-2', '质量问题', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('1ebfc56a-b097-4b73-8596-b839d8e365b4', 'BANNERTAG', '5', '特产推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('1fc0142f-06ed-4914-80d4-161903fd1e6e', 'BANKTYPE', '9', '交通银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('2', 'BACKREASON', '2-2', '物流堵塞', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('217f8ca0-9cfc-47de-a1d6-fca00079b065', 'BANKTYPE', '2', '建设银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('226b093c-0de9-42d6-925e-96294e16162c', 'BACKREASON', '1-4', '大小尺寸与商品描述不符', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('262578a7-6061-4f9f-9ce2-a51772ee66bc', 'BANKTYPE', '8', '平安银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('27823b79-a189-45a7-bc0b-817643569e11', 'MESSTYPE', '%{payMoney}', '微信下单：订单金额', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('2f4dc186-0356-4c2f-98f8-e83fb5454fc6', 'MESSTYPE', '%{backCode}', '退货受理：退订单号', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('36efa8a4-b5a7-48d7-95ec-110b246a5a3f', 'BANKTYPE', '4', '中国银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('39fb5306-cd1c-4180-92f5-a86d77234710', 'BOOKLIMIT', '4', '4', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('3bfe1992-745b-4253-8903-872397eb6252', 'BACKREASON', '1-3', '材质/面料与商品描述不符', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('3d8c6bb5-24c8-4e9c-90e5-41eb436c6e4b', 'KFMSGSCENE', '1', '微信客户支付成功', '客服消息场景', '0');
+INSERT INTO `t_pub_map` VALUES ('433d3a15-4fc2-4c01-b035-b20f2be0d2a0', 'MENUGROUP', '3', '供应商管理后台', '用户组根菜单', '0');
+INSERT INTO `t_pub_map` VALUES ('465f858f-a890-40d2-af40-0b99e67f1d63', 'KFRECROLE', '1', '微信客户', '客服消息接收角色', '0');
+INSERT INTO `t_pub_map` VALUES ('49278191-0425-4b54-a624-4f49f80fbc95', 'SEVTYPE', '1', '订阅号', '公众号类别', '0');
+INSERT INTO `t_pub_map` VALUES ('49aaaea1-6ebb-4b89-af9d-49b08e84279e', 'MESSTYPE', '%{applyBackMoney}', '退订受理：退款金额', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('4c70165a-e23e-45dd-8144-86b1f8773260', 'BANKTYPE', '6', '招商银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('4e2f6fe4-02c0-45a9-ac03-eb579f62c8e8', 'CERTTYPE', '1', '身份证', '证件类型', '0');
+INSERT INTO `t_pub_map` VALUES ('5378f51e-63d8-46e0-94a0-961630391879', 'BOOKLIMIT', '3', '3', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('57308845-6529-4c28-a922-699abd1f3803', 'BANKTYPE', '1', '工商银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('5f9288ff-77b0-48d3-9618-0e45d0eff77c', 'BOOKLIMIT', '2', '2', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('6120f326-1fa7-4214-ac8b-bb1f33466b43', 'BANNERTAG', '0', '普通', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('6352ed8d-baca-43ab-a3f3-07cfdc355251', 'MESSTYPE', '%{first}', '退订受理：FIRST', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('6881b40f-68d7-4d09-b0f8-86132d4f38f1', 'MENUGROUP', '2', '运营商管理后台', '用户组根菜单', '0');
+INSERT INTO `t_pub_map` VALUES ('6e63514a-1cd0-49a8-abf1-4779a462597d', 'SEVTYPE', '2', '服务号', '公众号类别', '0');
+INSERT INTO `t_pub_map` VALUES ('6f1bcd3d-a74b-46cd-a484-7b92042c4bed', 'SYSMSGTYPE', '1', '客服消息', '微信系统消息类型', '0');
+INSERT INTO `t_pub_map` VALUES ('704909f3-e08a-4a6f-8a78-7940b1458265', 'MESSTYPE', '%{orderCode}', '订单编号', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('74c9e7f5-5504-47a1-977f-833fecaebe4c', 'PAYTYPE', '1', '到店支付', '支付方式', '0');
+INSERT INTO `t_pub_map` VALUES ('883b26fe-b472-47b8-b39a-4bbd0ecc4613', 'ARTTYPE', '5', '售后服务', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('883b26fe-b472-47b8-b39s-4bbd0ecc4613', 'ARTTYPE', '6', '关于我们', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('885b26fe-b472-47b8-b39a-4bbd0ecc4613', 'ARTTYPE', '4', '关于订单', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('885b26fe-b472-47b8-b39a-4bbd0ecc4614', 'ARTTYPE', '2', '精选图文', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('885b26fe-b472-47b8-b39a-4bbd0ecc4615', 'ARTTYPE', '1', '活动介绍', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('885b26fe-b472-47b8-b39a-4bbd0ecc4616', 'ARTTYPE', '3', '购物指南', '文章类别', '0');
+INSERT INTO `t_pub_map` VALUES ('885b26fe-b472-47b8-b39b-4bbd0ecc4616', 'ARTTYPE', '3', '活动介绍', '购物指南', '0');
+INSERT INTO `t_pub_map` VALUES ('8a780037-b7e3-4c5e-84f1-66c68c17021a', 'BOOKLIMIT', '7', '7', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('8e95599b-e4d0-443c-b653-c6cce41e5ae0', 'MESSTYPE', '%{pdcInfo}', '商品信息', '微信客服消息模板', '0');
+INSERT INTO `t_pub_map` VALUES ('90821294-172f-4110-999e-8e4293ce5024', 'BANKTYPE', '7', '华厦银行', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('93789f86-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'yuantong', '圆通速递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('93a17188-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'ems', 'EMS快递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('93cd4ef7-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'yunda', '韵达速递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('9401a2b7-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'shentong', '申通快递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('942f40dd-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'zhongtong', '中通快递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('945f79b7-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'tiantian', '天天快递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('948d1874-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'debangwuliu', '德邦物流', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('94badb20-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'shunfeng', '顺丰快递', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('94e530fe-0f29-11ea-822f-00163e0e671e', 'EXPRESS', 'youzhengguonei', '邮政包裹', '快递公司', '0');
+INSERT INTO `t_pub_map` VALUES ('977a172b-c7a3-4e04-bdce-d5d8e95771fd', 'KFMSGSCENE', '2', '微信客户退订受理', '客服消息场景', '0');
+INSERT INTO `t_pub_map` VALUES ('98976f12-eebb-4799-b9ce-03efa512a7f9', 'BOOKLIMIT', '30', '30', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('a0ab6d6d-1efc-48bb-a468-6287e9b45f3a', 'BANNERTAG', '7', '购物车推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('ab358822-6ce6-4df0-9fbb-11e864e0a32a', 'KFMSGSCENE', '3', '微信客户退款成功', '客服消息场景', '0');
+INSERT INTO `t_pub_map` VALUES ('b172362b-5aaa-468d-bf10-24f446ef9d3e', 'BANNERTAG', '6', '订单推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('b831779f-33d8-45f6-ac15-43a780b180af', 'LUNBOTYPE', '2', '特产轮播图', '轮播图类型', '0');
+INSERT INTO `t_pub_map` VALUES ('bb857ab3-4fb8-436c-a50f-0db3eb532a08', 'LUNBOTYPE', '1', '首页轮播图', '轮播图类型', '0');
+INSERT INTO `t_pub_map` VALUES ('c8f48092-5251-495f-9e1c-3cbf323310ad', 'BANKTYPE', '10', '其它', '银行类型', '0');
+INSERT INTO `t_pub_map` VALUES ('c9637f2a-15f3-4459-9868-129c187e8ee9', 'BOOKLIMIT', '14', '14', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('cdf53351-c189-4c35-99c6-74fb6839db51', 'FANSGROUP', '0', '普通用户', '移动用户类型', '0');
+INSERT INTO `t_pub_map` VALUES ('d0ddae7b-ef9b-419f-8439-f29b567fb301', 'BOOKLIMIT', '0', '当', '预定提前天数', '0');
+INSERT INTO `t_pub_map` VALUES ('d11adb1f-de5a-46ef-b2c2-ff440cfe0a6f', 'BACKREASON', '1-1', '尺码拍错/不喜欢/效果差', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('d98c41f9-e284-4ebb-bed7-bcf0c4730577', 'SYSMSGTYPE', '0', '多客服消息', '微信系统消息类型', '0');
+INSERT INTO `t_pub_map` VALUES ('da0f2860-41ec-4b10-89ab-a659a61c90c8', 'BACKREASON', '1-5', '颜色/款式/图案与描述不符', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('dbca14eb-92b2-428a-b3f0-6bd81cc0577e', 'BACKREASON', '1-7', '假冒品牌', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('e64b0ec0-a455-4522-9165-8d7d291f4ac5', 'BACKREASON', '1-8', '收到商品少件或破损', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('e6bae994-3559-428a-8efe-e1b623434a92', 'BANNERTAG', '1', '首页推荐', '栏目类型标识', '0');
+INSERT INTO `t_pub_map` VALUES ('e6fdd04d-8063-4a9e-9989-51c82045f536', 'MENUGROUP', '1', '系统管理后台', '用户组根菜单', '0');
+INSERT INTO `t_pub_map` VALUES ('ee7764ee-41c5-4f4a-95c5-5ce7f43fddd9', 'BACKREASON', '1-6', '卖家发错货', '退款原因', '0');
+INSERT INTO `t_pub_map` VALUES ('f2d058cf-ce34-4a01-b161-58851135b8d5', 'PAYTYPE', '0', '在线支付', '支付方式', '0');
+INSERT INTO `t_pub_map` VALUES ('f46cec9d-344e-4478-8400-9f312ac12cbe', 'BANNERTAG', '3', '线路推荐', '栏目类型标识', '0');
 
 -- ----------------------------
 -- Table structure for t_pub_menu
@@ -8382,16 +8490,37 @@ CREATE TABLE `t_pub_menu` (
 -- ----------------------------
 INSERT INTO `t_pub_menu` VALUES ('001', '系统管理', '1', '0', 'javascript:void();', null, '1', null, null, '1');
 INSERT INTO `t_pub_menu` VALUES ('001-001', '系统菜单管理', '2', '001', 'toCreateMenu.action?menu.isAdmin=1', null, '1', '菜单管理', null, '1');
-INSERT INTO `t_pub_menu` VALUES ('035', '系统设置', '1', '0', '', null, '15', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('035-001', '用户管理', '2', '035', 'queryUserList?userRoleType=2', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('035', '系统设置', '1', '0', '', null, '10', null, null, '2');
 INSERT INTO `t_pub_menu` VALUES ('035-002', '个人信息', '2', '035', 'toUpdateSysUser?entranceType=1', null, '4', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('035-003', '角色管理', '2', '035', 'userGroup?method=query', null, '3', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('035-004', '操作日志', '2', '035', 'pubUserLog?method=query', null, '5', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('035-004', '操作日志', '2', '035', 'pubUserLog?method=query', null, '6', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('035-005', '菜单管理', '2', '035', 'menu.do?method=query&menuIsAdmin=2', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('035-006', '广告管理', '2', '035', 'carousel.do?method=query', null, '1', null, null, '2');
 INSERT INTO `t_pub_menu` VALUES ('037', '产品管理', '1', '0', 'javascript:void();', null, '1', null, null, '3');
-INSERT INTO `t_pub_menu` VALUES ('043', '系统管理', '1', '0', 'javascript:void();', null, '14', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('043-001', '系统菜单管理', '2', '043', 'menu.do?method=query&menuIsAdmin=2', null, '1', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('044', '产品管理', '1', '0', 'javascript:void(0);', null, '1', null, null, '2');
-INSERT INTO `t_pub_menu` VALUES ('044-001', '商品管理', '2', '044', 'commproduct?method=query', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('044', '商品管理', '1', '0', 'javascript:void(0);', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('044-001', '普通商品', '2', '044', 'commproduct?method=query&priceType=0', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('044-002', '团购商品', '2', '044', 'sellPrice?method=query&priceType=1', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('044-003', '秒杀商品', '2', '044', 'sellPrice?method=query&priceType=2', null, '3', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('045', '统计分析', '1', '0', '', null, '14', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('045-001', '交易分析', '2', '045', 'transactionAnalysis.do?method=toView', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('046', '财务管理', '1', '0', '', null, '5', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('046-001', '账单清单', '2', '046', 'orderList?method=queryOrderListBill&billType=month', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('048', '订单管理', '1', '0', '', null, '3', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('048-001', '订单信息', '2', '048', 'order?method=query', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('048-003', '退款管理', '2', '048', 'orderBack?method=query', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('049', '商家管理', '1', '0', '', null, '4', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('049-001', '合作商家', '2', '049', 'company?method=query', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('049-002', '运费管理', '2', '049', 'companyExpress.do?method=query', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('050', '微信基础配置', '1', '0', 'javascript:void(0);', null, '9', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('050-001', '自定义菜单', '2', '050', 'wxMenu?method=toShowWxMenu', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('050-002', '微信消息管理', '2', '050', 'feedback.do?method=query&msgType=0', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('050-003', '微信文章管理', '2', '050', 'article.do?method=query', null, '3', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('052', '用户管理', '1', '0', 'javascript:void(0);', null, '6', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('052-001', '平台用户', '2', '052', 'queryUserList?userRoleType=2', null, '4', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('052-002', '角色管理', '2', '052', 'userGroup?method=query', null, '5', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('052-003', '微商城用户', '2', '052', 'queryUserListForType?type=0', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('052-004', 'PC网站用户', '2', '052', '', null, '2', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('053', '分类管理', '1', '0', 'pdcType?method=query', null, '1', null, null, '2');
+INSERT INTO `t_pub_menu` VALUES ('053-001', '商品一级分类', '2', '053', 'pdcType?method=query', null, '1', null, null, '2');
 
 -- ----------------------------
 -- Table structure for t_pub_menubutton
@@ -8411,19 +8540,51 @@ CREATE TABLE `t_pub_menubutton` (
 -- Records of t_pub_menubutton
 -- ----------------------------
 INSERT INTO `t_pub_menubutton` VALUES ('0539f010-7184-45b0-b312-ab9354b361ba', '035-004', null, '查询日志', '查询日志（菜单/按钮）', 'queryPubUserLog');
-INSERT INTO `t_pub_menubutton` VALUES ('0653d03c-be2c-4ffe-bd6b-f9c6da44a9e4', '035-003', null, '新增角色', '新增角色', 'addUsergroup');
-INSERT INTO `t_pub_menubutton` VALUES ('07cb6ee1-72cd-4105-b65d-d419e28ed962', '035-001', null, '绑定用户角色', '绑定用户角色', 'bindUsergroup');
-INSERT INTO `t_pub_menubutton` VALUES ('10ed96be-25d1-45e4-a516-a5640cb99aef', '035-001', null, '锁定/解锁用户', '锁定/解锁用户', 'lockUser');
+INSERT INTO `t_pub_menubutton` VALUES ('06042e77d771436db343510f1468e6e9', '052-002', null, '新增角色', '', 'addUsergroup');
+INSERT INTO `t_pub_menubutton` VALUES ('0dbd4f29fe87494c97dd401e8e69c715', '050-002', null, '启用/停用系统消息', '', 'useKefu');
+INSERT INTO `t_pub_menubutton` VALUES ('11615f6ae7f04ed5bbc1937aa0d1186a', '049-001', null, '修改商家', '', 'modifyCompany');
+INSERT INTO `t_pub_menubutton` VALUES ('18c4569cdef843599b82c017cfe2653f', '050-002', null, '启用/停用文本回复', '', 'useWenben');
+INSERT INTO `t_pub_menubutton` VALUES ('19befdd140c34236914ee9cc4656a116', '049-001', null, '查询商家', '', 'queryCompany');
+INSERT INTO `t_pub_menubutton` VALUES ('2221d0214c7242d1a326e62de6f395c0', '052-002', null, '删除角色', '', 'delUsergroup');
+INSERT INTO `t_pub_menubutton` VALUES ('239a2a21cfbf47e4bedbc84654692583', '052-001', null, '查看用户', '', 'viewUser');
+INSERT INTO `t_pub_menubutton` VALUES ('2703543dc84e43188b994d5d6de348ac', '049-001', null, '删除商家', '', 'delCompany');
+INSERT INTO `t_pub_menubutton` VALUES ('2b81e9a9dc9647d7b89086b945659136', '050-002', null, '停用/启用链接回复', '', 'useLianjie');
+INSERT INTO `t_pub_menubutton` VALUES ('2c3ad94de0344c929da5baa4612e6e2c', '050-003', null, '修改文章', '', 'modifyArticle');
+INSERT INTO `t_pub_menubutton` VALUES ('2ebaf7fa9bf1484e93cb6698e27fd053', '050-002', null, '添加链接回复', '', 'addLianjie');
+INSERT INTO `t_pub_menubutton` VALUES ('2edd57121f3b46a8a8d48b9fc26dd25e', '050-002', null, '编辑系统消息', '', 'modifyKefu');
+INSERT INTO `t_pub_menubutton` VALUES ('30926bb7136c47c582ae995e323763d3', '050-003', null, '查询文章', '', 'queryArticle');
 INSERT INTO `t_pub_menubutton` VALUES ('3a9d7b3f-6304-41a4-b648-4faa3c6742ac', '035-002', null, '确定个人信息', '确定个人信息', 'saveLoginUser');
-INSERT INTO `t_pub_menubutton` VALUES ('50857dcb-654b-4c1f-b2ff-b4503207b9cc', '035-001', null, '修改用户', '修改用户', 'modifyUser');
-INSERT INTO `t_pub_menubutton` VALUES ('58f2f32b-8bfb-4c6f-9426-25fa190a8df3', '035-003', null, '删除角色', '删除角色', 'delUsergroup');
-INSERT INTO `t_pub_menubutton` VALUES ('9d7a5a15-a037-48a8-a0df-32354d63799c', '035-003', null, '修改角色', '修改角色', 'modifyUsergroup');
-INSERT INTO `t_pub_menubutton` VALUES ('b0ac30c9-01d4-48e8-b798-ee11a5805fa9', '035-001', null, '新增用户', '新增用户', 'addUser');
-INSERT INTO `t_pub_menubutton` VALUES ('c0bfb980-880f-439c-be53-709ed07414ec', '035-001', null, '查询用户', '查询用户（菜单/按钮）', 'queryUser');
-INSERT INTO `t_pub_menubutton` VALUES ('d73395ef-4b17-46da-8988-693b1c973df0', '035-001', null, '删除用户', '删除用户', 'delUser');
-INSERT INTO `t_pub_menubutton` VALUES ('d92b17a2-8e16-4e81-bf93-317ecded8bd2', '035-003', null, '分配操作模块', '分配操作模块', 'assignMenuAndButton');
-INSERT INTO `t_pub_menubutton` VALUES ('defecb21-c465-4434-816f-fcbf9d518f2f', '035-003', null, '查询角色', '查询角色（菜单/按钮）', 'queryUsergroup');
-INSERT INTO `t_pub_menubutton` VALUES ('fde54a79-fd6c-47bd-b83c-d42392bcd60d', '035-001', null, '查看用户', '查看用户', 'viewUser');
+INSERT INTO `t_pub_menubutton` VALUES ('3dca63ee05c04db18dfdd4e2d0a00d73', '052-001', null, '修改用户', '', 'modifyUser');
+INSERT INTO `t_pub_menubutton` VALUES ('41549de3afe74587a8048c0c0c1d32b6', '050-001', null, '查询微信菜单', '', 'queryWxMenu');
+INSERT INTO `t_pub_menubutton` VALUES ('43eed024c12e4374bc69e33f6611dd61', '049-001', null, '新增商家', '', 'addCompany');
+INSERT INTO `t_pub_menubutton` VALUES ('4bd48a150ef34355836c35fd58131e7e', '050-002', null, '编辑单图文', '', 'modifyTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('4c91f419a1a743b898ad33246b4b31b6', '052-002', null, '修改角色', '', 'modifyUsergroup');
+INSERT INTO `t_pub_menubutton` VALUES ('4d958d24de3c4452b1536a60b131dfd2', '050-003', null, '删除文章', '', 'delArticle');
+INSERT INTO `t_pub_menubutton` VALUES ('517c96668778458ba472716b613ce8aa', '050-002', null, '启用/停用单图文', '', 'useTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('57f369bfedff4957862b87ccfa0ef430', '050-001', null, '新增微信菜单', '', 'addWxMenu');
+INSERT INTO `t_pub_menubutton` VALUES ('5aa99cd7489d42bcaf134f7f4a60e5c3', '052-001', null, '新增用户', '', 'addUser');
+INSERT INTO `t_pub_menubutton` VALUES ('5fcf417f98e04c94bfb71b17eecf9c77', '050-002', null, '添加多图文', '', 'addDuoTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('6ace9eba81dc4e9786dd0c1c35d9485b', '050-002', null, '编辑文本回复', '', 'modifyWenben');
+INSERT INTO `t_pub_menubutton` VALUES ('6bb641769ed14dfbbe0b37fd36d1744e', '050-001', null, '保存微信菜单', '', 'saveWxMenu');
+INSERT INTO `t_pub_menubutton` VALUES ('71b276e1522047dfab0d1e64bd52e1db', '049-001', null, '导出商家', '', 'exportCompany');
+INSERT INTO `t_pub_menubutton` VALUES ('7bcb0f8685d34d75aace0e7c458c17b4', '050-002', null, '保存其他设置', '', 'saveOther');
+INSERT INTO `t_pub_menubutton` VALUES ('7e953a765c774d07b7ebd1c9171e7509', '050-001', null, '删除微信菜单', '', 'delWxMenu');
+INSERT INTO `t_pub_menubutton` VALUES ('8475888ed23c4bdfb71be3834419b268', '050-002', null, '停用/启用多图文', '', 'useDuoTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('943178dece4642a6b178185eb6f2ea43', '052-001', null, '绑定用户角色', '', 'bindUsergroup');
+INSERT INTO `t_pub_menubutton` VALUES ('9b02d950bfc045f0a70abb165a4106f0', '049-001', null, '详情', '', 'companyDetail');
+INSERT INTO `t_pub_menubutton` VALUES ('a92d15492aa24c528626ff3475d56216', '050-002', null, '编辑多图文', '', 'modifyDuoTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('afa9aab8dcec41e4a64f24d45018c1d8', '052-001', null, '删除用户', '', 'delUser');
+INSERT INTO `t_pub_menubutton` VALUES ('b1c1f217d0094fe4a9dd7197f553c355', '050-003', null, '新增文章', '', 'addArticle');
+INSERT INTO `t_pub_menubutton` VALUES ('b8bd8232fb3a4d93814be7983879b670', '050-002', null, '查询', '', 'queryWxMsg');
+INSERT INTO `t_pub_menubutton` VALUES ('ba08b4593e594d51ba0c1d8e3e33855c', '052-001', null, '锁定/解锁用户', '', 'lockUser');
+INSERT INTO `t_pub_menubutton` VALUES ('bc34cd24f7a94bdcb09d57bc8908f7ad', '050-001', null, '同步微信菜单', '', 'syncWeixin');
+INSERT INTO `t_pub_menubutton` VALUES ('bf54326be52f42a0a9258f2606bb958b', '052-002', null, '分配操作模块', '', 'assignMenuAndButton');
+INSERT INTO `t_pub_menubutton` VALUES ('c17fc672d7f64f12b6f79bed4284d1c8', '052-002', null, '查询', '', 'queryUsergroup');
+INSERT INTO `t_pub_menubutton` VALUES ('c94068d3efee4313b18df9fd01bb9d66', '050-002', null, '添加文本回复', '', 'addWenben');
+INSERT INTO `t_pub_menubutton` VALUES ('ebe12fb3d09942fca288b1538ba8c47c', '052-001', null, '查询用户', '', 'queryUser');
+INSERT INTO `t_pub_menubutton` VALUES ('f0eadfb25a1d4281b60014a4676df3cf', '050-002', null, '添加单图文', '', 'addTuwen');
+INSERT INTO `t_pub_menubutton` VALUES ('f12398a94ed54b65b34179a1ceb467fa', '050-002', null, '添加系统消息', '', 'addKefu');
+INSERT INTO `t_pub_menubutton` VALUES ('f9992e621fbd4e86ad6770e364e5d51b', '050-002', null, '编辑链接回复', '', 'modifyLianjie');
 INSERT INTO `t_pub_menubutton` VALUES ('ffb22e35-1323-4a70-b3cd-a5c388ded248', '035-002', null, '查询个人信息', '查询个人信息（菜单）', 'queryLoginUser');
 
 -- ----------------------------
@@ -8519,7 +8680,65 @@ CREATE TABLE `t_pub_rspic` (
 -- ----------------------------
 -- Records of t_pub_rspic
 -- ----------------------------
-INSERT INTO `t_pub_rspic` VALUES ('9c2fe18b56d146c3b29b00024489e0b3', '', '23', '2f9b06bc53524d459a02855c6dd90d7c.jpg', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('01263ebe0bcd45fbbe71791e205fc6db', 'fed25d0e49564e1db1194290e8091862', '退订', '74ed3adf313343ab97728c228803a534.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('05a8bfeae248456cb8fa189efe1fa3c2', '776a044d6f494130a4d00604e446dfa6', '退订', '0e6a5d35290e40f3917f2f93a11c1c42.jpg', '3', '3');
+INSERT INTO `t_pub_rspic` VALUES ('06cb8faa5ca84e939f59d20013dada1d', '1265964784b04cd097ae659f4722535a', '退订', 'd02304a3545c4e898e55c04921dfca35.jpg', '3', '3');
+INSERT INTO `t_pub_rspic` VALUES ('079927534a954eb69e04a69e2b711889', 'd245bdf684c74e32ba6ffeadd729fb6e', '2', 'fd2dd72a2fbd47e0a6a7ed318b9e088a.JPG', '2', '2');
+INSERT INTO `t_pub_rspic` VALUES ('09831a04066141bcb7804980cc244642', '20decd8ef043410488f6fea6d3e11a3d', '1', '3a7ec4a1e853476f8f0f5838187cc972.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('0b735154b7b34c19a71cb0c04d2c5ef8', '28ebed31fad1485d800398d28d71d5ff', '1', '6f9d14c225c34aa6999cac511947fe3a.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('114d5334dbb14af3bd0447c033eceab4', 'd159f6fce31e4dad98e676476133c38f', '退订', '84c43ed50d254b30857f80c85445dd62.jpg', '7', '3');
+INSERT INTO `t_pub_rspic` VALUES ('13e69b02ec2b4c5e9aa6a4eb0e3eb918', '71d784fd4f034382aa55a5eba0b871eb', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('1b57e17522fd461ea4af7f0a0cf6eb01', '937f254f32054a2ca79a58f64b27764b', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('1fbe1130576f4f999173fead0bb8475e', 'c5c660331d914bcaa06a5e5887faa84a', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('24b575534a2a465e89609eb068108748', 'd159f6fce31e4dad98e676476133c38f', '退订', '5dc66cbc6a974adab25f62fd7d9a43a8.jpg', '4', '3');
+INSERT INTO `t_pub_rspic` VALUES ('255e664c23a04a9bae150d8b6599fe87', '1265964784b04cd097ae659f4722535a', '退订', '7862055404a9422c9dcaa0fb6b3fcd0f.jpg', '7', '3');
+INSERT INTO `t_pub_rspic` VALUES ('2a0b849ad0584115966b072af2e7b919', 'e6fa720b2b4e43789560bee2150e9702', '1', 'fe21a24cef2143cc9b0850ed778457a9.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('3b084edf8c4e4771bc6b71117c227d7b', 'e6fa720b2b4e43789560bee2150e9702', '2', '9c6d2ed64f8347c9a339dc9bd994544b.JPG', '2', '2');
+INSERT INTO `t_pub_rspic` VALUES ('3b8876655e9a4657b23e62bec1554e06', 'd159f6fce31e4dad98e676476133c38f', '退订', '5264fe314c3f4d50b76f8f31b7f45f14.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('3c3bd196e91d4bfc8fcb1399743589a1', '9f0ded9f61734f9c9b5212681cf884cf', '退订', '0a68e45c0a4d4a14a09fee41ba02b3ea.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('3c87ce5c58e746ce9a68c296c8aa4cd9', 'd159f6fce31e4dad98e676476133c38f', '退订', '1b83491d57bb486f8009c405dbaa962e.jpg', '3', '3');
+INSERT INTO `t_pub_rspic` VALUES ('3e79e06ee222465abfb358d334112d47', '2f9aab43d0cc4b208d25032de8ac6b6d', '图片标题', '92b59d73311241eea819f516e2cd9422.jpg', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('3ffb4ac161804e58a75c2c601ea428d2', '776a044d6f494130a4d00604e446dfa6', '退订', '1bece5eadbdc4e209a0a2f916704dca8.jpg', '2', '3');
+INSERT INTO `t_pub_rspic` VALUES ('40ee5b065fbd4b45aba3fc8bc0456153', 'ae499fed29ad4e9a958d46313c7b990d', '退订', '13240621e6a9473aa9548a2ad4f50116.jpg', '1', '3');
+INSERT INTO `t_pub_rspic` VALUES ('51e56dc6028241988092e3e4516761f9', '776a044d6f494130a4d00604e446dfa6', '退订', '0d3024d1d2f8489a89a1774cf7037d77.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('5231aad2a73d474a954dc7f77a8da774', 'fde4704be6e647d486f42b2452f86225', '图片标题', '6e3004f88e154c89a23af84c7daaf61c.png', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('60feb52786a04581ba53b0d8cb72db74', '', '1', '0f83dc317c574371950787d83ef98278.jpg', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('61afdf6f3203406b900051d1411ba531', '', '2', '96a7021c23294436b047b8fad1d8fa0c.JPG', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('634faa6c21ba449f8366cc371a6ac883', 'd159f6fce31e4dad98e676476133c38f', '退订', '2e8eff5288234472bb2d743c078e74a0.jpg', '1', '3');
+INSERT INTO `t_pub_rspic` VALUES ('64ceebfe91ba43e1b1701d4e809b6dce', '', '1', 'f55d6d7a5f4a4857b537b187ec85195b.JPG', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('66b6f630eae9465ea634a54ef769db41', 'd245bdf684c74e32ba6ffeadd729fb6e', '3', '0d1ddc13be314e7e92bda60253b4b1cc.JPG', '3', '2');
+INSERT INTO `t_pub_rspic` VALUES ('680d79d969b44ae4988c71ee8f42a0ab', 'aaaa2d71eef240a2ae80f76bca58cf63', '1', '2f680b580c9c4da680e06f72ca4d4001.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('6da4412f14664ecc82b82dbcc226d662', '9f0ded9f61734f9c9b5212681cf884cf', '退订', 'b141b3e7c0c64177bd04684935e72dde.jpg', '2', '3');
+INSERT INTO `t_pub_rspic` VALUES ('6debd355a1de4681b3a8c0461142a812', 'd245bdf684c74e32ba6ffeadd729fb6e', '1', 'dc2a7a1c82da46feb2ea7bbd4a98c61d.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('6f7f076e37ab4275991a147775d9bbc8', 'd159f6fce31e4dad98e676476133c38f', '退订', '4b27c2829463477b9c278d013547cf20.jpg', '6', '3');
+INSERT INTO `t_pub_rspic` VALUES ('725ab190721d4b50b05dcd740c47fb6c', 'd159f6fce31e4dad98e676476133c38f', '退订', 'ee430b5417654f81bebfecf8c31b31ef.jpg', '2', '3');
+INSERT INTO `t_pub_rspic` VALUES ('7730fc739aad4e9ab1553e47745d9261', 'f939bd7b516f4e72ab368567accda1e7', '退订', '63e82dc645df4ad1b1cf06dd9eae6e66.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('893087f1acf34531b154439a839f7788', '1265964784b04cd097ae659f4722535a', '退订', '44899d36ae3d48829e36e1fc36e789cf.jpg', '8', '3');
+INSERT INTO `t_pub_rspic` VALUES ('8a0e33887b3e4ed7af357738ec2b664f', 'ae499fed29ad4e9a958d46313c7b990d', '退订', '133d1271d01f4d76aa27ae6273496dcb.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('8df8267679f547768b376edfc7c9dad7', 'f32d6cc3046749df9d7ab5f6efe3e04f', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('908b61e54a164f629395d33038f3bc0f', '2f9aab43d0cc4b208d25032de8ac6b6d', '图片标题', 'd210b32744fc48918691340755253cce.jpg', '2', '2');
+INSERT INTO `t_pub_rspic` VALUES ('92ad21dedaaa436f9ce6476e5fb1f075', 'd159f6fce31e4dad98e676476133c38f', '退订', 'cdcd82c654a0430990d819b7509e0489.jpg', '8', '3');
+INSERT INTO `t_pub_rspic` VALUES ('9686eb746ae143df86ecc9b1ea1a9bd8', '3c8ff0ecf9b34fc8b99b33dc96802e5e', '退订', 'wxMeida/null', '0', null);
+INSERT INTO `t_pub_rspic` VALUES ('980755d7553a4879a3f41002c0a4df11', '1265964784b04cd097ae659f4722535a', '退订', '92e4eac645094cf98219dcda9fd03cda.jpg', '4', '3');
+INSERT INTO `t_pub_rspic` VALUES ('9d6f2a2831fb45a8858c22a3d589efc3', '23699c68eb834b33932047932d42a57a', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('9dc320c1cbe74b2bbec5f84f0d81b419', '87437b83997c4a84afa4307919e14487', '退订', '28daab52647f462098c6f75580dbbf93.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('a5119b3066ee4fa18fa2ef09a42b3431', '428bc5fcc8964ad09a4cf3db91684534', '图片标题1', '54734ad3bf3241a5b97e124b10d0b27c.jpg', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('a7339081fe254d7aa200b841e1439655', '776a044d6f494130a4d00604e446dfa6', '退订', '0ff31ef7b45743d3858e491cd4bdf13c.jpg', '1', '3');
+INSERT INTO `t_pub_rspic` VALUES ('aee62956cad444a4b0c13a84ccc2cad7', '', '1', 'b1f169b28a604192820b0da250805fe6.jpg', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('b1fb78539c8742fa967c2c9ce0212f48', 'd159f6fce31e4dad98e676476133c38f', '退订', 'd6768dc47a8541d88a6128cdf01aef3d.jpg', '5', '3');
+INSERT INTO `t_pub_rspic` VALUES ('bdb1e31f115a4b9c8b2d506d3d41be4f', '1265964784b04cd097ae659f4722535a', '退订', 'c4621e08dff54c0db50bcd9a391521e4.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('bed9a77e60e44c7eb0899796c9397939', '9f0ded9f61734f9c9b5212681cf884cf', '退订', 'a213a5bb4a224c88872d043457615624.jpg', '1', '3');
+INSERT INTO `t_pub_rspic` VALUES ('c45faf4cb2e44b0fb7c0bed7973331ca', '1265964784b04cd097ae659f4722535a', '退订', '90e844fdb3cd40ec8ea7d23326ad28da.jpg', '6', '3');
+INSERT INTO `t_pub_rspic` VALUES ('d9144c5c35384f6389bdfd5d3f8f5403', '', '3', '7741ef2b13aa463590c72b82eac5e588.jpg', null, '2');
+INSERT INTO `t_pub_rspic` VALUES ('dc5957cc672d4d08a38464b1a1c90eff', '1265964784b04cd097ae659f4722535a', '退订', 'b6a50e85ee6d4a69b632ea8577ebc80b.jpg', '2', '3');
+INSERT INTO `t_pub_rspic` VALUES ('dee92e198363451c853a2ebc69bd8db6', '3b0ae9ccde2549438d520ebe79d6f7ed', '图片标题', 'f9a65cc1c9a647679fe5279689588d23.jpg', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('dfd1a4a3f39749f7ae929f05e02fba25', '1265964784b04cd097ae659f4722535a', '退订', '0687804c7c0b4f81a339c188b5f36266.jpg', '1', '3');
+INSERT INTO `t_pub_rspic` VALUES ('e21206b3f73a491c902a7d23aca4a58a', '901651ef5a394106bfa8dce23a0423b1', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('e225819b39584d86bd2cb07714b4e8fc', '1265964784b04cd097ae659f4722535a', '退订', 'bc741f1ddab04c95a021ea3d125ea06d.jpg', '5', '3');
+INSERT INTO `t_pub_rspic` VALUES ('f040e87710384e74bd832597af178348', '287c63efdc344cadbf319f4dc4b20c0b', '退订', '9496cb4166e448d9a1ea3958fa2b061b.jpg', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('f1e3543472e94f59adb06949ab74ca3c', '412a321663ec421a8084ce6a1ed5f8e5', '图片标题', '83921368182f438b85b7b79765ebdd42.JPG', '1', '2');
+INSERT INTO `t_pub_rspic` VALUES ('f44cfe4e4f5b40b9b407eac89ddbf744', '47029dfa99bb460b8b7da93b05f6984f', '退订', 'wxMeida/null', '0', '3');
+INSERT INTO `t_pub_rspic` VALUES ('fd27f1397dcf4462a90ed38e28d4c2a4', 'ae499fed29ad4e9a958d46313c7b990d', '退订', 'cffb55bbfddf48f0a3d9ca69cd8ddcdc.jpg', '2', '3');
 
 -- ----------------------------
 -- Table structure for t_pub_ugcreatelink
@@ -8551,36 +8770,85 @@ CREATE TABLE `t_pub_ugmenubuttonlink` (
 -- ----------------------------
 -- Records of t_pub_ugmenubuttonlink
 -- ----------------------------
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'd73395ef-4b17-46da-8988-693b1c973df0');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'c0bfb980-880f-439c-be53-709ed07414ec');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '07cb6ee1-72cd-4105-b65d-d419e28ed962');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '10ed96be-25d1-45e4-a516-a5640cb99aef');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '50857dcb-654b-4c1f-b2ff-b4503207b9cc');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'b0ac30c9-01d4-48e8-b798-ee11a5805fa9');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'fde54a79-fd6c-47bd-b83c-d42392bcd60d');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '41549de3afe74587a8048c0c0c1d32b6');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '57f369bfedff4957862b87ccfa0ef430');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '6bb641769ed14dfbbe0b37fd36d1744e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '7e953a765c774d07b7ebd1c9171e7509');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'bc34cd24f7a94bdcb09d57bc8908f7ad');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '0dbd4f29fe87494c97dd401e8e69c715');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '18c4569cdef843599b82c017cfe2653f');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '2b81e9a9dc9647d7b89086b945659136');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '2ebaf7fa9bf1484e93cb6698e27fd053');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '2edd57121f3b46a8a8d48b9fc26dd25e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '4bd48a150ef34355836c35fd58131e7e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '517c96668778458ba472716b613ce8aa');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '5fcf417f98e04c94bfb71b17eecf9c77');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '6ace9eba81dc4e9786dd0c1c35d9485b');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '7bcb0f8685d34d75aace0e7c458c17b4');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '8475888ed23c4bdfb71be3834419b268');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'a92d15492aa24c528626ff3475d56216');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'b8bd8232fb3a4d93814be7983879b670');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'c94068d3efee4313b18df9fd01bb9d66');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'f0eadfb25a1d4281b60014a4676df3cf');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'f12398a94ed54b65b34179a1ceb467fa');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'f9992e621fbd4e86ad6770e364e5d51b');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '2c3ad94de0344c929da5baa4612e6e2c');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '30926bb7136c47c582ae995e323763d3');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '4d958d24de3c4452b1536a60b131dfd2');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', 'b1c1f217d0094fe4a9dd7197f553c355');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '2c3ad94de0344c929da5baa4612e6e2c');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '30926bb7136c47c582ae995e323763d3');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '4d958d24de3c4452b1536a60b131dfd2');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', 'b1c1f217d0094fe4a9dd7197f553c355');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '3a9d7b3f-6304-41a4-b648-4faa3c6742ac');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a593bbcdce2243168ede568d8e99a77b', 'ffb22e35-1323-4a70-b3cd-a5c388ded248');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '41549de3afe74587a8048c0c0c1d32b6');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '57f369bfedff4957862b87ccfa0ef430');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '6bb641769ed14dfbbe0b37fd36d1744e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '7e953a765c774d07b7ebd1c9171e7509');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'bc34cd24f7a94bdcb09d57bc8908f7ad');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '0dbd4f29fe87494c97dd401e8e69c715');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '18c4569cdef843599b82c017cfe2653f');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2b81e9a9dc9647d7b89086b945659136');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2ebaf7fa9bf1484e93cb6698e27fd053');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2edd57121f3b46a8a8d48b9fc26dd25e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '4bd48a150ef34355836c35fd58131e7e');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '517c96668778458ba472716b613ce8aa');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '5fcf417f98e04c94bfb71b17eecf9c77');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '6ace9eba81dc4e9786dd0c1c35d9485b');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '7bcb0f8685d34d75aace0e7c458c17b4');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '8475888ed23c4bdfb71be3834419b268');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'a92d15492aa24c528626ff3475d56216');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'b8bd8232fb3a4d93814be7983879b670');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'c94068d3efee4313b18df9fd01bb9d66');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'f0eadfb25a1d4281b60014a4676df3cf');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'f12398a94ed54b65b34179a1ceb467fa');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'f9992e621fbd4e86ad6770e364e5d51b');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2c3ad94de0344c929da5baa4612e6e2c');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '30926bb7136c47c582ae995e323763d3');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '4d958d24de3c4452b1536a60b131dfd2');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'b1c1f217d0094fe4a9dd7197f553c355');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '11615f6ae7f04ed5bbc1937aa0d1186a');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '19befdd140c34236914ee9cc4656a116');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2703543dc84e43188b994d5d6de348ac');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '43eed024c12e4374bc69e33f6611dd61');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '71b276e1522047dfab0d1e64bd52e1db');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '9b02d950bfc045f0a70abb165a4106f0');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '239a2a21cfbf47e4bedbc84654692583');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '3dca63ee05c04db18dfdd4e2d0a00d73');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '5aa99cd7489d42bcaf134f7f4a60e5c3');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '943178dece4642a6b178185eb6f2ea43');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'afa9aab8dcec41e4a64f24d45018c1d8');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'ba08b4593e594d51ba0c1d8e3e33855c');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'ebe12fb3d09942fca288b1538ba8c47c');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '06042e77d771436db343510f1468e6e9');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '2221d0214c7242d1a326e62de6f395c0');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '4c91f419a1a743b898ad33246b4b31b6');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'bf54326be52f42a0a9258f2606bb958b');
+INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'c17fc672d7f64f12b6f79bed4284d1c8');
 INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '3a9d7b3f-6304-41a4-b648-4faa3c6742ac');
 INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'ffb22e35-1323-4a70-b3cd-a5c388ded248');
 INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '0539f010-7184-45b0-b312-ab9354b361ba');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'defecb21-c465-4434-816f-fcbf9d518f2f');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '0653d03c-be2c-4ffe-bd6b-f9c6da44a9e4');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'd92b17a2-8e16-4e81-bf93-317ecded8bd2');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '58f2f32b-8bfb-4c6f-9426-25fa190a8df3');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '9d7a5a15-a037-48a8-a0df-32354d63799c');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '07cb6ee1-72cd-4105-b65d-d419e28ed962');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '10ed96be-25d1-45e4-a516-a5640cb99aef');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '50857dcb-654b-4c1f-b2ff-b4503207b9cc');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'b0ac30c9-01d4-48e8-b798-ee11a5805fa9');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'c0bfb980-880f-439c-be53-709ed07414ec');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'd73395ef-4b17-46da-8988-693b1c973df0');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'fde54a79-fd6c-47bd-b83c-d42392bcd60d');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '0653d03c-be2c-4ffe-bd6b-f9c6da44a9e4');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '58f2f32b-8bfb-4c6f-9426-25fa190a8df3');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '9d7a5a15-a037-48a8-a0df-32354d63799c');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'd92b17a2-8e16-4e81-bf93-317ecded8bd2');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'defecb21-c465-4434-816f-fcbf9d518f2f');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '3a9d7b3f-6304-41a4-b648-4faa3c6742ac');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', 'ffb22e35-1323-4a70-b3cd-a5c388ded248');
-INSERT INTO `t_pub_ugmenubuttonlink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '0539f010-7184-45b0-b312-ab9354b361ba');
 
 -- ----------------------------
 -- Table structure for t_pub_ugmenulink
@@ -8594,24 +8862,125 @@ CREATE TABLE `t_pub_ugmenulink` (
 -- ----------------------------
 -- Records of t_pub_ugmenulink
 -- ----------------------------
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '037');
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '001');
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '001-001');
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '043-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '050-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '050');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '050-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a9693078a69a46e1a3aa7c92ec86a867', '050-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '050-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '050');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '035-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a593bbcdce2243168ede568d8e99a77b', '035');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '050-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '050');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '050-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '050-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '044-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '044');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '044-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '044-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '044-004');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '049-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '049');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '048-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '048');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '048-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '048-004');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '048-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '047-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '047');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '047-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '047-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '046-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '046');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '045-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '045');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '052-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '052');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '052-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035-005');
 INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035');
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035-001');
 INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035-002');
 INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035-004');
-INSERT INTO `t_pub_ugmenulink` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '035-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '044-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '044');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '048-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '048');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '048-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '049-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('9b835a84d05e4290bc41cc44771130e5', '049');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '044-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '044');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '044-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '044-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '049-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '049');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '035-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '035');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '044-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '044');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '044-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '044-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '048-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '048');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '049-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '049');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '046-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '046');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '035-006');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '035');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '035-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '045-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '045');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '053');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '044-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '044');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '044-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '044-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '035-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('eb61213c49004982a26628a3f26182f4', '035');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '053-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '053');
 INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '044-001');
 INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '044');
-INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '043-001');
-INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '043');
-INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '044-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '044-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '048-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '048');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '048-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '049-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '049');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '049-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '046-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '046');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '052-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '052');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '052-004');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '052-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '052-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '054-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '054');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '050-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '050');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '050-002');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '050-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-006');
 INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035');
-INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-003');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-005');
 INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-002');
 INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '035-004');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '045-001');
+INSERT INTO `t_pub_ugmenulink` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '045');
 
 -- ----------------------------
 -- Table structure for t_pub_user
@@ -8622,30 +8991,68 @@ CREATE TABLE `t_pub_user` (
   `F_USER_LOGINNAME` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户登录名。PC端:登录名；微信公众号:openId；',
   `F_USER_NAME` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户姓名',
   `F_USER_DESC` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户描述',
-  `F_USER_PWD` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户密码',
+  `F_USER_PWD` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户密码',
   `F_USER_TEL` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户固定电话',
   `F_USER_MOBILE` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户手机号码',
   `F_USER_EMAIL` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户电子邮件',
   `F_USER_ADDR` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户联系地址',
   `F_USER_REG_DATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户注册日期',
-  `F_USER_STATE` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户状态：1：有效；0：无效，不允许登录；-1：已删除',
+  `F_USER_STATE` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户状态：1：有效；0：无效，不允许登录；-1：已删除   -2 取消关注',
   `F_USER_IP` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '绑定IP地址,为空时不绑定',
   `F_USER_LOCKED` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户是否被锁定0-没有1-锁定',
   `F_USER_LOCKTIME` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '最近一次被锁定时间',
-  `F_USER_ROLETYPE` decimal(1,0) DEFAULT NULL COMMENT '0-采购商1-供应商商2系统平台3-目的地运营商4-分销渠道5-客人6-集团目的地运营商7-B2B供应商 8-B2B组团社  ',
+  `F_USER_ROLETYPE` decimal(1,0) DEFAULT NULL COMMENT '0-采购商1-供应商商2系统平台',
   `F_ACCID` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '存放目的地运营商编号',
   `F_UNIT_ID` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户所辖单位编号',
   `F_WXSERVICEID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `F_STOREID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `F_TYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-微信1-PC',
+  `F_COUNTRY` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '国家',
+  `F_PROVINCE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '省',
+  `F_CITY` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '市',
+  `F_SEX` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '性别 1男 2女 3未知',
+  `F_UPDATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '更新时间',
+  `F_HEADPIC` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像 微信',
   PRIMARY KEY (`F_USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Records of t_pub_user
 -- ----------------------------
-INSERT INTO `t_pub_user` VALUES ('1', 'admin', '系统管理员', null, 'e10adc3949ba59abbe56e057f20f883e', null, null, null, null, null, '1', null, '0', null, '1', null, null, null, null, null);
-INSERT INTO `t_pub_user` VALUES ('d8c4b2be-d62d-4078-94e9-9d22c65d3fd1', 'yys', '运营商管理员', null, 'e10adc3949ba59abbe56e057f20f883e', null, null, null, null, '2018-04-09 10:49:16', '1', null, '0', '1551078580084', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, '1');
+INSERT INTO `t_pub_user` VALUES ('1', 'admin', '系统管理员', null, 'e10adc3949ba59abbe56e057f20f883e', null, null, null, null, null, '1', null, '0', null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('220c2280629c4e5489d1bf94166b4828', 'olL2Lt8nh0N-HlClip_Rb5jiSkSM', '管材管件', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, '1', null, '0', '中国', '中国', '厦门', '1', '2019-11-20 14:31:34', null);
+INSERT INTO `t_pub_user` VALUES ('29ca13478e3643b08bbac8873fd1ab80', 'olL2Lty4PCfOfGbC_fWtL91lnXxk', '时间的窗', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '北京', '朝阳', '1', '2019-11-27 14:35:35', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJVJkA76GKQAvkLDrDplFW6ibZOeXfSCMTBReBsE6NKBgBOX9DuV7dTeA88lRZ7fMf3QRDAKg2y3Ng/132');
+INSERT INTO `t_pub_user` VALUES ('3d9806b660604d35ac87aa59699658d8', 'qwe', '网站上', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-11-19 21:06:11', '-1', null, '0', '1574169983617', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('40b8df13ff764a1aae54743bcf6a38b4', 'olL2Lt9XGLWgHI6KzMpXxXFT-LIQ', '泰然自若', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, '1', null, '0', '中国', '中国', '合肥', '2', '2019-11-20 18:53:16', null);
+INSERT INTO `t_pub_user` VALUES ('59ca172fcf10425c85bacb279e3da7f2', 'olL2Lt3-HUAKQYFMKQvST2asbiCo', '郑薇', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '北京', '朝阳', '2', '2019-11-19 17:24:18', null);
+INSERT INTO `t_pub_user` VALUES ('5cb674732c2f488f8bb1f3dc0b6fc8c0', 'olL2Lt_mKsxzszGXPcAWw1KeZpPA', 'koala', null, null, null, null, null, null, null, '1', null, null, null, null, null, null, '1', null, '0', '中国', '中国', '常州', '2', '2019-11-20 20:31:15', null);
+INSERT INTO `t_pub_user` VALUES ('5d020e0465284dcc8d2e91a393da801e', 'olL2Lt0fwcIDt_2qRBSTl_WIzDBg', '骑着Vespa的江守', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '北京', '海淀', '2', '2019-11-28 09:59:00', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELfKYHiccalyeRUraq6rDYQDOouoOscwgdGCmYd9ARQMUDIokfHVTXq3UtSe5kOFJuwJh2XAcuxQLw/132');
+INSERT INTO `t_pub_user` VALUES ('622488d41a0f4029ae3ea009ffc101b5', 'olL2Lt6PQ4cht6QeFlEGuNikc_S4', 'only one', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '中国', '镇江', '1', '2019-11-16 20:31:35', null);
+INSERT INTO `t_pub_user` VALUES ('62411606b8fc40e79e254bf3d7685a91', 'jiang2019', '张小江', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-11-20 11:08:42', '1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('626df5cb3db84e92a2560d0ec8d8f8dc', 'olL2Lt7eInGcDmvyau76mdr_QQ2I', '娜', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '中国', '房山', '2', '2019-11-25 10:36:34', 'http://thirdwx.qlogo.cn/mmopen/ACbpvkjJic9uDhfjn8nLqNDich0URX7EqQPSSzHpRLUauyvztrja9VUgmnlmiak48Pq2jeEyIhhlHXXruibPYqzp948Snx2LwhsW/132');
+INSERT INTO `t_pub_user` VALUES ('6ca37a77136e4e88b9e245e5caf9b524', 'olL2Lt9_NZc5Fotv0JKyXRZpvZ9w', '眼镜', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '香港', '九龙城区', '1', '2019-11-27 14:48:39', 'http://thirdwx.qlogo.cn/mmopen/ps68icnpRvDXgqwicibJE78p1TafaQnZgkobD8bOq6VZVRmFYHZ6nxXkZnwngMc3RmiaEKSAibkMwEc21B9niacSLRC2oISvvumKfn/132');
+INSERT INTO `t_pub_user` VALUES ('6d0ce904e469440eb9ca4b484fce4275', 'olL2Lt9vYKvRaBUfpW1WfNkiEv5w', '新新点灯', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '北京', '海淀', '1', '2019-11-28 17:45:04', 'http://thirdwx.qlogo.cn/mmopen/NqibVlQqAETqhT5y0LSqQ9o68wtUHQxjgvUBuqchGj3ZBmI7WXvNpmSzEibPic3ymdjZYqPzeBZc9v4tvNBTaUZ6ju4iaTH1w1oh/132');
+INSERT INTO `t_pub_user` VALUES ('74b06ab9e403415189a02e236ea95204', 'chanpin', '产品', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-11-22 13:45:06', '1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('83cb486b630045be9bd771dbbf0523df', 'olL2Lt7pbyFpDKkVb44blngZozn4', '贝贝', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '河南', '郑州', '2', '2019-11-26 14:36:05', 'http://thirdwx.qlogo.cn/mmopen/ytp1PoxDvn9fN2XibuDXicOUszXFPzq7W4wGkECsVLOaPuXIlVfnAszlKEQeicNElT5jicCttAianTJgau6V29MgYybMWlKoT5Ltr/132');
+INSERT INTO `t_pub_user` VALUES ('8b365a93a03c4e0a9cba24c1aa1e50fa', 'olL2Lt5ZUI5vNE1jsljopDxJLeMI', '三农壹购@爆款供应链', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '中国', '', '2', '2019-11-22 11:30:36', 'http://thirdwx.qlogo.cn/mmopen/frRyyk9hFxSuyPXyMtAtnZr96bkG8gxgPuia2BPOicLsvc7DicTPuXu4Wdc98iaNaI82SXXP5GPqQpamwkJyibZJOzZtFibSATicbtf/132');
+INSERT INTO `t_pub_user` VALUES ('8ed39eabf137472fb57363a3bf7dd851', 'uii', '111', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-11-20 10:24:16', '-1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('91b36864fe9e472cb71f626985a256f2', 'olL2Ltw-yRRjf3S8o-tmoKjf78ZY', 'Rui', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '广东', '深圳', '1', '2019-11-18 14:58:07', 'http://thirdwx.qlogo.cn/mmopen/ACbpvkjJic9vGYBQI8iahLcJiaa3T5zEwXiaiaOa6stnDByS2FZB6ZibCBKAww1uMHx5u5jvZ1K1nXvkVSAryVh8fbdibrdVI4C1jXk/132');
+INSERT INTO `t_pub_user` VALUES ('96021c0805444af6809a6510a1bad657', 'olL2Lt5rP-IwH5erYUP9GNZeNtqU', 'black蓝昕儿', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '北京', '', '2', '2019-11-27 15:27:02', 'http://thirdwx.qlogo.cn/mmopen/ps68icnpRvDULibMx59AB5Kicw3lnWhVC5XZicyD5KCGHZM1BJV9nA3r3gVL3hJaNkTb1wEicGX8ias61xRvXYzbv40gpicATubNNH3/132');
+INSERT INTO `t_pub_user` VALUES ('a0219344de0545c08af9541c46cc9b56', 'olL2Lt5jlw4UGVj6r1xyxSv8D98w', '[西瓜]wd', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '北京', '朝阳', '1', '2019-11-28 23:34:42', 'http://thirdwx.qlogo.cn/mmopen/ACbpvkjJic9uDhfjn8nLqNC4TqZic6ibBBlz2ThHkUvVAGh4AjZNZOAwsIS4CR11qchGuugCsECThJ9ib1hvvMwuJuTlaZQ3icWDW/132');
+INSERT INTO `t_pub_user` VALUES ('a145f0cf527249cca47a12b01eab70a7', 'olL2Lt_ZOfa4YeDFX2q0p9D2FtM8', 'Jonybe', null, null, null, null, null, null, null, '-2', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '浙江', '杭州', '1', '2019-11-19 19:33:01', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBLXDQwG5c8Xdo7zMbibELAn8nhxK5VLfudW6A1naibMsb4JKw3iaqQ37bjWlqicttAlYHhwmibibbIx7sA/132');
+INSERT INTO `t_pub_user` VALUES ('a28aee8f43a941d9addd73c0c4920a59', 'olL2Lt1pEahKNXRNKY-4PzDjDORs', '宁儿', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '中国', '北京', '大兴', '1', '2019-11-27 10:48:47', 'http://thirdwx.qlogo.cn/mmopen/ACbpvkjJic9uDhfjn8nLqNBevyXU0vXgK3Of70DfUCptzib8DSvY2pn5wxnBTldDLoOZiaCWx6jcJhsVfSeaGfE7AKlJgJMib0Pib/132');
+INSERT INTO `t_pub_user` VALUES ('a61b7b7acb4542a48fde0fdda31b6ba0', 'shixm', '小梅', '这是一个不能动的测试号', '25d55ad283aa400af464c76d713c07ad', '888888888', '13156787677', 'wew@sohu.com', '上海市五角街荣发大夏', '2019-11-08 15:38:32', '1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('a6e7cf1208154af4b2db93ee5285f622', 'wzd', '吴章娣', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-10-20 12:40:01', '-1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('af23262996354207b3efda7e07b605b3', '及时', '物质', '12312', '25d55ad283aa400af464c76d713c07ad', '0510', '13412345678', 'koala_wu@vip.qq.com', 'fjdsj', '2019-11-19 21:06:59', '-1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('b5f12035d7ef4f0fad6364425bd634c6', 'olL2Lt2L69BsW9oGvdW0FZalrT30', '崔老师', null, null, null, null, null, null, null, '-2', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '英国', '英国', '爱丁堡', '2', '2019-11-24 19:08:26', 'http://thirdwx.qlogo.cn/mmopen/ZicNlkzgsfvzGKNJFzuficnMy9IThmetxbabDjoJD0C991IzFMrQp0Xe4j6smC9Gjy1C8Ftk46EHfwC5DjsAhSicKWvQpTqtDSW/132');
+INSERT INTO `t_pub_user` VALUES ('b9a722add51f403591389edc96ae150b', 'olL2Lt5tJLVHLC1a8Agw1XR42X88', '灵珑', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '江苏', '镇江', '1', '2019-11-16 22:27:02', null);
+INSERT INTO `t_pub_user` VALUES ('c98de254b72d4b1788134ceabb8aa532', 'dsfdsfsd', 'dfsdafads', '', '25d55ad283aa400af464c76d713c07ad', '', '', '', '', '2019-11-20 10:35:22', '-1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('d417d39463f34103bf376677a1db0fae', 'olL2Lt0yn4-sP3jZGD4zdBT2oEvc', '小梅', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '中国', '镇江', '2', '2019-11-22 11:27:25', 'http://thirdwx.qlogo.cn/mmopen/ytp1PoxDvn9fN2XibuDXicOXHQ5SaSsbfvpaBYpEfsjVuPbJ3k4hqwkzCnl4icNfqIqajynufUFKv5C0ic9eX5M8Oc1CwYfc1vmT/132');
+INSERT INTO `t_pub_user` VALUES ('d6e4c83ede734b638f46b2ad02bf4892', 'olL2LtwF98pjyRyuDgw5B9eqV7KY', '平凡', null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null, '1', null, '0', '中国', '中国', '镇江', '1', '2019-11-22 11:31:15', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBoIHZ4k2krWLejjtk7amzf4M8EPYEDMau5npWVzLgw8f9n3uicVGC98g8wnje87LEgjVQ7YlMtKOQ/132');
+INSERT INTO `t_pub_user` VALUES ('d74bcedab34c4588af2e77ebb381bed8', 'zongq2019', '宗倩', '', '25d55ad283aa400af464c76d713c07ad', '01012345678', '13190000000', '', '', '2019-11-20 11:07:59', '1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('d8c4b2be-d62d-4078-94e9-9d22c65d3fd1', 'yys', '运营商管理员', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', '', '2018-04-09 10:49:16', '1', null, '0', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_pub_user` VALUES ('de8491b020ca42e19639fb7fef9bc718', 'olL2Lt7EbB5UVJhEWFNifkgpgsyg', null, null, null, null, null, null, null, null, '1', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', null, null, null, null, '2019-11-22 15:00:30', null);
+INSERT INTO `t_pub_user` VALUES ('ee30a054a6d44d0bacb40d98e46c8d17', 'olL2Lty3FYU9Z6Zit6SWJpEAaaJk', '金银军', null, null, null, null, null, null, null, null, null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', 'da14b98e-cb26-4169-9b58-babe98b98047', '1', null, '0', '', '', '', '0', '2019-11-22 11:40:03', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5N4npS1WfDIYTlx1u7SWiaSXu1k1KFXYkIsLQIU9WzD0WvxR5zVpflahVbbgPxGgAk0mrFTv523CYvDVobicz7LZibbW2Z8nibK5A/132');
 
 -- ----------------------------
 -- Table structure for t_pub_usergroup
@@ -8667,8 +9074,13 @@ CREATE TABLE `t_pub_usergroup` (
 -- ----------------------------
 -- Records of t_pub_usergroup
 -- ----------------------------
-INSERT INTO `t_pub_usergroup` VALUES ('a1e0e9410c63424f9b6ce619443a3293', 'a1e0e9410c63424f9b6ce619443a3293', '1', '2019-04-25 15:54:37', '2', '', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
-INSERT INTO `t_pub_usergroup` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '运营商管理员', '1', '2018-04-09', '2', null, 'da14b98e-cb26-4169-9b58-babe98b98047', '2', null);
+INSERT INTO `t_pub_usergroup` VALUES ('9b835a84d05e4290bc41cc44771130e5', '测试', '-1', '2019-11-19', '2', '', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_pub_usergroup` VALUES ('a1e0e9410c63424f9b6ce619443a3293', '超级管理', '1', '2019-04-25 15:54:37', '2', '超级管理员', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_pub_usergroup` VALUES ('a593bbcdce2243168ede568d8e99a77b', 'PC网站', '1', '2019-10-21', '2', 'PC网站管理员', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_pub_usergroup` VALUES ('a85a41fe1f824bd397f3fa93c8306938', '微商城运营人员', '1', '2019-11-20', '2', '微商城运营人员，可以上商品，管理活动，查看商家', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_pub_usergroup` VALUES ('c23db4c5c81549baad67b1e55165bbe8', '微商城管理人员', '1', '2019-11-20', '2', '微商城管理人员，可以上商品，管理活动，管理商家 ，查看订单，财务信息', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_pub_usergroup` VALUES ('cc26a583-a979-4448-8ecc-c5aaed01804f', '平台管理', '1', '2018-04-09', null, '三农壹购平台管理员yys', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', null);
+INSERT INTO `t_pub_usergroup` VALUES ('eb61213c49004982a26628a3f26182f4', '产品人员', '1', '2019-11-22', '2', '微商城管理产品', 'da14b98e-cb26-4169-9b58-babe98b98047', '2', 'da14b98e-cb26-4169-9b58-babe98b98047');
 
 -- ----------------------------
 -- Table structure for t_pub_usergrouplink
@@ -8684,6 +9096,13 @@ CREATE TABLE `t_pub_usergrouplink` (
 -- ----------------------------
 INSERT INTO `t_pub_usergrouplink` VALUES ('d8c4b2be-d62d-4078-94e9-9d22c65d3fd1', 'cc26a583-a979-4448-8ecc-c5aaed01804f');
 INSERT INTO `t_pub_usergrouplink` VALUES ('2b6ee2f34ce84370a08aa0ff82657864', 'a1e0e9410c63424f9b6ce619443a3293');
+INSERT INTO `t_pub_usergrouplink` VALUES ('a61b7b7acb4542a48fde0fdda31b6ba0', 'a1e0e9410c63424f9b6ce619443a3293');
+INSERT INTO `t_pub_usergrouplink` VALUES ('a61b7b7acb4542a48fde0fdda31b6ba0', 'a1e0e9410c63424f9b6ce619443a3293');
+INSERT INTO `t_pub_usergrouplink` VALUES ('a61b7b7acb4542a48fde0fdda31b6ba0', 'cc26a583-a979-4448-8ecc-c5aaed01804f');
+INSERT INTO `t_pub_usergrouplink` VALUES ('a61b7b7acb4542a48fde0fdda31b6ba0', 'cc26a583-a979-4448-8ecc-c5aaed01804f');
+INSERT INTO `t_pub_usergrouplink` VALUES ('62411606b8fc40e79e254bf3d7685a91', 'a85a41fe1f824bd397f3fa93c8306938');
+INSERT INTO `t_pub_usergrouplink` VALUES ('d74bcedab34c4588af2e77ebb381bed8', 'c23db4c5c81549baad67b1e55165bbe8');
+INSERT INTO `t_pub_usergrouplink` VALUES ('74b06ab9e403415189a02e236ea95204', 'eb61213c49004982a26628a3f26182f4');
 
 -- ----------------------------
 -- Table structure for t_pub_userlog
@@ -8709,6 +9128,61 @@ CREATE TABLE `t_pub_userlog` (
 -- ----------------------------
 -- Records of t_pub_userlog
 -- ----------------------------
+INSERT INTO `t_pub_userlog` VALUES ('041be9cfefb44b1cbd7ce27e956062e0', 'yys', '2019-11-08 15:38:32', '5418af59-548f-4ce6-8d58-0922b51aab1b', '221.130.84.209', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为shixm  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('0cedfd9fb62c43b0803f2d440542db90', 'yys', '2019-11-19 20:53:04', '42516336-4930-446b-9c85-5651ce3589d4', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为wuzd  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('18543e4bd2034d41a95da369a73b3e1b', 'yys', '2019-11-20 10:05:41', 'ef8bbb1e-c685-4a00-8a6e-f41270538102', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为zongq2019  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('19161347fef54a9ca82eab48d9b4a44f', 'yys', '2019-11-18 14:27:55', '867d0e73-ddf1-43b9-a9ba-548d5eace01f', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：PC网站、平台管理,新角色：平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('1c412590539b4035a8f89d5ea9abb23c', 'yys', '2019-11-20 10:42:08', '81e7b5af-a0a2-4044-a457-299dd9a57d3d', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为ceshi  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('1f76e07c01dc420f9176d15955d1753f', 'yys', '2019-11-20 10:36:21', '154e87bd-9961-42b8-b524-4dc12873ac22', '122.194.21.82', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为qwe绑定的角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('20729754019044a78c98f5479609a1ce', 'yys', '2019-11-22 13:46:36', '6b81eb83-623d-46a2-b6f1-53950543ee95', '106.38.61.82', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增登录名为chanpin绑定的角色：产品人员', null);
+INSERT INTO `t_pub_userlog` VALUES ('2828232858934d4db749df8fe08e157e', 'yys', '2019-11-19 21:06:59', 'e0010c89-4665-43a8-956a-dd010d3eeecc', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为及时  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('2aa23cc2126944ae9c9eaf52b6e6826d', 'yys', '2019-11-19 21:09:35', 'e0010c89-4665-43a8-956a-dd010d3eeecc', '0:0:0:0:0:0:0:1', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为及时的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('2c4d20be2c094b859df425c62680478e', 'yys', '2019-11-19 21:27:42', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('30816aca227947e4990f2e514ce038f2', 'yys', '2019-10-20 12:40:01', 'a34238ab-d251-42b5-888a-5f7cbf1c7e25', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为wzd  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('4776f766973a49ecb631185710f541b6', 'yys', '2019-11-22 13:45:06', '6b81eb83-623d-46a2-b6f1-53950543ee95', '106.38.61.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为chanpin  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('48397fa71c93473085c674f2ffd45883', 'yys', '2019-11-19 21:27:41', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('4c30d74f01f9449483338a4f78395f6d', 'yys', '2019-11-20 10:04:04', 'ef8bbb1e-c685-4a00-8a6e-f41270538102', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为dsfdsaf  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('546516b018cd4354b174187e1f0939fe', 'yys', '2019-11-08 15:43:47', '5418af59-548f-4ce6-8d58-0922b51aab1b', '221.130.84.209', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增登录名为shixm绑定的角色：平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('5603afe5f243465c8582efec211a9861', 'yys', '2019-11-19 21:26:43', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('56faa24a0fe347148387102f4de1d076', 'yys', '2019-11-20 10:35:22', '154e87bd-9961-42b8-b524-4dc12873ac22', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为dsfdsfsd  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('62d91d46a9564f7d9852288647cecc2e', 'yys', '2019-11-19 21:06:11', 'e0010c89-4665-43a8-956a-dd010d3eeecc', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为qwe  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('6c0ac866c6be484d989d0027481537e1', 'yys', '2019-11-19 20:44:42', '42516336-4930-446b-9c85-5651ce3589d4', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：超级管理、平台管理,新角色：超级管理、平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('6cb9a29c0c2346eda944c9af0b85cb27', 'yys', '2019-11-20 11:08:42', 'd965b9c9-2942-40da-b17e-c873dea5f2a9', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为jiang2019  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('708486f4677041838f04db8a8d536ff0', 'yys', '2019-11-17 20:32:10', 'ef326de7-c28e-4f95-a2a4-d97cfaa02e14', '117.90.45.123', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm用户，变更内容：[用户描述:-->这是一个不能动的测试号][用户固定电话:-->888888888][用户手机号码:-->13156787677][用户电子邮件:-->wew@sohu.com][用户联系地址:-->上海市五角街荣发大夏]', null);
+INSERT INTO `t_pub_userlog` VALUES ('717530da0e714152989df71c59f8dfca', 'yys', '2019-11-20 10:36:28', '154e87bd-9961-42b8-b524-4dc12873ac22', '122.194.21.82', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为qwe的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('79a4979b9a73487485a116829482167b', 'yys', '2019-11-19 20:48:02', '6d271850-297d-42b4-bf48-602c26093b6e', '122.194.20.21', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为xjtinghai  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('7b32aade2fbb42a9a3ad95f4e68aaeaf', 'yys', '2019-11-19 21:26:23', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '锁定管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '锁定登录名为qwe的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('7d62c54754d8497f87dff9dae1dbaacb', 'yys', '2019-11-18 14:18:29', 'e74d0b64-2fd1-49d1-9d49-41d9d92be51a', '0:0:0:0:0:0:0:1', '解锁管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '解锁登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('827dfd86f31e4793b6e54d394bc2b98c', 'yys', '2019-11-19 21:27:52', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('8386cd36782545b4aee21e2a6d5bdc51', 'yys', '2019-11-20 11:12:57', '10297a86-f6d7-4562-9d80-e1b13108c86e', '122.194.21.82', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增登录名为jiang2019绑定的角色：微商城运营人员', null);
+INSERT INTO `t_pub_userlog` VALUES ('83906da2ec75461584c12a4a8f83e9e4', 'yys', '2019-11-20 12:30:35', '5e5b04d4-434a-4e0f-935b-69d6352c3bb9', '122.194.21.82', '锁定管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '锁定登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('86944b0d9f154ba18096211bce708613', 'yys', '2019-11-19 21:29:03', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('95ab814eb1b54fdba5da77b82aa950fa', 'yys', '2019-11-19 21:26:29', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '解锁管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '解锁登录名为qwe的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('9978e49f42f44d83bffd23e59d992323', 'yys', '2019-11-18 14:17:35', 'e74d0b64-2fd1-49d1-9d49-41d9d92be51a', '0:0:0:0:0:0:0:1', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为wzd的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('9babd0c24c774e42bd67aaff9f01f23e', 'yys', '2019-11-19 20:44:49', '79581857-3020-4dd5-bf2e-6df07412adc7', '122.194.20.21', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为测试  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('a1b67d2cf5184cad90fce458fe098b20', 'yys', '2019-11-19 20:44:42', '42516336-4930-446b-9c85-5651ce3589d4', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：超级管理、平台管理,新角色：超级管理、平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('a99fb28bd9864ddfa13b5a13761f5c51', 'yys', '2019-11-20 10:42:00', '81e7b5af-a0a2-4044-a457-299dd9a57d3d', '0:0:0:0:0:0:0:1', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为ceshi的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('ad11ff89524a43959aa05cd97e21b4d8', 'yys', '2019-11-20 10:35:48', '154e87bd-9961-42b8-b524-4dc12873ac22', '122.194.21.82', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为dsfdsfsd的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('b374321405dc4bcc9caf2d9daf48d2d2', 'yys', '2019-11-20 10:41:54', '81e7b5af-a0a2-4044-a457-299dd9a57d3d', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为ceshi  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('bd13642d33294277822a5925374c230a', 'yys', '2019-11-20 10:24:22', 'f6f41c23-05d1-482d-9f7d-b3025c2c30d9', '221.130.84.209', '删除管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '删除登录名为uii的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('c3919710e6f646b19af56ad65cd037f4', 'yys', '2019-11-18 14:27:46', '867d0e73-ddf1-43b9-a9ba-548d5eace01f', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：PC网站、平台管理,新角色：PC网站、平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('c6a8c8abf8e744a687dc89590846e636', 'yys', '2019-11-19 21:02:48', 'd94ff2e0-8f74-4f14-8d29-222b268a1e2b', '0:0:0:0:0:0:0:1', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为ceshi  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('c73e33b299544b6ba8ec311619194915', 'yys', '2019-11-19 21:26:42', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增登录名为qwe绑定的角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('cc111499868043468c43db8452348187', 'yys', '2019-11-18 14:18:24', 'e74d0b64-2fd1-49d1-9d49-41d9d92be51a', '0:0:0:0:0:0:0:1', '锁定管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '锁定登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('d0cc3aed812b43bc8a71f3b0b9c647b6', 'yys', '2019-11-20 12:30:31', '5e5b04d4-434a-4e0f-935b-69d6352c3bb9', '122.194.21.82', '解锁管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '解锁登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('d1d27c6836624ceba2cb9fde2ec83d9b', 'yys', '2019-11-17 19:32:23', '2713160b-3f6c-47e6-be8c-fdeadd97047b', '117.90.45.123', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：平台管理,新角色：平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('d69672b0da2947a3863a7ca9d049df7a', 'yys', '2019-11-20 12:29:40', '5e5b04d4-434a-4e0f-935b-69d6352c3bb9', '122.194.21.82', '锁定管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '锁定登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('dcdd649899dd4059941a1a4edb62b90b', 'yys', '2019-11-20 10:08:14', 'f722c76f-73cc-43c9-9bcd-afe7482e0410', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为dfsd  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('e6a292c4fc634b659232442842102039', 'yys', '2019-11-20 11:07:59', 'd965b9c9-2942-40da-b17e-c873dea5f2a9', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为zongq2019  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('e81f3dea1eee424181e34ddfcc56bb4a', 'yys', '2019-11-18 14:27:45', '867d0e73-ddf1-43b9-a9ba-548d5eace01f', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：平台管理,新角色：PC网站、平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('e9c642edd21447d7923083d5666db1db', 'yys', '2019-11-20 09:22:59', '3a306777-34f7-475a-b617-bc6b723fd9ad', '122.194.21.82', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为xjtext  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('ea6f001e2aa84c089b8a5ef958a4ba15', 'yys', '2019-11-18 14:27:56', '867d0e73-ddf1-43b9-a9ba-548d5eace01f', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：平台管理,新角色：平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('ed00497046374c369b7a0a245e1dc6fd', 'yys', '2019-11-19 21:27:42', '88a30d78-75a5-48a2-a989-a8f8b22783bc', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为qwe绑定的角色，原始已绑定角色：测试,新角色：测试', null);
+INSERT INTO `t_pub_userlog` VALUES ('ee792e5c8bfe491ca0a5e68b8606e965', 'yys', '2019-11-19 20:44:40', '42516336-4930-446b-9c85-5651ce3589d4', '0:0:0:0:0:0:0:1', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm绑定的角色，原始已绑定角色：平台管理,新角色：超级管理、平台管理', null);
+INSERT INTO `t_pub_userlog` VALUES ('efde0df7d5024d5a8637492e0f5546f8', 'yys', '2019-11-20 12:31:40', '207efe4a-66b3-491b-9346-90ece65e4662', '122.194.21.82', '解锁管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '解锁登录名为shixm的用户  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('f0ca857df1ea45029a50f5ccf5531dd8', 'yys', '2019-11-20 10:24:16', 'f6f41c23-05d1-482d-9f7d-b3025c2c30d9', '221.130.84.209', '新增管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增用户:登录名为uii  成功', null);
+INSERT INTO `t_pub_userlog` VALUES ('f337e6d3f99a434a913115bba507a4da', 'yys', '2019-11-20 11:13:04', '10297a86-f6d7-4562-9d80-e1b13108c86e', '122.194.21.82', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '新增登录名为zongq2019绑定的角色：微商城管理人员', null);
+INSERT INTO `t_pub_userlog` VALUES ('fe1a205d45fd48818ac918792919769a', 'yys', '2019-11-21 15:21:42', '8f111b15-2c24-4813-9d24-ada6a429f1ba', '222.186.209.179', '修改管理员', '1', null, null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '修改登录名为shixm用户，修改登录密码', null);
 
 -- ----------------------------
 -- Table structure for t_pub_userrolelink
@@ -8731,7 +9205,7 @@ DROP TABLE IF EXISTS `t_sm_accessrecord`;
 CREATE TABLE `t_sm_accessrecord` (
   `F_RECORDID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '访问记录ID',
   `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商编号',
-  `F_CUSTOMCODE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '客户编号',
+  `F_USERID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '客户编号  userId',
   `F_ACCESSTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '访问时间',
   `F_PDCID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品ID',
   `F_TYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '访问类型：1微信端 2PC端',
@@ -8741,6 +9215,276 @@ CREATE TABLE `t_sm_accessrecord` (
 -- ----------------------------
 -- Records of t_sm_accessrecord
 -- ----------------------------
+INSERT INTO `t_sm_accessrecord` VALUES ('01d58359fbf74460b811caafd0e18b17', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:42:55', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('03258b5e0609430a81f1f221457c07b6', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:31:35', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('03693980e5c94a37abd715a7646f56e0', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:51', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('040405810bab4e63a82770a9b7e4d984', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:07:23', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('05a6a450e01d4585a50be4562e89f2a1', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:48', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('068323fb968f4d8c88eb3b1b6705ad0f', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-28 17:41:02', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('06b5e24bbe444c62bb90812a1942782a', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-20 14:13:31', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('096c43453c45422eb0db1c55848ed138', 'da14b98e-cb26-4169-9b58-babe98b98047', '54dc8c308a44470aa0be04a432aa9803', '2019-11-20 20:20:33', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0b2bf6e057744cc18590c2d43261adcf', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:47:27', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0b704ff011f7407c936a3962dabf7adb', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:29:47', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0c09dea45bc74b17b2c38accfc9c1cb6', 'da14b98e-cb26-4169-9b58-babe98b98047', '96021c0805444af6809a6510a1bad657', '2019-11-27 15:27:36', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0c3d5ed8adb94e30a8d4782b584d51cd', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 13:22:35', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0daeecca7b7644559a842f4317ed061d', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 15:54:53', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0e0cfb95c4c542cbb308a14d3f631996', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:39', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0ec8b0aaf8b94c8f9b2f4bf45900bd4c', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 15:42:37', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0ef7a2e0cffc47e1937ece6b0f99d55b', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 19:02:36', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('0f6ccc2bda804960aacde9abe8947460', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-28 09:45:17', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('10968401204b484fadeb50323a88af9d', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:25:56', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('109a2e6a0efb4b9bb42985459806ee67', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:14:47', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('11a6f50b104c4277bf546daf59e2e727', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-25 13:17:09', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('127531b6acc347818bc1b0655756053c', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:58:20', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('12b6c04b98bc42fbbba6923a5ac0319e', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-28 10:00:18', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('12f64fab402e473b8ce3dc7d316fed30', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-26 20:55:12', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('13ea042695bb435e9e2c9809cea8ad59', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:31:19', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('14fdc580105141a8afebca4658bebd69', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-29 08:50:16', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('16f16a450f5b4664be4f5b67fe93b6eb', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:37:02', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('179a3dd4d37040bca8d51e7d96e4acf3', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-26 20:36:46', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1815a82826cf408e9b510fadbfd9ff8d', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:29:06', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('18437c58230f44299cd6765a91716da7', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 11:56:56', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1910030a8122437bb6a110717559f980', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 11:36:29', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1b263d8994f14cc0aaa7dfdc7df12dbb', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 21:01:17', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1b34bc3107354c5d9ef3ff25f7db9aa9', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 12:10:04', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1b96726d02324dae9c4cf4b6e1f67406', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-29 08:50:21', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1bb6db0a7bf14defbb70fc84c457ff55', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:54:23', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1bbfe9be5fe24264a0b17d52ecff2448', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:17:10', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1e5ddede8bff44b49130c1592d41d380', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:48:57', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('1fd7020e85794f9eb3552c04bb208702', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:46', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('21ca80907d734bf5a425cd18728a26a7', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:53:08', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('21f2bd62f0914b7c8b5cac87d8921194', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 13:40:57', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('22095ef908184a778562a4617cda039b', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:33:04', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('223474fbeaf5404bb507bfba762f20ac', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:49:03', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('231072e909d844008c5798c4f9161662', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:35:02', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('24a6d8545b584d419a0149867c88dad1', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:29', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('251d6e78c200487e91a327ca5a9d879b', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:28:48', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('26475e5e03584577a300b8fc724675fc', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 06:12:18', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('2d3bb858a8154e20b16c8beea1d9debd', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 13:11:46', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('2da5d330874b42eeb00330380eac71b0', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 11:57:36', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('2f4363c01fea45d3b8a9b5fe403ef04d', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:19:57', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('2fd00319adad414697b01b013dd0e15b', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:51:33', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('32a326440aab453c95b254d661ea593a', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 20:14:42', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('32d377c93859461dba38a3cdd63aa01c', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:52', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('33172189093d4f38b3ad10a9eb8a29ea', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:52:56', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('335570f6569449769953fffeba4ec0a8', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 13:10:31', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('336d171425fe4e6e8223ca5d499d8abc', 'da14b98e-cb26-4169-9b58-babe98b98047', '96021c0805444af6809a6510a1bad657', '2019-11-27 15:35:45', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('33c961c630c344bd9a7a28ba13e0bf40', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:45', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('35baa3a414f841c0abeebc8bc6b71579', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:29', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('36cf90fad2cb45bdbca6ea62fec5c2eb', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:31:38', '428bc5fcc8964ad09a4cf3db91684534', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('373ee232880844fd909e08ff0837605f', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:03:15', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3787bc4270774bfaa8cb20a8faf7f92d', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-22 13:13:22', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('37dc2eb5835f4020a463e2214da7ad4c', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-22 12:40:14', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('38e0675515b848fbb575756219257f8e', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:58:39', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('391e221dd217485d9bd16989e83f7e0c', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:53:07', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3a9814559ecb42599510cbe140534438', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 06:04:46', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3d52c773719f418d91334ec7e7c83ad0', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 15:42:42', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3ea21d883a3f444ca7538975cc21b304', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0219344de0545c08af9541c46cc9b56', '2019-11-28 23:35:00', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3eb0e13deef84e9d9a694d4b9a86cbe5', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:51:49', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3ed4a22e62f0456591d3373ac43040a5', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:43:50', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3f0ec723a11d4874b605d1e4bf49944a', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:31:30', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3f2a8a5fe8944672baf9802b871acf1c', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:55', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('3fee0bbde8f14a4ea275be7c3b245bf9', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 16:04:12', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('40d722893c574edaae92c64bba522c7c', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 19:58:49', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4100b0a909f442b5a61a5ef24f3f74c4', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:25:41', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('417f1d64fa1b420fa2bc1c26356fc5e6', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 11:55:09', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('42a292f1c45e47de8968359999d8cc13', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 13:43:26', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('42ff6efa916b4d7a8c8621c960e17b3a', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:44:14', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('453212b379ab4ba7b31d8d9b6cfb8c2f', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:55:02', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('45865d7eb24945a9a52e153ff41a82cf', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:15:27', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('465b17094ee04493b98c4c3ddbf65f68', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a145f0cf527249cca47a12b01eab70a7', '2019-11-19 19:33:14', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4739e21f1b204509806efb2ac7958535', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a145f0cf527249cca47a12b01eab70a7', '2019-11-19 19:33:01', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('482b95cd2c084164ab7f239a1f795ac9', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ee30a054a6d44d0bacb40d98e46c8d17', '2019-11-22 14:53:42', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('48362fb9251246c7b689cb0683aed538', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 13:11:35', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('492f3b1b90294853ade40ffe6c3afe02', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:33:27', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4a25ae3c0f194048a997044fdc097118', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 13:46:05', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4a3c2a224c6a49cab0ce50f93b70c3f0', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:15:07', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4ab389b745904f3d882112f57277a120', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 11:57:04', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4af7bdd051fb45d58463b847078bf16e', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-27 13:56:51', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4bc472f143464e92b76fb2fa6b10e92e', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:15:43', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4ddcc40c025546dc859f27166ae493c4', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:16:32', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4de2f3ec41c64e249654af723c41246e', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 05:48:23', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4ee2afd6261f4fd7a1820df57017449b', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:43:02', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('4efb32cff0f14cd2ab504422eeb917a7', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:18:20', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5067f228d7ad4aeea800aab44cebfbed', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-29 08:50:10', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('50c2362f08464052af351586b4e70056', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:36', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('53ed7f120ebf4656bdb5f97f73a39442', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:13:12', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('54a19f09ec4c4c11bfe5db31066852af', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:53:43', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('54fc554853d3475e88a8b9cc9f7233f3', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:47', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('569f850090c24f009d04d70ad0002cb3', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:50:35', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5775e2dca02343baa81c11a294fcf897', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:43', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('57d215e206824b44b48295114f140434', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:52:46', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('57f1950ea32546ecb60e3609959bebc8', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:38:00', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('591e887822914a2990f6785d5e5658ee', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:36:55', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('59773882eb0743eeba38c888bb12c5ee', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:30:01', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('598c8e0669d347c8aeaea54178703e7c', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 13:10:44', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('59aee216e95648c5888c3992b7358b69', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:44:05', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('59fc173e5db641f78b49b7a7cd28a5b8', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:14:57', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5a619863630845129b34496b2e5ef448', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 10:40:43', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5be8532022d84ffa8f11c4b4d1f6cd86', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-26 20:21:20', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5cc797dfcfde4da0af2ed0d24191da1e', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:04', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5d8b7d4a527a4d3d8d64f2c441ad9ca4', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 14:01:09', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5e11409ddca94715bb5159c29d9535e9', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:32:59', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5eecfee75a5844a9a311fbd1517c762d', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-24 09:04:16', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('5fd6ccf1287e482c84140fa5ccf07303', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0219344de0545c08af9541c46cc9b56', '2019-11-28 23:35:50', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6046a9fa7912440fa1a5e3b8ada77a90', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:42:34', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('609d153be494451690d59c1c4a69858c', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 15:25:32', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('61a87f9d6d654ce49ff5dbc79ef45005', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 14:56:01', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('62a9b35c86454e958c42c3d54bc58254', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:56:00', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('63f6d66e98354b72b00d35fe2430f859', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-20 14:11:55', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6475c4b496a94b51a22b0395206c3c5a', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:19:54', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('656704b4574c408792cc01786b81bf28', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:37:13', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('65f35364ec2b47d7aebb44ace30184cb', 'da14b98e-cb26-4169-9b58-babe98b98047', 'f6b203605e0a4c65bbc030bbb3c0c9fb', '2019-11-20 16:58:38', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('671743223daf48119da5a95a58518b59', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:41', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('67ef53b4d9274d2b8c6279ec3a40a924', 'da14b98e-cb26-4169-9b58-babe98b98047', '54dc8c308a44470aa0be04a432aa9803', '2019-11-20 20:19:51', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('684fceeb919947fd89585ec64c4b79b7', 'da14b98e-cb26-4169-9b58-babe98b98047', 'b5f12035d7ef4f0fad6364425bd634c6', '2019-11-24 19:09:24', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6a9c3115b8db4c7483d9235d26139ff6', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:54:52', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6b0e0143f26b446a9dc3126437fbd1dc', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 15:44:19', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6bb4855a96624ad8a6f1a1330dc320a8', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:07:03', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6dd6e274c7aa45b9a408359a2f76005b', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:27:13', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('6f04c49178ab442894fa1c26e4905336', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 15:13:57', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('73a977c6409b45658992f84fae79d4c6', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-21 10:11:55', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7548c7c544b34edc9f537ec83ce779cd', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:04:26', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('75d4d6d82b3c41b6928166cf1bbeb284', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 13:49:35', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('769030ff8eda4d859b4be0b2f5dcf9f3', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:25:42', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('778ae0df9aa54151a33d8f407d1db2c2', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 16:46:36', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('779d4fcb25284205a3a8a5362e1eb641', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:54:53', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('796476149298441487bb745fb624e93e', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd6e4c83ede734b638f46b2ad02bf4892', '2019-11-22 13:59:38', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7aff72c535ec40e79fb174534c54fe4f', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:37', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7be5523f2fc14f3ab5153ab01b0c773a', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-26 20:21:03', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7bed664e33304d46b0b0f5c79ec53a51', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:54:31', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7cd8f2213a7d4038b2b8d8df8049a944', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 14:51:31', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7d62ba3a15ce4076bdc71f5fa1a71999', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:47:37', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7d69832bda374e96a1168d30c3b15052', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:44:12', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7e2fe4cba2b24549a149fa7e7ec6ee92', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:20:52', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('7ee68739e4bf43baa14c0a33b4523770', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:31:54', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8251f089b33f4a9990dd0d66b9ba4719', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 16:15:54', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('828f5dddbc964b9ab87af9c1a1005d7a', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:56:23', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('82ed17b5cda4417b9150feed7c68d9a2', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 16:00:25', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('82ff57ad141f4c608cb377cc460544fb', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 13:10:21', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8320100b4c434356a11bf6d9dc6526ca', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 15:42:25', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('84bc5def27024685bf7626565b13bada', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:59', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8562b76437624912bacd0358161696ca', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:52:39', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('87a8746bff6e4807bad27d385ade97ba', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:37', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('87c389fed89c478a9cd2b97d708365c5', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:30:04', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('88bf47242a6c4b5f9cdecbe5cb721200', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 14:51:15', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('899296cb3e064e3fab6fc16ece926f32', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-22 13:12:00', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('89e9e893819c44bea5f2affdc9b23ab6', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:26', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8a9073c7455b4e3b9cd7704e25f2c4b0', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 13:41:36', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8bd7ead69a924aae9f9381415183962b', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:52:43', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8e61fd5b8edd4993aae9a3643afc74be', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 13:49:35', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8e8aa094ab114724ba6da108007d0846', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:38:12', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('8fe0752058bc4d01a081d27e64ddfa83', 'da14b98e-cb26-4169-9b58-babe98b98047', '6d0ce904e469440eb9ca4b484fce4275', '2019-11-28 17:45:44', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('92383b03894144c7b5230b6953ea7f3c', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-21 13:03:19', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('92bbce3d3a634bf6af21d8e7126a1da5', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:23:09', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('93e538898b97498e883b803fd5e65e57', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:34:05', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('9416a0d9f4ce4b299b14f31c474edcd3', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 14:02:51', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('94307504fc524cdca4c3503410f3a4c7', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 13:49:30', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('950d00f042b84ee091f5de3dd03607ed', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:53:59', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('959ddb98e5a04d98b3c974db9146d00c', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ccc2a5477c1f4bbfbc5a7974e2ef92fd', '2019-11-19 21:39:23', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('95fc057a351e42ad97b161fe443b99af', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:29:28', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('98fe82b359da4453a9f7bf2b749b46bf', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ee30a054a6d44d0bacb40d98e46c8d17', '2019-11-29 10:35:04', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('99b5d8d251ba4fba9d67b5ab30afac77', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:20:51', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('9a5f030950da41a79b0b651c08e33a62', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 21:01:24', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('9a8d62d063ff4b93bb96434d9c9aaba5', 'da14b98e-cb26-4169-9b58-babe98b98047', 'f6b203605e0a4c65bbc030bbb3c0c9fb', '2019-11-20 20:16:45', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('9ab19f982e394f93988abbd026c5e25e', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:44:01', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('9d3f2175fd1f4ca9ac36edfea340fc2a', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-21 12:18:54', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a275ab9f523a490ba9c2fc61b92e1f48', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:17:42', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a313b4fb0c4241f19553a54af4a352fa', 'da14b98e-cb26-4169-9b58-babe98b98047', 'f6b203605e0a4c65bbc030bbb3c0c9fb', '2019-11-20 16:48:07', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a32f031bb78b4c6ea17c4b86194bae79', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:32:07', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a38c0903e93040cc9d955f5afe3e27b0', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:50:42', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a3d258e9835747a3b0418c4c46e75ac9', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:44:05', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a3f4e2be08314204bc71e97ea4e3e43b', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0219344de0545c08af9541c46cc9b56', '2019-11-28 23:36:46', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a48865200d9b4748b568c312c3646683', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:55:05', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a4b1dc0ff83a4aadb06a06e40248dc4e', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 16:53:52', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a51bea0d221743279f7d7fef64bd46bf', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:11:34', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a54c9dcbc9104625aed2b3e9580095c7', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-26 20:20:58', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a5b1c32383f44b1fb5f6a89d68348da2', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:25:47', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a5cbfaa2a09049559029b8f6c803fef0', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:36:03', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a7cc0e6b224c48128bdf23f2a3ad1b53', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:30:05', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('a86bbcf1757b4e2e8721884225005500', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:20:15', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ab5cfe47f4484dfb8ab9cd29700b52bb', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:35:44', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ab6f9e0820264b268279f4e0e32de592', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:32', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ad07b10446dd4c4199aa407f552864ce', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 06:01:54', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ad6ce6af90f0413a9959f719382acbc4', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 11:09:32', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('add7e3a1bd2c40608f5263285e9b41f5', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ee30a054a6d44d0bacb40d98e46c8d17', '2019-11-29 10:34:00', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ae0b74505b1f4b8b9e615f7a35986938', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 13:40:56', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('af8be0ab59f844eea1866071d5119f4a', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:30:26', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('aff39f9bb6c54e9bbe7e6ec8e0495f3b', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:23', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b0b6c98d336a42f5bd794fdc5efad033', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 10:20:30', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b0f90c8da8284683a45549f1ceaa2c57', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:44:02', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b1234976217e4a19a7795a76ba740cc2', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:49:06', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b1681d2ac7cb42e7a5b3bd468d95da34', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 19:00:24', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b3bf6034e7a64eee9b04a34acae74407', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 14:51:37', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b403ab40e82b4ce7aa0520f2158a2033', 'da14b98e-cb26-4169-9b58-babe98b98047', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-21 12:59:31', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b544c269d1624906b82080ddb3405bc8', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:38:28', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b5489209380549f7a3e50598023106b7', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-20 07:54:41', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b5b7f978313643a18277b82167511421', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:49:03', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('b6571f7f5e17466f96a6c8aa468af90a', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 14:02:51', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ba49cb4124b449e58a5e3304b4821c78', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-29 10:30:34', 'e6fa720b2b4e43789560bee2150e9702', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('bbb19f988b3541ca90a7611ecadbf8a3', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 17:16:35', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('bd0ae853e86443179303469bd830a0ae', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 11:51:22', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('bd73b1cffa2049518560b8ca254b3263', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-28 17:40:59', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('beb2c06c5ca94f779ded6673a16e19df', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-28 17:40:34', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c123c3430b0840278d9ae0d74802bb26', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:56', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c15cbde4e7084418ad8f2bc24d041872', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 13:47:59', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c17c56e1d62b48a69988aece7b8cd039', 'da14b98e-cb26-4169-9b58-babe98b98047', '220c2280629c4e5489d1bf94166b4828', '2019-11-20 14:32:30', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c364bd8b08de455f9267bff961f29226', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:50:21', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c3ea25ac20454da1a4bd4604638eb213', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:31:42', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c58837a5616b4b23b608d5b750d0c0a3', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:55:43', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c5e84e8d916f4803901fb8d75f479d24', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:42:30', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c670e010473840619c8f6071d66783fd', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 11:57:05', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c6f3b54ddfa24bbd83bd122437f391c6', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:39:32', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('c7478d2486474371aa1079068d55b09d', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-20 21:32:45', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ca3855150c574d77a0ed0de8ea0efec7', null, '8970c01dce534f8b92521437085cc812', '2019-11-18 21:03:44', null, '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ca42d42ea6de4ebba185f537b24061fb', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 21:01:01', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cbf38bffe72e45859c1107b20558a5ed', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 17:19:03', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cccdfae311924f53b64bc38181bf634e', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 18:42:43', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cd012932c80c401f8c90e279f4949d35', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 11:57:06', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cd64b9c832f24015b9cd6224b7b4e858', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:36:55', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cd655255a925427e83f1b15afd62e66c', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd6e4c83ede734b638f46b2ad02bf4892', '2019-11-22 13:59:48', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cd6bb83b73bf41ac9794f5a01bf3247d', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:20:04', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ce5f8e7db63749afb581ae5b1a33c3ef', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:06', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('cf1431d0273e4a7281173ff67d1a7d0b', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:46:45', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d130335a6a704567b1caa6ac3e2589d3', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:37:07', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d2842dd59e6d4bc38047a24defd91d57', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:20:41', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d651ddb461fb460ea36cdaf8fa54acb2', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-21 10:09:35', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d6889e5816bb4919a390d280a7b1ce5e', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:12:45', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d6af39252fe1491dbf68c5351acd48e7', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:50', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d6ec6be884ec4e80b5b07395c7973474', 'da14b98e-cb26-4169-9b58-babe98b98047', '96021c0805444af6809a6510a1bad657', '2019-11-27 15:34:34', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d85bb2288ce847f28245cc87d2aecd3f', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:29:12', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('d968f0269a434d4fb45491a5934982c7', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-22 13:13:07', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('da0d8c10cd0d41179522542a831e68e3', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 16:53:59', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('dabd12518a7e4a12b90fdd381af8ece2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ee30a054a6d44d0bacb40d98e46c8d17', '2019-11-29 10:29:02', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('db76c24d03ed4e73a04387f33721ee69', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:44:09', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('dca7495cf5324f2b89080ddc811b081c', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 06:12:18', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('de80e0c3feea4d7396846a206b1d603e', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:34', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('de8817db1701451683810b13508142cc', 'da14b98e-cb26-4169-9b58-babe98b98047', '5cb674732c2f488f8bb1f3dc0b6fc8c0', '2019-11-27 10:31:38', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e105775bbb8742fcbdf0dcbb275b1879', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 11:36:20', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e144f0008ad94b51a79938a97b2ec725', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 13:14:44', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e326e7dd09194390a37828125af77edb', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:14:43', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e364571a38314de4a858d186e144ad16', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '2019-11-26 18:28:58', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e3d7f3f6051a4d5cb27b031e12a31917', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:15:34', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e3dafda2374040d6b61d1e3ed82acac7', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-26 14:54:10', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e3e806285fb749c6bf9182645c06eba1', 'da14b98e-cb26-4169-9b58-babe98b98047', '96021c0805444af6809a6510a1bad657', '2019-11-27 15:33:47', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e4c1aae6289a42dea612036cfbe5a3d7', 'da14b98e-cb26-4169-9b58-babe98b98047', 'ee30a054a6d44d0bacb40d98e46c8d17', '2019-11-29 10:42:21', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e4dc8637758648b49bd05d53920a4eb0', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:53:53', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e57777b2a45f4df8999965da445e17b1', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:26:02', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e630d761f2914c92a97a9296d00a9a3e', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:52:57', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('e8daf9a1bf8f414d83ccc7bdb7da8c80', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:36:47', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ebf89b7915b749cdb838c3d1639d8287', 'da14b98e-cb26-4169-9b58-babe98b98047', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:38:12', '28ebed31fad1485d800398d28d71d5ff', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ec69b3b6ae4641638bcd13ff91424d82', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:53:20', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('ee50920f65914aca8a4799c0eec92947', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-22 13:10:40', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f30543945c0744d2b2f2c13a4e0532d0', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-21 14:20:41', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f47ee5197d6745a993b93d2eb4bab9e2', 'da14b98e-cb26-4169-9b58-babe98b98047', 'f6b203605e0a4c65bbc030bbb3c0c9fb', '2019-11-20 20:16:39', 'd245bdf684c74e32ba6ffeadd729fb6e', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f4cb22f2428343e0b1a8ac3d5db4cc60', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-22 14:00:33', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f563ef13446944ce99688cd7d931fb47', 'da14b98e-cb26-4169-9b58-babe98b98047', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:54:15', '2f9aab43d0cc4b208d25032de8ac6b6d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f606dea50f674783a1007442027e1a28', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:52:52', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f61682774d2542778741fe693bfd993e', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-28 05:59:18', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('f97d50a1ae7943e9894ee6f55691d8df', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '2019-11-29 05:47:51', '20decd8ef043410488f6fea6d3e11a3d', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('fa5d947aec804ab08bb55f0cce832620', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0219344de0545c08af9541c46cc9b56', '2019-11-28 23:36:16', 'fde4704be6e647d486f42b2452f86225', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('fca47ab84c5a45a68f0d70df2b3d79d0', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:21:07', 'aaaa2d71eef240a2ae80f76bca58cf63', '1');
+INSERT INTO `t_sm_accessrecord` VALUES ('fd499fb9b95c4791ad37370137f172a3', 'da14b98e-cb26-4169-9b58-babe98b98047', '29ca13478e3643b08bbac8873fd1ab80', '2019-11-20 07:54:53', '20decd8ef043410488f6fea6d3e11a3d', '1');
 
 -- ----------------------------
 -- Table structure for t_sm_article
@@ -8813,18 +9557,18 @@ CREATE TABLE `t_sm_bannertype` (
 DROP TABLE IF EXISTS `t_sm_commproduct`;
 CREATE TABLE `t_sm_commproduct` (
   `F_PRODUCTID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品编号',
-  `F_PRODUCTCODE` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品编号 8位随机数',
+  `F_PRODUCTCODE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_latvian_ci DEFAULT NULL COMMENT '商品编号 当前时间毫秒数+3位随机数',
   `F_VENNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '供应商名称',
   `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商编号',
   `F_VENID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '供应商编号',
   `F_PRODUCTNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品名称',
-  `F_PRODUCTINFO` text COLLATE utf8mb4_unicode_ci COMMENT '产品详情',
+  `F_PRODUCTINFO` mediumtext COLLATE utf8mb4_unicode_ci COMMENT '产品详情',
   `F_FEEMEMO` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '费用说明',
   `F_TIGINFO` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '温馨提示',
   `F_STATE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0：未上架；1：已上架',
   `F_THUMBPIC` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '缩略图文件名称',
   `F_REORDER` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否允许退货：0-否1-是',
-  `F_SUBJECT` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品主题：多个主题ID以,分隔',
+  `F_SUBJECT` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品主题：主题ID',
   `F_SALENUM` decimal(6,0) DEFAULT NULL COMMENT '默认顺序号（默认购买数量）',
   `F_CREATORUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人',
   `F_CREATOR` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人姓名',
@@ -8834,45 +9578,97 @@ CREATE TABLE `t_sm_commproduct` (
   `F_UPDATER` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
   `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否删除0-未删除1-已删除',
   `F_RECOMMEND` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-不推荐1-推荐',
-  `F_TYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品类型',
-  `F_SUBTYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品子类',
-  PRIMARY KEY (`F_PRODUCTID`)
+  `F_TYPE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品类型',
+  `F_SUBTYPE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品子类',
+  PRIMARY KEY (`F_PRODUCTID`),
+  KEY `index_commproduct_productid` (`F_PRODUCTID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='普通商品表';
 
 -- ----------------------------
 -- Records of t_sm_commproduct
 -- ----------------------------
-INSERT INTO `t_sm_commproduct` VALUES ('3de8c4ba5f6d40da9506fd4474abc1b8', null, null, null, '1', '水蜜桃', '<p>大家大数据店里的甲方是打了卡啊发送djfdsldsfj</p>\r\n', '费用说吗说明', '微信西欧阿凡达为你心提示', '1', null, '1', null, '1', null, null, null, null, null, null, null, null, '1', '2');
+INSERT INTO `t_sm_commproduct` VALUES ('20decd8ef043410488f6fea6d3e11a3d', '1573873568842705', '', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '测试东北大米', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191116114207815-82.jpg\" /></p>\r\n', '', '', '1', 'fcca09355dc74a4eba53426358e2be24.jpg', '1', '2', '1', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 11:06:08', '2019-11-28 05:47:58', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, 'd8f56ee278654a05b0bf3d1f4848cdc4', '6da7f9a4552d49dab023c1b34942186b');
+INSERT INTO `t_sm_commproduct` VALUES ('28ebed31fad1485d800398d28d71d5ff', '1573873728019078', '山西沁州黄小米', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '测试沁州小米', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191116114144666-96.jpg\" /></p>\r\n', '', '', '1', 'f7b5daa7f6644f7ea345e4848ef8763a.jpg', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 11:08:48', '2019-11-18 16:53:14', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, 'd8f56ee278654a05b0bf3d1f4848cdc4', '1fc978a2507744baaac63817e2db50c7');
+INSERT INTO `t_sm_commproduct` VALUES ('2f9aab43d0cc4b208d25032de8ac6b6d', '1574394988423147', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '测试', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191122114646442-28.jpg\" /></p>\r\n', '', '', '0', '205bce70da04452b91c998e1b9e077fa.jpg', '1', '1', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-22 11:56:28', '2019-11-26 19:27:27', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, 'ad32d09aaa4a49049b47d598b7d9016f', '6e02bd17909440639eef8bc734b1f988');
+INSERT INTO `t_sm_commproduct` VALUES ('3b0ae9ccde2549438d520ebe79d6f7ed', '1574767942719279', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', 'ces', '<p>1</p>\r\n', '', '', '0', '159fedebbd8345b8a71d7e53db90278b.jpg', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-26 19:32:22', '2019-11-26 19:32:22', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, '1', '3e65233ef0f74002a8820d1cb68a3136');
+INSERT INTO `t_sm_commproduct` VALUES ('412a321663ec421a8084ce6a1ed5f8e5', '1574990729421437', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '最新测试数据', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191129092134688-90.jpg\" /></p>\r\n', '', '', '0', 'd7b277b30f02413a904d601b79f4b0d0.jpg', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-29 09:25:29', '2019-11-29 09:25:29', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, 'ad32d09aaa4a49049b47d598b7d9016f', '6e02bd17909440639eef8bc734b1f988');
+INSERT INTO `t_sm_commproduct` VALUES ('428bc5fcc8964ad09a4cf3db91684534', '1574767690704651', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '1231', '<p>111</p>\r\n', '', '', '1', '', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-26 19:28:10', '2019-11-26 19:28:10', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, '1', '3e65233ef0f74002a8820d1cb68a3136');
+INSERT INTO `t_sm_commproduct` VALUES ('aaaa2d71eef240a2ae80f76bca58cf63', '1573918555804901', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '香梨测试水果产品', '<p>11111</p>\r\n', '', '', '1', 'aebf6481fa8d40a18bd719700e604f7f.jpg', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 23:35:55', '2019-11-18 16:51:19', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, '1', '3e65233ef0f74002a8820d1cb68a3136');
+INSERT INTO `t_sm_commproduct` VALUES ('d245bdf684c74e32ba6ffeadd729fb6e', '1573873859817580', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '测试猕猴桃', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191116114120870-81.jpg\" /></p>\r\n', '', '', '1', '958cf9c92a784539b9c618c259628fb0.JPG', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 11:10:59', '2019-11-20 14:05:07', '62411606b8fc40e79e254bf3d7685a91', '张小江', '0', null, '1', '9968b87a6fda41b6b93c2b47c92361b6');
+INSERT INTO `t_sm_commproduct` VALUES ('e6fa720b2b4e43789560bee2150e9702', '1573987125669574', '宁夏合和元', 'da14b98e-cb26-4169-9b58-babe98b98047', '17fcf4fa28f04efd81f6d827b84b57ee', '新增测试商品', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191117183320461-41.jpg\" /></p>\r\n', '', '', '1', '616c51075b5b495ba702be934b5874a6.JPG', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-17 18:38:45', '2019-11-18 16:52:29', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, 'ad32d09aaa4a49049b47d598b7d9016f', '6e02bd17909440639eef8bc734b1f988');
+INSERT INTO `t_sm_commproduct` VALUES ('fde4704be6e647d486f42b2452f86225', '1574772755396325', '北京鲜果批发', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '测试aaaa', '', '', '', '1', '', '1', '', null, 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-26 20:52:35', '2019-11-26 20:55:05', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, '1', '8bf76cf01abd4d5a8009033d1ba15ace');
 
 -- ----------------------------
 -- Table structure for t_sm_company
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sm_company`;
 CREATE TABLE `t_sm_company` (
-  `F_VENID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '供应商编号',
-  `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商编号',
-  `F_VENNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商名称',
-  `F_LINKPERSON` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系人',
-  `F_LINKTEL` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系人电话',
-  `F_COMPADDRESS` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '公司详细地址',
-  `F_CREATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建时间',
-  `F_CREATORUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人',
-  `F_CREATOR` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人姓名',
-  `F_UPDATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改时间',
-  `F_UPDATERUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
-  `F_UPDATER` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
-  `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否删除0-未删除1-已删除',
-  `F_RECVADDRESS` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退货地址',
-  `F_RECEIVER` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退货人',
-  `F_RECVPHONE` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退货人电话',
+  `F_VENID` varchar(50) NOT NULL COMMENT '供应商编号',
+  `F_SPID` varchar(50) DEFAULT NULL COMMENT '运营商编号',
+  `F_VENNAME` varchar(100) DEFAULT NULL COMMENT '运营商名称',
+  `F_TEL` varchar(20) DEFAULT NULL COMMENT '法人电话',
+  `F_WWWSITE` varchar(50) DEFAULT NULL COMMENT '公司网址',
+  `F_FAX` varchar(20) DEFAULT NULL COMMENT '公司传真',
+  `F_LEAGAL` varchar(30) DEFAULT NULL COMMENT '法人',
+  `F_LEAGALTEL` varchar(200) DEFAULT NULL COMMENT '法人联系信息',
+  `F_LINKPERSON` varchar(30) DEFAULT NULL COMMENT '联系人',
+  `F_LINKTEL` varchar(200) DEFAULT NULL COMMENT '联系人电话',
+  `F_VENMEMO` varchar(4000) DEFAULT NULL COMMENT '供应商备注',
+  `F_BANKMEMO` varchar(4000) DEFAULT NULL COMMENT '银行信息备注',
+  `F_LINKMEMO` varchar(4000) DEFAULT NULL COMMENT '联系方式备注',
+  `F_COMPADDRESS` varchar(500) DEFAULT NULL COMMENT '公司详细地址',
+  `F_BANKNAME` varchar(100) DEFAULT NULL COMMENT '开户行名称',
+  `F_BANKACC` varchar(30) DEFAULT NULL COMMENT '开户行账号',
+  `F_BANKTAX` varchar(30) DEFAULT NULL COMMENT '银行税号',
+  `F_FUND` varchar(30) DEFAULT NULL COMMENT '注册资金',
+  `F_BUSCERT` varchar(30) DEFAULT NULL COMMENT '经营许可证',
+  `F_LOGOURL` varchar(300) DEFAULT NULL COMMENT '公司图片',
+  `F_BUSINESSRANGE` varchar(500) DEFAULT NULL COMMENT '主营业务',
+  `F_BANKUSER` varchar(100) DEFAULT NULL COMMENT '开户人名称',
+  `F_CREATETIME` varchar(50) DEFAULT NULL COMMENT '创建时间',
+  `F_CREATORUID` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `F_CREATOR` varchar(50) DEFAULT NULL COMMENT '创建人姓名',
+  `F_UPDATETIME` varchar(50) DEFAULT NULL COMMENT '修改时间',
+  `F_UPDATERUID` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `F_UPDATER` varchar(50) DEFAULT NULL COMMENT '修改人姓名',
+  `F_DELFLAG` varchar(1) DEFAULT NULL COMMENT '是否删除0-未删除1-已删除',
+  `F_RECVADDRESS` varchar(500) DEFAULT NULL COMMENT '收货地址',
+  `F_RECEIVER` varchar(100) DEFAULT NULL COMMENT '收货人',
+  `F_RECVPHONE` varchar(20) DEFAULT NULL COMMENT '收货人电话',
   PRIMARY KEY (`F_VENID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='供应商、分销商等都统一为商家';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商、分销商等都统一为商家';
 
 -- ----------------------------
 -- Records of t_sm_company
 -- ----------------------------
-INSERT INTO `t_sm_company` VALUES ('1', 'da14b98e-cb26-4169-9b58-babe98b98047', '水果供应商', null, null, null, null, null, null, null, null, null, '0', null, null, null);
-INSERT INTO `t_sm_company` VALUES ('2', 'da14b98e-cb26-4169-9b58-babe98b98047', '月饼供应商', null, null, null, null, null, null, null, null, null, '0', null, null, null);
+INSERT INTO `t_sm_company` VALUES ('01e0730c78fd40928775b93862e9859c', 'da14b98e-cb26-4169-9b58-babe98b98047', '11111', null, '', '', '', null, '', '', '', null, null, '', '', '', '', '', '', 'ba9f66f7f54148a297f353bb56dd7c69.jpg', '', '', '2019-10-17 14:44:21', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-10-17 14:55:15', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', '2', '2');
+INSERT INTO `t_sm_company` VALUES ('0ce9497842034f13be9186557f7998b9', 'da14b98e-cb26-4169-9b58-babe98b98047', '北京鲜果批发', null, '', '', '鲜果', null, '', '', '', null, null, '', '', '', '', '', '', '', '新鲜水果', '', '2019-11-08 17:02:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-18 13:53:41', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '北京鲜果批发市场3-45号', '刘志远', '12345678900');
+INSERT INTO `t_sm_company` VALUES ('17fcf4fa28f04efd81f6d827b84b57ee', 'da14b98e-cb26-4169-9b58-babe98b98047', '宁夏合和元', null, '', '', '合和元', null, '', '', '', null, null, '', '', '', '', '', '', '56e584a98cde4f329a4d4e4078766f88.jpg', '富硒枸杞', '', '2019-10-17 14:00:53', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-08 16:56:33', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '宁夏合和元富硒小米农业合作社', '合和元', '13456787655');
+INSERT INTO `t_sm_company` VALUES ('2c274ccfa5d04db39e11ac5294ced042', 'da14b98e-cb26-4169-9b58-babe98b98047', '广东莞府腊肠', null, '', '', '易中天', null, '', '', '', null, null, '', '', '', '', '', '', '', '腊肠', '', '2019-11-08 16:58:16', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-08 17:00:32', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '3', '3', '3');
+INSERT INTO `t_sm_company` VALUES ('72c03940f3b0416f95c5e8dea7a14eb6', 'da14b98e-cb26-4169-9b58-babe98b98047', '1111', null, '', '', '', null, '', '134', '', null, null, '', '', '', '', '', '', null, '', '', '2019-11-18 13:12:52', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-18 13:43:29', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '1', '1', '13');
+INSERT INTO `t_sm_company` VALUES ('937c55e9fc3644adb958f66d1163ebd0', 'da14b98e-cb26-4169-9b58-babe98b98047', '黑龙江建三江农场', null, '', '', '', null, '', '', '', null, null, '', '', '', '', '', '', '', '', '', '2019-10-26 09:51:34', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-08 16:53:24', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '黑龙江佳木斯天河小区89号', '张小军', '18933458766');
+INSERT INTO `t_sm_company` VALUES ('a0271b1b7a6a44a7b9ef8fd480a7f8bc', 'da14b98e-cb26-4169-9b58-babe98b98047', '山西沁州黄小米', null, '', '', '黄小米', null, '', '', '', null, null, '', '', '', '', '', '', '', '有机小米', '', '2019-10-20 11:51:11', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-08 16:54:46', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '山西沁州有机小米种植农场', '黄小米', '13789876688');
+
+-- ----------------------------
+-- Table structure for t_sm_companyexpress
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sm_companyexpress`;
+CREATE TABLE `t_sm_companyexpress` (
+  `F_COMPANYEXPRESSID` varchar(50) NOT NULL COMMENT '运费模板Id',
+  `F_COMPANYID` varchar(50) DEFAULT NULL COMMENT '商家ID',
+  `F_FENNAME` varchar(100) DEFAULT NULL COMMENT '运费模板名称',
+  `F_EPMECOMPANY` varchar(50) DEFAULT NULL COMMENT '快递公司',
+  `F_UPDATETIME` varchar(50) DEFAULT NULL COMMENT '更新时间',
+  `F_SPID` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`F_COMPANYEXPRESSID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家运费模板';
+
+-- ----------------------------
+-- Records of t_sm_companyexpress
+-- ----------------------------
+INSERT INTO `t_sm_companyexpress` VALUES ('bb0bc3a455c848caa7d337a13d09b4c1', '17fcf4fa28f04efd81f6d827b84b57ee', '枸杞运费', 'shunfeng', '2019-11-29 09:09:27', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_companyexpress` VALUES ('e92ceccae8c244e29fb2079589d92989', '2c274ccfa5d04db39e11ac5294ced042', '广东腊肠运费', 'youzhengguonei', '2019-11-29 09:06:30', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_companyexpress` VALUES ('f74db6dbad304032ae7a5f2b0b2aae23', '0ce9497842034f13be9186557f7998b9', '北京特产', 'shentong', '2019-11-29 09:08:05', 'da14b98e-cb26-4169-9b58-babe98b98047');
 
 -- ----------------------------
 -- Table structure for t_sm_consignee
@@ -8894,6 +9690,23 @@ CREATE TABLE `t_sm_consignee` (
 -- ----------------------------
 -- Records of t_sm_consignee
 -- ----------------------------
+INSERT INTO `t_sm_consignee` VALUES ('019aa3c6f1034648b976495633363e88', '40b8df13ff764a1aae54743bcf6a38b4', '谢秀章', '13802327774', '广东 揭阳 榕城区', '东山沿江北路汇龙湾4幢302', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('026fef1de4cc4390bbcf214b029cf364', '5c210936bf2b4939994610a252510b3d', '测试', '13196865987', '北京 房山区', '！', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('0e1ad3beb7f0444a8023b120691893e7', 'd6e4c83ede734b638f46b2ad02bf4892', '吴国强', '13196867988', '江苏 镇江 京口区', '宗泽路69号尚海茗苑1号楼204室', null, null, '1');
+INSERT INTO `t_sm_consignee` VALUES ('1a3f11aef9074f9a9fdf66b173855c40', 'b9a722add51f403591389edc96ae150b', '曹操', '13196865987', '江苏 镇江 京口区', '永隆', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('2902a7a72a894dfdbcd3b8a81b8d891f', 'd417d39463f34103bf376677a1db0fae', '好咯五', '14528454885', '广东 广州 白云区', '投递哈哈', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('44a62ed63afb4e63a28255ad12fde690', '622488d41a0f4029ae3ea009ffc101b5', '程少波', '18912823345', '北京 大兴区', '是你睡觉觉', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('506af12108024122afb66f0dda25192c', '8970c01dce534f8b92521437085cc812', '唔想睇', '18018235525', '广东 广州 白云区', '又 low', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('556252b7e86a41d8a469828be0dc0ae5', 'd417d39463f34103bf376677a1db0fae', '小妹', '13254856325', '新疆维吾尔自治区 阿克苏地区 阿克苏', 'look忽悠我了', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('6c7632af54bb4e63a447d1a1cd127cb3', 'd417d39463f34103bf376677a1db0fae', '回来咯哦出', '15428547588', '广东 广州 白云区', '痛斥twoDJ过', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('78cc4cb0f4614f92b78ca152f39036c1', 'd417d39463f34103bf376677a1db0fae', '苏炳添', '13258657855', '福建 宁德 周宁县', '湘西呃机管局路98号', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('aefea3b102e540ba87ff7a6b81e69da3', '5d020e0465284dcc8d2e91a393da801e', '张乐江', '18813123958', '北京 海淀区', '永嘉北路', null, null, '1');
+INSERT INTO `t_sm_consignee` VALUES ('bea5a1eed7f44be49ac15c8510b3aa8f', '40b8df13ff764a1aae54743bcf6a38b4', '谢佳芬', '13856056888', '安徽 合肥 庐阳区', '徽州大道47一49银成公寓710', null, null, '1');
+INSERT INTO `t_sm_consignee` VALUES ('c20fb84d35e748b9982f8927ca22f293', '83cb486b630045be9bd771dbbf0523df', '贝贝', '18801350264', '广东 广州 白云区', '北包包', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('ca1e27d4ce29483298a396fb91cd2cf0', 'd417d39463f34103bf376677a1db0fae', '你也会', '18965852588', '广东 广州 白云区', '好咯哦不要我', null, null, '0');
+INSERT INTO `t_sm_consignee` VALUES ('debf5828702d4ac7bb558485836c916e', '8b365a93a03c4e0a9cba24c1aa1e50fa', '宗倩', '13717597693', '北京 海淀区', '永嘉北路号6号大唐智能卡', null, null, '1');
+INSERT INTO `t_sm_consignee` VALUES ('edcd3fd876a4407aa43ba4b3d889eab5', 'f6b203605e0a4c65bbc030bbb3c0c9fb', '吴', '17712838967', '江苏 常州 新北区', '光棍节', null, null, '1');
+INSERT INTO `t_sm_consignee` VALUES ('f71da90d578142cd88aee24cd370b419', '622488d41a0f4029ae3ea009ffc101b5', '程少波', '18912823345', '江苏 镇江 京口区', '东一区', null, null, '0');
 
 -- ----------------------------
 -- Table structure for t_sm_coupon
@@ -8989,6 +9802,54 @@ CREATE TABLE `t_sm_customercouponpdc` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for t_sm_expressprice
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sm_expressprice`;
+CREATE TABLE `t_sm_expressprice` (
+  `F_EXPRESSPRICEID` varchar(50) NOT NULL COMMENT '运费价格表ID',
+  `F_COMPANYEXPRESSID` varchar(50) DEFAULT NULL COMMENT '运费模板Id',
+  `F_PROVINCEID` varchar(50) DEFAULT NULL COMMENT '省份Id',
+  `F_PROVINCE` varchar(50) DEFAULT NULL COMMENT '省份',
+  `F_EXPRESSNUM` decimal(6,0) DEFAULT NULL COMMENT '首件',
+  `F_EXPRESSPRICE` decimal(6,2) DEFAULT NULL COMMENT '首件价格',
+  `F_EXPRESSNUMADD` decimal(6,0) DEFAULT NULL COMMENT '续件',
+  `F_EXPRESSPRICEADD` decimal(6,2) DEFAULT NULL COMMENT '续件价格',
+  `F_GROUPNUM` varchar(50) DEFAULT NULL COMMENT '同一组编码',
+  PRIMARY KEY (`F_EXPRESSPRICEID`),
+  UNIQUE KEY `AK_F_EXPRESSPRICEID` (`F_EXPRESSPRICEID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运费价格表';
+
+-- ----------------------------
+-- Records of t_sm_expressprice
+-- ----------------------------
+INSERT INTO `t_sm_expressprice` VALUES ('08d9d40399e24dcbb086d7b083418f04', 'f74db6dbad304032ae7a5f2b0b2aae23', '30', '青海', '1', '15.00', '1', '5.00', '1574989685426909');
+INSERT INTO `t_sm_expressprice` VALUES ('1291d7f80d4a442bb040a87b7b577b10', 'bb0bc3a455c848caa7d337a13d09b4c1', '13', '内蒙古自治区', '1', '20.00', '1', '10.00', '1574989767212840');
+INSERT INTO `t_sm_expressprice` VALUES ('13d3b74c694f4ff2b762bcd7aa545a46', '9de2fcbcbcad4757bc8378d09c9a7215', '32', '新疆维吾尔自治区', '1', '1.00', '1', '1.00', '1574752156133301');
+INSERT INTO `t_sm_expressprice` VALUES ('1595ff8e368244dd8a354e6695c6b5b2', 'f74db6dbad304032ae7a5f2b0b2aae23', '27', '西藏自治区', '1', '15.00', '1', '5.00', '1574989685426909');
+INSERT INTO `t_sm_expressprice` VALUES ('4efbff5269e742f5836e07c2cf09160e', '666ff7feda464f5285997d1bba136dff', '34', '重庆', '22', '2.00', '2', '2.00', '1574756973802057');
+INSERT INTO `t_sm_expressprice` VALUES ('58426fc54ceb45f78668e7c7f1a7ad04', 'e92ceccae8c244e29fb2079589d92989', '30', '青海', '1', '50.00', '1', '10.00', '1574989590094858');
+INSERT INTO `t_sm_expressprice` VALUES ('5e831f6125fa4591898b0a10d27464a9', null, '32', '新疆维吾尔自治区', '1', '1.00', '1', '1.00', '1574753177024794');
+INSERT INTO `t_sm_expressprice` VALUES ('5f0aa4fc36a846a18d31bd6713a14646', 'bb0bc3a455c848caa7d337a13d09b4c1', '27', '西藏自治区', '1', '20.00', '1', '10.00', '1574989767212840');
+INSERT INTO `t_sm_expressprice` VALUES ('7e3d61cdd75647148b43c4e30bccb441', '666ff7feda464f5285997d1bba136dff', '29', '甘肃', '22', '2.00', '2', '2.00', '1574756973802057');
+INSERT INTO `t_sm_expressprice` VALUES ('8f7c7bb073904ca2896da03383af4122', '666ff7feda464f5285997d1bba136dff', '31', '宁夏回族自治区', '1', '1.00', '1', '1.00', '1574756973695093');
+INSERT INTO `t_sm_expressprice` VALUES ('a1db49bd1c8645549701b7fe9bc4807f', '666ff7feda464f5285997d1bba136dff', '5', '福建', '22', '2.00', '2', '2.00', '1574756973802057');
+INSERT INTO `t_sm_expressprice` VALUES ('b09b0cd5da28445495501c3c50c24f2d', null, '31', '宁夏回族自治区', '1', '1.00', '1', '1.00', '1574753101735575');
+INSERT INTO `t_sm_expressprice` VALUES ('b425d758feeb446ebe49c8345ba2d3db', '666ff7feda464f5285997d1bba136dff', '3', '浙江', '1', '1.00', '1', '1.00', '1574756973695093');
+INSERT INTO `t_sm_expressprice` VALUES ('b558e4d5e1884b27b23b6c4c1479ce69', '9de2fcbcbcad4757bc8378d09c9a7215', '6', '江西', '1', '1.00', '1', '1.00', '1574752156133301');
+INSERT INTO `t_sm_expressprice` VALUES ('b62ab1769c794adab7618ea002df395a', 'e92ceccae8c244e29fb2079589d92989', '3', '浙江', '1', '12.00', '1', '6.00', '1574989590101640');
+INSERT INTO `t_sm_expressprice` VALUES ('c1cf45060b804dc18ef47700efc6b6c3', 'e92ceccae8c244e29fb2079589d92989', '32', '新疆维吾尔自治区', '1', '50.00', '1', '10.00', '1574989590094858');
+INSERT INTO `t_sm_expressprice` VALUES ('cb04a2e116b644c2a828c0b194f5f727', 'e92ceccae8c244e29fb2079589d92989', '21', '广东', '1', '6.00', '1', '3.00', '1574989590090953');
+INSERT INTO `t_sm_expressprice` VALUES ('ce626406c8574bb8a2edec56576bc6a3', 'bb0bc3a455c848caa7d337a13d09b4c1', '9', '北京', '1', '20.00', '1', '10.00', '1574989767212840');
+INSERT INTO `t_sm_expressprice` VALUES ('d01c481c52c74c1d930ae4b65f514489', 'bb0bc3a455c848caa7d337a13d09b4c1', '32', '新疆维吾尔自治区', '1', '20.00', '1', '10.00', '1574989767212840');
+INSERT INTO `t_sm_expressprice` VALUES ('d51dbdeaa7e24321ba8939df7199fe26', 'e92ceccae8c244e29fb2079589d92989', '33', '上海', '1', '12.00', '1', '6.00', '1574989590101640');
+INSERT INTO `t_sm_expressprice` VALUES ('dab832254b964f99ba2b418c6ef4b4fb', 'e92ceccae8c244e29fb2079589d92989', '2', '江苏', '1', '12.00', '1', '6.00', '1574989590101640');
+INSERT INTO `t_sm_expressprice` VALUES ('dc35bf9657ff4376afdbf493d34ec274', null, '3', '浙江', '1', '1.00', '1', '1.00', '1574753101735575');
+INSERT INTO `t_sm_expressprice` VALUES ('dc6d34dda4924269a68ecd6f8561d5e8', null, '6', '江西', '1', '1.00', '1', '1.00', '1574753177024794');
+INSERT INTO `t_sm_expressprice` VALUES ('e1da1420d1ee449b802b38d050afc88b', 'f74db6dbad304032ae7a5f2b0b2aae23', '32', '新疆维吾尔自治区', '1', '15.00', '1', '5.00', '1574989685426909');
+INSERT INTO `t_sm_expressprice` VALUES ('e759f09adac64bf1bf839ae1db954573', 'bb0bc3a455c848caa7d337a13d09b4c1', '21', '广东', '1', '20.00', '1', '10.00', '1574989767212840');
+INSERT INTO `t_sm_expressprice` VALUES ('f5aec68444dd46da85aabfe94c478f54', 'e92ceccae8c244e29fb2079589d92989', '27', '西藏自治区', '1', '50.00', '1', '10.00', '1574989590094858');
+
+-- ----------------------------
 -- Table structure for t_sm_fansuserbind
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sm_fansuserbind`;
@@ -9014,15 +9875,76 @@ CREATE TABLE `t_sm_goodsprice` (
   `F_GOODSPRICEID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品规格ID',
   `F_PRODUCTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品编号(普通商品表ID)',
   `F_PRICENAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '规格类型名称',
-  `F_STORECOUNT` decimal(10,0) DEFAULT NULL COMMENT '库存  -1无限库存',
+  `F_STORECOUNT` decimal(10,0) DEFAULT NULL COMMENT '库存 ',
   `F_THUMBPIC` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '缩略图文件名称',
   `F_CREATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`F_GOODSPRICEID`)
+  `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `F_FREIGHT` decimal(8,2) DEFAULT NULL COMMENT '运费',
+  `F_COMPANYEXPRESSID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运费模板Id',
+  PRIMARY KEY (`F_GOODSPRICEID`),
+  KEY `index_goodsprice_productid` (`F_PRODUCTID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品规格类型';
 
 -- ----------------------------
 -- Records of t_sm_goodsprice
 -- ----------------------------
+INSERT INTO `t_sm_goodsprice` VALUES ('1202b5132f0048bb80a7db644b502ead', '7435dd9dea4c499e871a5da56b0dc6ef', '1', '5', '8e59fb19a8764085bff06cbec11da407.jpg', '2019-11-26 18:57:56', '0', null, '4b796a740ea3442aae79eb6818fd3560');
+INSERT INTO `t_sm_goodsprice` VALUES ('2510373c7c834a75a0dc0d53aceebedc', '8969e38d94924385bc09740f9611ec23', '1', '5', '0aa137f384b14a8e830aeca2a45b5fd8.png', '2019-11-16 23:27:58', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('2cbcded4a0224e3eb75b1a0598044c74', 'ee708b9b5069437c8879d14b3f70b013', '5KG', '1000', '745f06943cc54e2ebeb243c76d0f5cc4.jpg', '2019-11-18 21:31:47', '0', '0.00', null);
+INSERT INTO `t_sm_goodsprice` VALUES ('2f5a910f06d548f48de2573479628cfe', 'e6fa720b2b4e43789560bee2150e9702', '500g', null, '36aee119ba8344f7a569fcaf7dac6118.JPG', '2019-11-17 18:34:26', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('38ce606c26904a51b58f3fd0ed7a95e9', '20decd8ef043410488f6fea6d3e11a3d', '2.5KG', null, 'b972b731bce24479be5f0e41069d3df3.jpg', '2019-11-16 11:05:39', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('3e64a6f8c306449d9d73b84aeea6e14d', '2f9aab43d0cc4b208d25032de8ac6b6d', '2', null, 'f1feffa64f5c4e7299547def9074ef01.jpg', '2019-11-26 18:55:33', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('45dccce055284d4a93f681c69aae0c5e', '2f9aab43d0cc4b208d25032de8ac6b6d', '1', null, '534f80bf8e5a40b294ec55cda0db05aa.png', '2019-11-26 14:55:23', '1', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('586624f591af4d92ae290379f806d5a0', '2f9aab43d0cc4b208d25032de8ac6b6d', '1', '1', '608a9d18a2bc4edb90ad84396063ca71.png', '2019-11-26 14:48:27', '1', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('7631ce939325471ea92e15918b309916', '954f096a59d945debed62cf0c891d87e', '11', '2', '84658f6c05794ce29c489a7c96db4cf7.jpg', '2019-11-16 23:24:26', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('766fd02805fa4bff95d7d655f9e4ed38', 'd245bdf684c74e32ba6ffeadd729fb6e', '10个', null, '7eb4de80c0aa4fa681eed421a573e067.JPG', '2019-11-16 11:09:47', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('79113c7052b340ea9fa8d94c5368883d', '428bc5fcc8964ad09a4cf3db91684534', '1', null, '5154a4af022a4be98b60cf50662921df.jpg', '2019-11-26 19:27:59', '0', null, '4b796a740ea3442aae79eb6818fd3560');
+INSERT INTO `t_sm_goodsprice` VALUES ('7e85e357507648fbbaa9374971d809a0', '412a321663ec421a8084ce6a1ed5f8e5', '20', null, '036178e724d544b7b5730610efe87cae.jpg', '2019-11-29 09:24:26', '0', null, 'f74db6dbad304032ae7a5f2b0b2aae23');
+INSERT INTO `t_sm_goodsprice` VALUES ('82089664137a4d91b841de567f12c95a', '2f9aab43d0cc4b208d25032de8ac6b6d', '1', null, 'afe727bbdb534eccbacea8d5f4c7c2f1.png', '2019-11-26 14:56:21', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('8bf4e15499eb4d4da6c65d319c156366', 'd370c3a103dd489c83be747b6cb125ee', '10KG', null, '5bcef6aa385248988130df9717a0e119.jpg', '2019-11-18 21:33:22', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('991953057f304171a5e4792baff2045f', '2f9aab43d0cc4b208d25032de8ac6b6d', '1', '1', '70ab0532c1f540b08f4dbbb8658ab41a.jpg', '2019-11-26 14:33:10', '1', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('a467273f83044f628ce12a889eabc31d', '2f9aab43d0cc4b208d25032de8ac6b6d', '测试运费', '1', '1ea06d95fd924e9db00d58a1e8c9c891.png', '2019-11-26 14:32:12', '1', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('a98b9d6b1dd94861a40e3c714d986ecb', 'fde4704be6e647d486f42b2452f86225', '测试AAA 1kg', null, '3919012e5206477d93672f9a5635832f.png', '2019-11-26 20:51:36', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('ad9e5cb410ea46888f97480255718173', 'aaaa2d71eef240a2ae80f76bca58cf63', '1', null, '556bc6b6f7e949c2aed3675be047b6d8.jpg', '2019-11-16 23:35:43', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('b85ee8f814ba4eb6b459bec61ab340dd', 'fde4704be6e647d486f42b2452f86225', '测试AAA 3kg', null, '6ccafcae643d40eba5f3b13606250cd1.jpg', '2019-11-26 20:52:27', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('c0ee25f9a7be4c4095a9b953854d7635', 'fde4704be6e647d486f42b2452f86225', '测试AAA 2kg', null, 'ebe843a08ccc497d8dd0b1a45e04de4f.png', '2019-11-26 20:52:16', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('c4e0269b3ec74de0a6674aaa2a058c19', '2f9aab43d0cc4b208d25032de8ac6b6d', '10斤', null, '7aff8c99fdce4378875582f6a65cac79.jpg', '2019-11-22 11:51:49', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('c6b246c0fa9c4fa68dbc868a0e955885', '2f9aab43d0cc4b208d25032de8ac6b6d', '1', '100000', '09c0fef7bd1d4a30b9a362bf512c85ba.png', '2019-11-26 14:49:45', '1', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('c7dc0960b6684199972b7e672580a2b9', '2f9aab43d0cc4b208d25032de8ac6b6d', '20斤', null, '4e295379c29e43c58fd4635c7ce595a6.jpg', '2019-11-22 11:54:41', '0', null, '4b796a740ea3442aae79eb6818fd3560');
+INSERT INTO `t_sm_goodsprice` VALUES ('cba63e4052334288a07d2e1a2003eec4', '28ebed31fad1485d800398d28d71d5ff', '1KG', null, '1fd5f5d7030f46edb3ae70e3d408fa73.jpg', '2019-11-16 11:08:00', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('d49d78a53dcd48178f0e4e7abb8477bf', '3b0ae9ccde2549438d520ebe79d6f7ed', '1', null, '8de96c7596ef45519a3959458f9e384c.jpg', '2019-11-26 19:32:08', '0', null, '');
+INSERT INTO `t_sm_goodsprice` VALUES ('ea9c6ff6f94a4260870083ac0ffa805f', '20decd8ef043410488f6fea6d3e11a3d', '1KG', '55', '70d5aed2a6e548da8b918b2ecf168d5a.jpg', '2019-11-16 11:05:23', '0', null, '4b796a740ea3442aae79eb6818fd3560');
+INSERT INTO `t_sm_goodsprice` VALUES ('f4feccdaeca54c7bbdf1ba3f6a90401f', 'd245bdf684c74e32ba6ffeadd729fb6e', '20个', null, '2894caa7f4974bc2bbb47c218307870b.JPG', '2019-11-16 11:10:08', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('f7e516bf79ff48d4bb4700f207ac291b', '6559ea539e914828bfa33136c151a8cd', '1', '4', '5a2ebb1f73a54212b45ee81378f2b723.png', '2019-11-16 23:34:22', '0', null, null);
+INSERT INTO `t_sm_goodsprice` VALUES ('fc6010a133aa4292bb894e411b2e8d34', '20decd8ef043410488f6fea6d3e11a3d', '5KG', null, '8a42dfcc7b344bdb8a7fef5c74568d1f.jpg', '2019-11-16 11:05:52', '0', null, null);
+
+-- ----------------------------
+-- Table structure for t_sm_linkinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sm_linkinfo`;
+CREATE TABLE `t_sm_linkinfo` (
+  `F_LINKID` varchar(50) NOT NULL COMMENT '联系人编号',
+  `F_VENID` varchar(50) DEFAULT NULL COMMENT '供应商编号',
+  `F_DUTY` varchar(100) DEFAULT NULL COMMENT '职务',
+  `F_NAME` varchar(20) DEFAULT NULL COMMENT '姓名',
+  `F_HANDPHONE` varchar(30) DEFAULT NULL COMMENT '手机',
+  `F_FAX` varchar(30) DEFAULT NULL COMMENT '传真',
+  `F_TEL` varchar(30) DEFAULT NULL COMMENT '办公电话',
+  `F_QQ` varchar(30) DEFAULT NULL COMMENT 'QQ',
+  `F_CREATETIME` varchar(50) DEFAULT NULL COMMENT '创建时间',
+  `F_CREATORUID` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `F_CREATOR` varchar(50) DEFAULT NULL COMMENT '创建人姓名',
+  `F_UPDATETIME` varchar(50) DEFAULT NULL COMMENT '修改时间',
+  `F_UPDATERUID` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `F_UPDATER` varchar(50) DEFAULT NULL COMMENT '修改人姓名',
+  PRIMARY KEY (`F_LINKID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家联系人信息表';
+
+-- ----------------------------
+-- Records of t_sm_linkinfo
+-- ----------------------------
+INSERT INTO `t_sm_linkinfo` VALUES ('73b1f1312aae41a28a63417362352d3f', '0ce9497842034f13be9186557f7998b9', '', '测试小妹', '13131987764', '', '88767677', '', '2019-11-17 20:06:38', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-18 13:53:41', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员');
+INSERT INTO `t_sm_linkinfo` VALUES ('a5c6da9aa51840b898fa407d34eaf1a8', '01e0730c78fd40928775b93862e9859c', '1', 'q', '1', '1', '1', '1', '2019-10-17 14:44:21', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-10-17 14:44:48', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员');
 
 -- ----------------------------
 -- Table structure for t_sm_logisticstemplate
@@ -9068,7 +9990,6 @@ CREATE TABLE `t_sm_order` (
   `F_ORDERID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单ID',
   `F_ORDERCODE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '流水号',
   `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商编号：前端下单时根据产品关联出来',
-  `F_CPRODUCTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品ID',
   `F_USERID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户ID',
   `F_PRODUCTNAME` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单名称，生成规则待定',
   `F_BACKNUM` decimal(6,0) DEFAULT NULL COMMENT '退订数量',
@@ -9076,7 +9997,7 @@ CREATE TABLE `t_sm_order` (
   `F_NUM` decimal(6,0) DEFAULT NULL COMMENT '数量',
   `F_MONEY` decimal(10,2) DEFAULT NULL COMMENT '总金额：产品单价*数量',
   `F_PAYMONEY` decimal(10,2) DEFAULT NULL COMMENT '支付金额',
-  `F_PRODUCTPRICE` decimal(10,2) DEFAULT NULL COMMENT '运费',
+  `F_PRODUCTPRICE` decimal(10,2) DEFAULT NULL COMMENT '商品费用',
   `F_TRANSFEE` decimal(10,2) DEFAULT NULL COMMENT '运费',
   `F_ORDERDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单日期',
   `F_MEMO` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单备注',
@@ -9093,50 +10014,176 @@ CREATE TABLE `t_sm_order` (
   `F_UPDATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改时间',
   `F_UPDATERUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
   `F_UPDATER` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
-  PRIMARY KEY (`F_ORDERID`)
+  `F_COMPANYREMARK` text COLLATE utf8mb4_unicode_ci COMMENT '商家备注',
+  PRIMARY KEY (`F_ORDERID`),
+  KEY `index_order_orderid` (`F_ORDERID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单';
 
 -- ----------------------------
 -- Records of t_sm_order
 -- ----------------------------
+INSERT INTO `t_sm_order` VALUES ('07554d752c434eb1aa24b3f82176fed5', 'OC_1_1574891537832', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-28 05:52:17', '', null, '2', '0', null, null, null, '0', '2019-11-28 05:52:17', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-28 05:52:17', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('07b58a40eab041be95b33e23e6231878', 'OC_1_1574038158000', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 08:49:18', '', null, '2', '0', null, null, null, '0', '2019-11-18 08:49:18', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 08:49:18', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('0818651d913346c0ab1afb55d1125549', 'OC_9_1573913498860', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-16 22:11:38', '', null, '2', '0', null, null, null, '0', '2019-11-16 22:11:38', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:11:38', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('089e3a8821d342ab91aeb193580b1683', 'OC_5_1574251141740', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 19:59:01', '新单111', '2', '0', '1', '2019-11-20 19:59:07', '0', 'pfc_5_1574251141975', '0', '2019-11-20 19:59:01', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 19:59:01', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('09c415440ad844ee987bb22de08a6820', 'OC_3_1574039749766', 'da14b98e-cb26-4169-9b58-babe98b98047', '8b365a93a03c4e0a9cba24c1aa1e50fa', '测试东北大米 5KG ', '0', '0', '2', '0.10', null, '0.10', '0.00', '2019-11-18 09:15:49', '', '0', '0', '1', '2019-11-18 09:15:55', '0', 'pfc_3_1574039749893', '0', '2019-11-18 09:15:49', '8b365a93a03c4e0a9cba24c1aa1e50fa', '三农壹购@爆款供应链', '2019-11-18 09:15:49', '8b365a93a03c4e0a9cba24c1aa1e50fa', '三农壹购@爆款供应链', null);
+INSERT INTO `t_sm_order` VALUES ('0da32e385aba4dfaba4965a2edb99791', 'OC_7_1573999585106', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd6e4c83ede734b638f46b2ad02bf4892', '测试东北大米 5KG ', '0', '0', '1', '0.05', null, '0.05', '0.00', '2019-11-17 22:06:25', '', '2', '0', '1', '2019-11-17 22:06:31', '0', 'pfc_7_1573999585155', '0', '2019-11-17 22:06:25', 'd6e4c83ede734b638f46b2ad02bf4892', '平凡', '2019-11-17 22:06:25', 'd6e4c83ede734b638f46b2ad02bf4892', '平凡', null);
+INSERT INTO `t_sm_order` VALUES ('13a3226fad3643ff9d666d936731495e', 'OC_13_1573994936672', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 20:52:40', '', '0', '0', '1', '2019-11-17 20:49:03', '0', 'pfc_13_1573994936761', '0', '2019-11-17 20:48:56', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 20:48:56', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('16bb97a6b07846acb2fab4a7789e76f8', 'OC_8_1573920684103', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 00:41:24', '', '0', '0', '1', '2019-11-17 00:11:30', '0', 'pfc_3_1573920684171', '0', '2019-11-17 00:11:24', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:11:24', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('1bfb822376614d77a763cef0dc1a480d', 'OC_6_1574252253335', null, 'f6b203605e0a4c65bbc030bbb3c0c9fb', '测试猕猴桃 20个 ', '0', '0', '1', '0.02', '0.02', '0.02', '0.00', '2019-11-20 20:17:33', '', '2', '0', '1', '2019-11-20 20:17:41', '0', 'pfc_6_1574252253442', '0', '2019-11-20 20:17:33', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '2019-11-20 20:17:33', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('1e691dc3daaa4f47bf6a7caba928e7c4', 'OC_6_1573920586107', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '5', '0.05', null, '0.05', '0.00', '2019-11-17 00:39:46', '', null, '2', '0', null, null, null, '0', '2019-11-17 00:09:46', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 00:09:46', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('1eef32868d434fbda39a3fdd162b510f', 'OC_4_1573996183036', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 21:39:43', '', '0', '0', '1', '2019-11-17 21:09:48', '0', 'pfc_4_1573996183116', '0', '2019-11-17 21:09:43', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 21:09:43', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('1fa79f18e29e465a893bb1896a1cac2e', 'OC_5_1573912867337', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '3', '0.03', null, '0.03', '0.00', '2019-11-16 22:01:07', '即使我出我OK酷我初中天我姑我爱上我的就如我天我姑我爱护我哦轮流在我模棱两可家里就我带上去看看去我爱涂哪里去了就去找我们村纳入two咯来咯路了我就如图', null, '2', '0', null, null, null, '0', '2019-11-16 22:01:07', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:01:07', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('273764f2b22e4cca8164b7a13ff689f3', 'OC_7_1573982270887', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:47:50', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:17:50', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:17:50', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('2b2eb0c82bae4982a410f97c08eab591', 'OC_1_1573921974517', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '123 1 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:32:54', '', null, '2', '0', null, null, null, '0', '2019-11-17 00:32:54', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:32:54', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('2e78c1638872438e82d4d2812716d68d', 'OC_6_1574067958206', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '香梨测试水果产品 1 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 17:05:58', '', null, '2', '0', null, null, null, '0', '2019-11-18 17:05:58', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 17:05:58', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('31f61fd94ee248ee958ad126c5e437fc', 'OC_3_1574247773534', null, '40b8df13ff764a1aae54743bcf6a38b4', '测试沁州小米 1KG ', '0', '0', '10', '0.10', '0.10', '0.10', '0.00', '2019-11-20 19:02:53', '', '0', '0', '1', '2019-11-20 19:02:59', '0', 'pfc_3_1574247773663', '0', '2019-11-20 19:02:53', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', '2019-11-20 19:02:53', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', null);
+INSERT INTO `t_sm_order` VALUES ('32fd70b205654980bce6069d79f58e35', 'OC_2_1573922566141', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:12:46', '', '0', '0', '1', '2019-11-17 00:42:51', '0', 'pfc_2_1573922566237', '0', '2019-11-17 00:42:46', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:42:46', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('333168ccc9ba473994c56c1e7c09e9c1', 'OC_10_1573920820193', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:43:40', '', '0', '0', '1', '2019-11-17 00:13:45', '0', 'pfc_5_1573920820273', '0', '2019-11-17 00:13:40', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:13:40', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('342eb3f7cf104cdb9dd3d4ce20155898', 'OC_6_1574978694288', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-29 06:04:54', '', null, '2', '0', null, null, null, '0', '2019-11-29 06:04:54', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 06:04:54', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('35801927549240b5ba1a4dad597255ca', 'OC_11_1573920851061', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:44:11', '', '0', '0', '1', '2019-11-17 00:14:16', '0', 'pfc_6_1573920851151', '0', '2019-11-17 00:14:11', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:14:11', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('3b9f7d93df844f549e8bcfce6b5c394c', 'OC_8_1574068051168', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-18 17:07:31', '', null, '2', '0', null, null, null, '0', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('3bff23e442694f7ba4b08a76c967c704', 'OC_1_1574315014570', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-21 13:43:34', '', '2', '0', '1', '2019-11-21 13:43:40', '0', 'pfc_1_1574315014750', '0', '2019-11-21 13:43:34', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 13:43:34', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('3d85f3eeeffb4385981e055bb7ddb923', 'OC_6_1573923253075', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:24:13', '', '0', '0', '1', '2019-11-17 00:54:17', '0', 'pfc_6_1573923253243', '0', '2019-11-17 00:54:13', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 00:54:13', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('4246b6b64b6e4f238760d56fc19dca9b', 'OC_5_1573981728829', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:38:48', '', '0', '0', '1', '2019-11-17 17:08:54', '0', 'pfc_5_1573981728985', '0', '2019-11-17 17:08:48', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:08:48', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('4362f1c506a44d50857dbf47fc99b3bf', 'OC_1_1573981263095', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:31:03', '', '2', '0', '1', '2019-11-17 17:01:14', '0', 'pfc_1_1573981263248', '0', '2019-11-17 17:01:03', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 17:01:03', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('43ab2d86c85946639bf7687e64514dd9', 'OC_2_1574063196616', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 15:46:36', '', null, '2', '0', null, null, null, '0', '2019-11-18 15:46:36', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 15:46:36', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('46aa431050dc4b4899bc1f4af42ba43f', 'OC_3_1574230417225', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-20 14:13:37', '', null, '2', '0', null, null, null, '0', '2019-11-20 14:13:37', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', '2019-11-20 14:13:37', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', null);
+INSERT INTO `t_sm_order` VALUES ('4760198797244bcfbd0c9515e63c9eaf', 'OC_7_1574068051159', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '4', '0.04', null, '0.04', '0.00', '2019-11-18 17:07:31', '', null, '2', '0', null, null, null, '0', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('47f2d4ddb84c499cbfcd20855b9377fd', 'OC_1_1573951351982', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 08:42:31', '', '0', '0', '1', '2019-11-17 08:42:45', '0', 'pfc_1_1573951352104', '0', '2019-11-17 08:42:31', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 08:42:31', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('4f8dc5ac2fa6421e80a08c2e4991656c', 'OC_1_1574060419817', 'da14b98e-cb26-4169-9b58-babe98b98047', '8970c01dce534f8b92521437085cc812', '测试猕猴桃 20个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 15:30:19', '', '0', '0', '1', '2019-11-18 15:00:27', '0', 'pfc_1_1574060419971', '0', '2019-11-18 15:00:19', '8970c01dce534f8b92521437085cc812', 'koala', '2019-11-18 15:00:19', '8970c01dce534f8b92521437085cc812', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('5042f374c79c43eb96556c6c039ad6c9', 'OC_10_1573982965410', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:32:25', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:29:25', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 17:29:25', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('55147e3e42544da0b2b45e370f8de9d1', 'OC_3_1574317255807', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-21 14:20:55', '', '3', '0', '1', '2019-11-21 14:21:01', '0', 'pfc_3_1574317255921', '0', '2019-11-21 14:20:55', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 14:20:55', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('598f01acd00744fba4694265b23b894b', 'OC_7_1573913126787', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '2', '0.02', null, '0.02', '0.00', '2019-11-16 22:05:26', '', '5', '0', '1', '2019-09-16 22:05:32', '0', 'pfc_6_1573913126920', '0', '2019-11-16 22:05:26', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:05:26', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('5b12c8d4e5b14accb757be586ab9e8f8', 'OC_2_1574173225570', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '香梨测试水果产品 1 ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-19 22:50:25', '', null, '2', '0', null, null, null, '0', '2019-11-19 22:20:25', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-19 22:20:25', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('5bf7ca1f678d4befab028ebfeccd307d', 'OC_2_1573981345041', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:32:25', '', '0', '0', '1', '2019-11-17 17:02:33', '0', 'pfc_2_1573981345180', '0', '2019-11-17 17:02:25', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:02:25', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('5d771d71f0964182ab5cbbde12a9118c', 'OC_5_1573996380029', 'da14b98e-cb26-4169-9b58-babe98b98047', '8970c01dce534f8b92521437085cc812', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 21:43:00', '', null, '2', '0', null, null, null, '0', '2019-11-17 21:13:00', '8970c01dce534f8b92521437085cc812', 'koala', '2019-11-17 21:13:00', '8970c01dce534f8b92521437085cc812', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('61f8c6c2c25e4e788a1f154085253fd8', 'OC_2_1573922007829', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '123 1 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:33:27', '', null, '2', '0', null, null, null, '0', '2019-11-17 00:33:27', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:33:27', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('6a07dd2b943b4da3b596d00fd75eca72', 'OC_1_1573922988610', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:19:48', '', '0', '0', '1', '2019-11-17 00:49:55', '0', 'pfc_1_1573922988845', '0', '2019-11-17 00:49:48', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:49:48', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('6ee3118437b64fcd997f120791e9e19a', 'OC_10_1573913681909', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 20个 ', '0', '0', '2', '0.04', null, '0.04', '0.00', '2019-11-16 22:14:41', '', null, '2', '0', null, null, null, '0', '2019-11-16 22:14:41', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:14:41', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('7250808e24ee479aa594b52cd7dce82f', 'OC_2_1574247730349', null, '40b8df13ff764a1aae54743bcf6a38b4', '测试东北大米 5KG ', '0', '0', '10', '0.50', '0.50', '0.50', '0.00', '2019-11-20 19:02:10', '', '2', '0', '1', '2019-11-20 19:02:16', '0', 'pfc_2_1574247730508', '0', '2019-11-20 19:02:10', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', '2019-11-20 19:02:10', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', null);
+INSERT INTO `t_sm_order` VALUES ('72d176a2c254485aa0e9c25aacd436b6', 'OC_9_1573920793235', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:43:13', '', '0', '0', '1', '2019-11-17 00:13:18', '0', 'pfc_4_1573920793349', '0', '2019-11-17 00:13:13', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:13:13', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('7ede7f8dc74e471789f40d9ec2de6fbf', 'OC_3_1573974800999', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 15:13:20', '', '0', '0', '1', '2019-11-17 15:13:26', '0', 'pfc_3_1573974801119', '0', '2019-11-17 15:13:20', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 15:13:20', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('7ef6c58570b244b690ecd4d1d0cd0887', 'OC_9_1573982889758', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:58:09', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:28:09', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:28:09', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('80b2c38968404ab4a9deaf09260b2709', 'OC_8_1573923263968', 'da14b98e-cb26-4169-9b58-babe98b98047', 'b9a722add51f403591389edc96ae150b', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:24:23', '', '0', '0', '1', '2019-11-17 00:54:30', '0', 'pfc_8_1573923264096', '0', '2019-11-17 00:54:23', 'b9a722add51f403591389edc96ae150b', '灵珑', '2019-11-17 00:54:23', 'b9a722add51f403591389edc96ae150b', '灵珑', null);
+INSERT INTO `t_sm_order` VALUES ('886a9376885c4bba8d061a60746ef244', 'OC_2_1574039591029', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 09:43:11', '', '2', '0', '1', '2019-11-18 09:13:16', '0', 'pfc_2_1574039591190', '0', '2019-11-18 09:13:11', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-18 09:13:11', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('9847e46eee02455a825bc7b6247acf74', 'OC_1_1574219955299', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '2', '70.06', null, '50.02', '20.04', '2019-11-20 11:19:15', '', null, '2', '0', null, null, null, '0', '2019-11-20 11:19:15', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 11:19:15', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('9965a4975a644656ad97ceed7d138b66', 'OC_1_1574979143543', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-29 06:12:23', '', null, '2', '0', null, null, null, '0', '2019-11-29 06:12:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 06:12:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('99cb7a6f4a0d46b88c7f3252c2175896', 'OC_5_1573923239377', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:23:59', '', '0', '0', '1', '2019-11-17 00:54:04', '0', 'pfc_5_1573923239461', '0', '2019-11-17 00:53:59', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:53:59', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('9a6c06d25e18444f8289abc5e6bd7dcc', 'OC_1_1573922558567', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:12:38', '', '0', '0', '1', '2019-11-17 00:42:44', '0', 'pfc_1_1573922558743', '0', '2019-11-17 00:42:38', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 00:42:38', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('9d8ec2b2386046779c46b89833a3d5eb', 'OC_2_1574302913029', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-21 10:21:53', '只要顺丰', '2', '0', '1', '2019-11-21 10:21:59', '0', 'pfc_2_1574302913187', '0', '2019-11-21 10:21:53', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 10:21:53', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '客户要发顺丰');
+INSERT INTO `t_sm_order` VALUES ('9eec1003dff9488e88b1050d0383aab5', 'OC_7_1573919304655', 'da14b98e-cb26-4169-9b58-babe98b98047', '5c210936bf2b4939994610a252510b3d', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-16 23:48:24', '', null, '2', '0', null, null, null, '0', '2019-11-16 23:48:24', '5c210936bf2b4939994610a252510b3d', '。', '2019-11-16 23:48:24', '5c210936bf2b4939994610a252510b3d', '。', null);
+INSERT INTO `t_sm_order` VALUES ('a00945f7c53d4d599c1a78594953dd57', 'OC_7_1574252253342', null, 'f6b203605e0a4c65bbc030bbb3c0c9fb', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', '0.01', '0.01', '0.00', '2019-11-20 20:17:33', '', '0', '0', '1', '2019-11-20 20:17:41', '0', 'pfc_6_1574252253442', '0', '2019-11-20 20:17:33', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '2019-11-20 20:17:33', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '测试');
+INSERT INTO `t_sm_order` VALUES ('a2475624b6554c5883e033249974d49d', 'OC_1_1573971297292', 'da14b98e-cb26-4169-9b58-babe98b98047', '5c210936bf2b4939994610a252510b3d', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 14:44:57', '', '0', '0', '1', '2019-11-17 14:15:04', '0', 'pfc_1_1573971297462', '0', '2019-11-17 14:14:57', '5c210936bf2b4939994610a252510b3d', '。', '2019-11-17 14:14:57', '5c210936bf2b4939994610a252510b3d', '。', null);
+INSERT INTO `t_sm_order` VALUES ('a5e4c464dacc4dba82d13e5ad4b62ef6', 'OC_3_1574064198505', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-18 16:33:18', '', '1', '0', '1', '2019-11-18 16:03:24', '0', 'pfc_3_1574064198576', '0', '2019-11-18 16:03:18', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 16:03:18', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('a7fbaf0a665448478bb3f5a7c99de353', 'OC_2_1573923030855', 'da14b98e-cb26-4169-9b58-babe98b98047', 'b9a722add51f403591389edc96ae150b', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:20:30', '', '0', '0', '1', '2019-11-17 00:50:42', '0', 'pfc_2_1573923030988', '0', '2019-11-17 00:50:30', 'b9a722add51f403591389edc96ae150b', '灵珑', '2019-11-17 00:50:30', 'b9a722add51f403591389edc96ae150b', '灵珑', null);
+INSERT INTO `t_sm_order` VALUES ('a81191ab553d4277843bab3100332acf', 'OC_1_1574151760823', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '香梨测试水果产品 1 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-19 16:22:40', '', '5', '0', '1', '2019-11-19 16:22:46', '0', 'pfc_1_1574151760942', '0', '2019-11-19 16:22:40', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-19 16:22:40', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('a8752c34b03d49e0a2c315498c5872fd', 'OC_2_1574316199658', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-21 14:03:19', '', '2', '0', '1', '2019-11-21 14:03:28', '0', 'pfc_2_1574316199792', '0', '2019-11-21 14:03:19', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 14:03:19', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('adc2b031ed1b42a2837997b640781e73', 'OC_1_1574977686480', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-29 05:48:06', '', null, '2', '0', null, null, null, '0', '2019-11-29 05:48:06', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 05:48:06', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('b0cce3f578cf420c9f6637f0291e0f60', 'OC_4_1574248494463', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '1', '0', '1', '0.01', '0.01', '0.01', '0.00', '2019-11-20 19:14:54', '', '2', '0', '1', '2019-11-20 19:15:00', '0', 'pfc_4_1574248494532', '0', '2019-11-20 19:14:54', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-20 19:14:54', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('b0e06d826e6f4b6288339e1408242202', 'OC_2_1573951479748', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 08:44:39', '', null, '2', '0', null, null, null, '0', '2019-11-17 08:44:39', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 08:44:39', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('b23c07d2598840099f4b1d0fda0724c3', 'OC_3_1573996150825', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 21:39:10', '', '0', '0', '1', '2019-11-17 21:09:16', '0', 'pfc_3_1573996150926', '0', '2019-11-17 21:09:10', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 21:09:10', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('b2b6d6835a7a41f08042b8145b9fc1b1', 'OC_6_1573913085184', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '5', '0.05', null, '0.05', '0.00', '2019-11-16 22:04:45', '', null, '2', '0', null, null, null, '0', '2019-11-16 22:04:45', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:04:45', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('b36da382c28741b7a9f24e079aceda66', 'OC_4_1574317575304', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '3', '0.09', null, '0.06', '0.03', '2019-11-21 14:26:15', '', null, '2', '0', null, null, null, '0', '2019-11-21 14:26:15', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 14:26:15', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('b5b5f25028954113b3f3049f4d8b0cf1', 'OC_4_1573922909426', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:18:29', '', null, '2', '0', null, null, null, '0', '2019-11-17 00:48:29', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 00:48:29', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('b6a16bbd6bdf43fcb9ef5ae9b89bf92c', 'OC_4_1574065570408', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-18 16:56:10', '', null, '2', '0', null, null, null, '0', '2019-11-18 16:26:10', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 16:26:10', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('b7200093b6f24417a18bda23c458d444', 'OC_8_1573999629897', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 5KG ', '0', '0', '1', '0.05', null, '0.05', '0.00', '2019-11-17 22:07:09', '', null, '2', '0', null, null, null, '0', '2019-11-17 22:07:09', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 22:07:09', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('ba29fcf071ae4c878a30cf2b32106a39', 'OC_6_1573981751665', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:09:11', '', '2', '0', '1', '2019-11-17 17:09:16', '0', 'pfc_6_1573981751763', '0', '2019-11-17 17:09:11', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 17:09:11', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('bc0bca1a429b473d92d9474c627063c1', 'OC_11_1573913877985', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 20个 ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-16 22:17:57', '', null, '2', '0', null, null, null, '0', '2019-11-16 22:17:57', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:17:57', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('be31c93d101a48978d3b4c1aebcc9c3b', 'OC_2_1573971760115', 'da14b98e-cb26-4169-9b58-babe98b98047', '5c210936bf2b4939994610a252510b3d', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 14:52:40', '', '0', '0', '1', '2019-11-17 14:22:45', '0', 'pfc_2_1573971760442', '0', '2019-11-17 14:22:40', '5c210936bf2b4939994610a252510b3d', '。', '2019-11-17 14:22:40', '5c210936bf2b4939994610a252510b3d', '。', null);
+INSERT INTO `t_sm_order` VALUES ('c5724139ee3944eab56efda72beeac4e', 'OC_5_1574240329925', null, 'f6b203605e0a4c65bbc030bbb3c0c9fb', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 16:58:49', '佛教了', '2', '0', '1', '2019-11-20 16:59:00', '0', 'pfc_5_1574240330031', '0', '2019-11-20 16:58:49', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '2019-11-20 16:58:49', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('c5c198a54e804e2dbf3b7a7a7dcfb144', 'OC_1_1574247367518', null, '40b8df13ff764a1aae54743bcf6a38b4', '测试东北大米 5KG ', '0', '0', '10', '0.50', '0.50', '0.50', '0.00', '2019-11-20 18:56:07', '', '0', '0', '1', '2019-11-20 18:56:15', '0', 'pfc_1_1574247367685', '0', '2019-11-20 18:56:07', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', '2019-11-20 18:56:07', '40b8df13ff764a1aae54743bcf6a38b4', '泰然自若', null);
+INSERT INTO `t_sm_order` VALUES ('c853f925ece14b4aa2d8cbffdc12dca9', 'OC_1_1573919487449', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-16 23:51:27', '', null, '2', '0', null, null, null, '0', '2019-11-16 23:51:27', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 23:51:27', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('c9664f3c3bad44deb69bed400a9be5f5', 'OC_6_1573996707508', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 21:39:04', '', '2', '0', '1', '2019-11-17 21:18:32', '0', 'pfc_6_1573996707724', '0', '2019-11-17 21:18:27', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 21:18:27', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('cba7063a383448189c16632f0ecc64c5', 'OC_2_1573996144536', 'da14b98e-cb26-4169-9b58-babe98b98047', '8970c01dce534f8b92521437085cc812', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 21:39:04', '', '2', '0', '1', '2019-11-17 21:09:07', '0', 'pfc_2_1573996144650', '0', '2019-11-17 21:09:04', '8970c01dce534f8b92521437085cc812', 'koala', '2019-11-17 21:09:04', '8970c01dce534f8b92521437085cc812', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('cbb223d59482447388a72073b6e12045', 'OC_4_1574044821035', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 5KG ', '0', '0', '1', '0.05', null, '0.05', '0.00', '2019-11-18 10:40:21', '', null, '2', '0', null, null, null, '0', '2019-11-18 10:40:21', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 10:40:21', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('cbec007381804b6c818dddf44867d03a', 'OC_2_1574220203781', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '2', '0.02', null, '0.02', '0.00', '2019-11-20 11:23:23', '', '2', '0', '1', '2019-11-20 11:23:29', '0', 'pfc_2_1574220203912', '0', '2019-11-20 11:23:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 11:23:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('cc39d32aa585405a9cff239e79035bb1', 'OC_9_1574068051178', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-18 17:07:31', '', null, '2', '0', null, null, null, '0', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 17:07:31', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('cddc651c601447f49a766ab4f67c4c12', 'OC_4_1573923145946', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:22:25', '', null, '2', '0', null, null, null, '0', '2019-11-17 00:52:25', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:52:25', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('cf40c8074525436dba771e0abec5dea0', 'OC_1_1574399485922', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试 20斤 ', '0', '0', '1', '150.00', null, '150.00', '0.00', '2019-11-22 13:41:25', '', null, '2', '0', null, null, null, '0', '2019-11-22 13:11:25', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-22 13:11:25', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('cf4b2198d11e4968b51e399fa34ef3cc', 'OC_1_1574302326343', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '香梨测试水果产品 1 ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-21 10:42:06', '', null, '2', '0', null, null, null, '0', '2019-11-21 10:12:06', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', '2019-11-21 10:12:06', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', null);
+INSERT INTO `t_sm_order` VALUES ('cfdb470a9e27425a9af7a1f98284678b', 'OC_1_1574220764301', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 11:32:44', '一二', '3', '0', '1', '2019-11-20 11:32:50', '0', 'pfc_1_1574220764494', '0', '2019-11-20 11:32:44', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 11:32:44', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('d1e45c3d678440c198e8b543b94a219a', 'OC_11_1573983009475', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:32:25', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:30:09', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 17:30:09', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('d28251c489184c9d8506f9ecf512cffd', 'OC_4_1574977991650', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-29 05:53:11', '', null, '2', '0', null, null, null, '0', '2019-11-29 05:53:11', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 05:53:11', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('d2f380fdf87e459994b4c6fd822ce777', 'OC_5_1574067336116', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '香梨测试水果产品 1 ', '0', '0', '1', '1.00', null, '1.00', '0.00', '2019-11-18 16:55:36', '', null, '2', '0', null, null, null, '0', '2019-11-18 16:55:36', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-18 16:55:36', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('d667fc27c7e246e4976836a89b507832', 'OC_3_1574977946012', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '4', '0.07', null, '0.04', '0.03', '2019-11-29 05:52:26', '德邦吧？', null, '2', '0', null, null, null, '0', '2019-11-29 05:52:26', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 05:52:26', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('d7af1c562127467ba555c8fae7787570', 'OC_5_1574978119148', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.02', '0.02', '0.01', '0.01', '2019-11-29 05:55:19', '', '2', '0', '1', '2019-11-29 05:55:25', '0', 'pfc_5_1574978119285', '0', '2019-11-29 05:55:19', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 05:55:19', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('d87f58f8dc3143eabe4101c0e3f4244c', 'OC_8_1573913377107', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 5KG ', '0', '0', '1', '0.05', null, '0.05', '0.00', '2019-11-16 22:09:37', '', '5', '0', '1', '2019-11-16 22:09:43', '0', 'pfc_7_1573913377209', '0', '2019-11-16 22:09:37', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 22:09:37', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('dbd3c430577f41738a1f19db5c833e09', 'OC_3_1573919585505', 'da14b98e-cb26-4169-9b58-babe98b98047', '5c210936bf2b4939994610a252510b3d', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:23:05', '', '0', '0', '1', '2019-11-16 23:53:10', '0', 'pfc_4_1573919585597', '0', '2019-11-16 23:53:05', '5c210936bf2b4939994610a252510b3d', '。', '2019-11-16 23:53:05', '5c210936bf2b4939994610a252510b3d', '。', null);
+INSERT INTO `t_sm_order` VALUES ('dbee089f0c7c4c909b2b45aa01d3df61', 'OC_3_1573981516065', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:35:16', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:05:16', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:05:16', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('dd0cdd68ca6b4a8e9dd3783c28219891', 'OC_7_1573920609186', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 00:40:09', '', '0', '0', '1', '2019-11-17 00:10:20', '0', 'pfc_2_1573920609269', '0', '2019-11-17 00:10:09', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:10:09', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('e4bdac778b4c46a4b6b146c55a59ac49', 'OC_4_1574239764329', null, 'f6b203605e0a4c65bbc030bbb3c0c9fb', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 16:49:24', '买了', '3', '0', '1', '2019-11-20 16:49:33', '0', 'pfc_4_1574239764411', '0', '2019-11-20 16:49:24', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '2019-11-20 16:49:24', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('e831e0b24b4d435aa9675e9412f25b99', 'OC_4_1573981628560', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:37:08', '', '0', '0', '1', '2019-11-17 17:07:26', '0', 'pfc_4_1573981628724', '0', '2019-11-17 17:07:08', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:07:08', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('e9145b12e1904b6fb8bd9ff40f39c3d7', 'OC_7_1573923258853', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:24:18', '', '0', '0', '1', '2019-11-17 00:54:26', '0', 'pfc_7_1573923258940', '0', '2019-11-17 00:54:18', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:54:18', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('eceff46edf6a4cb8af3f50dcc43584be', 'OC_1_1573996075787', 'da14b98e-cb26-4169-9b58-babe98b98047', '8970c01dce534f8b92521437085cc812', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 21:37:55', '', '0', '0', '1', '2019-11-17 21:08:01', '0', 'pfc_1_1573996075990', '0', '2019-11-17 21:07:55', '8970c01dce534f8b92521437085cc812', 'koala', '2019-11-17 21:07:55', '8970c01dce534f8b92521437085cc812', 'koala', null);
+INSERT INTO `t_sm_order` VALUES ('f0297fcedd2342598b52c732a1a828e4', 'OC_8_1574256769584', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '1', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 21:32:49', '', '3', '0', '1', '2019-11-20 21:32:54', '0', 'pfc_7_1574256769698', '0', '2019-11-20 21:32:49', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 21:32:49', '622488d41a0f4029ae3ea009ffc101b5', 'only one', 'sssssssssfasss');
+INSERT INTO `t_sm_order` VALUES ('f0d4d0ee365342d99c58bb28813059cb', 'OC_2_1574230373453', 'da14b98e-cb26-4169-9b58-babe98b98047', '5d020e0465284dcc8d2e91a393da801e', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-20 14:12:53', '', null, '2', '0', null, null, null, '0', '2019-11-20 14:12:53', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', '2019-11-20 14:12:53', '5d020e0465284dcc8d2e91a393da801e', '骑着Vespa的江守', null);
+INSERT INTO `t_sm_order` VALUES ('f0f70bd4d7b44535951f9bdaa226ab3d', 'OC_3_1574173254041', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '香梨测试水果产品 1 ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-19 22:50:25', '', null, '2', '0', null, null, null, '0', '2019-11-19 22:20:54', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-19 22:20:54', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('f4e65a69892341b4b1ea7c3f4d50e36b', 'OC_1_1574928960160', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-28 16:16:00', '', null, '2', '0', null, null, null, '0', '2019-11-28 16:16:00', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-28 16:16:00', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('f5698d3cf1334be3a9979ff5210f6958', 'OC_2_1574979167979', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '3', '0.05', null, '0.03', '0.02', '2019-11-29 06:12:47', '好借口', null, '2', '0', null, null, null, '0', '2019-11-29 06:12:47', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 06:12:47', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('f6b3b0735e004061b3a03cfdb55dde66', 'OC_1_1574229778965', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.03', '0.03', '0.02', '0.01', '2019-11-20 14:02:58', '哈哈哈', '3', '0', '1', '2019-11-20 14:03:05', '0', 'pfc_1_1574229779113', '0', '2019-11-20 14:02:58', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 14:02:58', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('f6d865f27d8d4ba5873cbb5fe522c00c', 'OC_2_1573919509041', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '5', '0.05', null, '0.05', '0.00', '2019-11-17 00:21:49', '', null, '2', '0', null, null, null, '0', '2019-11-16 23:51:49', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-16 23:51:49', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('f8dbed68c05f448b9639d96f125273f1', 'OC_3_1573923119336', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 2.5KG ', '0', '0', '1', '0.02', null, '0.02', '0.00', '2019-11-17 01:21:59', '', '0', '0', '1', '2019-11-17 00:52:05', '0', 'pfc_3_1573923119413', '0', '2019-11-17 00:51:59', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 00:51:59', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('f956f830e0894cb782ebd79c9e25450c', 'OC_4_1573974801009', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试沁州小米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 15:13:20', '', '0', '0', '1', '2019-11-17 15:13:26', '0', 'pfc_3_1573974801119', '0', '2019-11-17 15:13:20', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 15:13:20', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('fa8eed15c8e74872bfcff5e987aabe41', 'OC_3_1573922778386', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 01:16:18', '', '0', '0', '1', '2019-11-17 00:46:24', '0', 'pfc_3_1573922778513', '0', '2019-11-17 00:46:18', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 00:46:18', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('fac40886cd394579a0c18064adbd67c0', 'OC_12_1573983057346', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:35:16', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:30:57', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-17 17:30:57', 'd417d39463f34103bf376677a1db0fae', '小梅', '这是最新的测试这是最新的测试这是最新的测试这是最新的测试这是最新的测试');
+INSERT INTO `t_sm_order` VALUES ('fbc6f55652e042d3af7bad1caceaac3f', 'OC_1_1574173085280', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd417d39463f34103bf376677a1db0fae', '测试猕猴桃 10个 ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-19 22:18:05', '', '2', '0', '1', '2019-11-19 22:18:11', '0', 'pfc_1_1574173085446', '0', '2019-11-19 22:18:05', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-19 22:18:05', 'd417d39463f34103bf376677a1db0fae', '小梅', null);
+INSERT INTO `t_sm_order` VALUES ('fbef68a07698428784d0ca63dc82f4b4', 'OC_2_1574977763969', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '5', '0.09', null, '0.05', '0.04', '2019-11-29 05:49:23', '', null, '2', '0', null, null, null, '0', '2019-11-29 05:49:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-29 05:49:23', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
+INSERT INTO `t_sm_order` VALUES ('fce4c7e6584f4cb8851dc296161b4d53', 'OC_8_1573982298466', 'da14b98e-cb26-4169-9b58-babe98b98047', '622488d41a0f4029ae3ea009ffc101b5', '测试东北大米 1KG ', '0', '0', '1', '0.01', null, '0.01', '0.00', '2019-11-17 17:48:18', '', null, '2', '0', null, null, null, '0', '2019-11-17 17:18:18', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-17 17:18:18', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null);
 
 -- ----------------------------
 -- Table structure for t_sm_orderback
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sm_orderback`;
 CREATE TABLE `t_sm_orderback` (
-  `F_BACKID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '退订记录ID',
-  `F_ORDERLISTID2` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单产品明细编号',
-  `F_BACKCODE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订单号',
-  `F_ORDERID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单ID',
-  `F_ORDERLISTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单明细ID',
-  `F_APPLYTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订申请时间',
-  `F_OPTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订受理时间',
-  `F_BACKTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订付款时间',
-  `F_BACKREASON` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订原因',
-  `F_STATUS` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订状态：1-申请退订2-受理（同意付款）3-已退款4-拒绝退款5-撤回6-第三方申请退订中',
-  `F_BACKAMOUNT` decimal(6,0) DEFAULT NULL COMMENT '退订数量',
-  `F_BACKACCOUNT` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退订帐号：微信端下单时的用户支付宝账户，OTA下单时的退订流水号',
+  `F_BACKID` varchar(50) NOT NULL COMMENT '退订记录ID',
+  `F_BACKCODE` varchar(50) DEFAULT NULL COMMENT '退订单号',
+  `F_STATUS` varchar(2) DEFAULT NULL COMMENT '退订状态：1-申请退订2-受理3-不受理4-退货5-退款6-关闭',
+  `F_ORDERID` varchar(50) DEFAULT NULL COMMENT '订单ID',
+  `F_BACKDATA` varchar(500) DEFAULT NULL COMMENT '退订数据[{orderListId:,num}]',
+  `F_BACKREASON_TYPE` varchar(50) DEFAULT NULL COMMENT '退订原因类型(PUBMAP)',
+  `F_BACKREASON` varchar(500) DEFAULT NULL COMMENT '退订原因',
+  `F_APPLYTIME` varchar(50) DEFAULT NULL COMMENT '退订申请时间',
+  `F_APPLY_UID` varchar(50) DEFAULT NULL COMMENT '退订申请人ID',
+  `F_APPLY_UNAME` varchar(100) DEFAULT NULL COMMENT '退订申请人名称',
+  `F_OPTIME` varchar(50) DEFAULT NULL COMMENT '退订受理时间',
+  `F_OP_UID` varchar(50) DEFAULT NULL COMMENT '退订受理人ID',
+  `F_OP_UNAME` varchar(100) DEFAULT NULL COMMENT '退订受理人名称',
+  `F_ISBACK_GOODS` varchar(1) DEFAULT NULL COMMENT '是否退货 1是，0否',
+  `F_BACK_GOODS_STATUS` varchar(1) DEFAULT NULL COMMENT '退货状态 0待发货，1已发货，2已收货',
+  `F_BACK_GOODS_EPMECOMPANY` varchar(50) DEFAULT NULL COMMENT '退货快递公司',
+  `F_BACK_GOODS_EPMEORDCODE` varchar(100) DEFAULT NULL COMMENT '退货快递单号',
+  `F_BACK_GOODS_NAME` varchar(50) DEFAULT NULL COMMENT '退货快递接收人',
+  `F_BACK_GOODS_PHONE` varchar(50) DEFAULT NULL COMMENT '退货快递接收人电话',
+  `F_BACK_GOODS_RECEIVE_TIME` varchar(50) DEFAULT NULL COMMENT '退货接收时间',
+  `F_ISBACK_MONEY` varchar(1) DEFAULT NULL COMMENT '是否退款 1是，0否',
+  `F_BACK_MONEY_STATUS` varchar(1) DEFAULT NULL COMMENT '退款状态 0待退款，1已退款',
+  `F_BACK_MONEY_RECEIVE_TIME` varchar(50) DEFAULT NULL COMMENT '退款接收时间',
   `F_APPLYBACKMONEY` decimal(10,2) DEFAULT NULL COMMENT '申请退订金额',
   `F_BACKMONEY` decimal(10,2) DEFAULT NULL COMMENT '实际退订金额',
-  `F_BACKGOODSTYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退货方式：1快递退货2门店退货',
-  `F_APPLYBACKREASON` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请退订原因',
-  `F_APPLYBACKDESC` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请退订说明',
-  `F_ISSENDBACK` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否寄回:0未寄回，1已寄回，2确认收货，3拒绝收货',
-  `F_GOODSSTATUS` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '货物状态:0未收到货，1已收到货',
-  `F_APPLYBACKMETHOD` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请退款方式:1.仅退款2.退货退款',
-  `F_EPMETHOD` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '快递方式',
-  `F_EPMECOMPANY` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '快递公司',
-  `F_EPMEORDCODE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '快递单号',
-  `F_SENDBACKTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '寄回时间',
-  `F_CANCELTIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '取消退订时间',
-  `F_REFUSERECVREASON` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '拒绝收货原因',
-  PRIMARY KEY (`F_BACKID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单退订流程  勿删未完成';
+  `F_REFUSE_REASON` varchar(500) DEFAULT NULL COMMENT '不受理原因',
+  `F_SPID` varchar(50) DEFAULT NULL,
+  `F_BACK_GOODS_ADDR` varchar(100) DEFAULT NULL COMMENT '退货快递接收地址',
+  PRIMARY KEY (`F_BACKID`),
+  KEY `index_orderlist_orderid` (`F_ORDERID`),
+  KEY `index_orderlist_backid` (`F_BACKID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单退订流程';
 
 -- ----------------------------
 -- Records of t_sm_orderback
 -- ----------------------------
+INSERT INTO `t_sm_orderback` VALUES ('01e9d63173b347e68b87165e65bb157b', 'OBC_1_1574239832307', '6', 'e4bdac778b4c46a4b6b146c55a59ac49', '[{\"backNum\":\"1\",\"orderListId\":\"b064b2302f6442deb5838e55a0f99450\"}]', '2-2', '堵车了，发不了货', '2019-11-20 16:50:32', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 16:50:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, null, null, null, null, null, '1', '1', '2019-11-20 16:53:20', '0.03', '0.03', null, 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('1265964784b04cd097ae659f4722535a', 'OBC_1_1574315101675', '1', '3bff23e442694f7ba4b08a76c967c704', '[{\"backNum\":\"1\",\"orderListId\":\"af9f172301e84ac9b71d5215a9dd9dbc\"}]', '1-1', '该喝喝', '2019-11-21 13:45:01', '622488d41a0f4029ae3ea009ffc101b5', 'only one', null, null, null, '1', null, null, null, null, null, null, '1', null, null, '0.03', null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('287c63efdc344cadbf319f4dc4b20c0b', 'OBC_3_1574316356335', '6', 'a8752c34b03d49e0a2c315498c5872fd', '[{\"backNum\":\"1\",\"orderListId\":\"9cac309358184eb5ad64194780345011\"}]', '1-4', '当场出丑', '2019-11-21 14:05:56', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 14:06:51', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', 'ems', 'xxx', '张小军', '18933458766', '2019-11-21 14:09:29', '1', '1', '2019-11-21 14:16:47', '0.03', '0.02', null, 'da14b98e-cb26-4169-9b58-babe98b98047', '黑龙江佳木斯天河小区89号');
+INSERT INTO `t_sm_orderback` VALUES ('3a964138d76247f1aaca2612e2f1bde1', 'OBC_1_1574256852045', '6', 'f0297fcedd2342598b52c732a1a828e4', '[{\"backNum\":\"1\",\"orderListId\":\"9c0b58e76182485cb214a33372dfc6e0\"}]', '2-1', '您好，库存不够了', '2019-11-20 21:34:12', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 21:34:12', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, null, null, null, null, null, '1', '1', '2019-11-20 21:46:03', '0.03', '0.02', null, 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('776a044d6f494130a4d00604e446dfa6', 'OBC_1_1574313928943', '5', 'a81191ab553d4277843bab3100332acf', '[{\"backNum\":\"1\",\"orderListId\":\"86a7fcdf420d438d9ea3db9862ab1b6c\"}]', '1-2', '顾家家居', '2019-11-21 13:25:28', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 13:25:50', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', 'backGoodsEpmeCompany', 'backGoodsEpmeOrdCode', '刘志远', '12345678900', '2019-11-21 14:12:46', '1', '0', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', '北京鲜果批发市场3-45号');
+INSERT INTO `t_sm_orderback` VALUES ('7feb27f209d74ff9b906b0921eecdeed', 'OBC_4_1574317287478', '6', '55147e3e42544da0b2b45e370f8de9d1', '[{\"backNum\":\"1\",\"orderListId\":\"470eeee6d8d74dc181d3c6a91b43afb6\"}]', '2-2', '还睡啥', '2019-11-21 14:21:27', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 14:21:27', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, null, null, null, null, null, '1', '1', '2019-11-21 14:23:04', '0.03', '0.01', null, 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('87437b83997c4a84afa4307919e14487', 'OBC_1_1574400821848', '6', 'b0cce3f578cf420c9f6637f0291e0f60', '[{\"backNum\":\"1\",\"orderListId\":\"3d6fc72b785d4431b468621eeccb2eb3\"}]', '1-1', '你', '2019-11-22 13:33:41', 'd417d39463f34103bf376677a1db0fae', '小梅', '2019-11-22 13:35:45', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', '0', '12355488798', '黄小米', '13789876688', '2019-11-22 13:37:03', '1', '1', '2019-11-22 13:37:42', '0.01', '0.01', null, 'da14b98e-cb26-4169-9b58-babe98b98047', '山西沁州有机小米种植农场');
+INSERT INTO `t_sm_orderback` VALUES ('9f0ded9f61734f9c9b5212681cf884cf', 'OBC_1_1574255969087', '3', '089e3a8821d342ab91aeb193580b1683', '[{\"backNum\":\"1\",\"orderListId\":\"5a0a9d2bd78c4ed885bfd355d4318192\"}]', '1-2', '坏了', '2019-11-20 21:19:29', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-20 21:28:16', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', null, null, null, null, null, null, '1', null, null, '0.03', null, 'bujieshou ', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('ae499fed29ad4e9a958d46313c7b990d', 'OBC_1_1574310511862', '6', '9d8ec2b2386046779c46b89833a3d5eb', '[{\"backNum\":\"1\",\"orderListId\":\"1dbab37926b64737a2cde6a397a4b062\"}]', '1-4', '说明啥，不好就退', '2019-11-21 12:28:31', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 13:05:52', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', 'backGoodsEpmeCompany', 'backGoodsEpmeOrdCode', '张小军', '18933458766', '2019-11-21 13:07:05', '1', '1', '2019-11-21 13:07:28', '0.03', '0.03', null, 'da14b98e-cb26-4169-9b58-babe98b98047', '黑龙江佳木斯天河小区89号');
+INSERT INTO `t_sm_orderback` VALUES ('aeafe0158e6e494090e59754fc9eb232', 'OBC_1_1574229834733', '6', 'f6b3b0735e004061b3a03cfdb55dde66', '[{\"backNum\":\"1\",\"orderListId\":\"0ddbf8e70ea64ab7a1a432b11243fbc7\"}]', '2-1', 'buzhukuc', '2019-11-20 14:03:54', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 14:03:57', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null, null, null, null, null, null, '1', '1', '2019-11-20 16:37:12', '0.03', '0.03', null, 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_orderback` VALUES ('f939bd7b516f4e72ab368567accda1e7', 'OBC_1_1574240652749', '6', 'c5724139ee3944eab56efda72beeac4e', '[{\"backNum\":\"1\",\"orderListId\":\"094a054d10e444488849cd53f74aa921\"}]', '1-2', '一会', '2019-11-20 17:04:12', 'f6b203605e0a4c65bbc030bbb3c0c9fb', 'koala', '2019-11-20 17:18:04', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', 'backGoodsEpmeCompany', 'backGoodsEpmeOrdCode', '张小军', '18933458766', '2019-11-20 17:20:12', '1', '1', '2019-11-20 17:20:37', '0.03', '0.02', null, 'da14b98e-cb26-4169-9b58-babe98b98047', '黑龙江佳木斯天河小区89号');
+INSERT INTO `t_sm_orderback` VALUES ('fed25d0e49564e1db1194290e8091862', 'OBC_2_1574315776675', '5', 'cbec007381804b6c818dddf44867d03a', '[{\"backNum\":\"2\",\"orderListId\":\"36588a4588664232bbc7ddb396e2263c\"}]', '1-5', '顾家家居', '2019-11-21 13:56:16', '622488d41a0f4029ae3ea009ffc101b5', 'only one', '2019-11-21 13:57:13', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '2', 'ems', '46466', '张小军', '18933458766', '2019-11-21 14:01:34', '1', '0', null, null, null, null, 'da14b98e-cb26-4169-9b58-babe98b98047', '黑龙江佳木斯天河小区89号');
 
 -- ----------------------------
 -- Table structure for t_sm_ordercustomer
@@ -9144,7 +10191,7 @@ CREATE TABLE `t_sm_orderback` (
 DROP TABLE IF EXISTS `t_sm_ordercustomer`;
 CREATE TABLE `t_sm_ordercustomer` (
   `F_ORDERID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单ID',
-  `F_ORDERLISTID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单产品明细编号',
+  `F_ORDERLISTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单产品明细编号',
   `F_CUSTNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '客户姓名',
   `F_CUSTPHONE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '客户手机号',
   `F_RECADDRESS` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收货地址',
@@ -9156,31 +10203,162 @@ CREATE TABLE `t_sm_ordercustomer` (
 -- ----------------------------
 -- Records of t_sm_ordercustomer
 -- ----------------------------
+INSERT INTO `t_sm_ordercustomer` VALUES ('07554d752c434eb1aa24b3f82176fed5', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('07b58a40eab041be95b33e23e6231878', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('0818651d913346c0ab1afb55d1125549', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('089e3a8821d342ab91aeb193580b1683', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('09c415440ad844ee987bb22de08a6820', null, '宗倩', '13717597693', '北京 海淀区永嘉北路号6号大唐智能卡', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('0da32e385aba4dfaba4965a2edb99791', null, '吴国强', '13196867988', '江苏 镇江 京口区宗泽路69号尚海茗苑1号楼204室', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('13a3226fad3643ff9d666d936731495e', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('16bb97a6b07846acb2fab4a7789e76f8', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('1bfb822376614d77a763cef0dc1a480d', null, '吴', '17712838967', '江苏 常州 新北区光棍节', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('1e691dc3daaa4f47bf6a7caba928e7c4', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('1eef32868d434fbda39a3fdd162b510f', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('1fa79f18e29e465a893bb1896a1cac2e', null, '回来咯哦出', '15428547588', '广东 广州 白云区痛斥twoDJ过', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('273764f2b22e4cca8164b7a13ff689f3', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('2b2eb0c82bae4982a410f97c08eab591', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('2e78c1638872438e82d4d2812716d68d', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('31f61fd94ee248ee958ad126c5e437fc', null, '谢佳芬', '13856056888', '安徽 合肥 庐阳区徽州大道47一49银成公寓710', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('32fd70b205654980bce6069d79f58e35', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('333168ccc9ba473994c56c1e7c09e9c1', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('342eb3f7cf104cdb9dd3d4ce20155898', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('35801927549240b5ba1a4dad597255ca', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('3b9f7d93df844f549e8bcfce6b5c394c', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('3bff23e442694f7ba4b08a76c967c704', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('3d85f3eeeffb4385981e055bb7ddb923', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('4246b6b64b6e4f238760d56fc19dca9b', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('4362f1c506a44d50857dbf47fc99b3bf', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('43ab2d86c85946639bf7687e64514dd9', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('46aa431050dc4b4899bc1f4af42ba43f', null, '江江', '18813123958', '广东 广州 白云区fcd', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('4760198797244bcfbd0c9515e63c9eaf', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('47f2d4ddb84c499cbfcd20855b9377fd', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('4f8dc5ac2fa6421e80a08c2e4991656c', null, '唔想睇', '18018235525', '广东 广州 白云区又 low', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('5042f374c79c43eb96556c6c039ad6c9', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('55147e3e42544da0b2b45e370f8de9d1', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('598f01acd00744fba4694265b23b894b', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('5b12c8d4e5b14accb757be586ab9e8f8', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('5bf7ca1f678d4befab028ebfeccd307d', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('5d771d71f0964182ab5cbbde12a9118c', null, '唔想睇', '18018235525', '广东 广州 白云区又 low', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('61f8c6c2c25e4e788a1f154085253fd8', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('6a07dd2b943b4da3b596d00fd75eca72', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('6ee3118437b64fcd997f120791e9e19a', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('7250808e24ee479aa594b52cd7dce82f', null, '谢秀章', '13802327774', '广东 揭阳 榕城区东山沿江北路汇龙湾4幢302', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('72d176a2c254485aa0e9c25aacd436b6', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('7ede7f8dc74e471789f40d9ec2de6fbf', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('7ef6c58570b244b690ecd4d1d0cd0887', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('80b2c38968404ab4a9deaf09260b2709', null, '曹操', '13196865987', '江苏 镇江 京口区永隆', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('886a9376885c4bba8d061a60746ef244', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('9847e46eee02455a825bc7b6247acf74', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('9965a4975a644656ad97ceed7d138b66', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('99cb7a6f4a0d46b88c7f3252c2175896', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('9a6c06d25e18444f8289abc5e6bd7dcc', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('9d8ec2b2386046779c46b89833a3d5eb', null, '程少波', '18912823345', '江苏 镇江 京口区东一区', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('9eec1003dff9488e88b1050d0383aab5', null, '测试', '13196865987', '北京 房山区！', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a00945f7c53d4d599c1a78594953dd57', null, '吴', '17712838967', '江苏 常州 新北区光棍节', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a2475624b6554c5883e033249974d49d', null, '测试', '13196865987', '北京 房山区！', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a5e4c464dacc4dba82d13e5ad4b62ef6', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a7fbaf0a665448478bb3f5a7c99de353', null, '曹操', '13196865987', '江苏 镇江 京口区永隆', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a81191ab553d4277843bab3100332acf', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('a8752c34b03d49e0a2c315498c5872fd', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('adc2b031ed1b42a2837997b640781e73', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b0cce3f578cf420c9f6637f0291e0f60', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b0e06d826e6f4b6288339e1408242202', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b23c07d2598840099f4b1d0fda0724c3', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b2b6d6835a7a41f08042b8145b9fc1b1', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b36da382c28741b7a9f24e079aceda66', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b5b5f25028954113b3f3049f4d8b0cf1', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b6a16bbd6bdf43fcb9ef5ae9b89bf92c', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('b7200093b6f24417a18bda23c458d444', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('ba29fcf071ae4c878a30cf2b32106a39', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('bc0bca1a429b473d92d9474c627063c1', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('be31c93d101a48978d3b4c1aebcc9c3b', null, '测试', '13196865987', '北京 房山区！', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('c5724139ee3944eab56efda72beeac4e', null, '吴', '17712838967', '江苏 常州 新北区光棍节', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('c5c198a54e804e2dbf3b7a7a7dcfb144', null, '谢佳芬', '13856056888', '安徽 合肥 庐阳区徽州大道47一49银成公寓710', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('c853f925ece14b4aa2d8cbffdc12dca9', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('c9664f3c3bad44deb69bed400a9be5f5', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cba7063a383448189c16632f0ecc64c5', null, '唔想睇', '18018235525', '广东 广州 白云区又 low', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cbb223d59482447388a72073b6e12045', null, '回来咯哦出', '15428547588', '广东 广州 白云区痛斥twoDJ过', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cbec007381804b6c818dddf44867d03a', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cc39d32aa585405a9cff239e79035bb1', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cddc651c601447f49a766ab4f67c4c12', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cf40c8074525436dba771e0abec5dea0', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cf4b2198d11e4968b51e399fa34ef3cc', null, '江江', '18813123958', '广东 广州 白云区fcd', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('cfdb470a9e27425a9af7a1f98284678b', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d1e45c3d678440c198e8b543b94a219a', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d28251c489184c9d8506f9ecf512cffd', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d2f380fdf87e459994b4c6fd822ce777', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d667fc27c7e246e4976836a89b507832', null, '程少波', '18912823345', '江苏 镇江 京口区东一区', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d7af1c562127467ba555c8fae7787570', null, '程少波', '18912823345', '江苏 镇江 京口区东一区', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('d87f58f8dc3143eabe4101c0e3f4244c', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('dbd3c430577f41738a1f19db5c833e09', null, '测试', '13196865987', '北京 房山区！', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('dbee089f0c7c4c909b2b45aa01d3df61', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('dd0cdd68ca6b4a8e9dd3783c28219891', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('e4bdac778b4c46a4b6b146c55a59ac49', null, '吴', '17712838967', '江苏 常州 新北区光棍节', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('e831e0b24b4d435aa9675e9412f25b99', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('e9145b12e1904b6fb8bd9ff40f39c3d7', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('eceff46edf6a4cb8af3f50dcc43584be', null, '唔想睇', '18018235525', '广东 广州 白云区又 low', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f0297fcedd2342598b52c732a1a828e4', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f0d4d0ee365342d99c58bb28813059cb', null, '江江', '18813123958', '广东 广州 白云区fcd', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f0f70bd4d7b44535951f9bdaa226ab3d', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f4e65a69892341b4b1ea7c3f4d50e36b', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f5698d3cf1334be3a9979ff5210f6958', null, '程少波', '18912823345', '江苏 镇江 京口区东一区', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f6b3b0735e004061b3a03cfdb55dde66', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f6d865f27d8d4ba5873cbb5fe522c00c', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f8dbed68c05f448b9639d96f125273f1', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('f956f830e0894cb782ebd79c9e25450c', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('fa8eed15c8e74872bfcff5e987aabe41', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('fac40886cd394579a0c18064adbd67c0', null, '好咯五', '14528454885', '广东 广州 白云区投递哈哈', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('fbc6f55652e042d3af7bad1caceaac3f', null, '苏炳添', '13258657855', '福建 宁德 周宁县湘西呃机管局路98号', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('fbef68a07698428784d0ca63dc82f4b4', null, '程少波', '18912823345', '江苏 镇江 京口区东一区', null, null);
+INSERT INTO `t_sm_ordercustomer` VALUES ('fce4c7e6584f4cb8851dc296161b4d53', null, '程少波', '18912823345', '北京 大兴区是你睡觉觉', null, null);
 
 -- ----------------------------
 -- Table structure for t_sm_orderexpress
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sm_orderexpress`;
 CREATE TABLE `t_sm_orderexpress` (
-  `F_ORDERID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单ID',
-  `F_ORDERLISTID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单产品明细编号',
-  `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商编号：前端下单时根据产品关联出来',
-  `F_VENID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '供应商编号',
-  `F_EPMECOMPANY` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '快递公司',
-  `F_EPMEORDCODE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '快递单号',
-  `F_DELTAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '删除标志：0-否1-是',
-  `F_CREATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建时间',
-  `F_CREATORUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人',
-  `F_CREATOR` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人姓名',
-  `F_UPDATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改时间',
-  `F_UPDATERUID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
-  `F_UPDATER` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
-  PRIMARY KEY (`F_ORDERLISTID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单发货记录表';
+  `F_ORDERID` varchar(50) NOT NULL COMMENT '订单ID',
+  `F_ORDERLISTID` varchar(50) NOT NULL COMMENT '订单产品明细编号',
+  `F_SPID` varchar(50) DEFAULT NULL COMMENT '运营商编号：前端下单时根据产品关联出来',
+  `F_VENID` varchar(50) DEFAULT NULL COMMENT '供应商编号',
+  `F_EPMECOMPANY` varchar(50) DEFAULT NULL COMMENT '快递公司',
+  `F_EPMEORDCODE` varchar(100) DEFAULT NULL COMMENT '快递单号',
+  `F_DELTAG` varchar(1) DEFAULT NULL COMMENT '删除标志：0-否1-是',
+  `F_CREATETIME` varchar(50) DEFAULT NULL COMMENT '创建时间',
+  `F_CREATORUID` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `F_CREATOR` varchar(50) DEFAULT NULL COMMENT '创建人姓名',
+  `F_UPDATETIME` varchar(50) DEFAULT NULL COMMENT '修改时间',
+  `F_UPDATERUID` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `F_UPDATER` varchar(50) DEFAULT NULL COMMENT '修改人姓名',
+  `F_STATUS` varchar(1) DEFAULT NULL COMMENT '快递状态 0:已收货,1:已发货',
+  `F_ORDEREXPRESSID` varchar(50) NOT NULL COMMENT '快递记录ID',
+  PRIMARY KEY (`F_ORDEREXPRESSID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单发货记录表';
 
 -- ----------------------------
 -- Records of t_sm_orderexpress
 -- ----------------------------
+INSERT INTO `t_sm_orderexpress` VALUES ('7250808e24ee479aa594b52cd7dce82f', '8b06dca31d6240999e83e1de08a4c959', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '1', 'sss', '0', '2019-11-21 09:46:52', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 09:46:52', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '004ce83bc22c4fc69ffd46042b3b5f4d');
+INSERT INTO `t_sm_orderexpress` VALUES ('3bff23e442694f7ba4b08a76c967c704', 'af9f172301e84ac9b71d5215a9dd9dbc', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', 'ems', '001', '0', '2019-11-21 13:44:00', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 13:44:00', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '19b4d9f818cb45a58a1be8b4240d952f');
+INSERT INTO `t_sm_orderexpress` VALUES ('cba7063a383448189c16632f0ecc64c5', '49f3161e72ba4b45a692f52475fae555', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', '1234567890', '0', '2019-11-20 10:39:32', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 10:39:32', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '2132a0b1332744729398644e0d58ff4e');
+INSERT INTO `t_sm_orderexpress` VALUES ('089e3a8821d342ab91aeb193580b1683', '5a0a9d2bd78c4ed885bfd355d4318192', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '4', 'EMS003', '0', '2019-11-20 20:35:43', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 20:35:43', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '2b52b5e2e83842f0a4b6ba83d4c903ae');
+INSERT INTO `t_sm_orderexpress` VALUES ('0da32e385aba4dfaba4965a2edb99791', '15b5156943124ba1a216cd4b98b706c3', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', '657898765456788', '0', '2019-11-19 19:12:04', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-19 19:12:04', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '36bdc47b99194b59b587e9aa1a0cbc7d');
+INSERT INTO `t_sm_orderexpress` VALUES ('fbc6f55652e042d3af7bad1caceaac3f', '4946996cfb5249c2b95dd171a506e5af', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '0', '1234567890', '0', '2019-11-20 10:38:58', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 10:38:58', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '4c2ff881de2b4d78bdfddca8a296360c');
+INSERT INTO `t_sm_orderexpress` VALUES ('d7af1c562127467ba555c8fae7787570', '737bc23fc6104910b5027b89b0342ede', 'da14b98e-cb26-4169-9b58-babe98b98047', null, 'debangwuliu', '123', '0', '2019-11-29 05:56:00', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-29 05:56:00', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '6ca06d4250844f00a692c3ccd2f3e31c');
+INSERT INTO `t_sm_orderexpress` VALUES ('9d8ec2b2386046779c46b89833a3d5eb', '1dbab37926b64737a2cde6a397a4b062', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', 'ems', '9897022715202', '0', '2019-11-21 10:27:33', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 10:27:33', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '6f0de31fdeae434d9c68929ba6974f58');
+INSERT INTO `t_sm_orderexpress` VALUES ('b0cce3f578cf420c9f6637f0291e0f60', '3d6fc72b785d4431b468621eeccb2eb3', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '1', '222', '0', '2019-11-21 09:31:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 09:31:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '946476d7a2f94ccbad4071c62f78c1f5');
+INSERT INTO `t_sm_orderexpress` VALUES ('ba29fcf071ae4c878a30cf2b32106a39', '63a1ca85ff6f4d32a365afa45519ab10', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '2', '3432532535', '0', '2019-11-17 19:21:08', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-17 19:21:08', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '96e40aeea90d40ac83a4f55ea74d23ff');
+INSERT INTO `t_sm_orderexpress` VALUES ('c5724139ee3944eab56efda72beeac4e', '094a054d10e444488849cd53f74aa921', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', 'kuai 1100', '0', '2019-11-20 17:02:24', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 17:02:24', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '9a200c73a78f41d5880febff8738e062');
+INSERT INTO `t_sm_orderexpress` VALUES ('598f01acd00744fba4694265b23b894b', 'b7d765f793524eaf9b5decd343c47e75', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '4', 'EMS001', '0', '2019-11-16 22:26:28', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 22:26:28', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'a480f99d05fa439fbc887e846fa36907');
+INSERT INTO `t_sm_orderexpress` VALUES ('a5e4c464dacc4dba82d13e5ad4b62ef6', '0dba97f7669b4d6d90e09d91d361d2b2', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', 'YT4233533641229', '0', '2019-11-22 13:21:54', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-22 13:21:54', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', 'a5ce7bea8a4a42cfbe6c28c6f0e89091');
+INSERT INTO `t_sm_orderexpress` VALUES ('886a9376885c4bba8d061a60746ef244', '607568adc2614e2eab961f40a5f1aae7', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '4', 'EMS002', '0', '2019-11-18 09:14:20', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-18 09:14:20', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'b3c205b7e8c942ab970a869f8dff70e8');
+INSERT INTO `t_sm_orderexpress` VALUES ('d87f58f8dc3143eabe4101c0e3f4244c', '25e1b9bd8f4f4fb79daa5146564ee3c7', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', '圆通001', '0', '2019-11-16 22:46:24', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-16 22:46:24', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'bff682694c4041f1970a356177ee0234');
+INSERT INTO `t_sm_orderexpress` VALUES ('1bfb822376614d77a763cef0dc1a480d', 'a8eef7595651451f8bd455850f79b0d1', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '1', '333', '0', '2019-11-21 09:30:38', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 09:30:38', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'da289420fc72490888484a93872fed47');
+INSERT INTO `t_sm_orderexpress` VALUES ('cbec007381804b6c818dddf44867d03a', '36588a4588664232bbc7ddb396e2263c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', 'ems', 'EMS003', '0', '2019-11-21 13:55:18', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 13:55:18', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'e4bc69a65f554483b948101b90c980e0');
+INSERT INTO `t_sm_orderexpress` VALUES ('a81191ab553d4277843bab3100332acf', '86a7fcdf420d438d9ea3db9862ab1b6c', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '0', '1234567890', '0', '2019-11-20 10:39:07', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 10:39:07', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'f398a1de419e4d4abfe32043d5c3077b');
+INSERT INTO `t_sm_orderexpress` VALUES ('c9664f3c3bad44deb69bed400a9be5f5', '276e3d4721c4436b8bd748de967fb23e', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '0', '1234567890', '0', '2019-11-20 10:40:14', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 10:40:14', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'f6e9ca5126564c88bf7ff37d9fb2a4ac');
+INSERT INTO `t_sm_orderexpress` VALUES ('4362f1c506a44d50857dbf47fc99b3bf', 'ee056ef3d6814b1f9f13d656d2ad416c', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '0', '1234567890', '0', '2019-11-20 10:40:02', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-20 10:40:02', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'fa8874cfa4ac4caaac80eccc6fc202c9');
+INSERT INTO `t_sm_orderexpress` VALUES ('a8752c34b03d49e0a2c315498c5872fd', '9cac309358184eb5ad64194780345011', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', 'ems', '00s3', '0', '2019-11-21 14:04:43', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-11-21 14:04:43', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', 'ff00b73bd7cc4d618bfb60255089824a');
 
 -- ----------------------------
 -- Table structure for t_sm_orderlist
@@ -9204,12 +10382,131 @@ CREATE TABLE `t_sm_orderlist` (
   `F_TRANSFEE` decimal(10,2) DEFAULT NULL COMMENT '运费',
   `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `F_ORDERLISTTYPE` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0：下单 ；1：退订单；2：赠送',
-  PRIMARY KEY (`F_ORDERLISTID`)
+  `F_PRODUCTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品ID',
+  PRIMARY KEY (`F_ORDERLISTID`),
+  KEY `index_orderlist_orderlistid` (`F_ORDERLISTID`),
+  KEY `index_orderlist_orderid` (`F_ORDERID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单产品明细表';
 
 -- ----------------------------
 -- Records of t_sm_orderlist
 -- ----------------------------
+INSERT INTO `t_sm_orderlist` VALUES ('00d53810726745109c70db287e4f12c8', 'f0f70bd4d7b44535951f9bdaa226ab3d', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '6a632d5e520c4ad49cae9acb42c0f248', '香梨测试水果产品', '0.02', '1', '0.02', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('0226903a47674597a3b3f4b3395995f8', 'a8752c34b03d49e0a2c315498c5872fd', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.02', '0.02', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('094a054d10e444488849cd53f74aa921', 'c5724139ee3944eab56efda72beeac4e', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('0dba97f7669b4d6d90e09d91d361d2b2', 'a5e4c464dacc4dba82d13e5ad4b62ef6', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('0ddbf8e70ea64ab7a1a432b11243fbc7', 'f6b3b0735e004061b3a03cfdb55dde66', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('12f97363d3f342778d5103d9cf2d96e6', '55147e3e42544da0b2b45e370f8de9d1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.01', '0.01', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('132aca8148a241b79f1b5f87239843fb', 'cc39d32aa585405a9cff239e79035bb1', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('1369a4635ac843e4a209ae26dcf11091', 'cbb223d59482447388a72073b6e12045', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '1', '0.05', null, '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('149f2a343993414783567293aa5200ab', '99cb7a6f4a0d46b88c7f3252c2175896', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('14b02628bfd443ee979957030cffbc77', '2b2eb0c82bae4982a410f97c08eab591', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '5e78bfde10724252998f5acad825dc48', '123', '0.01', '1', '0.01', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('15b5156943124ba1a216cd4b98b706c3', '0da32e385aba4dfaba4965a2edb99791', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '1', '0.05', null, '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('1864fe6d66414a4f8519059d95446ad8', '9eec1003dff9488e88b1050d0383aab5', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '235a39ab7e1d4ee7b4c85cfaccf6bd92', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('1a24bb8fa0aa469681412b552fa25ac6', 'b6a16bbd6bdf43fcb9ef5ae9b89bf92c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('1dbab37926b64737a2cde6a397a4b062', '9d8ec2b2386046779c46b89833a3d5eb', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('1fc905c5c4264a25b1310d518a0ecb50', '5bf7ca1f678d4befab028ebfeccd307d', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('25e1b9bd8f4f4fb79daa5146564ee3c7', 'd87f58f8dc3143eabe4101c0e3f4244c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '1', '0.05', null, '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('26ced6bdacd941e7b7e299bd75b7fa33', '47f2d4ddb84c499cbfcd20855b9377fd', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('276e3d4721c4436b8bd748de967fb23e', 'c9664f3c3bad44deb69bed400a9be5f5', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('29fa77725a4340c7b2455c964a3929e9', 'f0297fcedd2342598b52c732a1a828e4', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.02', '0.02', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('2c0248ca42bf4ca692007e0d039ffd28', '35801927549240b5ba1a4dad597255ca', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('2ebcfadf0fb1452f8325e10bbbf2fa60', '16bb97a6b07846acb2fab4a7789e76f8', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('2ed75811db794c2089f3aefdf256072d', 'cf40c8074525436dba771e0abec5dea0', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '2f76067bbc514dd783db39b19c675729', '测试', '150.00', '1', '150.00', null, '0', 'c7dc0960b6684199972b7e672580a2b9', '20斤', '0.00', '0', '0', '2f9aab43d0cc4b208d25032de8ac6b6d');
+INSERT INTO `t_sm_orderlist` VALUES ('2f13b20c39d34be49e2a5edfcf6327ae', 'b2b6d6835a7a41f08042b8145b9fc1b1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '5', '0.05', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('33ff028c264d425e9cdf12b7de666d09', '5d771d71f0964182ab5cbbde12a9118c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('34e8f359daa14715a7c12e8d299b2351', 'dd0cdd68ca6b4a8e9dd3783c28219891', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '92f78b51b94d43548c277a5a688d47e4', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('36588a4588664232bbc7ddb396e2263c', 'cbec007381804b6c818dddf44867d03a', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '2', '0.02', '0.02', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('38f168879c764d41bda7e680ac596939', '32fd70b205654980bce6069d79f58e35', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('3a1cda4d663f4f10a6edea8087456783', '9847e46eee02455a825bc7b6247acf74', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '25.01', '2', '70.06', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '20.04', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('3d6fc72b785d4431b468621eeccb2eb3', 'b0cce3f578cf420c9f6637f0291e0f60', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '1', '0.01', '0.01', '1', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('3eae03008c2a495e8b0a5c068ab561ab', 'd667fc27c7e246e4976836a89b507832', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '4', '0.07', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.03', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('3ff44782c3274cdca4facbdb1a0a75b0', 'f956f830e0894cb782ebd79c9e25450c', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('40931b1d3522422dbc89c7ad13d04182', 'e831e0b24b4d435aa9675e9412f25b99', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('437fadcba1d54abbbd7c1ac50e4bd4fb', '2e78c1638872438e82d4d2812716d68d', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '5e78bfde10724252998f5acad825dc48', '香梨测试水果产品', '0.01', '1', '0.01', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('440be6a4a340446b8ff515e05cffaac1', '80b2c38968404ab4a9deaf09260b2709', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('45bb6467753c4fa99080f7d2c83ac114', 'd28251c489184c9d8506f9ecf512cffd', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('46f39249054c4c9faeb32832043fbd11', 'f6b3b0735e004061b3a03cfdb55dde66', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '0', '0.03', '0.03', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('470eeee6d8d74dc181d3c6a91b43afb6', '55147e3e42544da0b2b45e370f8de9d1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('4946996cfb5249c2b95dd171a506e5af', 'fbc6f55652e042d3af7bad1caceaac3f', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('49be2fe2e0bd4fcda815f3e2252cfee1', '72d176a2c254485aa0e9c25aacd436b6', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('49f3161e72ba4b45a692f52475fae555', 'cba7063a383448189c16632f0ecc64c5', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('4ae3a13484ab40e597d29099f5b374d2', 'bc0bca1a429b473d92d9474c627063c1', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'fc241024ed5849b68afa2e9740280dfa', '测试猕猴桃', '0.02', '1', '0.02', null, '0', 'f4feccdaeca54c7bbdf1ba3f6a90401f', '20个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('4c18592558c841e6b6422a75c73e69f6', 'f0d4d0ee365342d99c58bb28813059cb', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '235a39ab7e1d4ee7b4c85cfaccf6bd92', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('4d2c0436cc1248df82e2122e6154f209', 'adc2b031ed1b42a2837997b640781e73', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('51b1ffc30c4a4cd9b9e9fdf3853cd5af', '61f8c6c2c25e4e788a1f154085253fd8', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '5e78bfde10724252998f5acad825dc48', '123', '0.01', '1', '0.01', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('5347a637d84c469fb0d85ba932d2de3e', 'fa8eed15c8e74872bfcff5e987aabe41', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('536d92fda8604bc9b36f6ecf450de029', 'b23c07d2598840099f4b1d0fda0724c3', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('55dc560dc67743889b85636476fbf185', '07554d752c434eb1aa24b3f82176fed5', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('5729c79a2d5c45258cfc368b36828167', 'cf4b2198d11e4968b51e399fa34ef3cc', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '6a632d5e520c4ad49cae9acb42c0f248', '香梨测试水果产品', '0.02', '1', '0.02', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('588d605e7a274a7684a812939e8aafa4', 'fce4c7e6584f4cb8851dc296161b4d53', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('5a0a9d2bd78c4ed885bfd355d4318192', '089e3a8821d342ab91aeb193580b1683', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('607568adc2614e2eab961f40a5f1aae7', '886a9376885c4bba8d061a60746ef244', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'dfa8287b1ee24a40980ac3633a26a127', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('60da375fec9249acbb0d17796b0729dd', 'fac40886cd394579a0c18064adbd67c0', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('62de05e9cc104f90a0f139f72837676e', 'a00945f7c53d4d599c1a78594953dd57', null, '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', '0.01', '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('63a1ca85ff6f4d32a365afa45519ab10', 'ba29fcf071ae4c878a30cf2b32106a39', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('6ba64dff413949e2bca56d8aed64df15', '7ede7f8dc74e471789f40d9ec2de6fbf', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('6cf3d683b90e4e308c661e2847aa0a29', '0818651d913346c0ab1afb55d1125549', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '8275258891e74fb7b1662fdc02c4dde8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('6f7965f8c2154c59a2916d9bbe9da51a', 'd1e45c3d678440c198e8b543b94a219a', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('71d5a8807d1646b7936bae7b9be65756', 'cddc651c601447f49a766ab4f67c4c12', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('737bc23fc6104910b5027b89b0342ede', 'd7af1c562127467ba555c8fae7787570', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.02', '0.02', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('7900604e59ff4282b3b665b376c859f1', 'b0e06d826e6f4b6288339e1408242202', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('7a7deb03c92c4627833f94f9c97d2c44', 'dbee089f0c7c4c909b2b45aa01d3df61', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('7f8767766afe475d96ec60696a40dd41', '31f61fd94ee248ee958ad126c5e437fc', null, 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '10', '0.10', '0.10', '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('7fb4ed17025f40d480a08c2a7ac65b13', 'b7200093b6f24417a18bda23c458d444', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '1', '0.05', null, '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('804bfa415907461fa2a4c6c4a42af741', '5b12c8d4e5b14accb757be586ab9e8f8', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '6a632d5e520c4ad49cae9acb42c0f248', '香梨测试水果产品', '0.02', '1', '0.02', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('8415e081858b454c8f186c90dee6f83d', '4760198797244bcfbd0c9515e63c9eaf', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '4', '0.04', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('84cd2e0a7d0b4184bb883d4df213c717', '43ab2d86c85946639bf7687e64514dd9', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '235a39ab7e1d4ee7b4c85cfaccf6bd92', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('851cdd37e9ab43878afb1478e3d8e9e6', '09c415440ad844ee987bb22de08a6820', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '2', '0.10', null, '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('85e7a6e6e9794856bb5d72f0938e1b86', 'cfdb470a9e27425a9af7a1f98284678b', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('86a7fcdf420d438d9ea3db9862ab1b6c', 'a81191ab553d4277843bab3100332acf', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '5e78bfde10724252998f5acad825dc48', '香梨测试水果产品', '0.01', '1', '0.01', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('86da1c1cb1b443aa99c1f60143109ec4', '3b9f7d93df844f549e8bcfce6b5c394c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '8275258891e74fb7b1662fdc02c4dde8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('8b06dca31d6240999e83e1de08a4c959', '7250808e24ee479aa594b52cd7dce82f', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '10', '0.50', '0.50', '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('8d9e6694db0a4d5d9cb7e87790e6ede7', 'a2475624b6554c5883e033249974d49d', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('8f156a1627db43a68cf5503229ae2c14', '333168ccc9ba473994c56c1e7c09e9c1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('9250cd5c8b634f1d914b243477c1b60e', '3d85f3eeeffb4385981e055bb7ddb923', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('9a2f6189e6ef409a9ea974ee6039f8a6', '46aa431050dc4b4899bc1f4af42ba43f', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '235a39ab7e1d4ee7b4c85cfaccf6bd92', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('9c0b58e76182485cb214a33372dfc6e0', 'f0297fcedd2342598b52c732a1a828e4', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('9cac309358184eb5ad64194780345011', 'a8752c34b03d49e0a2c315498c5872fd', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('9e04eb6bd7124df0b82c2f793c3f6bf1', 'fbef68a07698428784d0ca63dc82f4b4', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '5', '0.09', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.04', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('a41b397ea510462e822b01a2dab7e6f9', 'f5698d3cf1334be3a9979ff5210f6958', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '3', '0.05', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.02', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('a607b4891c574b9f91e313854daeb4b0', 'a7fbaf0a665448478bb3f5a7c99de353', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('a7cf5f6b06f641f8982588d3c323fada', '07b58a40eab041be95b33e23e6231878', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '0a33fefe986e4062951a0b59cc86eaec', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('a8eef7595651451f8bd455850f79b0d1', '1bfb822376614d77a763cef0dc1a480d', null, '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'fc241024ed5849b68afa2e9740280dfa', '测试猕猴桃', '0.02', '1', '0.02', '0.02', '0', 'f4feccdaeca54c7bbdf1ba3f6a90401f', '20个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('ad9d31d007b34a6f99e1e3e6c9e92cc4', '9a6c06d25e18444f8289abc5e6bd7dcc', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('aeca07646b874acdb91fdbc9614b3d7b', 'd2f380fdf87e459994b4c6fd822ce777', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'd7086559cb6b47388a9ef8c2d2d31b8f', '香梨测试水果产品', '1.00', '1', '1.00', null, '0', 'ad9e5cb410ea46888f97480255718173', '1', '0.00', '0', '0', 'aaaa2d71eef240a2ae80f76bca58cf63');
+INSERT INTO `t_sm_orderlist` VALUES ('af8830a1db0b4cae9ed69063c1cc9137', '6ee3118437b64fcd997f120791e9e19a', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'fc241024ed5849b68afa2e9740280dfa', '测试猕猴桃', '0.02', '2', '0.04', null, '0', 'f4feccdaeca54c7bbdf1ba3f6a90401f', '20个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('af9f172301e84ac9b71d5215a9dd9dbc', '3bff23e442694f7ba4b08a76c967c704', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b001258d45324801b0c78947f5587742', 'c5c198a54e804e2dbf3b7a7a7dcfb144', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'e762b00d2b3c40229ff1f335bfb57402', '测试东北大米', '0.05', '10', '0.50', '0.50', '0', 'fc6010a133aa4292bb894e411b2e8d34', '5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b064b2302f6442deb5838e55a0f99450', 'e4bdac778b4c46a4b6b146c55a59ac49', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.01', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b24e6dcaf60340aa97b424a4047fb8ee', 'b5b5f25028954113b3f3049f4d8b0cf1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b35eefdd3d6a4877ab4653811cb52d61', '4246b6b64b6e4f238760d56fc19dca9b', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b386898ce9f6432eb7720eba4e614778', '1e691dc3daaa4f47bf6a7caba928e7c4', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '5', '0.05', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b3c5c09d982c4a4d90c81144b40023e6', 'c5724139ee3944eab56efda72beeac4e', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.02', '0.02', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b4d1405b03c74bb7a97cf96306dc1726', 'e4bdac778b4c46a4b6b146c55a59ac49', null, '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('b7d765f793524eaf9b5decd343c47e75', '598f01acd00744fba4694265b23b894b', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '2', '0.02', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('c0e48f93b9bc47d1a390fc5651e8bd64', 'eceff46edf6a4cb8af3f50dcc43584be', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('c1408c232f4647d3931c1d1f5f22d7bd', 'b36da382c28741b7a9f24e079aceda66', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '3', '0.09', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.03', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('c665b7f9c9fa40129690e1470fee17a6', 'f4e65a69892341b4b1ea7c3f4d50e36b', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', null, '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('c769d94b26724136adb5d69520f19d41', '5042f374c79c43eb96556c6c039ad6c9', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('c956c4dabe0b43d9b089896120c91a8e', '9d8ec2b2386046779c46b89833a3d5eb', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.02', '1', '0.03', '0.03', '1', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '1', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('d14dc530962c4740b549c738385286a1', 'be31c93d101a48978d3b4c1aebcc9c3b', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('d2e81e126ad54d6fadd10fe8a7e60fe0', '13a3226fad3643ff9d666d936731495e', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('d48670fdd8a84fcba48cec67f588acf1', 'e9145b12e1904b6fb8bd9ff40f39c3d7', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('e258b8cbad8c45de9e988519f4e5b315', 'dbd3c430577f41738a1f19db5c833e09', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '92f78b51b94d43548c277a5a688d47e4', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('e3afa2a55bc545a3b7b147982625844b', '342eb3f7cf104cdb9dd3d4ce20155898', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('e4aa876f783e4b4eb5ad114fc2e407ae', '1eef32868d434fbda39a3fdd162b510f', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('e894cc5942a2499a82d83af4fbd975bd', '7ef6c58570b244b690ecd4d1d0cd0887', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('e8de136fb25d4817b897a33cf8ca66bd', '1fa79f18e29e465a893bb1896a1cac2e', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '3', '0.03', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('eacee9e1ff18443eacc6f5e7969631fe', 'c853f925ece14b4aa2d8cbffdc12dca9', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', '235a39ab7e1d4ee7b4c85cfaccf6bd92', '测试猕猴桃', '0.01', '1', '0.01', null, '0', '766fd02805fa4bff95d7d655f9e4ed38', '10个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('ee056ef3d6814b1f9f13d656d2ad416c', '4362f1c506a44d50857dbf47fc99b3bf', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '92f78b51b94d43548c277a5a688d47e4', '测试沁州小米', '0.01', '1', '0.01', null, '0', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '0', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('f167143cb3b24c54a94e27fc19cefac6', 'b0cce3f578cf420c9f6637f0291e0f60', 'da14b98e-cb26-4169-9b58-babe98b98047', 'a0271b1b7a6a44a7b9ef8fd480a7f8bc', '山西沁州黄小米', '2be0d6477bbb48c18ec02c55a14d8718', '测试沁州小米', '0.01', '1', '0.01', '0.01', '1', 'cba63e4052334288a07d2e1a2003eec4', '1KG', '0.00', '0', '1', '28ebed31fad1485d800398d28d71d5ff');
+INSERT INTO `t_sm_orderlist` VALUES ('f43df0626a574ad9b7d7f8c970dade26', 'f8dbed68c05f448b9639d96f125273f1', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', '1ce1412d008648c3b137d849bf02cae8', '测试东北大米', '0.02', '1', '0.02', null, '0', '38ce606c26904a51b58f3fd0ed7a95e9', '2.5KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('f479bd7f225043dd801d42a8531e60e2', '6a07dd2b943b4da3b596d00fd75eca72', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('f6e4bb8ba95348e0ba6b405c2b498c7b', '4f8dc5ac2fa6421e80a08c2e4991656c', 'da14b98e-cb26-4169-9b58-babe98b98047', '0ce9497842034f13be9186557f7998b9', '北京鲜果批发', 'fb99e9dab2cb4b2cbe0bd6c48a72788c', '测试猕猴桃', '0.01', '1', '0.01', null, '0', 'f4feccdaeca54c7bbdf1ba3f6a90401f', '20个', '0.00', '0', '0', 'd245bdf684c74e32ba6ffeadd729fb6e');
+INSERT INTO `t_sm_orderlist` VALUES ('f94827b4202b4de2ae9fdea9f05a0d33', '9965a4975a644656ad97ceed7d138b66', 'da14b98e-cb26-4169-9b58-babe98b98047', null, '', '9cba896ed5fd4fdf9da4136c13c28f48', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('fdd04e39fbe6492492a064e07951ac13', '273764f2b22e4cca8164b7a13ff689f3', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '1', '0.01', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
+INSERT INTO `t_sm_orderlist` VALUES ('ff376ecf26c24c0f8ccfe35eab445002', 'f6d865f27d8d4ba5873cbb5fe522c00c', 'da14b98e-cb26-4169-9b58-babe98b98047', '937c55e9fc3644adb958f66d1163ebd0', '黑龙江建三江农场', 'a07203641fb742b8a31a50f11696e2fb', '测试东北大米', '0.01', '5', '0.05', null, '0', 'ea9c6ff6f94a4260870083ac0ffa805f', '1KG', '0.00', '0', '0', '20decd8ef043410488f6fea6d3e11a3d');
 
 -- ----------------------------
 -- Table structure for t_sm_orderlog
@@ -9229,6 +10526,440 @@ CREATE TABLE `t_sm_orderlog` (
 -- ----------------------------
 -- Records of t_sm_orderlog
 -- ----------------------------
+INSERT INTO `t_sm_orderlog` VALUES ('003c59fe023f47999898d68f1762bbe3', '0383feb74edc47b2a7121b189d73ac3a', '2019-11-19 06:16:03', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('005f8e2986f34eb8be44cdc9ef4ac784', '0383feb74edc47b2a7121b189d73ac3a', '2019-11-19 11:00:41', null, '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('00aba3dfac0445c7a8183e898d26efd9', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 12:20:29', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('00c4f3d0197d431191d7f8ceacdc9ce5', '01e9d63173b347e68b87165e65bb157b', '2019-11-20 16:50:32', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('01250d02cc24495ea73f4eec594ab3d7', '2c1c8429ea034ef9b043814c26b746b9', '2019-11-20 13:20:45', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('018315c614094dbc8508481b7f6b71c6', 'a2475624b6554c5883e033249974d49d', '2019-11-17 14:15:04', '。', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('023cedf6cb2242bea20e54ab0192532d', 'd7af1c562127467ba555c8fae7787570', '2019-11-29 05:55:25', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('028d2d376588495ea51632fe9f97ecf2', 'b6a16bbd6bdf43fcb9ef5ae9b89bf92c', '2019-11-18 16:28:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('029130c393cc48389b975111f6e9f7f5', '3c8ff0ecf9b34fc8b99b33dc96802e5e', '2019-11-19 05:44:38', '运营商管理员', '退订已拒绝', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('02c530e515564b86b339c72047d040db', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:03:28', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0361975f7af54669a77c8628caa82db3', 'd28251c489184c9d8506f9ecf512cffd', '2019-11-29 05:55:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('037b39354cea4084b4762d807799fc11', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 13:15:38', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0384bc5d5d4d4c4baf62dab657235327', '6a07dd2b943b4da3b596d00fd75eca72', '2019-11-17 00:49:48', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('03e93dfd11b846939051f4622e51466f', 'c5c660331d914bcaa06a5e5887faa84a', null, null, '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('040bd09ca7b2498297cbf8152850bd58', '1eef32868d434fbda39a3fdd162b510f', '2019-11-17 21:09:43', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('04187b38455d4de189e28850464ac9bd', 'eceff46edf6a4cb8af3f50dcc43584be', '2019-11-17 21:08:01', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('04c7eab4aeb246749ebc33d365676e36', '287c63efdc344cadbf319f4dc4b20c0b', null, 'only one', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('051fecbb79fa415eab582eb5a3fe8638', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:40:06', '小梅', null, '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('089e7efc2d994b28a2c36d112d9dea33', 'd69432c7dd5344a0a60d8205a12f6542', '2019-11-19 11:19:56', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0a1a6e2da031490588d2bf5b2ac5d75c', '0383feb74edc47b2a7121b189d73ac3a', '2019-11-19 06:14:49', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0a886711161a48e0a5aa9a2321a28757', '1e691dc3daaa4f47bf6a7caba928e7c4', '2019-11-17 00:09:46', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0aca9af0a3204fe89e7cded6166080c0', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:37:42', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0d88368a15d6448599b04767dd92fdd7', '9f0ded9f61734f9c9b5212681cf884cf', '2019-11-20 21:19:29', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0e320e8e89d540bbb94889598aeb9525', '2b2eb0c82bae4982a410f97c08eab591', '2019-11-17 00:32:54', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('0eb5581b675041e0b060e091ad442494', '5042f374c79c43eb96556c6c039ad6c9', '2019-11-17 17:29:25', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('12d3d235ea6e4d7aa713d641eafd35da', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:05:56', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('143b9ad65d4348a1b7e2b7fa84c92e92', 'd7af1c562127467ba555c8fae7787570', '2019-11-29 05:56:12', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('15be5c9f94d44e27b7efaa491b8265f4', 'cbec007381804b6c818dddf44867d03a', '2019-11-21 13:55:38', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('170347ac25a8441fa3a53a91e1575498', '937f254f32054a2ca79a58f64b27764b', null, null, '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1811142e7eef41ccafebecc35417df42', 'b2b6d6835a7a41f08042b8145b9fc1b1', '2019-11-16 22:04:45', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1909733595bc45399d1005e79427ccc1', '5bf7ca1f678d4befab028ebfeccd307d', '2019-11-17 17:02:25', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1933f4f1ffcd47d68a41f9cc338d12fe', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:37:03', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('19a43822933942208c62463f4cd92c39', '9965a4975a644656ad97ceed7d138b66', '2019-11-29 06:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('19c2d58a7303449e802689ff381598f3', '776a044d6f494130a4d00604e446dfa6', '2019-11-21 13:25:50', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1a78c83e0e1442ea99bfe142d8b80257', '3b9f7d93df844f549e8bcfce6b5c394c', '2019-11-18 17:09:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1b770b9d71694f66af2f0e748a030694', '16bb97a6b07846acb2fab4a7789e76f8', '2019-11-17 00:11:24', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1bcba67154654d269bf4930ea8ecbde9', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:09:29', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1ceb622640ae4026b668a9944b759bc6', 'd69432c7dd5344a0a60d8205a12f6542', '2019-11-19 11:21:03', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1ddd7ed430394391a0fb11a3f4d7d553', '09c415440ad844ee987bb22de08a6820', '2019-11-18 09:15:55', '三农壹购@爆款供应链', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1e4573ea9fea4a3f802f5e4e4cd60b14', '776a044d6f494130a4d00604e446dfa6', '2019-11-21 13:25:50', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1fbbc4b498684a408cbba54c55b0d34b', '3c1265acafd54e329a9e19c83768af15', '2019-11-20 13:29:54', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('1fe6e7f154974d18a39885a1a5c2d651', 'cbb223d59482447388a72073b6e12045', '2019-11-18 10:42:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('204de099e1794eb190dc6cbe6bb1e462', '0383feb74edc47b2a7121b189d73ac3a', null, null, '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('20d2e85a58334202a48b3d91889597e9', '61f8c6c2c25e4e788a1f154085253fd8', '2019-11-17 00:35:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('213136f6b603421aa047ea1442e4d731', '80b2c38968404ab4a9deaf09260b2709', '2019-11-17 00:54:23', '灵珑', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('21b90252deba4cddbfce9ac7f1ea78ca', 'd7af1c562127467ba555c8fae7787570', '2019-11-29 05:55:19', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('22a113717bf94af5aa1ae0e31d72a6c7', '3bff23e442694f7ba4b08a76c967c704', '2019-11-21 13:44:16', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2302c73e43174e0c853177fd3792e32b', '9847e46eee02455a825bc7b6247acf74', '2019-11-20 11:21:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('235034393a6848278b77e227e27981d4', '01e9d63173b347e68b87165e65bb157b', '2019-11-20 16:53:24', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('24259ae3114b48ec83a32f3de4dbe0ce', '61223e48eceb487abd7ac877e843288d', '2019-11-18 16:09:45', '运营商管理员', '退订已拒绝', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2468b14f485f48c1af94cbbe679f96bf', '6a07dd2b943b4da3b596d00fd75eca72', '2019-11-17 00:49:55', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('25a65db1e38e4388ac931a191fc30f67', 'dbee089f0c7c4c909b2b45aa01d3df61', '2019-11-17 17:07:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('25aa0caed4274936a8b61eb434e5c779', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:17:51', '运营商管理员', '编辑平台备注【ssssss】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('26660cc55d984003bf6dff7ce686b447', 'd159f6fce31e4dad98e676476133c38f', '2019-11-20 10:44:35', '小梅', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('26d35bf4d330421995775d3fbd42e43c', 'b5b5f25028954113b3f3049f4d8b0cf1', '2019-11-17 00:50:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('26ffd83ca9524a2298bb22e20fb7ca99', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 11:32:50', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('29190a0863da4c7f83685ddfc5d1cd83', '7feb27f209d74ff9b906b0921eecdeed', '2019-11-21 14:21:27', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2a40c4afbab747409f20883867e366b3', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 13:04:43', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2b08b2ee74e943e795b1d9b54e4395f3', '1e691dc3daaa4f47bf6a7caba928e7c4', '2019-11-17 00:11:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2b81deda5ca2430aafe14bd1fc1a7be5', 'aeafe0158e6e494090e59754fc9eb232', '2019-11-20 14:03:57', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2b831964580446a8bcf95802ee5e9704', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:38:12', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2baa7642bb9c418394efe3e0161a5cae', 'cf4b2198d11e4968b51e399fa34ef3cc', '2019-11-21 10:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2c0a327a9e714a64b5a44b0655c34cd9', '089e3a8821d342ab91aeb193580b1683', '2019-11-20 19:59:07', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2c0c196962ad4abfbbe515ba136ca7a0', '937f254f32054a2ca79a58f64b27764b', null, null, '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2c46215600c744f4851a8063e6fa825a', '09c415440ad844ee987bb22de08a6820', '2019-11-18 09:15:49', '三农壹购@爆款供应链', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2c6a04cc40c74e658e8362023bc7a502', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 17:02:48', 'koala', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2cac1493afed466996dd15980b784650', 'fbc6f55652e042d3af7bad1caceaac3f', '2019-11-20 10:38:58', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2ce70f7fccca4f35bb22d5f2dfafd2fa', '71d784fd4f034382aa55a5eba0b871eb', '2019-11-19 11:24:50', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2d800f6d886d4abfb413b13d975c6169', 'a81191ab553d4277843bab3100332acf', '2019-11-21 13:24:42', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2df50bf22bcd4e08b9237990baaeb76b', '776a044d6f494130a4d00604e446dfa6', null, 'only one', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2e9c903b5d0443dbbfb7350aebd34e48', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-20 19:15:00', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2f55164fe40a411395a7196975e598ac', '4f8dc5ac2fa6421e80a08c2e4991656c', '2019-11-18 15:00:27', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2f916e9ac5c5492a94c6eb360c23c979', 'f6b3b0735e004061b3a03cfdb55dde66', '2019-11-20 14:03:49', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('2f955652b8b3404bb7bc3bbc5cd1529a', 'cbec007381804b6c818dddf44867d03a', '2019-11-20 11:23:29', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('306891e702b54fdb8fe356f35bd4a7a2', '31f61fd94ee248ee958ad126c5e437fc', '2019-11-20 19:02:53', '泰然自若', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('30988418f846412b89a46afecfb23bbe', '901651ef5a394106bfa8dce23a0423b1', '2019-11-19 11:12:29', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('30a3afdef3104051a5fdd667fa8ac431', '1265964784b04cd097ae659f4722535a', '2019-11-21 13:45:01', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('30e2b4f9d5084c8784cd1928d21d6124', '3a964138d76247f1aaca2612e2f1bde1', '2019-11-20 21:46:07', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('31605f3562414105b7cd292300705b8a', 'fed25d0e49564e1db1194290e8091862', '2019-11-21 13:57:13', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('317b4c54d3a54324a9edd9cbd89739ec', '07554d752c434eb1aa24b3f82176fed5', '2019-11-28 05:54:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3238280911b2490d962c5b3413e95133', 'be31c93d101a48978d3b4c1aebcc9c3b', '2019-11-17 14:22:45', '。', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3307ab3eddba4ca8be63aeeb30b0fbc3', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:37:03', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('33ba0dcc10884e7ca3d04dc80c27644e', '13a3226fad3643ff9d666d936731495e', '2019-11-17 20:48:56', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('34007c6906174fdaa55b50b0a5adff01', 'a2475624b6554c5883e033249974d49d', '2019-11-17 14:14:57', '。', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3414fa96ce4a468f9ca0bfb60c0c484f', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 11:32:44', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('35a5b5eb315541bd95ba8c87883c2a11', '3bff23e442694f7ba4b08a76c967c704', '2019-11-21 13:43:34', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('35c5c1e670e34a8e8b92745c0c89d4e9', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 10:21:59', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('36bd4c5551e54acf875f7dc4a9676f82', '43ab2d86c85946639bf7687e64514dd9', '2019-11-18 15:48:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3a19179caadb4e73bfd251946cadcb23', 'c9664f3c3bad44deb69bed400a9be5f5', '2019-11-17 21:18:32', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3a48fb470abf495cb8c2c8b0693aad3c', '2c1c8429ea034ef9b043814c26b746b9', '2019-11-20 13:18:56', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3a6196a1d1a6418ebf9cc9ac7f4f3b53', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 10:27:33', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3aa31158bc834824bf3d096ec5a8459b', '2e78c1638872438e82d4d2812716d68d', '2019-11-18 17:07:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3aaf94fbf51f416cbc493c93efcf396b', 'ae499fed29ad4e9a958d46313c7b990d', null, 'only one', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3ba296152a1844f7aca914cecedbf64b', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:07:31', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3ba5d5991383457c9a2b6eb0f6f7d804', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:37:42', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3bd21adc7c614865ab6d04d70f4ff53c', 'f956f830e0894cb782ebd79c9e25450c', '2019-11-17 15:13:20', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3c5ead6ac1874311b79072b8790c69f9', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:36:39', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3d0aa1d88149467994e6ad91250611b3', '886a9376885c4bba8d061a60746ef244', '2019-11-18 09:14:20', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3d4ea3295c3d4c87a7b4bdbf8d353874', 'fce4c7e6584f4cb8851dc296161b4d53', '2019-11-17 17:20:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3d5b88d02c3e41e78165d264199e6411', '4f8dc5ac2fa6421e80a08c2e4991656c', '2019-11-18 15:00:19', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3deec4e7814f46938f55628a0dfa1931', 'd69432c7dd5344a0a60d8205a12f6542', '2019-11-19 11:22:48', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3e65498c438e4cca821f345a418b1478', 'be31c93d101a48978d3b4c1aebcc9c3b', '2019-11-17 14:22:40', '。', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3eac935d7e064d469840e978a66e50dd', 'dd0cdd68ca6b4a8e9dd3783c28219891', '2019-11-17 00:10:20', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3eb62ecbe66744afb3693777781462fc', '273764f2b22e4cca8164b7a13ff689f3', '2019-11-17 17:19:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3ebc6d7f10a9451ebe211b51f2f51f1f', 'cbec007381804b6c818dddf44867d03a', '2019-11-21 13:55:18', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3f6b376dcdb54845bab160d9ad2c1b76', 'a00945f7c53d4d599c1a78594953dd57', '2019-11-20 20:17:33', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('3fb9dea2d45249fcbe69eaaf2836d082', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-21 09:31:35', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('403ba86673c449f99c98be91e977341b', 'a81191ab553d4277843bab3100332acf', '2019-11-19 16:22:40', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('40daa4be273e453e968a10fd2b679397', '4362f1c506a44d50857dbf47fc99b3bf', '2019-11-17 17:01:03', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('412f6a36d51145c294c5abbfe81cddd7', '7ef6c58570b244b690ecd4d1d0cd0887', '2019-11-17 17:28:09', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('41dc03c06a34435c9ecd87ac66e4d4bd', 'dd0cdd68ca6b4a8e9dd3783c28219891', '2019-11-17 00:10:09', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('41f66837034c4b41b363c7d8e7dcbdea', '46aa431050dc4b4899bc1f4af42ba43f', '2019-11-20 14:15:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('428df70c3d5a4a06bf021df1783736c3', 'f0d4d0ee365342d99c58bb28813059cb', '2019-11-20 14:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4296b66a013e4604a81b90ba74c4e0ef', 'b2b6d6835a7a41f08042b8145b9fc1b1', '2019-11-16 22:06:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('42f95a6889144f9eba6b778f9e5d2178', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:20:12', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('42fc3964b3744bca8f5ef5a18dd4dc83', '9a6c06d25e18444f8289abc5e6bd7dcc', '2019-11-17 00:42:38', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('430fe4472f064ce193f658b44b543dcf', 'cba7063a383448189c16632f0ecc64c5', '2019-11-28 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4469d1370a434c6187735911ed46799f', '089e3a8821d342ab91aeb193580b1683', '2019-11-20 21:12:35', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('44afadff8c0749b4894f83c5f8fb0395', '0da32e385aba4dfaba4965a2edb99791', '2019-11-19 19:12:04', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('454eda03d12742378a5b3f6565cd3ada', '3bff23e442694f7ba4b08a76c967c704', '2019-11-21 13:44:15', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('45e437758a784a2db61741a5c2f8df1a', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:46:24', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('45fd59d45ba44ca3981f9b03ff3a739b', 'f939bd7b516f4e72ab368567accda1e7', null, 'koala', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('46826b2b024c4ec2b767f36c2f086838', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 10:21:53', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('46a4b0e0a03a4d658019fd90ee776951', 'fbc6f55652e042d3af7bad1caceaac3f', '2019-11-20 10:42:12', '小梅', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('46c8392114ae4b71be9f91da72962afd', '07b58a40eab041be95b33e23e6231878', '2019-11-18 08:51:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('477055d1b10c4b64a3672739bfe54c6b', '4362f1c506a44d50857dbf47fc99b3bf', '2019-11-17 17:01:14', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('488f4e0dfa73404bad3274e16737cb2e', '7250808e24ee479aa594b52cd7dce82f', '2019-11-21 09:46:53', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('48f2fb5762af4ef7a890ed3d4366eff9', 'fbc6f55652e042d3af7bad1caceaac3f', '2019-11-19 22:18:11', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('49098de786724321aa2a3d74d654848a', 'ba29fcf071ae4c878a30cf2b32106a39', '2019-11-17 17:09:16', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('497f4995952c4f2f8a1cf0e2330b6006', '2b2eb0c82bae4982a410f97c08eab591', '2019-11-17 00:34:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4a4e5c625eb44497ad687ce6aad288ef', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:47:28', '小梅', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4bfebfafe3ff4ca8b3baccfc6f4948bf', '4362f1c506a44d50857dbf47fc99b3bf', '2019-11-28 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4c00a85b648b4bde84b20ebe35df9764', '35801927549240b5ba1a4dad597255ca', '2019-11-17 00:14:16', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4de728254bfd47e6901d0e2258344992', '72d176a2c254485aa0e9c25aacd436b6', '2019-11-17 00:13:13', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4e02be0adb8f479c827aa8b342a3b269', 'e831e0b24b4d435aa9675e9412f25b99', '2019-11-17 17:07:26', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4ef7ba1d9f404bca8dd8aa3e95b64e66', '07554d752c434eb1aa24b3f82176fed5', '2019-11-28 05:52:17', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4f2dabba94c34297b7ab0a2fde14ffcf', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-20 21:46:08', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('4f99ba6e9eba468ebe6dcc983072f4ee', '9eec1003dff9488e88b1050d0383aab5', '2019-11-16 23:48:24', '。', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('500cb7ef377346d3b85e1d0c6eb99cbb', 'ba29fcf071ae4c878a30cf2b32106a39', '2019-11-17 17:09:11', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('50205a81200b471a8c6ccc8e8b29bdd4', 'f6b3b0735e004061b3a03cfdb55dde66', '2019-11-20 14:02:58', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5052cc1bf5d44b248cb24eb7a1c7a12d', '43ab2d86c85946639bf7687e64514dd9', '2019-11-18 15:46:36', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('50779a0cee3645c4b4e503ac93aaa170', 'f956f830e0894cb782ebd79c9e25450c', '2019-11-17 15:13:26', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5168ff1fa17e4efdb6e90f5253a4f0ee', '0818651d913346c0ab1afb55d1125549', '2019-11-16 22:13:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('51ce4accea334bb280ea8fb7e72f9417', 'b23c07d2598840099f4b1d0fda0724c3', '2019-11-17 21:09:10', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('52323b4815004de4b3e779490be06902', 'f4e65a69892341b4b1ea7c3f4d50e36b', '2019-11-28 16:18:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('524a89bb14c643c1a9ba890b390906e6', '0da32e385aba4dfaba4965a2edb99791', '2019-11-27 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('548300ab0d0d455c907ea2015990022d', 'aeafe0158e6e494090e59754fc9eb232', '2019-11-20 16:37:42', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('548f835d89544a21810d1fce1506bd81', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:26:28', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('54953007f5ff487c9ca56e341ce7e8de', '47029dfa99bb460b8b7da93b05f6984f', null, null, '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('55315313b5a948fc8e33d2947e957e17', '7ef6c58570b244b690ecd4d1d0cd0887', '2019-11-17 17:30:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5585cd899e5c4e899860b23d310926d3', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:04:12', 'koala', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('55b229cf0d344ac08fe7af7a644d480d', 'd2f380fdf87e459994b4c6fd822ce777', '2019-11-18 16:55:36', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('55c787afedec405e82aae80d79798df2', 'fbc6f55652e042d3af7bad1caceaac3f', '2019-11-20 10:42:12', '小梅', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5675119dd8ef4dff810776c4484a7c2d', '1bfb822376614d77a763cef0dc1a480d', '2019-11-21 09:30:38', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('57006808218b488ab10be7aa0ff92f2f', '47029dfa99bb460b8b7da93b05f6984f', '2019-11-19 11:44:08', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('57e317f85df74f24bafd3c2cedd47a03', 'c9664f3c3bad44deb69bed400a9be5f5', '2019-11-28 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('586199f1ec6a42ca955af58587bbbce7', 'b6a16bbd6bdf43fcb9ef5ae9b89bf92c', '2019-11-18 16:26:10', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('592a166d64824921b30fe0b8425ae2ac', '7ede7f8dc74e471789f40d9ec2de6fbf', '2019-11-17 15:13:26', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5936f9b3a5284ef5a61ef6bce602dea8', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:05:32', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('59caa4926a8f46f6900ccdc15a604327', '01e9d63173b347e68b87165e65bb157b', '2019-11-20 16:50:35', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('59f86d811719448183e7feaebfda365d', 'cba7063a383448189c16632f0ecc64c5', '2019-11-17 21:09:07', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5b014f5e01af46b4bbacf8c3f5ef16ca', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:33:41', '小梅', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5b32becf4d744cf7b4d90a055991ca96', '61f8c6c2c25e4e788a1f154085253fd8', '2019-11-17 00:33:27', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5b54722800014665914b687776e15587', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:35:45', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5bb13661fcf0407a9c4db0f022a020cd', '0da32e385aba4dfaba4965a2edb99791', '2019-11-17 22:06:31', '平凡', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5d1f9bc971e44b4d89c9318d14ea2a54', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 13:07:32', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5d21293c78b140429a85c9a13a910efe', '3a964138d76247f1aaca2612e2f1bde1', '2019-11-20 21:46:07', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5e707c8f927544a593dd7913e63086f6', '0383feb74edc47b2a7121b189d73ac3a', '2019-11-19 06:07:26', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5ebcd40a8d42464c979f8eb0afcc7af7', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:18:04', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5ebffe4461da47ffa81424984cfac6a7', 'cbec007381804b6c818dddf44867d03a', '2019-11-21 13:55:38', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5ed1171695c141da9bad541566e4e38f', '31f61fd94ee248ee958ad126c5e437fc', '2019-11-20 19:02:59', '泰然自若', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('5f2937ce017645d9a1b8925bcfb7f79a', '47f2d4ddb84c499cbfcd20855b9377fd', '2019-11-17 08:42:45', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('60ebca8d49dd4b45961b6aa23722c411', '7e8bbfd3d26c40469ea432813edc0bad', '2019-11-18 16:04:55', '运营商管理员', '退订已拒绝', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6139d0523ffc4a70a9a26e5306c28020', '71d784fd4f034382aa55a5eba0b871eb', '2019-11-19 11:24:49', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('61bc2bb64c504a539565bbaf64d90f0c', 'cba7063a383448189c16632f0ecc64c5', '2019-11-20 10:39:32', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('643a316b3a59498697ded5326a5e3b15', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 17:02:24', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('64a72a5e764a412287975d4f7f643ef4', '333168ccc9ba473994c56c1e7c09e9c1', '2019-11-17 00:13:40', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6705809c2605406fae057834fed95811', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-22 13:25:42', '小梅', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('67f38652a8d945cdbee707bf56bb04d7', '7feb27f209d74ff9b906b0921eecdeed', '2019-11-21 14:23:04', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('67ffb2a91c7b4c8ca41d49c38ed92270', 'fed25d0e49564e1db1194290e8091862', '2019-11-21 14:01:34', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('68508701b1bc46d39d5bc204408ef882', 'e9145b12e1904b6fb8bd9ff40f39c3d7', '2019-11-17 00:54:26', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('68ffeafe5ea744468769378631aef55f', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:20:12', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6913fc69259548919206a21b226d9c65', '37c995c816914f7d9a37ff8c3f0d5831', '2019-11-18 13:24:35', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6979a972dd854160865602762e14bf79', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 13:29:22', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6a0c239935cf4444831836601827c60d', 'eceff46edf6a4cb8af3f50dcc43584be', '2019-11-17 21:07:55', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6a6548f962f1428094a360e836dd5dcf', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:47:54', '运营商管理员', null, '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6be7b54f72c74b4d80d98065536750eb', '1eef32868d434fbda39a3fdd162b510f', '2019-11-17 21:09:48', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6c28a14aa9a94f26a3d55075b6c9e902', 'aeafe0158e6e494090e59754fc9eb232', null, '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6ce450d5c9e44de291ed670823ccdfa5', 'c9664f3c3bad44deb69bed400a9be5f5', '2019-11-17 21:18:27', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6df8c1c9d5714903b49176c43d094dae', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-22 13:25:42', '小梅', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6f833d913eaa4210b1c8a4a6c33035d9', '0da32e385aba4dfaba4965a2edb99791', '2019-11-27 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('6fee2397a57b4d9a9c6f793afd5afdee', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-20 21:32:49', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('70ae6ade06fa4eef993970b5711bba7e', '7feb27f209d74ff9b906b0921eecdeed', '2019-11-21 14:21:27', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('71118915211f4234aa34a4f011b41863', 'fbc6f55652e042d3af7bad1caceaac3f', '2019-11-19 22:18:05', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('715e9e39e3af4bf4b0e6ea6d01236ee7', 'cba7063a383448189c16632f0ecc64c5', '2019-11-28 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('71884f346a864c2f80c2264090b47912', 'e4bdac778b4c46a4b6b146c55a59ac49', '2019-11-20 16:49:24', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('72382fb9f2e4486eb6e690b7536020bd', '3c8ff0ecf9b34fc8b99b33dc96802e5e', '2019-11-18 16:11:35', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('731e8b4a030d4621a7fe8cc63d30cc10', 'f0f70bd4d7b44535951f9bdaa226ab3d', '2019-11-19 22:20:54', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7381efe740534eb998e44a8d357ec145', '01e9d63173b347e68b87165e65bb157b', '2019-11-20 16:53:30', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7409ed3603d8411fb5097b773f0bb93e', 'c5c660331d914bcaa06a5e5887faa84a', '2019-11-19 11:26:16', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('765cc1eebcf54be198fe7e4359268254', 'cf40c8074525436dba771e0abec5dea0', '2019-11-22 13:11:25', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7784920447484073b5e7aef60d57875c', '7250808e24ee479aa594b52cd7dce82f', '2019-11-29 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('77f1c9e8a0304a12998261a360af1efb', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:16:47', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7812bb0127ca42eaa62bf7032089bc87', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:18:04', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('78eadb52c47a454a8621177251c20e5e', 'f8dbed68c05f448b9639d96f125273f1', '2019-11-17 00:52:05', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7937e0cec6e847a0a036f7a3808ce7cb', 'a00945f7c53d4d599c1a78594953dd57', '2019-11-20 20:17:41', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('79679bc2620847a4accf39bf8d0579b7', '5d771d71f0964182ab5cbbde12a9118c', '2019-11-17 21:13:00', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('796ec589c711407d85b2e7203c75948e', 'cbb223d59482447388a72073b6e12045', '2019-11-18 10:40:21', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('79e744a8bc2f48eabb3412a84749d15a', '23699c68eb834b33932047932d42a57a', '2019-11-19 05:59:57', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7b2bef73cc864c1d93c5f9ec386ef262', '07554d752c434eb1aa24b3f82176fed5', '2019-11-28 05:54:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7d2ed2b7b9ec47f784f83e40570ae9a9', 'c5c198a54e804e2dbf3b7a7a7dcfb144', '2019-11-20 18:56:07', '泰然自若', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7dd05f559e734a4fa84ad447e7360df4', 'f6b3b0735e004061b3a03cfdb55dde66', '2019-11-20 14:03:05', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7e34b9953e2343889f7132f4823ec27f', 'a00945f7c53d4d599c1a78594953dd57', '2019-11-25 16:27:29', '运营商管理员', '编辑平台备注【测试】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7e7fbf17dc954bf493b3755de3e14790', '01e9d63173b347e68b87165e65bb157b', '2019-11-20 16:50:35', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7f3c7f27afc74c21abdfa99f47e7ece0', 'f5698d3cf1334be3a9979ff5210f6958', '2019-11-29 06:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7f75f52c9d2149faaa6da2112eb5c2af', '3c1265acafd54e329a9e19c83768af15', '2019-11-20 13:29:28', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7fa1a1dfd21247e39c227e6c53ed4ced', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-20 21:34:08', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('7fd4320a399748f39cb7e2d242885fec', '2c1c8429ea034ef9b043814c26b746b9', '2019-11-20 13:19:18', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('80ae3d35021748c1ba46549a3093ed76', 'c853f925ece14b4aa2d8cbffdc12dca9', '2019-11-16 23:51:27', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('80b7c571ef2847a5b153db4207d4b067', '47029dfa99bb460b8b7da93b05f6984f', '2019-11-19 11:42:41', null, '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8135498ba84844f998c8fff0c5ff6ae1', 'e4bdac778b4c46a4b6b146c55a59ac49', '2019-11-20 16:50:26', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('81f8038a0f234376b7a86e2e9ef36a53', 'd28251c489184c9d8506f9ecf512cffd', '2019-11-29 05:53:11', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8215ab3d0c1c456c859f8228d3cce3cc', '089e3a8821d342ab91aeb193580b1683', '2019-11-20 19:59:01', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('822f30e63ddc42a0adf62b5d94e1fa47', '23699c68eb834b33932047932d42a57a', '2019-11-19 06:05:59', '运营商管理员', '退订已拒绝', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('83a4ad579ddc4d1aaae4151114d2220d', 'f32d6cc3046749df9d7ab5f6efe3e04f', '2019-11-19 11:03:46', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('840db873bcc5458389488a079dd84bea', '3d85f3eeeffb4385981e055bb7ddb923', '2019-11-17 00:54:17', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8421a0d2cb4040c69d086ebcec4880a1', 'a5e4c464dacc4dba82d13e5ad4b62ef6', '2019-11-22 13:21:54', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('846a34801c244931a161a1856cb7f179', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:35:04', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8526c06c97974c769af5457379ead0fe', 'a81191ab553d4277843bab3100332acf', '2019-11-25 16:28:09', '运营商管理员', '订单已关闭', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8605a306af094f419777cf67e3c0c41c', 'a7fbaf0a665448478bb3f5a7c99de353', '2019-11-17 00:50:30', '灵珑', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8627603c70ef4c8b8674b76e47bcba51', 'aeafe0158e6e494090e59754fc9eb232', '2019-11-20 14:03:57', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('86375c792c52461185bdd5708613ac47', '9965a4975a644656ad97ceed7d138b66', '2019-11-29 06:12:23', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('867c85773e6747cf9604713e5517abbb', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 17:20:38', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8785698fe2f2474eac2737a6c3e22aa3', '7ede7f8dc74e471789f40d9ec2de6fbf', '2019-11-17 15:13:20', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8794b332a11f43568ab328bc897c36f5', '99cb7a6f4a0d46b88c7f3252c2175896', '2019-11-17 00:53:59', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8807bcd23f534b8a94c95ad6989841f7', '1bfb822376614d77a763cef0dc1a480d', '2019-11-20 20:17:33', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('88d2efa6b6d7493b8ae7f1ea7e36c470', 'aeafe0158e6e494090e59754fc9eb232', '2019-11-20 14:03:54', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('892ddbd7ee974d69bfafae9a64439ebd', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:09:29', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8a4a08fe1e234262a45f6c7b4fdef380', 'fac40886cd394579a0c18064adbd67c0', '2019-11-17 18:57:01', '运营商管理员', '编辑平台备注【这是最新的测试这是最新的测试这是最新的测试这是最新的测试这是最新的测试】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8a59fca6579e4e139306942f8326e52c', '55147e3e42544da0b2b45e370f8de9d1', '2019-11-21 14:21:01', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8a9552c6e57045ecb1af2363647104f1', 'f5698d3cf1334be3a9979ff5210f6958', '2019-11-29 06:12:47', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8af7f5600d104dbe8c3e6b426c2f1f04', 'c9664f3c3bad44deb69bed400a9be5f5', '2019-11-20 10:40:14', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8b68619c4130420e8775f33e0202fc41', 'c5c660331d914bcaa06a5e5887faa84a', '2019-11-19 11:26:04', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8bb38b9bfef845938b72fca9fedacafd', 'b23c07d2598840099f4b1d0fda0724c3', '2019-11-17 21:09:16', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8e46fa0b912f488099468c5478c1b2f6', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:03:19', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8f2b3761562643e488430ba17fd0b937', '7e8bbfd3d26c40469ea432813edc0bad', '2019-11-18 14:21:17', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('8fd4cdd2033b4d979c36809c2e6184ac', '273764f2b22e4cca8164b7a13ff689f3', '2019-11-17 17:17:50', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('910cb49ecc0f4452b6182979e6449df3', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:09:37', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('91f11b213f7547a7bbf407163eb09644', 'adc2b031ed1b42a2837997b640781e73', '2019-11-29 05:48:06', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9239ff13304942f59dfb3982f1c31111', 'e4bdac778b4c46a4b6b146c55a59ac49', '2019-11-20 16:49:33', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('92853244218547d099dec3e77f671bba', 'a81191ab553d4277843bab3100332acf', '2019-11-19 16:22:46', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('938d70f6a5384fd894fb88ddfe47ebb1', '3a964138d76247f1aaca2612e2f1bde1', '2019-11-20 21:34:12', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('944741d67233419da72824a642732f45', '089e3a8821d342ab91aeb193580b1683', '2019-11-20 21:12:35', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9500e06e04844445a60f6a85fc565df9', '3c1265acafd54e329a9e19c83768af15', '2019-11-20 13:30:13', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('95501e43fbe841c89141cad5b62b8c49', 'ba29fcf071ae4c878a30cf2b32106a39', '2019-11-17 19:21:08', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('962e35036289458ca44aff7882563aaf', 'bc0bca1a429b473d92d9474c627063c1', '2019-11-16 22:17:57', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('98398145534d41d4a7b5c148e18c0235', '1fa79f18e29e465a893bb1896a1cac2e', '2019-11-16 22:01:07', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('99142e43cdef4402bdfa046069887621', '61223e48eceb487abd7ac877e843288d', '2019-11-18 16:06:44', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9970cb755ad845a8ae4f0384dad1cd22', 'dbee089f0c7c4c909b2b45aa01d3df61', '2019-11-17 17:05:16', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('998f485dc30f4a4692611958accd49af', '88653b0e91124b7f8b491e9abaab2800', '2019-11-20 13:16:04', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('99c58a1780d24e3a9952e5ad16db1db7', '7250808e24ee479aa594b52cd7dce82f', '2019-11-20 19:02:10', '泰然自若', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9a4df430316d40308d9d5ffb55c1238b', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 12:28:31', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9b0c48bf6f514e6c9f16d58d19c8b2c6', 'c9664f3c3bad44deb69bed400a9be5f5', '2019-11-28 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9c31c580daaf40fb8b0f97e0e6db7f49', 'f6d865f27d8d4ba5873cbb5fe522c00c', '2019-11-16 23:51:49', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9c531e306c4648e6a81dfda026615acf', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:36:28', '小梅', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9cb04803ba514bedae73342d51e362a4', 'a7fbaf0a665448478bb3f5a7c99de353', '2019-11-17 00:50:42', '灵珑', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9d797c8fe9f44c4cb7f232302e742f9c', '4362f1c506a44d50857dbf47fc99b3bf', '2019-11-28 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9dc1539f8f6d433691f9ec31a56318d3', '6ee3118437b64fcd997f120791e9e19a', '2019-11-16 22:14:41', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9decdc3f7a8d4ce29a7a4c3d5ab2ae68', '5bf7ca1f678d4befab028ebfeccd307d', '2019-11-17 17:02:33', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9e02b3822efa4ab99dc2820786ea9d86', 'f0d4d0ee365342d99c58bb28813059cb', '2019-11-20 14:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9e19b9daaf0c4eae876b1aa994528187', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 16:58:49', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9ee8bb818d7f454b802218a3bd28511d', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:05:52', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9f8553adb0ec4d8da8e96af755412575', '88653b0e91124b7f8b491e9abaab2800', '2019-11-20 13:16:03', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('9fe380afd7014722b1e06e856ab59032', '46aa431050dc4b4899bc1f4af42ba43f', '2019-11-20 14:13:37', '骑着Vespa的江守', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a04d8f0372704aabae65edf0dcbc2377', 'd7af1c562127467ba555c8fae7787570', '2019-11-29 05:56:00', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a0d6db23048a4894b08afb5fc38ff9d9', '6ee3118437b64fcd997f120791e9e19a', '2019-11-16 22:16:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a2260eb495384535a33b1e306296ef27', '342eb3f7cf104cdb9dd3d4ce20155898', '2019-11-29 06:06:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a255a01b574a44c69aaf099a37bae7b7', '7feb27f209d74ff9b906b0921eecdeed', '2019-11-21 14:21:27', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a2979e253b284cd59d44acc8798f69bb', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:40:06', '小梅', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a3c26abdce51426bb6a25473744d4da5', 'a5e4c464dacc4dba82d13e5ad4b62ef6', '2019-11-18 16:03:18', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a3eb652f4bab4f36b4bc72f4689bd52a', 'cddc651c601447f49a766ab4f67c4c12', '2019-11-17 00:52:25', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a65143724c394983bb4257a6f4da941b', '47029dfa99bb460b8b7da93b05f6984f', '2019-11-19 11:41:29', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a6552652f4b340c28b5c662c0267872b', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:14:50', '运营商管理员', '编辑平台备注【sss】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a68a019e9e6a47a1b6291533e0d032c5', '7250808e24ee479aa594b52cd7dce82f', '2019-11-29 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a6b7619bf25d4fd1bf79516a500c84bb', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 12:20:29', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a6ed1fa599fd4eb4902fdd790ca6c9c1', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:07:31', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a7fb3268083f4cb4ae410c76ce173e30', 'f6d865f27d8d4ba5873cbb5fe522c00c', '2019-11-16 23:53:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a84e6d572e5045f3b7e8e323c76f3c95', 'e831e0b24b4d435aa9675e9412f25b99', '2019-11-17 17:07:08', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a867955d3d274135aeecdf6f5df41163', '35801927549240b5ba1a4dad597255ca', '2019-11-17 00:14:11', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('a8cae9de15da4196a6aac39b329a4f69', 'cc39d32aa585405a9cff239e79035bb1', '2019-11-18 17:07:31', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('aa3877b5021b4bd0a4d41d704f748136', 'fed25d0e49564e1db1194290e8091862', '2019-11-21 13:56:16', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('aa7c0f56871a4c2da0e738dc1a1193d7', '4246b6b64b6e4f238760d56fc19dca9b', '2019-11-17 17:08:54', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ac39ce60dd084a238e4843285a34bb9b', '80b2c38968404ab4a9deaf09260b2709', '2019-11-17 00:54:30', '灵珑', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ac42ac846bc44175b580907f24bc3d19', 'cf40c8074525436dba771e0abec5dea0', '2019-11-22 13:13:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ac7e2e87097f4999808089fc21fb2e01', '958d1c7d1d6840e58952ff4ab32ef073', '2019-11-20 13:04:56', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ad1c5b399aba4bc0864f737a1ab3bd5f', '0818651d913346c0ab1afb55d1125549', '2019-11-16 22:11:38', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ae381741ed724074bfd7ce7f7bfe601c', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:05:26', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ae65bcf8f47c47d3b80ca4d0118a36c1', '5b12c8d4e5b14accb757be586ab9e8f8', '2019-11-19 22:20:25', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('aeacb5b6023c456ca3d35e5cf5cc1170', 'cba7063a383448189c16632f0ecc64c5', '2019-11-17 21:09:04', 'koala', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('aef0acca2cd84f2f91b73e97544184e0', '342eb3f7cf104cdb9dd3d4ce20155898', '2019-11-29 06:04:54', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('af2d03441e9140e9bcfeb2159a780f07', 'fac40886cd394579a0c18064adbd67c0', '2019-11-17 17:30:57', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('af553f5435064617a04ee27ba9949fa9', '4760198797244bcfbd0c9515e63c9eaf', '2019-11-18 17:09:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('af61e2de61fe47b4a74ce0cbefd47df6', 'a81191ab553d4277843bab3100332acf', '2019-11-20 10:39:07', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b0512df1a4ec4102a25875f64944cebc', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-20 19:14:54', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b0cfaf3512f94e62b08d2b79fbad4279', 'ba29fcf071ae4c878a30cf2b32106a39', '2019-11-18 11:28:45', '小梅', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b0d18ae1cbca4cd99bf518c82b608ca9', '55147e3e42544da0b2b45e370f8de9d1', '2019-11-21 14:21:27', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b1ec1d74b89444e39aabe0f9fd79ebc7', 'd1e45c3d678440c198e8b543b94a219a', '2019-11-17 17:30:09', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b24095f6ce4d427b9542d8c036f24edb', '3bff23e442694f7ba4b08a76c967c704', '2019-11-21 13:43:40', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b28866f8d6004300847c1041aeac3970', 'dbd3c430577f41738a1f19db5c833e09', '2019-11-16 23:53:10', '。', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b2a3f54a7c93434283faf24c92871ea3', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:20:38', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b3aaf52aee714db9b8c64614dd0a64b1', '07b58a40eab041be95b33e23e6231878', '2019-11-18 08:49:18', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b3ad166e8e7f4f92bc50da95a0e448ed', 'fbef68a07698428784d0ca63dc82f4b4', '2019-11-29 05:51:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b4fa544147b34e26ab4d486f7e7a14f2', '16bb97a6b07846acb2fab4a7789e76f8', '2019-11-17 00:11:30', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b50e75f77eef4257a95ae52829eac032', '47029dfa99bb460b8b7da93b05f6984f', '2019-11-19 11:41:47', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b556f071a526406eb2be5ca66e099579', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:05:17', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b6f379d17977481ab4c006d1620412de', '886a9376885c4bba8d061a60746ef244', '2019-11-18 09:13:11', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b88dcd7fb20f4662b8be8a6268fa4e82', '3a964138d76247f1aaca2612e2f1bde1', '2019-11-20 21:34:12', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b949f8ecf22d40ed9b18ad9d720d45aa', '99cb7a6f4a0d46b88c7f3252c2175896', '2019-11-17 00:54:04', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b96b98d94ff64627b639f74d2ae00b9a', '87437b83997c4a84afa4307919e14487', '2019-11-22 13:35:45', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('b9fb2a2f90a54e5ebffc04f5ef989e9a', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:05:52', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ba2d86d5685b4b34b2a0818b8237475e', '0da32e385aba4dfaba4965a2edb99791', '2019-11-17 22:06:25', '平凡', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ba433607c6244ea5aa1bbb98288b8e62', '4760198797244bcfbd0c9515e63c9eaf', '2019-11-18 17:07:31', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ba725eea0818450381952b060ad8dc1b', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:34:47', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bab17c1b57f5400a887a23031ad8c83f', '886a9376885c4bba8d061a60746ef244', '2019-11-18 09:14:30', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bb7da2f0f5114d38a6903c177d6f774d', '776a044d6f494130a4d00604e446dfa6', '2019-11-21 14:12:46', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bb8d2bf7837d475d9463dfb0b6513873', '13a3226fad3643ff9d666d936731495e', '2019-11-17 20:49:03', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bc28efefe30443d0828f8d41186b826e', '3b9f7d93df844f549e8bcfce6b5c394c', '2019-11-18 17:07:31', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bfc1664977d0499586c606129b84c4c3', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:04:43', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('bffe58b575574e9f9af71d2c771cbca4', '9847e46eee02455a825bc7b6247acf74', '2019-11-20 11:21:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c2781bddb6564950b725e54e36858837', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:35:06', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c35fe6a26eda48fd921b38abd4d8897b', 'bc0bca1a429b473d92d9474c627063c1', '2019-11-16 22:19:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c40b3fcf0ab34278a49e46397d97a14a', 'e9145b12e1904b6fb8bd9ff40f39c3d7', '2019-11-17 00:54:18', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c47e09e11ad341deae39eec2b3e92b57', '937f254f32054a2ca79a58f64b27764b', '2019-11-19 11:36:04', null, '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c4983cfc0dbf4e6fa48b1fefebab99d7', 'cfdb470a9e27425a9af7a1f98284678b', '2019-11-20 13:18:45', '运营商管理员', '订单已拒绝', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c4f97a2c9a0443eab86e96236ca1dd69', 'd667fc27c7e246e4976836a89b507832', '2019-11-29 05:52:26', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c50bd214763142eea08c360be39a6a44', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:30:12', '运营商管理员', '编辑平台备注【sssssssssfa】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c548e456e9bc442fac100e5e1938252f', 'a5e4c464dacc4dba82d13e5ad4b62ef6', '2019-11-18 16:03:24', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c5678294d54642b7ad43a7a9440855fc', '901651ef5a394106bfa8dce23a0423b1', '2019-11-19 11:07:08', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c6b801ceb2fc413099787bca18533718', 'b5b5f25028954113b3f3049f4d8b0cf1', '2019-11-17 00:48:29', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c6fa907882fd4867b2b8ef0d72bd89c5', 'b36da382c28741b7a9f24e079aceda66', '2019-11-21 14:28:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c9a3b5c8062547e8bd9c341169c37c94', '9d8ec2b2386046779c46b89833a3d5eb', '2019-11-21 10:22:50', '运营商管理员', '编辑平台备注【客户要发顺丰】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('c9cd37be52de4750bcdd8cac43f0a5f1', '1bfb822376614d77a763cef0dc1a480d', '2019-11-20 20:17:41', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ca0716e5deba4f81991e5591ec8206b5', '886a9376885c4bba8d061a60746ef244', '2019-11-18 09:13:16', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ca4524ab027841f89841712f1c486d24', 'fa8eed15c8e74872bfcff5e987aabe41', '2019-11-17 00:46:24', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ca4638260d87462ea65808b5e43b116c', 'fed25d0e49564e1db1194290e8091862', null, 'only one', '退货已发货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('cae14515814446bd9f857fb7845dafec', '776a044d6f494130a4d00604e446dfa6', '2019-11-21 13:25:28', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('cb901f60152643409c9d80b5a36feda5', '4362f1c506a44d50857dbf47fc99b3bf', '2019-11-20 10:40:02', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ccb486d5384f4849825ec8f3507beb47', '9847e46eee02455a825bc7b6247acf74', '2019-11-20 11:19:15', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('cd8bd3b2366949cfa888147d83c3dc25', 'cf4b2198d11e4968b51e399fa34ef3cc', '2019-11-21 10:12:06', '骑着Vespa的江守', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d0db52450c8d450e9af53bf19df7fe15', 'b0e06d826e6f4b6288339e1408242202', '2019-11-17 08:46:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d22d91813f4a4644be01b82049ed6f79', 'b36da382c28741b7a9f24e079aceda66', '2019-11-21 14:28:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d32113e649db40c7875040b250c1ccc4', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:46:25', '运营商管理员', '编辑平台备注【sssssssssfasss】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d3c7a979bcd8418c91a2e435d8f20783', 'adc2b031ed1b42a2837997b640781e73', '2019-11-29 05:50:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d3dc324497c641e391bc0e6b9c97fb2a', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:17:40', '运营商管理员', '编辑平台备注【ssssss】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d3febbee3e644456bb9bf0015179f031', '7feb27f209d74ff9b906b0921eecdeed', '2019-11-21 14:23:04', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d4029e47b00f4521b4d196ff3f167121', '5d771d71f0964182ab5cbbde12a9118c', '2019-11-17 21:15:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d4139c504e024964bdb3ff86292cbab9', 'c5c198a54e804e2dbf3b7a7a7dcfb144', '2019-11-20 18:56:15', '泰然自若', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d451ac5f618e4dabbf0642a86b6a257d', 'c5c660331d914bcaa06a5e5887faa84a', '2019-11-19 11:26:17', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d46f11f4a8344e19a7b1ab2af3f035ad', '776a044d6f494130a4d00604e446dfa6', '2019-11-21 14:12:46', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d4f35fbabd3442ab8b745838b9e6382b', 'f0f70bd4d7b44535951f9bdaa226ab3d', '2019-11-19 22:22:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d518fbca25b6448c94d6ab95fe1e1160', 'b0cce3f578cf420c9f6637f0291e0f60', '2019-11-22 13:37:42', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d51f9334749f45db906365040894bafc', '3d85f3eeeffb4385981e055bb7ddb923', '2019-11-17 00:54:13', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d5e839483cdd49e2b8d729e7fb013957', 'cc39d32aa585405a9cff239e79035bb1', '2019-11-18 17:09:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d61cd0a7a9794519ae0a20d9818daa31', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-20 21:32:54', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d759586eb827448c81e044fa049ce99f', '9f0ded9f61734f9c9b5212681cf884cf', '2019-11-20 21:28:16', '运营商管理员', '退订已拒绝', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d786e69ab6ff431cbf15d3ad930360b5', '55147e3e42544da0b2b45e370f8de9d1', '2019-11-21 14:23:04', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d8c9d17643bc448cbefe613f9e18e6d2', 'ba29fcf071ae4c878a30cf2b32106a39', '2019-11-18 11:28:45', '小梅', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d8c9d892308143309b427b98c970cf4d', 'cf4b2198d11e4968b51e399fa34ef3cc', '2019-11-21 10:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d92168d96470427486b889c06a3e6072', 'f939bd7b516f4e72ab368567accda1e7', '2019-11-20 17:20:38', '运营商管理员', '收到退款', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('d988620687ab47f59af45d5768c9828d', 'fa8eed15c8e74872bfcff5e987aabe41', '2019-11-17 00:46:18', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('daf59803c29b4bafa616abda20057d23', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:07:05', '运营商管理员', '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('dba89b40c983472d941882e23432d5f1', 'cbec007381804b6c818dddf44867d03a', '2019-11-20 11:23:23', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('dbf1c20900914711932980fa9f1414b1', 'b7200093b6f24417a18bda23c458d444', '2019-11-17 22:09:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('dbf994e79ac14277ade217773fa2f2a9', '3bff23e442694f7ba4b08a76c967c704', '2019-11-21 13:44:00', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('dd33a70f764e4fce82ac75c79726094e', 'fed25d0e49564e1db1194290e8091862', '2019-11-21 14:01:34', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('dd47f3d0cb6d41399ae8cd806a239c86', 'b0e06d826e6f4b6288339e1408242202', '2019-11-17 08:44:39', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('defb16c0e6fe4dc38bfec8a7cb7862f7', '1fa79f18e29e465a893bb1896a1cac2e', '2019-11-16 22:03:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('df13f97602504294ada1cd7803477b21', '55147e3e42544da0b2b45e370f8de9d1', '2019-11-21 14:20:55', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e0f1087f44f6456da36fc137eabb082f', 'c5c660331d914bcaa06a5e5887faa84a', '2019-11-19 11:30:55', null, '收到退货', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e10137dfe1414b539be6b7e9981fbf62', 'cddc651c601447f49a766ab4f67c4c12', '2019-11-17 00:54:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e15a2cb4508045eebfbdcd9677b7f387', 'f0297fcedd2342598b52c732a1a828e4', '2019-11-21 09:19:24', '运营商管理员', '编辑平台备注【sssssssssf】', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e15a8d322c2b4e508378c3328ac46a67', 'd667fc27c7e246e4976836a89b507832', '2019-11-29 05:54:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e178dcfb272c4549967af964b5d68b03', 'f4e65a69892341b4b1ea7c3f4d50e36b', '2019-11-28 16:16:00', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e289cddda2b8479697364d0ad1be9650', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:06:51', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e2e5019ab620424f93df8629ca3bc8f5', 'fbef68a07698428784d0ca63dc82f4b4', '2019-11-29 05:49:23', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e433a671532d429e820f65bd8417b953', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 17:02:48', 'koala', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e4ba1c00823142ca97eacb7b808fc6b3', '47f2d4ddb84c499cbfcd20855b9377fd', '2019-11-17 08:42:31', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e555139c21724558bffe72762ad94541', 'f8dbed68c05f448b9639d96f125273f1', '2019-11-17 00:51:59', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e5ea3072b2fe4134b1e11bfc865f031a', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:06:51', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e5ea546c69974b249914ed9a15256203', '089e3a8821d342ab91aeb193580b1683', '2019-11-20 20:35:43', '运营商管理员', '快递单发货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e6f4d0f4ffd247f985d72f1ebd5b8a65', 'd2f380fdf87e459994b4c6fd822ce777', '2019-11-18 16:57:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e8e990aebded4f63aa3dbd087f11efd9', '32fd70b205654980bce6069d79f58e35', '2019-11-17 00:42:46', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('e9e8ef3b458046ae914eed266d96868e', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:09:43', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eacef8304cb44b1ebbbf85b7b9533d5e', 'f0d4d0ee365342d99c58bb28813059cb', '2019-11-20 14:12:53', '骑着Vespa的江守', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eb633a53b0c04f989ad9ad3c86b38c68', '71d784fd4f034382aa55a5eba0b871eb', '2019-11-19 11:24:00', 'only one', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eb952646e062405dbf73a72f05577dc9', '46aa431050dc4b4899bc1f4af42ba43f', '2019-11-20 14:15:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ebfaa14e54bf468da65e471072573b5b', '88653b0e91124b7f8b491e9abaab2800', '2019-11-20 13:15:45', '运营商管理员', '退订申请', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ec546ded583d44419cf496bd53bcbee5', '333168ccc9ba473994c56c1e7c09e9c1', '2019-11-17 00:13:45', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ec902ba2f6ae4163b6f1ba85299ea17f', '47029dfa99bb460b8b7da93b05f6984f', '2019-11-19 11:41:46', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ecbd1e79df104d8ca390363705d74fad', '5042f374c79c43eb96556c6c039ad6c9', '2019-11-17 17:31:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ed1851c6ec134ce187bd1428ba2df66c', 'f6b3b0735e004061b3a03cfdb55dde66', '2019-11-20 16:37:43', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ed988929d974427d8f5ccd220d74fe8f', '4246b6b64b6e4f238760d56fc19dca9b', '2019-11-17 17:08:48', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ee4875ed8ad647b8bd1304417c33b734', '2e78c1638872438e82d4d2812716d68d', '2019-11-18 17:05:58', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eec8868306924cd3a595e71ba888971b', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:16:47', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eecd24140208427e8b63706ea4db9b3e', 'a81191ab553d4277843bab3100332acf', '2019-11-21 13:24:42', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('eecdf221648e4b24bc3b6a5aa73b09dc', '32fd70b205654980bce6069d79f58e35', '2019-11-17 00:42:51', '小梅', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ef5fb0a28c904109894cd20ab9cc88ad', 'cf4b2198d11e4968b51e399fa34ef3cc', '2019-11-21 10:14:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ef7e2f5e9c4b4569ba45d89c8aa9d4bc', '7250808e24ee479aa594b52cd7dce82f', '2019-11-20 19:02:16', '泰然自若', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('ef9e4824d061449398335e46c123483b', 'a8752c34b03d49e0a2c315498c5872fd', '2019-11-21 14:05:17', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('efd12595fe9a430e9f367e70e038ce4b', 'dbd3c430577f41738a1f19db5c833e09', '2019-11-16 23:53:05', '。', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f011eb0cd4c343fc9ac5d7b4e06cefe6', 'fce4c7e6584f4cb8851dc296161b4d53', '2019-11-17 17:18:18', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f04faeda02424a10ad3f045a219793a1', 'd87f58f8dc3143eabe4101c0e3f4244c', '2019-11-16 22:47:28', '小梅', null, '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f0b922bd3d474012b7b6a937539857bf', 'e4bdac778b4c46a4b6b146c55a59ac49', '2019-11-20 16:53:31', '运营商管理员', '退订更新订单成功', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f0c42f55cfdd41048cd6327f22162de9', '1bfb822376614d77a763cef0dc1a480d', '2019-11-29 01:00:00', '平台机器人', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f0f54fc0acb847fa859b030134867525', 'd7af1c562127467ba555c8fae7787570', '2019-11-29 05:56:12', 'only one', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f24da6e308d347158bec58ea8af1f601', 'c853f925ece14b4aa2d8cbffdc12dca9', '2019-11-16 23:53:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f26471dd9728435591f061cd317e800a', 'c5724139ee3944eab56efda72beeac4e', '2019-11-20 16:59:00', 'koala', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f2afa4e4199345c99189ab2fd71d8c8e', '9eec1003dff9488e88b1050d0383aab5', '2019-11-16 23:50:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f487ab49c630451f837b4ff27536a540', '886a9376885c4bba8d061a60746ef244', '2019-11-18 09:14:30', 'only one', '订单已收货', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f547dbf0107c4c238534cb7e08b0d1a9', 'b36da382c28741b7a9f24e079aceda66', '2019-11-21 14:26:15', 'only one', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f5695d8518bd4dcf872aa8405b3887d0', '9a6c06d25e18444f8289abc5e6bd7dcc', '2019-11-17 00:42:44', 'only one', '支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f5c6bb71dec742619baf3b69423e176b', 'fed25d0e49564e1db1194290e8091862', '2019-11-21 13:57:13', '运营商管理员', '退订退货开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f69f18340dc94031a64bc85671ea4c6e', '5b12c8d4e5b14accb757be586ab9e8f8', '2019-11-19 22:22:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f7582887998249e796c972ad5af42356', 'b7200093b6f24417a18bda23c458d444', '2019-11-17 22:07:09', '小梅', '创建订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f7a73503438746bb939ccf528f5f3583', '901651ef5a394106bfa8dce23a0423b1', '2019-11-19 11:08:22', '运营商管理员', '退订已受理', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f7d1bde74fe840959534d361710b704f', '287c63efdc344cadbf319f4dc4b20c0b', '2019-11-21 14:16:47', '运营商管理员', '退订已关闭', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f80d569e1dd845ee9c0e8695afddd0ad', '598f01acd00744fba4694265b23b894b', '2019-11-16 22:41:00', '运营商管理员', null, '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f8fbfc45488e452ba04d4f82f8bdf3aa', '1bfb822376614d77a763cef0dc1a480d', '2019-11-29 01:00:00', '平台机器人', '接收快递', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('f9d4277936de4f3a82e11bc380159a35', 'd1e45c3d678440c198e8b543b94a219a', '2019-11-17 17:32:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('fb93031d08d446efba9b49b20e96519d', 'cf40c8074525436dba771e0abec5dea0', '2019-11-22 13:13:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('fba3824780d94fae91d22fb86f695620', 'ae499fed29ad4e9a958d46313c7b990d', '2019-11-21 13:07:06', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('fc0d02b58c7643a0938ab20c21c6f6e9', '3a964138d76247f1aaca2612e2f1bde1', '2019-11-20 21:34:12', '运营商管理员', '退订退款开始', '2', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('fc4dc6af90cf4a1daf001a5b26446bb6', 'fac40886cd394579a0c18064adbd67c0', '2019-11-17 17:32:00', '平台机器人', '关闭未支付订单', '1', '1');
+INSERT INTO `t_sm_orderlog` VALUES ('fd904b582ce34150a5dacd3543b18c13', '72d176a2c254485aa0e9c25aacd436b6', '2019-11-17 00:13:18', '小梅', '支付订单', '1', '1');
 
 -- ----------------------------
 -- Table structure for t_sm_orderremark
@@ -9259,18 +10990,154 @@ CREATE TABLE `t_sm_pdctype` (
   `F_DELFLAG` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '删除标志',
   `F_PICURL` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `F_LEVEL` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '1：一级类别；2：二级类别；3：三级类别',
-  PRIMARY KEY (`F_PDCTYPEID`)
+  `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `F_SORT` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`F_PDCTYPEID`),
+  KEY `index_pdctype_pdctypeid` (`F_PDCTYPEID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='产品类型表';
 
 -- ----------------------------
 -- Records of t_sm_pdctype
 -- ----------------------------
-INSERT INTO `t_sm_pdctype` VALUES ('1', '水果', null, '0', null, '1');
-INSERT INTO `t_sm_pdctype` VALUES ('2', '苹果', '1', '0', null, '2');
-INSERT INTO `t_sm_pdctype` VALUES ('3', '香蕉', '1', '0', null, '2');
-INSERT INTO `t_sm_pdctype` VALUES ('4', '蔬菜', null, '0', null, '1');
-INSERT INTO `t_sm_pdctype` VALUES ('5', '青菜', '4', '0', null, '2');
-INSERT INTO `t_sm_pdctype` VALUES ('6', '萝卜', '4', '0', null, '2');
+INSERT INTO `t_sm_pdctype` VALUES ('07a47c356a9b4c5795a9a829121fe3ed', '11', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', '');
+INSERT INTO `t_sm_pdctype` VALUES ('0b567220fbdd45bb87975f7795b53759', '净菜', '25daee64de0f472bb2632d43e93e493e', '0', 'e3eb284f9b6a42518d98d2a4016e2416.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('1', '新鲜水果', '', '0', '81fef9e0b2c94245a54404c604cddea3.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('1241c93045da4298ba239b49778eb6b8', '测试分类', 'c87010e910224a0f8eaddf342ddbb971', '0', '85cbf11b5b53484097c2ec9792bf29e5.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('155d6adbfdc7497da45758c14285f166', '测试分类', 'e31e54e48611450983ce9e245873d34e', '0', 'ba12044a401a4bfeba74ff350a4b5fa2.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('17dcd083378b4a3bb685b404253ea5a9', '2', '1', '1', '', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('1ce5eee051c74d45ba0cbf4bdf9148f7', '品质蔬菜', '25daee64de0f472bb2632d43e93e493e', '0', 'e1f7c08c85514266aa887db3c627902b.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('1d5b17a9eacb4ca48f41465be485a212', '本地特产', '', '0', '', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', '1');
+INSERT INTO `t_sm_pdctype` VALUES ('1f4993152e084d0680a7ed506586f2fb', '茶叶', '387ef4e0ba414a89b25d63768d2efd83', '0', '10513b18def84947be4927ee59df2927.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('1fc978a2507744baaac63817e2db50c7', '小米', 'd8f56ee278654a05b0bf3d1f4848cdc4', '0', 'd5749ef04af642d19d67b981b8cf3fbd.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('2', '葡萄', '1', '1', 'c1f730e57d3140eab9044a79ad6bc7d1.png', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('25c8c6baf98e4a23bea96c4cbd5e5b49', '农家蔬菜', '25daee64de0f472bb2632d43e93e493e', '0', 'f2b0135984e04320b64ce835b18821c4.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('25daee64de0f472bb2632d43e93e493e', '精品蔬菜', '', '0', '9c44c2633a824ecbb665bae549023af4.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('2b72d34ad400433f873031a8339314c1', '葡萄', '1', '1', '26f2c0629fcf42c1aa5d14f97048003f.png', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('3', '香梨', '1', '1', 'a1dac136b3f74a44bf524cb81dbd522d.png', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('321bf7d0b7b543f7ad1e46743abd6665', '禽肉蛋品', '', '0', '5dc56285ec774decb6e124acca3e150d.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('387ef4e0ba414a89b25d63768d2efd83', '酒水茶饮', '', '0', '579355ede9a44fdea9541be0bec4f2c2.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('3e65233ef0f74002a8820d1cb68a3136', '进口水果', '1', '0', '6f35a5f9505142629ab87801864c4613.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('4', '水产海鲜', '', '0', '175fab09e8624d3aaf04e7add1ad8239.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('41a1ebca675b4704889891d42a05bdea', '杂粮', 'fb30fc8326c34a5f81410a5efda8da42', '1', 'af727380e5474e02ab16f8fc23f53f94.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('5', '鱼类', '4', '0', 'cecb76f780bb402993981601749bbf3b.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('5a69482b699b4c4fa691def54262e205', '3', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('5f765ebabd86437daac596b61e29c981', '羊肉', '321bf7d0b7b543f7ad1e46743abd6665', '0', '649c4f3e5c55479c8003fde0d66b8b23.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('6', '虾类', '4', '0', '14fd399b05de483eb217fe751649981f.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('65f0b935cbde405692dfff8ef5d1c1af', '牛肉', '321bf7d0b7b543f7ad1e46743abd6665', '0', '83911763aa46427cb83ebdad62c82542.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('66ba3c34e61545a7a580bcef87efd32c', '休闲食品', '', '0', '9adc3770f97147cc8cab1793d960b385.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('67b39dbabf7c4604b74d351b894305d5', '新鲜水果', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('682dbc03b5fb4d4086e3ff5d802c6214', '红酒', '387ef4e0ba414a89b25d63768d2efd83', '0', '9bae5585ffb64d38af5038d6ee5516f8.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('69ac03d8dc524db697b4e39e25be8343', '蛋类', '321bf7d0b7b543f7ad1e46743abd6665', '0', 'd38c78f5b779435eab095fb455d7d023.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('6da7f9a4552d49dab023c1b34942186b', '大米', 'd8f56ee278654a05b0bf3d1f4848cdc4', '0', '7f468b49c6dc4825aeac30350f99f54d.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('6e02bd17909440639eef8bc734b1f988', '北京特产', 'ad32d09aaa4a49049b47d598b7d9016f', '0', 'b28359870e9c45c4b265d12f9731ae83.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('71a05b20d6f04a3696d01c1377c547cb', '苹果', '1', '1', 'e463c78851174c6b89ea2b510ce3fad9.png', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('7669b285301f4fca9f333f370412bfec', '蜂蜜', '387ef4e0ba414a89b25d63768d2efd83', '0', 'ade8386f275141439eb0fd4854ebc12b.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('7ca3f31c235a4d56a693071fff44f9c1', '4', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('895e4c872a4c47b1b3927e220c1366c3', '测试分类', 'f5804259b8bb4c5584cb2b0aebaf6053', '0', '69ef722316ec466dbf1339bf7888c30e.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('8bf76cf01abd4d5a8009033d1ba15ace', '荔枝', '1', '0', 'ba1aefbf702f4118824d9a2011b4c431.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('8d517341f5e442d9a4d412d723385747', '测试分类', 'fb30fc8326c34a5f81410a5efda8da42', '0', '62d36097b2104645a4522e11030ad92a.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('8e68eacd48cd450bb7676172331bfbfc', '羊肉', 'dacec11f40d847af9f68bd63055408e3', '1', '97ee3866ecb3412fb5eb9cc6b6eb8c76.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('9968b87a6fda41b6b93c2b47c92361b6', '国产水果', '1', '0', 'abaa941b436e413183201220895bd2ac.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('9cca6e7f13924c1a846f44eb6ade42f2', '干菜', '25daee64de0f472bb2632d43e93e493e', '0', '7d579d59ee564e07a726a80d3830d01b.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('a81350e6c9e54739bb2ae36323d08811', '鸭梨', '1', '1', 'b88c42800d154a6fa76dd04b501fea88.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('aaefabf8ab52405a8c9d04bfef9ab5c9', '测试分类', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('ad32d09aaa4a49049b47d598b7d9016f', '地方特色', '', '0', '63433f376c674efb95160a8ce3c06816.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('ae408300076c4b2fa3ef9af321fd6da9', '测试分类', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('aea4f01dc2084c4eb1aee14d9dbb3ef4', '222', '', '1', '5d7f633a3cb444678342cd5e472b2203.png', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('af38c0500903447f8ddb9f2260d1ba48', '特色', 'fb30fc8326c34a5f81410a5efda8da42', '1', '003d776e20df444aa779d2ecf4fe2853.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('bcfd4f1cfa9d4ac384e6d113c7e83ee9', '苹果', '1', '1', '6895c2d9f0a5474682c31f40109a0705.png', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('bd2688bb7fd14301b05456eafd5a1177', '测试分类', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('bd82c9ad2cf3499fa17cb42b84ed5c76', '禽肉', '321bf7d0b7b543f7ad1e46743abd6665', '0', 'aedade2ae9d94d508e046e6d6bfd38f7.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('c5cf1cf0e3724b54bdbd0cf7832a38cc', '李子', '1', '1', '530564bcc25f4180af8683112285fbdf.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('c87010e910224a0f8eaddf342ddbb971', '三农专区', '', '0', '24f9b8ea8f054019bcbf8af60df7007b.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('c919d518791a42d68341ca9d44b4ad64', '苹果', '1', '0', '16de16d40c02423abf13bc6bfbaec88b.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('cb40939b0541402881dde7f94003249a', '毛菜', '25daee64de0f472bb2632d43e93e493e', '0', '7fb07484a08e4ddd9d55291eb2dad216.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('d2790d8f625e4cf79f398925683b0307', '111', '4', '1', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('d6f7397e3314452d9588a585f06c859b', '1', '1', '1', null, '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('d7871f0821f54e799f27b7e5c9f739ac', '新试分类', '', '1', 'd1397ea3cf3d420cada8e201b14d015a.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('d8f56ee278654a05b0bf3d1f4848cdc4', '粮油副食', '', '0', '36872b8542ac44db92f6f58cc9a2c0be.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('da055e0eb9bd4a8c849dbda77886367f', '坚果', '66ba3c34e61545a7a580bcef87efd32c', '0', '621a7f34f64648e59909b7fb2d34fa32.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('dacec11f40d847af9f68bd63055408e3', '粮油副食', '', '1', '', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('ddde8ca888de4dd3b8bfde9d499f2b95', '橙子', '1', '0', '522d44d316014918beab9705dbffa24f.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('deba7703410645bca4c04ca0299a20e3', '猪肉', '321bf7d0b7b543f7ad1e46743abd6665', '0', 'c2848f3daf564094bd47365608430bb6.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('e31e54e48611450983ce9e245873d34e', '母婴用品', '', '0', '2c1fd755c8fa42628c072fc655666479.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('e51f099613854bc7b28414afc750ef53', 'cs', '', '1', null, '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('e860a0f107dc4b73b8886e8ae3211bd3', '高档礼盒', 'fb30fc8326c34a5f81410a5efda8da42', '0', '5ef87311b10940c7805020c07e892bb7.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('f3b9328afa9e44abaf59ad7f40276992', '香梨', '1', '0', 'a041e9d14e0641ba9f6bb06530fee5f2.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('f5804259b8bb4c5584cb2b0aebaf6053', '乳品饮料', '', '0', 'f6a9cb9f00d04b24bda15bbcb6b556eb.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('f73be14c8cf345dabf81cb8e27b19681', 'cs', '1', '1', 'cada92f40c444e27893ed5d87e700c8e.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('f79bc724b0fa440dbe695700b29d03e4', '坚果', 'fb30fc8326c34a5f81410a5efda8da42', '1', 'a10605138fcf470c922ded66b2ae113a.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('f8cb4ae73e6148e4b1f7d8fa8c3aeed3', '油类', 'd8f56ee278654a05b0bf3d1f4848cdc4', '0', '851a6d1553f847e597d5180b0e2ac3db.jpg', '2', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+INSERT INTO `t_sm_pdctype` VALUES ('fb30fc8326c34a5f81410a5efda8da42', '礼盒/礼品', '', '0', 'ff73fe3fcd6b404bb9f536cdbe9176d0.jpg', '1', 'da14b98e-cb26-4169-9b58-babe98b98047', null);
+
+-- ----------------------------
+-- Table structure for t_sm_price_1_ref
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sm_price_1_ref`;
+CREATE TABLE `t_sm_price_1_ref` (
+  `F_REFID` varchar(50) NOT NULL COMMENT '信息ID/团购批次/每个订单',
+  `F_PRICEID` varchar(50) NOT NULL COMMENT '销售价ID',
+  `F_USERID` varchar(50) DEFAULT NULL COMMENT '用户ID',
+  `F_ORDERLISTID` varchar(50) DEFAULT NULL COMMENT '订单ID',
+  `F_REF_PATCHCODE` varchar(50) DEFAULT NULL COMMENT '团购批次(一起参团，相同团购批次)',
+  `F_ISBEGIN` varchar(1) DEFAULT NULL COMMENT '发起人=1，非发起人=0',
+  `F_PRICESTARTDATE` varchar(19) DEFAULT NULL COMMENT '发起人保存-效期开始日期',
+  `F_PRICEENDDATE` varchar(19) DEFAULT NULL COMMENT '发起人保存-效期结束日期',
+  `F_CREATETIME` varchar(19) DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`F_REFID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='销售-团购-信息';
+
+-- ----------------------------
+-- Records of t_sm_price_1_ref
+-- ----------------------------
+INSERT INTO `t_sm_price_1_ref` VALUES ('03e062dd3fbe47d4a63b1e99250fdb22', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', 'd2e81e126ad54d6fadd10fe8a7e60fe0', 'Price1PatchCode_2_1573971760127', '0', '2019-11-17 14:22:40', '2019-11-17 20:52:40', '2019-11-17 20:48:56');
+INSERT INTO `t_sm_price_1_ref` VALUES ('06836348201e4ae1975c53f3a145c5ab', '1ce1412d008648c3b137d849bf02cae8', '8970c01dce534f8b92521437085cc812', '49f3161e72ba4b45a692f52475fae555', 'Price1PatchCode_2_1573996144548', '1', '2019-11-17 21:09:04', '2019-11-17 21:39:04', '2019-11-17 21:09:04');
+INSERT INTO `t_sm_price_1_ref` VALUES ('084152a0448d40afbd9555b357afd675', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'ad9d31d007b34a6f99e1e3e6c9e92cc4', 'Price1PatchCode_1_1573922558586', '1', '2019-11-17 00:42:38', '2019-11-17 20:58:00', '2019-11-17 00:42:38');
+INSERT INTO `t_sm_price_1_ref` VALUES ('088c2809f3b54cf4ab19195e10ba8702', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', '536d92fda8604bc9b36f6ecf450de029', 'Price1PatchCode_3_1573996150836', '1', '2019-11-17 21:09:10', '2019-11-17 21:39:10', '2019-11-17 21:09:10');
+INSERT INTO `t_sm_price_1_ref` VALUES ('0dd2cf8db04940c3966aa0d890bf995e', 'a07203641fb742b8a31a50f11696e2fb', '5c210936bf2b4939994610a252510b3d', '8d9e6694db0a4d5d9cb7e87790e6ede7', 'Price1PatchCode_1_1573971297310', '1', '2019-11-17 14:14:57', '2019-11-17 20:44:57', '2019-11-17 14:14:57');
+INSERT INTO `t_sm_price_1_ref` VALUES ('127d9afceef84b928a9c467f04adc1b4', '92f78b51b94d43548c277a5a688d47e4', 'd417d39463f34103bf376677a1db0fae', '34e8f359daa14715a7c12e8d299b2351', 'Price1PatchCode_7_1573920609198', '1', '2019-11-17 00:10:09', '2019-11-17 20:40:09', '2019-11-17 00:10:09');
+INSERT INTO `t_sm_price_1_ref` VALUES ('180379582e9544ac8ccc24d9b8dd167f', '6a632d5e520c4ad49cae9acb42c0f248', 'd417d39463f34103bf376677a1db0fae', '804bfa415907461fa2a4c6c4a42af741', 'Price1PatchCode_1_1574173225578', '1', '2019-11-19 22:20:25', '2019-11-19 22:50:25', '2019-11-19 22:20:25');
+INSERT INTO `t_sm_price_1_ref` VALUES ('19bbaa3f0907425196de8eaa5271d975', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', 'e4aa876f783e4b4eb5ad114fc2e407ae', 'Price1PatchCode_4_1573996183047', '1', '2019-11-17 21:09:43', '2019-11-17 21:39:43', '2019-11-17 21:09:43');
+INSERT INTO `t_sm_price_1_ref` VALUES ('1ac64d7838ec4d359f7fb94c059e0369', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', 'f479bd7f225043dd801d42a8531e60e2', 'Price1PatchCode_1_1573922988627', '1', '2019-11-17 00:49:48', '2019-11-17 20:19:48', '2019-11-17 00:49:48');
+INSERT INTO `t_sm_price_1_ref` VALUES ('223781977e0b435286274b29752b6046', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '149f2a343993414783567293aa5200ab', 'Price1PatchCode_5_1573923239395', '1', '2019-11-17 00:53:59', '2019-11-17 20:23:59', '2019-11-17 00:53:59');
+INSERT INTO `t_sm_price_1_ref` VALUES ('22b1362c60be403b9c256121ffe83921', 'a07203641fb742b8a31a50f11696e2fb', 'b9a722add51f403591389edc96ae150b', '440be6a4a340446b8ff515e05cffaac1', 'Price1PatchCode_8_1573923263980', '1', '2019-11-17 00:54:23', '2019-11-17 20:24:23', '2019-11-17 00:54:23');
+INSERT INTO `t_sm_price_1_ref` VALUES ('324ec85ae834425fa8da0698d063399e', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', 'c769d94b26724136adb5d69520f19d41', 'Price1PatchCode_3_1573981516079', '0', '2019-11-17 17:02:25', '2019-11-17 21:32:25', '2019-11-17 17:29:25');
+INSERT INTO `t_sm_price_1_ref` VALUES ('433b1e3dd5914a778510c8f956b4bdf5', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '49be2fe2e0bd4fcda815f3e2252cfee1', 'Price1PatchCode_9_1573920793250', '1', '2019-11-17 00:13:13', '2019-11-17 20:43:13', '2019-11-17 00:13:13');
+INSERT INTO `t_sm_price_1_ref` VALUES ('49ad073be2fc4119a431fdb5419d9b2e', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '60da375fec9249acbb0d17796b0729dd', 'Price1PatchCode_3_1573981516079', '0', '2019-11-17 17:05:16', '2019-11-17 21:35:16', '2019-11-17 17:30:57');
+INSERT INTO `t_sm_price_1_ref` VALUES ('4c55d2e45c3a488eb2f83cc266d469a8', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', 'ff376ecf26c24c0f8ccfe35eab445002', 'Price1PatchCode_1_1573919509060', '1', '2019-11-16 23:51:49', '2019-11-17 20:21:49', '2019-11-16 23:51:49');
+INSERT INTO `t_sm_price_1_ref` VALUES ('4c5827003c6849e6a380f8f065e3dbe9', 'a07203641fb742b8a31a50f11696e2fb', 'b9a722add51f403591389edc96ae150b', 'a607b4891c574b9f91e313854daeb4b0', 'Price1PatchCode_2_1573923030873', '1', '2019-11-17 00:50:30', '2019-11-17 20:20:30', '2019-11-17 00:50:30');
+INSERT INTO `t_sm_price_1_ref` VALUES ('5187c62d88cf4c47a5b709768e635804', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', 'd48670fdd8a84fcba48cec67f588acf1', 'Price1PatchCode_7_1573923258865', '1', '2019-11-17 00:54:18', '2019-11-17 20:24:18', '2019-11-17 00:54:18');
+INSERT INTO `t_sm_price_1_ref` VALUES ('52bad45937bb44069097d9c7b9c253b4', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'fdd04e39fbe6492492a064e07951ac13', 'Price1PatchCode_6_1573982270897', '1', '2019-11-17 17:17:50', '2019-11-17 20:47:50', '2019-11-17 17:17:50');
+INSERT INTO `t_sm_price_1_ref` VALUES ('5657a5c3ca754941a80ace290d6addfc', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'b24e6dcaf60340aa97b424a4047fb8ee', 'Price1PatchCode_4_1573922909439', '1', '2019-11-17 00:48:29', '2019-11-17 20:18:29', '2019-11-17 00:48:29');
+INSERT INTO `t_sm_price_1_ref` VALUES ('5a4b59dbb2d5440fbed0958c6c20807b', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '1fc905c5c4264a25b1310d518a0ecb50', 'Price1PatchCode_2_1573981345055', '1', '2019-11-17 17:02:25', '2019-11-17 20:32:25', '2019-11-17 17:02:25');
+INSERT INTO `t_sm_price_1_ref` VALUES ('64e59d4783454cd39780a7f93eba4b9b', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '7a7deb03c92c4627833f94f9c97d2c44', 'Price1PatchCode_3_1573981516079', '1', '2019-11-17 17:05:16', '2019-11-17 21:35:16', '2019-11-17 17:05:16');
+INSERT INTO `t_sm_price_1_ref` VALUES ('681677aaaa4e4385bc868159f0bde308', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '71d5a8807d1646b7936bae7b9be65756', 'Price1PatchCode_4_1573923145962', '1', '2019-11-17 00:52:25', '2019-11-17 20:22:25', '2019-11-17 00:52:25');
+INSERT INTO `t_sm_price_1_ref` VALUES ('6fb2e73ca6f34d4e8c74eac31372e1a2', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', '1a24bb8fa0aa469681412b552fa25ac6', 'Price1PatchCode_3_1574065570416', '1', '2019-11-18 16:26:10', '2019-11-18 16:56:10', '2019-11-18 16:26:10');
+INSERT INTO `t_sm_price_1_ref` VALUES ('7b926301fcfd49929279ecfb441f011b', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '9250cd5c8b634f1d914b243477c1b60e', 'Price1PatchCode_6_1573923253086', '1', '2019-11-17 00:54:13', '2019-11-17 20:24:13', '2019-11-17 00:54:13');
+INSERT INTO `t_sm_price_1_ref` VALUES ('7c6c9f7ee030447cb373cebaf4784440', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'b386898ce9f6432eb7720eba4e614778', 'Price1PatchCode_6_1573920586119', '1', '2019-11-17 00:09:46', '2019-11-17 20:39:46', '2019-11-17 00:09:46');
+INSERT INTO `t_sm_price_1_ref` VALUES ('8064732aa136454ea02e11e1cf336bb7', 'a07203641fb742b8a31a50f11696e2fb', '8970c01dce534f8b92521437085cc812', 'c0e48f93b9bc47d1a390fc5651e8bd64', 'Price1PatchCode_1_1573996075804', '1', '2019-11-17 21:07:55', '2019-11-17 21:37:55', '2019-11-17 21:07:55');
+INSERT INTO `t_sm_price_1_ref` VALUES ('82a26576369648b4b898a255284582b7', '1ce1412d008648c3b137d849bf02cae8', '8970c01dce534f8b92521437085cc812', '33ff028c264d425e9cdf12b7de666d09', 'Price1PatchCode_5_1573996380041', '1', '2019-11-17 21:13:00', '2019-11-17 21:43:00', '2019-11-17 21:13:00');
+INSERT INTO `t_sm_price_1_ref` VALUES ('83a355f1b8e6413ab2ebab451df09bed', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '40931b1d3522422dbc89c7ad13d04182', 'Price1PatchCode_4_1573981628569', '1', '2019-11-17 17:07:08', '2019-11-17 20:37:08', '2019-11-17 17:07:08');
+INSERT INTO `t_sm_price_1_ref` VALUES ('911966b9a9754359a4e2875f81958796', '2f76067bbc514dd783db39b19c675729', 'd417d39463f34103bf376677a1db0fae', '2ed75811db794c2089f3aefdf256072d', 'Price1PatchCode_1_1574399485933', '1', '2019-11-22 13:11:25', '2019-11-22 13:41:25', '2019-11-22 13:11:25');
+INSERT INTO `t_sm_price_1_ref` VALUES ('955027abc78e4ec7b1f3746cc2739f36', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', 'f43df0626a574ad9b7d7f8c970dade26', 'Price1PatchCode_3_1573923119347', '1', '2019-11-17 00:51:59', '2019-11-17 20:21:59', '2019-11-17 00:51:59');
+INSERT INTO `t_sm_price_1_ref` VALUES ('95fc999420964029bd71499ee14940ac', '6a632d5e520c4ad49cae9acb42c0f248', '5d020e0465284dcc8d2e91a393da801e', '5729c79a2d5c45258cfc368b36828167', 'Price1PatchCode_1_1574302326356', '1', '2019-11-21 10:12:06', '2019-11-21 10:42:06', '2019-11-21 10:12:06');
+INSERT INTO `t_sm_price_1_ref` VALUES ('9675e76cdad34bdebc646b26aae9a0b6', '6a632d5e520c4ad49cae9acb42c0f248', 'd417d39463f34103bf376677a1db0fae', '00d53810726745109c70db287e4f12c8', 'Price1PatchCode_1_1574173225578', '0', '2019-11-19 22:20:25', '2019-11-19 22:50:25', '2019-11-19 22:20:54');
+INSERT INTO `t_sm_price_1_ref` VALUES ('96b594fd567f4df7916315fe0dfd5deb', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '6f7965f8c2154c59a2916d9bbe9da51a', 'Price1PatchCode_2_1573981345055', '0', '2019-11-17 17:02:25', '2019-11-17 20:32:25', '2019-11-17 17:30:09');
+INSERT INTO `t_sm_price_1_ref` VALUES ('990fa329817c47c6ada204ef3be8585f', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '5347a637d84c469fb0d85ba932d2de3e', 'Price1PatchCode_3_1573922778401', '1', '2019-11-17 00:46:18', '2019-11-17 20:16:18', '2019-11-17 00:46:18');
+INSERT INTO `t_sm_price_1_ref` VALUES ('9a1ba441612145f98c0bc9b3b4b65987', 'dfa8287b1ee24a40980ac3633a26a127', '622488d41a0f4029ae3ea009ffc101b5', '607568adc2614e2eab961f40a5f1aae7', 'Price1PatchCode_1_1574039591040', '1', '2019-11-18 09:13:11', '2019-11-18 09:43:11', '2019-11-18 09:13:11');
+INSERT INTO `t_sm_price_1_ref` VALUES ('9d2d3f4902994965a131f831e61d1400', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'e894cc5942a2499a82d83af4fbd975bd', 'Price1PatchCode_8_1573982889767', '1', '2019-11-17 17:28:09', '2019-11-17 20:58:09', '2019-11-17 17:28:09');
+INSERT INTO `t_sm_price_1_ref` VALUES ('a0a23ee1ca2a4facb3481a7a28f0d800', 'a07203641fb742b8a31a50f11696e2fb', '5c210936bf2b4939994610a252510b3d', 'd14dc530962c4740b549c738385286a1', 'Price1PatchCode_2_1573971760127', '1', '2019-11-17 14:22:40', '2019-11-17 20:52:40', '2019-11-17 14:22:40');
+INSERT INTO `t_sm_price_1_ref` VALUES ('a38fd686ac6f477892b6213d07716208', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', '588d605e7a274a7684a812939e8aafa4', 'Price1PatchCode_7_1573982298476', '1', '2019-11-17 17:18:18', '2019-11-17 20:48:18', '2019-11-17 17:18:18');
+INSERT INTO `t_sm_price_1_ref` VALUES ('af29f6193c994eca907d49188bdc4475', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '38f168879c764d41bda7e680ac596939', 'Price1PatchCode_2_1573922566156', '1', '2019-11-17 00:42:46', '2019-11-17 14:12:46', '2019-11-17 00:42:46');
+INSERT INTO `t_sm_price_1_ref` VALUES ('bee068dd9eb64abfab1ac4f7efe0b4a6', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', '0dba97f7669b4d6d90e09d91d361d2b2', 'Price1PatchCode_2_1574064198514', '1', '2019-11-18 16:03:18', '2019-11-18 16:33:18', '2019-11-18 16:03:18');
+INSERT INTO `t_sm_price_1_ref` VALUES ('c5a14fa881c34e10a99156a2f2288109', 'fb99e9dab2cb4b2cbe0bd6c48a72788c', '8970c01dce534f8b92521437085cc812', 'f6e4bb8ba95348e0ba6b405c2b498c7b', 'Price1PatchCode_1_1574060419833', '1', '2019-11-18 15:00:19', '2019-11-18 15:30:19', '2019-11-18 15:00:19');
+INSERT INTO `t_sm_price_1_ref` VALUES ('c89303e2ee6a40569f7b1451037d5a30', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', '2ebcfadf0fb1452f8325e10bbbf2fa60', 'Price1PatchCode_8_1573920684113', '1', '2019-11-17 00:11:24', '2019-11-17 14:41:24', '2019-11-17 00:11:24');
+INSERT INTO `t_sm_price_1_ref` VALUES ('d1782b9b421e42168ded25cfd81ffa95', '92f78b51b94d43548c277a5a688d47e4', 'd417d39463f34103bf376677a1db0fae', 'ee056ef3d6814b1f9f13d656d2ad416c', 'Price1PatchCode_1_1573981263112', '1', '2019-11-17 17:01:03', '2019-11-17 17:31:03', '2019-11-17 17:01:03');
+INSERT INTO `t_sm_price_1_ref` VALUES ('db7abf3eb7144c1f981568f52a4bfdcb', 'a07203641fb742b8a31a50f11696e2fb', '622488d41a0f4029ae3ea009ffc101b5', 'b35eefdd3d6a4877ab4653811cb52d61', 'Price1PatchCode_5_1573981728840', '1', '2019-11-17 17:08:48', '2019-11-17 17:38:48', '2019-11-17 17:08:48');
+INSERT INTO `t_sm_price_1_ref` VALUES ('e40f4623305246dcafbe53671f19f06a', '92f78b51b94d43548c277a5a688d47e4', '5c210936bf2b4939994610a252510b3d', 'e258b8cbad8c45de9e988519f4e5b315', 'Price1PatchCode_2_1573919585516', '1', '2019-11-16 23:53:05', '2019-11-17 14:23:05', '2019-11-16 23:53:05');
+INSERT INTO `t_sm_price_1_ref` VALUES ('e9c29d39f3e54dbb89569e8ef1974395', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '2c0248ca42bf4ca692007e0d039ffd28', 'Price1PatchCode_11_1573920851071', '1', '2019-11-17 00:14:11', '2019-11-17 14:44:11', '2019-11-17 00:14:11');
+INSERT INTO `t_sm_price_1_ref` VALUES ('f43a7580d2bd46c58c12b20ab7cfe42c', '1ce1412d008648c3b137d849bf02cae8', 'd417d39463f34103bf376677a1db0fae', '276e3d4721c4436b8bd748de967fb23e', 'Price1PatchCode_2_1573996144548', '0', '2019-11-17 21:09:04', '2019-11-17 21:39:04', '2019-11-17 21:18:27');
+INSERT INTO `t_sm_price_1_ref` VALUES ('fd0768deb7b2443689eee6702de93ae4', 'a07203641fb742b8a31a50f11696e2fb', 'd417d39463f34103bf376677a1db0fae', '8f156a1627db43a68cf5503229ae2c14', 'Price1PatchCode_10_1573920820204', '1', '2019-11-17 00:13:40', '2019-11-17 14:43:40', '2019-11-17 00:13:40');
 
 -- ----------------------------
 -- Table structure for t_sm_sellprice
@@ -9282,17 +11149,65 @@ CREATE TABLE `t_sm_sellprice` (
   `F_PRODUCTID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品ID',
   `F_PRICE` decimal(10,2) DEFAULT NULL COMMENT '销售单价',
   `F_PRICETYPE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '活动类型 ：0常规商品；1团购价；2秒杀价',
-  `F_PRICESTARTDATE` varchar(19) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PRICEENDDATE` varchar(19) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `F_PRICESTARTDATE` varchar(19) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '活动开始时间',
+  `F_PRICEENDDATE` varchar(19) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '活动结束时间',
   `F_MAXBUYCOUNT` decimal(6,0) DEFAULT NULL COMMENT '产品最多购买数量  -1为不限',
   `F_LIMITBUYCOUNT` decimal(6,0) DEFAULT NULL COMMENT '产品最少制购买数量 -1为不限',
-  `F_PEOPLENUM` decimal(6,0) DEFAULT NULL,
-  PRIMARY KEY (`F_PRICEID`)
+  `F_PEOPLENUM` decimal(6,0) DEFAULT NULL COMMENT '参团人数',
+  `F_DELFLAG` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '删除标志',
+  `F_UPDATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`F_PRICEID`),
+  KEY `index_sellprice_priceid` (`F_PRICEID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='销售价表';
 
 -- ----------------------------
 -- Records of t_sm_sellprice
 -- ----------------------------
+INSERT INTO `t_sm_sellprice` VALUES ('0320e2054b3b44f898fae7b55616b38e', '7e85e357507648fbbaa9374971d809a0', '412a321663ec421a8084ce6a1ed5f8e5', '0.03', '0', null, null, null, null, null, '0', '2019-11-29 09:27:58');
+INSERT INTO `t_sm_sellprice` VALUES ('0a33fefe986e4062951a0b59cc86eaec', '766fd02805fa4bff95d7d655f9e4ed38', 'd245bdf684c74e32ba6ffeadd729fb6e', '0.01', '0', null, null, null, null, null, '0', '2019-11-16 11:09:47');
+INSERT INTO `t_sm_sellprice` VALUES ('0b6178127c1c42d6948e2f646c9b031d', 'f7e516bf79ff48d4bb4700f207ac291b', '6559ea539e914828bfa33136c151a8cd', '1.00', '0', null, null, '2', '3', null, '0', '2019-11-16 23:35:11');
+INSERT INTO `t_sm_sellprice` VALUES ('0c8f977de08d4727ac2c6672a4f39c49', '8bf4e15499eb4d4da6c65d319c156366', 'd370c3a103dd489c83be747b6cb125ee', '90.00', '0', null, null, null, null, null, '0', '2019-11-18 21:33:22');
+INSERT INTO `t_sm_sellprice` VALUES ('0e8e25b6e04345078f955899493ed011', 'a98b9d6b1dd94861a40e3c714d986ecb', 'fde4704be6e647d486f42b2452f86225', '1.00', '0', null, null, null, null, null, '0', '2019-11-26 20:52:00');
+INSERT INTO `t_sm_sellprice` VALUES ('1cb9e198518345f697f74998239ae724', '1202b5132f0048bb80a7db644b502ead', '7435dd9dea4c499e871a5da56b0dc6ef', '1.00', '0', null, null, '3', '4', null, '0', '2019-11-26 18:58:09');
+INSERT INTO `t_sm_sellprice` VALUES ('1ce1412d008648c3b137d849bf02cae8', '38ce606c26904a51b58f3fd0ed7a95e9', '20decd8ef043410488f6fea6d3e11a3d', '700.00', '1', '2019-11-14 22:19:42', '2019-11-30 22:19:44', null, null, '3', '0', '2019-11-27 09:45:37');
+INSERT INTO `t_sm_sellprice` VALUES ('2be0d6477bbb48c18ec02c55a14d8718', 'cba63e4052334288a07d2e1a2003eec4', '28ebed31fad1485d800398d28d71d5ff', '0.01', '0', null, null, null, null, null, '0', '2019-11-16 11:08:00');
+INSERT INTO `t_sm_sellprice` VALUES ('2f76067bbc514dd783db39b19c675729', 'c7dc0960b6684199972b7e672580a2b9', '2f9aab43d0cc4b208d25032de8ac6b6d', '150.00', '1', '2019-11-22 13:06:00', '2019-11-23 13:07:42', null, null, '2', '0', '2019-11-22 13:09:47');
+INSERT INTO `t_sm_sellprice` VALUES ('36da2be2c9d846c29e2546ad0df84ec4', 'd49d78a53dcd48178f0e4e7abb8477bf', '3b0ae9ccde2549438d520ebe79d6f7ed', '1.00', '0', null, null, null, null, null, '0', '2019-11-26 19:32:08');
+INSERT INTO `t_sm_sellprice` VALUES ('3f70d3a125b4445c82286893073ea200', '2510373c7c834a75a0dc0d53aceebedc', '8969e38d94924385bc09740f9611ec23', '2.00', '0', null, null, '3', '4', null, '0', '2019-11-16 23:27:58');
+INSERT INTO `t_sm_sellprice` VALUES ('4b31200d43a94006b0a6090b1cbb3e0f', '586624f591af4d92ae290379f806d5a0', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, '1', '1', null, '0', '2019-11-26 14:48:27');
+INSERT INTO `t_sm_sellprice` VALUES ('5514f35b46f048e59e2cce6653f862d5', '3e64a6f8c306449d9d73b84aeea6e14d', '2f9aab43d0cc4b208d25032de8ac6b6d', '2.00', '0', null, null, null, null, null, '0', '2019-11-26 18:55:33');
+INSERT INTO `t_sm_sellprice` VALUES ('62fa29b04304488c85ff6d686f47bf53', 'c0ee25f9a7be4c4095a9b953854d7635', 'fde4704be6e647d486f42b2452f86225', '0.10', '2', null, null, null, null, null, '0', '2019-11-27 10:11:10');
+INSERT INTO `t_sm_sellprice` VALUES ('6a632d5e520c4ad49cae9acb42c0f248', 'ad9e5cb410ea46888f97480255718173', 'aaaa2d71eef240a2ae80f76bca58cf63', '0.02', '1', '2019-11-18 22:07:30', '2019-12-07 22:07:32', '5', '1', '3', '0', '2019-11-18 22:12:02');
+INSERT INTO `t_sm_sellprice` VALUES ('6aa12dcf62274907a6d1228077f9ae64', '79113c7052b340ea9fa8d94c5368883d', '428bc5fcc8964ad09a4cf3db91684534', '1.80', '0', null, null, null, null, null, '0', '2019-11-26 19:28:00');
+INSERT INTO `t_sm_sellprice` VALUES ('6cf6362f33ae463fa9195916b00abd3c', '7631ce939325471ea92e15918b309916', '954f096a59d945debed62cf0c891d87e', '111.00', '0', null, null, '1', '1', null, '0', '2019-11-16 23:24:26');
+INSERT INTO `t_sm_sellprice` VALUES ('6d1455dbee914cd9af4bcc749eb1671f', '2f5a910f06d548f48de2573479628cfe', 'e6fa720b2b4e43789560bee2150e9702', '0.02', '0', null, null, null, null, null, '0', '2019-11-17 18:34:26');
+INSERT INTO `t_sm_sellprice` VALUES ('6ea78dce9cda4a49977aff7ecfc8c0e3', '82089664137a4d91b841de567f12c95a', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, null, null, null, '0', '2019-11-26 14:56:33');
+INSERT INTO `t_sm_sellprice` VALUES ('740b1199ed414b78bdb315dd358e6596', 'b85ee8f814ba4eb6b459bec61ab340dd', 'fde4704be6e647d486f42b2452f86225', '1.00', '0', null, null, null, null, null, '0', '2019-11-26 20:52:27');
+INSERT INTO `t_sm_sellprice` VALUES ('7e970eb03f5746b4b0175ac820c7bb41', '991953057f304171a5e4792baff2045f', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, '1', '1', null, '0', '2019-11-26 14:33:10');
+INSERT INTO `t_sm_sellprice` VALUES ('7fb3c0fb8b9c4388a50b930b51b97e9b', 'a467273f83044f628ce12a889eabc31d', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, '1', '1', null, '0', '2019-11-26 14:32:12');
+INSERT INTO `t_sm_sellprice` VALUES ('8275258891e74fb7b1662fdc02c4dde8', '38ce606c26904a51b58f3fd0ed7a95e9', '20decd8ef043410488f6fea6d3e11a3d', '0.02', '0', null, null, null, null, null, '0', '2019-11-16 13:29:58');
+INSERT INTO `t_sm_sellprice` VALUES ('85d36a7984144e6fbcf7b2f80a3bec18', '45dccce055284d4a93f681c69aae0c5e', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, null, null, null, '0', '2019-11-26 14:55:23');
+INSERT INTO `t_sm_sellprice` VALUES ('8e1fe994a6ce49d194dbb0a247c0822e', 'c0ee25f9a7be4c4095a9b953854d7635', 'fde4704be6e647d486f42b2452f86225', '0.01', '0', null, null, null, null, null, '0', '2019-11-26 20:52:16');
+INSERT INTO `t_sm_sellprice` VALUES ('92f78b51b94d43548c277a5a688d47e4', 'cba63e4052334288a07d2e1a2003eec4', '28ebed31fad1485d800398d28d71d5ff', '0.01', '1', null, null, null, null, '2', '1', '2019-11-16 22:46:48');
+INSERT INTO `t_sm_sellprice` VALUES ('9cba896ed5fd4fdf9da4136c13c28f48', 'ea9c6ff6f94a4260870083ac0ffa805f', '20decd8ef043410488f6fea6d3e11a3d', '0.01', '0', null, null, '5', '1', null, '0', '2019-11-28 05:47:47');
+INSERT INTO `t_sm_sellprice` VALUES ('9d4f52b70c6b47e390159d04f59da49c', '38ce606c26904a51b58f3fd0ed7a95e9', '20decd8ef043410488f6fea6d3e11a3d', '7.00', '2', null, null, null, null, null, '0', '2019-11-27 10:11:40');
+INSERT INTO `t_sm_sellprice` VALUES ('a07203641fb742b8a31a50f11696e2fb', 'ea9c6ff6f94a4260870083ac0ffa805f', '20decd8ef043410488f6fea6d3e11a3d', '0.01', '1', '2019-11-15 22:19:51', '2019-11-19 22:19:59', null, null, '0', '3', '2019-11-16 22:50:08');
+INSERT INTO `t_sm_sellprice` VALUES ('a084dde46bf64723a97df565f66de69a', 'cba63e4052334288a07d2e1a2003eec4', '28ebed31fad1485d800398d28d71d5ff', '6.00', '2', null, null, null, null, null, '0', '2019-11-27 10:11:40');
+INSERT INTO `t_sm_sellprice` VALUES ('a9b082e73d8a4d4bab956a6d01a342ab', 'c7dc0960b6684199972b7e672580a2b9', '2f9aab43d0cc4b208d25032de8ac6b6d', '150.00', '0', null, null, null, null, null, '0', '2019-11-26 18:17:04');
+INSERT INTO `t_sm_sellprice` VALUES ('b659e428145441c59cb45ea840bea1e7', 'c4e0269b3ec74de0a6674aaa2a058c19', '2f9aab43d0cc4b208d25032de8ac6b6d', '79.90', '0', null, null, null, null, null, '0', '2019-11-22 11:53:30');
+INSERT INTO `t_sm_sellprice` VALUES ('ba2e5ec229b84a318d3c141c3f1143aa', '2f5a910f06d548f48de2573479628cfe', 'e6fa720b2b4e43789560bee2150e9702', '0.03', '1', null, null, null, null, null, '0', '2019-11-27 09:44:59');
+INSERT INTO `t_sm_sellprice` VALUES ('cf68b091afc04690af66028da9690442', 'fc6010a133aa4292bb894e411b2e8d34', '20decd8ef043410488f6fea6d3e11a3d', '5.00', '2', null, null, null, null, null, '0', '2019-11-27 10:11:40');
+INSERT INTO `t_sm_sellprice` VALUES ('d7086559cb6b47388a9ef8c2d2d31b8f', 'ad9e5cb410ea46888f97480255718173', 'aaaa2d71eef240a2ae80f76bca58cf63', '1.00', '0', null, null, null, null, null, '0', '2019-11-18 09:02:47');
+INSERT INTO `t_sm_sellprice` VALUES ('d8edad465b814cad9ac8349201bf92d2', 'c4e0269b3ec74de0a6674aaa2a058c19', '2f9aab43d0cc4b208d25032de8ac6b6d', '79.90', '1', '2019-11-22 13:06:00', '2019-11-23 13:07:42', null, null, '2', '0', '2019-11-27 09:44:59');
+INSERT INTO `t_sm_sellprice` VALUES ('dfa8287b1ee24a40980ac3633a26a127', '766fd02805fa4bff95d7d655f9e4ed38', 'd245bdf684c74e32ba6ffeadd729fb6e', '0.01', '1', '2019-11-15 22:19:51', '2019-11-19 22:19:59', '5', '2', '3', '0', '2019-11-27 09:44:58');
+INSERT INTO `t_sm_sellprice` VALUES ('e05a665bb8344b419e68d57001b98eec', '2cbcded4a0224e3eb75b1a0598044c74', 'ee708b9b5069437c8879d14b3f70b013', '45.00', '0', null, null, '100', '1', null, '0', '2019-11-18 21:31:47');
+INSERT INTO `t_sm_sellprice` VALUES ('e762b00d2b3c40229ff1f335bfb57402', 'fc6010a133aa4292bb894e411b2e8d34', '20decd8ef043410488f6fea6d3e11a3d', '0.05', '0', null, null, null, null, null, '0', '2019-11-16 23:23:13');
+INSERT INTO `t_sm_sellprice` VALUES ('e8434e0eafab419d8b535e465c7e9d6c', 'b85ee8f814ba4eb6b459bec61ab340dd', 'fde4704be6e647d486f42b2452f86225', '0.01', '2', null, null, null, null, null, '0', '2019-11-27 10:11:10');
+INSERT INTO `t_sm_sellprice` VALUES ('ec5ae5316c414a959e6189b433c2430d', '7e85e357507648fbbaa9374971d809a0', '412a321663ec421a8084ce6a1ed5f8e5', '0.01', '2', '2019-11-29 09:27:11', '2019-11-29 23:27:15', '1', '1', null, '0', '2019-11-29 09:27:26');
+INSERT INTO `t_sm_sellprice` VALUES ('f50e73ffdfe0413b9d7d1728b62295ca', '7e85e357507648fbbaa9374971d809a0', '412a321663ec421a8084ce6a1ed5f8e5', '0.02', '1', '2019-11-29 09:26:31', '2020-01-11 09:26:34', '1', '1', '3', '0', '2019-11-29 09:27:44');
+INSERT INTO `t_sm_sellprice` VALUES ('fb2a7cfa251e4b418906ba0faebd4134', 'c6b246c0fa9c4fa68dbc868a0e955885', '2f9aab43d0cc4b208d25032de8ac6b6d', '1.00', '0', null, null, '101', '1', null, '0', '2019-11-26 14:49:45');
+INSERT INTO `t_sm_sellprice` VALUES ('fb99e9dab2cb4b2cbe0bd6c48a72788c', 'f4feccdaeca54c7bbdf1ba3f6a90401f', 'd245bdf684c74e32ba6ffeadd729fb6e', '0.01', '1', '2019-11-15 22:19:51', '2019-11-19 22:19:59', null, null, '2', '0', '2019-11-27 09:44:58');
+INSERT INTO `t_sm_sellprice` VALUES ('fc241024ed5849b68afa2e9740280dfa', 'f4feccdaeca54c7bbdf1ba3f6a90401f', 'd245bdf684c74e32ba6ffeadd729fb6e', '0.02', '0', null, null, null, null, null, '0', '2019-11-16 13:30:35');
 
 -- ----------------------------
 -- Table structure for t_sm_sendgoods
@@ -9336,6 +11251,57 @@ CREATE TABLE `t_sm_shopcart` (
 -- ----------------------------
 -- Records of t_sm_shopcart
 -- ----------------------------
+INSERT INTO `t_sm_shopcart` VALUES ('012f8a1069a54ed3aa5dae76aac2fc45', 'b659e428145441c59cb45ea840bea1e7', '1', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:54:57', '2019-11-22 14:54:57');
+INSERT INTO `t_sm_shopcart` VALUES ('08ba40a1b5734c9f8178b84ed714bf49', 'b7bbe86d132a40c18b09786880e4e551', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-16 10:44:57', '2019-11-16 10:44:57');
+INSERT INTO `t_sm_shopcart` VALUES ('0b62660a542c4022b9760cadfdf02166', '0a33fefe986e4062951a0b59cc86eaec', '2', '0258d323171b4f99900733b2c1a60e36', '2019-11-16 13:24:31', '2019-11-16 17:37:28');
+INSERT INTO `t_sm_shopcart` VALUES ('12a237ce6a7a4dbfba93fb1b857f328b', 'e762b00d2b3c40229ff1f335bfb57402', '2', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:37:19', '2019-11-25 21:01:06');
+INSERT INTO `t_sm_shopcart` VALUES ('14e71020a8cc4917ac80e1da716c3b1b', '4fe218c221204cf497066f4ac8584cb0', '11', '1cac290224924c81a8923ef113b5d0c5', '2019-11-14 14:28:14', '2019-11-15 10:48:16');
+INSERT INTO `t_sm_shopcart` VALUES ('181be55a9e6a47ea8bbc436ff7cdcdaa', '6dd49220e2e445288fa395c76a0a0a97', '3', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 19:06:01', '2019-11-14 19:47:42');
+INSERT INTO `t_sm_shopcart` VALUES ('187103235bc349a2a4b764b35d237afd', '2be0d6477bbb48c18ec02c55a14d8718', '10', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:58:55', '2019-11-20 18:58:55');
+INSERT INTO `t_sm_shopcart` VALUES ('2d20194e9e4743299396a138b1c44238', '6ea78dce9cda4a49977aff7ecfc8c0e3', '1', '', '2019-11-26 18:30:37', '2019-11-26 18:30:37');
+INSERT INTO `t_sm_shopcart` VALUES ('2d38dd6e920c48adbc600d748f90acb6', '4018c493052c456b9677321ee7023272', '1', 'da8b851579ab4614b3a5d97226e2019a', '2019-11-09 21:46:26', '2019-11-09 21:46:26');
+INSERT INTO `t_sm_shopcart` VALUES ('2f0829bd52cd4d8f9508e1d30f801d96', 'e27b3d358a2b4d48a4ada4d204b16f2f', '1', 'da8b851579ab4614b3a5d97226e2019a', '2019-11-09 21:47:32', '2019-11-09 21:47:32');
+INSERT INTO `t_sm_shopcart` VALUES ('3154aa8cd3db45edb9a84ae5f8c0eec5', 'd7086559cb6b47388a9ef8c2d2d31b8f', '2', '8b365a93a03c4e0a9cba24c1aa1e50fa', '2019-11-22 14:55:48', '2019-11-22 14:55:48');
+INSERT INTO `t_sm_shopcart` VALUES ('330c878ae6964891b7d5be7e737b47e0', 'ca6746fa3a5a46b280172737e10c0138', '1', '', '2019-11-13 17:27:20', '2019-11-13 17:27:20');
+INSERT INTO `t_sm_shopcart` VALUES ('33e131b964cc45c19b819fdd67366fc9', '0a33fefe986e4062951a0b59cc86eaec', '1', '1cac290224924c81a8923ef113b5d0c5', '2019-11-16 11:52:17', '2019-11-16 11:52:17');
+INSERT INTO `t_sm_shopcart` VALUES ('38d8f64586304d5f975f7e26e10b49b8', '9cba896ed5fd4fdf9da4136c13c28f48', '2', '7df5aac14a204493911b1855951af4ee', '2019-11-16 19:08:03', '2019-11-16 19:08:03');
+INSERT INTO `t_sm_shopcart` VALUES ('390cfa380fdf4d5f9de52691818da374', 'd0ff1499cdfb4e78bc035e6e76cee097', '3', '', '2019-11-12 20:51:29', '2019-11-13 17:19:08');
+INSERT INTO `t_sm_shopcart` VALUES ('496608b4c5334c2c942a07ba30b59626', 'e762b00d2b3c40229ff1f335bfb57402', '1', '83cb486b630045be9bd771dbbf0523df', '2019-11-22 13:49:39', '2019-11-22 13:49:39');
+INSERT INTO `t_sm_shopcart` VALUES ('531b0b5ad28a49f8bb1572000d2640e3', 'e762b00d2b3c40229ff1f335bfb57402', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-17 20:46:04', '2019-11-17 20:46:04');
+INSERT INTO `t_sm_shopcart` VALUES ('59993457dd374706a766dfa3a187d45b', 'b68356e82eac4d33bd849102ac997eb6', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 19:44:14', '2019-11-14 19:44:14');
+INSERT INTO `t_sm_shopcart` VALUES ('5c37c0f559e9454eb3aa412fceb67c06', 'a9b082e73d8a4d4bab956a6d01a342ab', '2', '5d020e0465284dcc8d2e91a393da801e', '2019-11-22 14:53:11', '2019-11-22 14:53:11');
+INSERT INTO `t_sm_shopcart` VALUES ('5c7ce31927df46cd8e625280d37e9687', '7fb3c0fb8b9c4388a50b930b51b97e9b', '1', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:42:36', '2019-11-26 14:42:36');
+INSERT INTO `t_sm_shopcart` VALUES ('69b75d15a0cf40b9a4f8e2646cf06069', '4ccb8eb131924c178182955e4fcd2e95', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-15 23:51:09', '2019-11-15 23:51:09');
+INSERT INTO `t_sm_shopcart` VALUES ('6ad875a854ca4422ae6045b6c7254705', '0a33fefe986e4062951a0b59cc86eaec', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-19 22:16:36', '2019-11-19 22:16:36');
+INSERT INTO `t_sm_shopcart` VALUES ('6b0701486b3f4470bb1e42a0d02bbe1b', '', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-16 22:43:53', '2019-11-16 22:43:53');
+INSERT INTO `t_sm_shopcart` VALUES ('6bc1feafa3034407b19e836345a38933', '8275258891e74fb7b1662fdc02c4dde8', '1', '1cac290224924c81a8923ef113b5d0c5', '2019-11-16 11:48:40', '2019-11-16 11:48:40');
+INSERT INTO `t_sm_shopcart` VALUES ('6d4381a56946433a9533ea7380ada183', 'c79f71c7aeb2479ab8a275bb896883a1', '7', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 17:12:07', '2019-11-15 23:07:36');
+INSERT INTO `t_sm_shopcart` VALUES ('858c3c1ce18e45ea84a00914233751e5', '4fe218c221204cf497066f4ac8584cb0', '6', '', '2019-11-12 09:19:02', '2019-11-12 11:03:41');
+INSERT INTO `t_sm_shopcart` VALUES ('892a8d478bec40e596c6803e5916e200', '23e61817c2a0438b9e49bb49794a326a', '23', '1cac290224924c81a8923ef113b5d0c5', '2019-11-10 10:51:54', '2019-11-15 10:48:09');
+INSERT INTO `t_sm_shopcart` VALUES ('8e21ee47a93c4af0b74c4f72142f9fba', '379011b4061341afba1ea782753116c3', '15', '0258d323171b4f99900733b2c1a60e36', '2019-11-15 21:47:25', '2019-11-15 21:47:25');
+INSERT INTO `t_sm_shopcart` VALUES ('8eae6c96aadf47ca9a294389643ecafa', '0a4c1607d8db4af1b0f13c7ff54b0c70', '2', '', '2019-11-14 20:10:35', '2019-11-14 20:10:41');
+INSERT INTO `t_sm_shopcart` VALUES ('929f6a139787432a9d94b9a7d16a1de9', '4cb96241b9c4492faaa00041dfb86d94', '1', '1cac290224924c81a8923ef113b5d0c5', '2019-11-15 19:43:19', '2019-11-15 19:43:19');
+INSERT INTO `t_sm_shopcart` VALUES ('9455ecbf131246b0aac15ccde4b2fbf7', 'e4386c2af31a48cf90eada7e188d646f', '1', 'da8b851579ab4614b3a5d97226e2019a', '2019-11-09 21:48:16', '2019-11-09 21:48:16');
+INSERT INTO `t_sm_shopcart` VALUES ('99ed0864c7694f99898a19c06912ae38', '531a7d293d134a4f926a34500463a82f', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-15 23:50:32', '2019-11-15 23:50:32');
+INSERT INTO `t_sm_shopcart` VALUES ('9b4c383dcee945f58fb29f5e537ba203', '8e1fe994a6ce49d194dbb0a247c0822e', '1', '83cb486b630045be9bd771dbbf0523df', '2019-11-27 13:15:09', '2019-11-27 13:15:09');
+INSERT INTO `t_sm_shopcart` VALUES ('b3fcafea86184e4dbc89b793d6845321', '6dd49220e2e445288fa395c76a0a0a97', '4', '', '2019-11-12 13:55:07', '2019-11-12 13:59:02');
+INSERT INTO `t_sm_shopcart` VALUES ('b835680e48ea4ca1a1d3698768348e5d', '2be0d6477bbb48c18ec02c55a14d8718', '2', '0258d323171b4f99900733b2c1a60e36', '2019-11-16 11:46:02', '2019-11-16 11:46:08');
+INSERT INTO `t_sm_shopcart` VALUES ('b840c1250e0a4c85a9d02648ab1b01a5', 'b659e428145441c59cb45ea840bea1e7', '1', '83cb486b630045be9bd771dbbf0523df', '2019-11-26 14:42:58', '2019-11-26 14:42:58');
+INSERT INTO `t_sm_shopcart` VALUES ('b94cab9380a24604a59063f44b71f314', '23e61817c2a0438b9e49bb49794a326a', '3', '7df5aac14a204493911b1855951af4ee', '2019-11-14 19:21:03', '2019-11-15 14:02:12');
+INSERT INTO `t_sm_shopcart` VALUES ('bc061f17e6604baab3e520318657e82a', '2be0d6477bbb48c18ec02c55a14d8718', '2', '626df5cb3db84e92a2560d0ec8d8f8dc', '2019-11-25 10:38:16', '2019-11-25 21:01:27');
+INSERT INTO `t_sm_shopcart` VALUES ('c1c7ec07d1974fda97fff2acdde9aa03', '9cba896ed5fd4fdf9da4136c13c28f48', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-17 15:12:45', '2019-11-17 15:12:45');
+INSERT INTO `t_sm_shopcart` VALUES ('c1dcd78058d644dfb55276e14ba8d83a', '6d1455dbee914cd9af4bcc749eb1671f', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-17 20:45:58', '2019-11-17 20:45:58');
+INSERT INTO `t_sm_shopcart` VALUES ('c547c236c8c3428d94d3f1f7c38531c2', '23e61817c2a0438b9e49bb49794a326a', '2', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 19:41:22', '2019-11-14 19:42:01');
+INSERT INTO `t_sm_shopcart` VALUES ('cb32fae0ff834d848b9d977c30f55c54', '4fe218c221204cf497066f4ac8584cb0', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-13 20:40:01', '2019-11-13 20:40:01');
+INSERT INTO `t_sm_shopcart` VALUES ('ce794c527b4c40dea2172444a16fded6', 'a07203641fb742b8a31a50f11696e2fb', '1', '5c210936bf2b4939994610a252510b3d', '2019-11-17 14:14:08', '2019-11-17 14:14:08');
+INSERT INTO `t_sm_shopcart` VALUES ('cef776c8f1184d72ae7e2d1bfc973905', 'e762b00d2b3c40229ff1f335bfb57402', '1', '40b8df13ff764a1aae54743bcf6a38b4', '2019-11-20 18:58:28', '2019-11-20 18:58:28');
+INSERT INTO `t_sm_shopcart` VALUES ('d0184e0213ce46a0a4dab3cbb4475934', '2be0d6477bbb48c18ec02c55a14d8718', '1', 'd417d39463f34103bf376677a1db0fae', '2019-11-20 19:14:49', '2019-11-20 19:14:49');
+INSERT INTO `t_sm_shopcart` VALUES ('d7f41d1a1f574dce9d4299d960b78b8f', 'a988d182017f4582a30dcfe977a98813', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 20:58:42', '2019-11-14 20:58:42');
+INSERT INTO `t_sm_shopcart` VALUES ('d8d7d7d1d85a46339a9f84e6330e9273', 'e4386c2af31a48cf90eada7e188d646f', '4', '0258d323171b4f99900733b2c1a60e36', '2019-11-14 19:37:38', '2019-11-14 19:39:12');
+INSERT INTO `t_sm_shopcart` VALUES ('e17d2a45c2c449d08e61114f056947fe', 'c79f71c7aeb2479ab8a275bb896883a1', '2', '', '2019-11-12 13:58:06', '2019-11-12 20:51:16');
+INSERT INTO `t_sm_shopcart` VALUES ('e1b75a050f9c4f4aabb46286ab9fc782', 'e4386c2af31a48cf90eada7e188d646f', '1', '', '2019-11-09 21:17:00', '2019-11-09 21:17:00');
+INSERT INTO `t_sm_shopcart` VALUES ('f7b47910a18d4d7f82058778e748e694', 'fc241024ed5849b68afa2e9740280dfa', '3', '1cac290224924c81a8923ef113b5d0c5', '2019-11-16 11:47:22', '2019-11-16 12:50:19');
+INSERT INTO `t_sm_shopcart` VALUES ('fb7d8657c7584f959e230d6d12161e36', '8275258891e74fb7b1662fdc02c4dde8', '1', '0258d323171b4f99900733b2c1a60e36', '2019-11-16 13:04:27', '2019-11-16 13:04:27');
 
 -- ----------------------------
 -- Table structure for t_sm_subject
@@ -9343,9 +11309,7 @@ CREATE TABLE `t_sm_shopcart` (
 DROP TABLE IF EXISTS `t_sm_subject`;
 CREATE TABLE `t_sm_subject` (
   `F_SUBJECTID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '主题ID',
-  `F_PDCTYPE` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '产品类型 见PUB_MAP表中pdctype',
   `F_SUBJECT` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '主题名称',
-  `F_SUBJECTORDER` decimal(6,0) DEFAULT NULL COMMENT '主题顺序',
   `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运营商ID',
   PRIMARY KEY (`F_SUBJECTID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='产品主题';
@@ -9353,87 +11317,215 @@ CREATE TABLE `t_sm_subject` (
 -- ----------------------------
 -- Records of t_sm_subject
 -- ----------------------------
+INSERT INTO `t_sm_subject` VALUES ('1', '美味', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_subject` VALUES ('2', '绿色', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_subject` VALUES ('3', '特价', 'da14b98e-cb26-4169-9b58-babe98b98047');
 
 -- ----------------------------
 -- Table structure for t_sm_thirdpayflow
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sm_thirdpayflow`;
 CREATE TABLE `t_sm_thirdpayflow` (
-  `F_FLOWID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '代表我方唯一订单ID（同一订单多次支付ID不同）',
-  `F_PLATFORM_FLOW_CODE` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '我方批次流水号',
-  `F_CREATETIME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建时间',
-  `F_PAYCODE` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对方支付回执编号',
-  `F_PAYNOTIFYDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '接收到支付回执的时间',
-  `F_FLOWSTATE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-支付失败、1-支付成功',
-  `F_PAYMONEY` decimal(10,2) DEFAULT NULL COMMENT '流水金额',
+  `F_FLOWID` varchar(50) NOT NULL COMMENT '流水ID',
+  `F_PLATFORM_FLOW_CODE` varchar(50) DEFAULT NULL COMMENT '我方批次流水号',
+  `F_CREATETIME` varchar(50) DEFAULT NULL COMMENT '我方流水时间',
+  `F_THIRD_FLOW_CODE` varchar(30) DEFAULT NULL COMMENT '对方支付回执编号',
+  `F_THIRD_CREATETIME` varchar(23) DEFAULT NULL COMMENT '接收到支付回执的时间',
+  `F_FLOW_STATE` varchar(1) DEFAULT NULL COMMENT '0-申请，1-流水成功，2-流水失败，3，流水终止',
+  `F_FLOW_MONEY` decimal(10,2) DEFAULT NULL COMMENT '流水金额',
+  `F_PLATFORM_ORDERS` varchar(2000) DEFAULT NULL COMMENT '订单1,订单2,订单3',
+  `F_SPID` varchar(50) DEFAULT NULL COMMENT '运营商ID',
   PRIMARY KEY (`F_FLOWID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='第三方流水表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='第三方流水表';
 
 -- ----------------------------
 -- Records of t_sm_thirdpayflow
 -- ----------------------------
+INSERT INTO `t_sm_thirdpayflow` VALUES ('007ccfb7cc7a49e585aacacd10753fb4', 'pfc_2_1573996144650', '2019-11-17 21:09:04', '4200000468201911172224938321', '2019-11-17 21:09:07', '1', '0.02', 'cba7063a383448189c16632f0ecc64c5', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('016b0403235f4259813dc513627dfafb', 'pfc_3_1573919563814', '2019-11-16 23:52:43', null, null, '0', '0.05', 'f6d865f27d8d4ba5873cbb5fe522c00c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('0190bd7f8477419fb44674c6907461e2', 'pfc_5_1574251141975', '2019-11-20 19:59:01', '4200000470201911204766076236', '2019-11-20 19:59:07', '1', '0.03', '089e3a8821d342ab91aeb193580b1683', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('037c31e88973435599fa095358f7050f', 'pfc_1_1574038158174', '2019-11-18 08:49:18', null, null, '0', '0.01', '07b58a40eab041be95b33e23e6231878', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('047c64c934f7432e8e0166c2202f82e0', 'pfc_2_1574063196782', '2019-11-18 15:46:36', null, null, '0', '0.01', '43ab2d86c85946639bf7687e64514dd9', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('0529a539c2cd46aab85e746e6da61fe9', 'pfc_3_1573923119413', '2019-11-17 00:51:59', '4200000452201911171397710460', '2019-11-17 00:52:05', '1', '0.02', 'f8dbed68c05f448b9639d96f125273f1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('05fc5d50998348bf8656bd3d1f6acbb8', 'pfc_1_1574302326507', '2019-11-21 10:12:06', null, null, '0', '0.02', 'cf4b2198d11e4968b51e399fa34ef3cc', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('08d9674f2a1c415b829b951c9629020f', 'pfc_6_1573996707724', '2019-11-17 21:18:27', '4200000464201911174573812902', '2019-11-17 21:18:32', '1', '0.02', 'c9664f3c3bad44deb69bed400a9be5f5', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('0cbf78e774f2471fafd4ad8213aa59e7', 'pfc_9_1573913681991', '2019-11-16 22:14:41', null, null, '0', '0.04', '6ee3118437b64fcd997f120791e9e19a', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('0ddc46df8c88456aa71b674b4b0fe925', 'pfc_1_1573919487776', '2019-11-16 23:51:27', null, null, '0', '0.01', 'c853f925ece14b4aa2d8cbffdc12dca9', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('0fc81367ef7946588bf8aab654b6482a', 'pfc_5_1573996380134', '2019-11-17 21:13:00', null, null, '0', '0.02', '5d771d71f0964182ab5cbbde12a9118c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('169aeece70e042e1a5f58bc1ab40f761', 'pfc_1_1574060419971', '2019-11-18 15:00:19', '4200000469201911187526114293', '2019-11-18 15:00:27', '1', '0.01', '4f8dc5ac2fa6421e80a08c2e4991656c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('17176b3876384dc4b60a6148747daf1f', 'pfc_1_1573951352104', '2019-11-17 08:42:32', '4200000455201911176975521663', '2019-11-17 08:42:45', '1', '0.01', '47f2d4ddb84c499cbfcd20855b9377fd', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('1aeb9bf5e4164f86a47260fb043096fe', 'pfc_1_1573971297462', '2019-11-17 14:14:57', '4200000460201911179592984918', '2019-11-17 14:15:04', '1', '0.01', 'a2475624b6554c5883e033249974d49d', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('1b6ab74edc6641fc9041c7a57d6f877e', 'pfc_1_1574229779113', '2019-11-20 14:02:59', '4200000467201911209598851911', '2019-11-20 14:03:05', '1', '0.03', 'f6b3b0735e004061b3a03cfdb55dde66', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('1d93c655c9c249a48389819365cd443d', 'pfc_2_1574220203912', '2019-11-20 11:23:23', '4200000454201911204264879559', '2019-11-20 11:23:29', '1', '0.02', 'cbec007381804b6c818dddf44867d03a', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('1fb180f00651439d83bc9af06eddaedd', 'pfc_2_1574173227231', '2019-11-19 22:20:27', null, null, '0', '0.02', '5b12c8d4e5b14accb757be586ab9e8f8', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('218d4b8d39664dd4a31418ec5c4219d9', 'pfc_1_1574173085446', '2019-11-19 22:18:05', '4200000468201911197481392249', '2019-11-19 22:18:11', '1', '0.01', 'fbc6f55652e042d3af7bad1caceaac3f', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('2258d9af0176414dbe0e873f38d47a40', 'pfc_7_1573923258940', '2019-11-17 00:54:18', '4200000454201911173547364725', '2019-11-17 00:54:26', '1', '0.01', 'e9145b12e1904b6fb8bd9ff40f39c3d7', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('258ec90055594f18af07d36817eff8bd', 'pfc_4_1574065570509', '2019-11-18 16:26:10', null, null, '0', '0.02', 'b6a16bbd6bdf43fcb9ef5ae9b89bf92c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('275386dae6594ef8b185ce6afca0d324', 'pfc_2_1573923030988', '2019-11-17 00:50:30', '4200000453201911177338350858', '2019-11-17 00:50:42', '1', '0.01', 'a7fbaf0a665448478bb3f5a7c99de353', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('28f540f52db34d2c86f3b5ee1480b1c2', 'pfc_4_1574239764411', '2019-11-20 16:49:24', '4200000462201911208791893599', '2019-11-20 16:49:33', '1', '0.03', 'e4bdac778b4c46a4b6b146c55a59ac49', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('29067028947e4b73b4ffb0826474fc6a', 'pfc_2_1574302913187', '2019-11-21 10:21:53', '4200000457201911217146451549', '2019-11-21 10:21:59', '1', '0.03', '9d8ec2b2386046779c46b89833a3d5eb', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('2c32f9951c7244d2aed2305b457ca690', 'pfc_1_1574399486123', '2019-11-22 13:11:26', null, null, '0', '150.00', 'cf40c8074525436dba771e0abec5dea0', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('2d2f4e75856e42098213f98b3f3a0764', 'pfc_1_1573921974637', '2019-11-17 00:32:54', null, null, '0', '0.01', '2b2eb0c82bae4982a410f97c08eab591', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('2f6da0936b7f486c902d8866bfc51916', 'pfc_2_1573922566237', '2019-11-17 00:42:46', '4200000470201911179278941708', '2019-11-17 00:42:51', '1', '0.01', '32fd70b205654980bce6069d79f58e35', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('37ee8bdac57546c6bfef67b5f7c56254', 'pfc_6_1574978694401', '2019-11-29 06:04:54', null, null, '0', '0.01', '342eb3f7cf104cdb9dd3d4ce20155898', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('38ae107940e24114a4d03f35acf9e4b5', 'pfc_1_1573920586242', '2019-11-17 00:09:46', null, null, '0', '0.05', '1e691dc3daaa4f47bf6a7caba928e7c4', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('3aeb51e99ef845a6b5a7a873be7e07e3', 'pfc_3_1573996150926', '2019-11-17 21:09:10', '4200000469201911173948643674', '2019-11-17 21:09:16', '1', '0.02', 'b23c07d2598840099f4b1d0fda0724c3', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('3fe78468e58c4005b39fc94baf52f676', 'pfc_7_1573913377209', '2019-11-16 22:09:37', '4200000464201911160228533548', '2019-11-16 22:09:43', '1', '0.05', 'd87f58f8dc3143eabe4101c0e3f4244c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('423ef3b9de6a4cea98279a8344cdf0cb', 'pfc_6_1573981751763', '2019-11-17 17:09:11', '4200000468201911174407253413', '2019-11-17 17:09:16', '1', '0.01', 'ba29fcf071ae4c878a30cf2b32106a39', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('432e89461de3432b97b7fedcf7d708be', 'pfc_12_1573983057445', '2019-11-17 17:30:57', null, null, '0', '0.01', 'fac40886cd394579a0c18064adbd67c0', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('434dc0e919114a1e83326cee09e9fe68', 'pfc_1_1574979143713', '2019-11-29 06:12:23', null, null, '0', '0.01', '9965a4975a644656ad97ceed7d138b66', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('45d00a12a5a045cc9b1ca2f51de98b7d', 'pfc_1_1573919304795', '2019-11-16 23:48:24', null, null, '0', '0.01', '9eec1003dff9488e88b1050d0383aab5', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('48dd11c851fa47c2b5b1c023f965d2d8', 'pfc_3_1574317255921', '2019-11-21 14:20:55', '4200000459201911217504629449', '2019-11-21 14:21:01', '1', '0.03', '55147e3e42544da0b2b45e370f8de9d1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('48f226469bd94fc9a54ce2db41a09f6c', 'pfc_4_1573981628724', '2019-11-17 17:07:08', '4200000452201911175428431645', '2019-11-17 17:07:26', '1', '0.01', 'e831e0b24b4d435aa9675e9412f25b99', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('4a70cc1a66ba46bcbe9b9c95be1aa540', 'pfc_4_1574044821192', '2019-11-18 10:40:21', null, null, '0', '0.05', 'cbb223d59482447388a72073b6e12045', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('4cd8bf36e6d544199ae8745c988a8526', 'pfc_4_1573912867514', '2019-11-16 22:01:07', null, null, '0', '0.03', '1fa79f18e29e465a893bb1896a1cac2e', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('4e58b735771f490587ba4af41390a89a', 'pfc_3_1573981516252', '2019-11-17 17:05:16', null, null, '0', '0.01', 'dbee089f0c7c4c909b2b45aa01d3df61', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('502b80d1831e43e59a3c1b6db379eb55', 'pfc_2_1574039591190', '2019-11-18 09:13:11', '4200000454201911181302539471', '2019-11-18 09:13:16', '1', '0.01', '886a9376885c4bba8d061a60746ef244', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('56381456c51c49bd866ed02f8c2444db', 'pfc_8_1573913498952', '2019-11-16 22:11:38', null, null, '0', '0.02', '0818651d913346c0ab1afb55d1125549', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('584a3a9188e14b70b3a03ae9dbe4eab5', 'pfc_5_1574978119285', '2019-11-29 05:55:19', '4200000471201911296267601069', '2019-11-29 05:55:25', '1', '0.02', 'd7af1c562127467ba555c8fae7787570', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('59439db63b984fac9bd9ae85ef226f0d', 'pfc_2_1573922007921', '2019-11-17 00:33:27', null, null, '0', '0.01', '61f8c6c2c25e4e788a1f154085253fd8', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('5b503d360c844c18a9f72832ec8438a9', 'pfc_6_1573920851151', '2019-11-17 00:14:11', '4200000466201911175145200002', '2019-11-17 00:14:16', '1', '0.01', '35801927549240b5ba1a4dad597255ca', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('5b70cfe4d9414ee7a19425ad97bb37d6', 'pfc_1_1573981263248', '2019-11-17 17:01:03', '4200000454201911178236245531', '2019-11-17 17:01:14', '1', '0.01', '4362f1c506a44d50857dbf47fc99b3bf', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('5d4dd35002554a3e8904918b3cd93c79', 'pfc_1_1574928960358', '2019-11-28 16:16:00', null, null, '0', '0.01', 'f4e65a69892341b4b1ea7c3f4d50e36b', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('649cf0d8e360450c986fe02571759ae4', 'pfc_3_1574230417372', '2019-11-20 14:13:37', null, null, '0', '0.01', '46aa431050dc4b4899bc1f4af42ba43f', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('6a49c4af6740452da651a54f4050ee9d', 'pfc_3_1574173254120', '2019-11-19 22:20:54', null, null, '0', '0.02', 'f0f70bd4d7b44535951f9bdaa226ab3d', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('6e3f82c58da34a9a9fa443aa20d3a51b', 'pfc_8_1573923264096', '2019-11-17 00:54:24', '4200000467201911175226082722', '2019-11-17 00:54:30', '1', '0.01', '80b2c38968404ab4a9deaf09260b2709', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('6f6c7cd0dad84827bbb2cc1af7fc7e92', 'pfc_11_1573983009606', '2019-11-17 17:30:09', null, null, '0', '0.01', 'd1e45c3d678440c198e8b543b94a219a', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('6fce49b84d2842488472c542b62b11ac', 'pfc_5_1573981728985', '2019-11-17 17:08:48', '4200000456201911174916252484', '2019-11-17 17:08:54', '1', '0.01', '4246b6b64b6e4f238760d56fc19dca9b', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('706d7bdba0d4445483a245fc088ec28b', 'pfc_2_1574247730508', '2019-11-20 19:02:10', '4200000468201911209033947508', '2019-11-20 19:02:16', '1', '0.50', '7250808e24ee479aa594b52cd7dce82f', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('7151617e755d4baeb5ed9bcaa7b6e8b6', 'pfc_1_1573922988845', '2019-11-17 00:49:48', '4200000458201911173486859802', '2019-11-17 00:49:55', '1', '0.01', '6a07dd2b943b4da3b596d00fd75eca72', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('72e57b6c2c6e4289b871c320025b6f04', 'pfc_1_1574891538689', '2019-11-28 05:52:18', null, null, '0', '0.01', '07554d752c434eb1aa24b3f82176fed5', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('73ffd1d90fa6485f8a6dc7f9d29f6917', 'pfc_5_1573920820273', '2019-11-17 00:13:40', '4200000458201911177117945488', '2019-11-17 00:13:45', '1', '0.01', '333168ccc9ba473994c56c1e7c09e9c1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('746a5b1133bf40528498563e6923c37f', 'pfc_2_1574316199792', '2019-11-21 14:03:19', '4200000458201911211580536867', '2019-11-21 14:03:28', '1', '0.03', 'a8752c34b03d49e0a2c315498c5872fd', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('77d573f72d9e43ea9d3b0ce71b15c3bc', 'pfc_3_1574247773663', '2019-11-20 19:02:53', '4200000464201911200709171996', '2019-11-20 19:02:59', '1', '0.10', '31f61fd94ee248ee958ad126c5e437fc', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('7f48fba669214a6fb50d6d517d85fceb', 'pfc_1_1574219955463', '2019-11-20 11:19:15', null, null, '0', '70.06', '9847e46eee02455a825bc7b6247acf74', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('858327d657164fd29bba708121947fd2', 'pfc_4_1573923146025', '2019-11-17 00:52:26', null, null, '0', '0.01', 'cddc651c601447f49a766ab4f67c4c12', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('8a515b68ff4c48fa8660b13b26dfeb76', 'pfc_1_1573996075990', '2019-11-17 21:07:55', '4200000459201911178138827945', '2019-11-17 21:08:01', '1', '0.01', 'eceff46edf6a4cb8af3f50dcc43584be', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('8cb216380ee342d5901ca96c9cb6ba72', 'pfc_5_1574067336201', '2019-11-18 16:55:36', null, null, '0', '1.00', 'd2f380fdf87e459994b4c6fd822ce777', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('8e06b913ca67455eaaffb442ce6fbcf5', 'pfc_4_1573920793349', '2019-11-17 00:13:13', '4200000454201911177824881347', '2019-11-17 00:13:18', '1', '0.01', '72d176a2c254485aa0e9c25aacd436b6', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('90613dfeb4af47a190e9cdd793348d88', 'pfc_5_1573923239461', '2019-11-17 00:53:59', '4200000466201911170572345541', '2019-11-17 00:54:04', '1', '0.01', '99cb7a6f4a0d46b88c7f3252c2175896', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('92113789519741a59c9102e89a28af74', 'pfc_5_1573913086178', '2019-11-16 22:04:46', null, null, '0', '0.05', 'b2b6d6835a7a41f08042b8145b9fc1b1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('9406478fda0143568a6196d5da1a5ca2', 'pfc_4_1573919585597', '2019-11-16 23:53:05', '4200000460201911162749669304', '2019-11-16 23:53:10', '1', '0.01', 'dbd3c430577f41738a1f19db5c833e09', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('98cb39b6984e455ca198e23ca406e5cd', 'pfc_10_1573913878073', '2019-11-16 22:17:58', null, null, '0', '0.02', 'bc0bca1a429b473d92d9474c627063c1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('9c8f12e45d7746f1a6aefa1a8709f329', 'pfc_8_1573999629958', '2019-11-17 22:07:09', null, null, '0', '0.05', 'b7200093b6f24417a18bda23c458d444', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('9ff39f10f3dd471bbad47457c9772afd', 'pfc_7_1573982271043', '2019-11-17 17:17:51', null, null, '0', '0.01', '273764f2b22e4cca8164b7a13ff689f3', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('9ff65b8a194d46bdbb7d86b610946c61', 'pfc_1_1574977686659', '2019-11-29 05:48:06', null, null, '0', '0.01', 'adc2b031ed1b42a2837997b640781e73', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('a396ed473a95428aab923d11d3f5ffb1', 'pfc_1_1574151760942', '2019-11-19 16:22:40', '4200000459201911191690265936', '2019-11-19 16:22:46', '1', '0.01', 'a81191ab553d4277843bab3100332acf', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('a69f87a42fda4cc4a010b29681ae4828', 'pfc_3_1573920684171', '2019-11-17 00:11:24', '4200000456201911176532019418', '2019-11-17 00:11:30', '1', '0.02', '16bb97a6b07846acb2fab4a7789e76f8', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('a779d487316f4907a04ea7015325e766', 'pfc_4_1574248494532', '2019-11-20 19:14:54', '4200000453201911202007603072', '2019-11-20 19:15:00', '1', '0.01', 'b0cce3f578cf420c9f6637f0291e0f60', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('abc44c054bf04f90afa0525cbe288c50', 'pfc_3_1574039749893', '2019-11-18 09:15:49', '4200000460201911181002393375', '2019-11-18 09:15:55', '1', '0.10', '09c415440ad844ee987bb22de08a6820', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('acd428c5e9b347019a9f9f00a57f5014', 'pfc_1_1574220764494', '2019-11-20 11:32:44', '4200000464201911208727981742', '2019-11-20 11:32:50', '1', '0.03', 'cfdb470a9e27425a9af7a1f98284678b', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('af11e7c1998b463e825d625e39fad0ce', 'pfc_7_1573999585155', '2019-11-17 22:06:25', '4200000457201911173380817474', '2019-11-17 22:06:31', '1', '0.05', '0da32e385aba4dfaba4965a2edb99791', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b1c281d02944471590c59a5afac711a6', 'pfc_2_1573951479831', '2019-11-17 08:44:39', null, null, '0', '0.01', 'b0e06d826e6f4b6288339e1408242202', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b209b41c51c74a4b855f7ba78626e2f2', 'pfc_4_1574317575419', '2019-11-21 14:26:15', null, null, '0', '0.09', 'b36da382c28741b7a9f24e079aceda66', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b2bfa646f80d4e2792e5b9f3009d1e63', 'pfc_3_1573922778513', '2019-11-17 00:46:18', '4200000459201911178679839211', '2019-11-17 00:46:24', '1', '0.01', 'fa8eed15c8e74872bfcff5e987aabe41', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b3f6f81f4f5f40dd9f5b48deecd66bf5', 'pfc_2_1574979168121', '2019-11-29 06:12:48', null, null, '0', '0.05', 'f5698d3cf1334be3a9979ff5210f6958', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b4087ae995d949c79a3a16dfaf5db628', 'pfc_5_1574240330031', '2019-11-20 16:58:50', '4200000452201911208327043137', '2019-11-20 16:59:00', '1', '0.03', 'c5724139ee3944eab56efda72beeac4e', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('b6ee60f050694dad9db0b740210ec94d', 'pfc_8_1573982298654', '2019-11-17 17:18:18', null, null, '0', '0.01', 'fce4c7e6584f4cb8851dc296161b4d53', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('be17245f27f9489dad2281f010341c2b', 'pfc_6_1574252253442', '2019-11-20 20:17:33', '4200000465201911201782085692', '2019-11-20 20:17:41', '1', '0.03', '1bfb822376614d77a763cef0dc1a480d,a00945f7c53d4d599c1a78594953dd57', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('be7c94ce9c5c47a2b895eed6e80de923', 'pfc_1_1573922558743', '2019-11-17 00:42:38', '4200000471201911172725981802', '2019-11-17 00:42:44', '1', '0.01', '9a6c06d25e18444f8289abc5e6bd7dcc', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('be9b2cbd98f14e5f90d75e195a6e1296', 'pfc_1_1574315014750', '2019-11-21 13:43:34', '4200000462201911210443430428', '2019-11-21 13:43:40', '1', '0.03', '3bff23e442694f7ba4b08a76c967c704', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('c194add4851f42a49188009d7468d14d', 'pfc_4_1573922909573', '2019-11-17 00:48:29', null, null, '0', '0.01', 'b5b5f25028954113b3f3049f4d8b0cf1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('c3a401ae0d4a4dc4a1d13d4b223d16eb', 'pfc_7_1574256769698', '2019-11-20 21:32:49', '4200000461201911202808093001', '2019-11-20 21:32:54', '1', '0.03', 'f0297fcedd2342598b52c732a1a828e4', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('c888748cd110427492898979a0959008', 'pfc_9_1573982889894', '2019-11-17 17:28:09', null, null, '0', '0.01', '7ef6c58570b244b690ecd4d1d0cd0887', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('ca55dd177b1f4aceb845689b69cdb72b', 'pfc_2_1573971760442', '2019-11-17 14:22:40', '4200000458201911175738958865', '2019-11-17 14:22:45', '1', '0.01', 'be31c93d101a48978d3b4c1aebcc9c3b', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('ce6798dc26c1470ab126bdfaa58ed67c', 'pfc_10_1573982965905', '2019-11-17 17:29:25', null, null, '0', '0.01', '5042f374c79c43eb96556c6c039ad6c9', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d138634b01bd4eac86aefa310cdef5c5', 'pfc_7_1574068051255', '2019-11-18 17:07:31', null, null, '0', '0.07', '4760198797244bcfbd0c9515e63c9eaf,3b9f7d93df844f549e8bcfce6b5c394c,cc39d32aa585405a9cff239e79035bb1', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d2bf745343894b0f84835dd9c7362bbb', 'pfc_4_1573996183116', '2019-11-17 21:09:43', '4200000465201911177334622990', '2019-11-17 21:09:48', '1', '0.02', '1eef32868d434fbda39a3fdd162b510f', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d5cc821ea82a4ff3bd656afd1fd48d2a', 'pfc_13_1573994936761', '2019-11-17 20:48:56', '4200000453201911176681614783', '2019-11-17 20:49:03', '1', '0.01', '13a3226fad3643ff9d666d936731495e', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d72c1b3d614d4dd3be38fc124a905891', 'pfc_2_1574230373492', '2019-11-20 14:12:53', null, null, '0', '0.01', 'f0d4d0ee365342d99c58bb28813059cb', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d7bbcec96e6044ae8445cba82aedd17d', 'pfc_6_1573923253243', '2019-11-17 00:54:13', '4200000467201911175777328644', '2019-11-17 00:54:17', '1', '0.01', '3d85f3eeeffb4385981e055bb7ddb923', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('d9c2bb6923fe4cffac496a67f235b722', 'pfc_4_1574977991785', '2019-11-29 05:53:11', null, null, '0', '0.01', 'd28251c489184c9d8506f9ecf512cffd', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('dba948e4f30f4495a5173b8acea16a18', 'pfc_3_1574064198576', '2019-11-18 16:03:18', '4200000452201911183141302095', '2019-11-18 16:03:24', '1', '0.02', 'a5e4c464dacc4dba82d13e5ad4b62ef6', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('dde47d01df5742499da0f22e3f635c26', 'pfc_2_1574977764102', '2019-11-29 05:49:24', null, null, '0', '0.09', 'fbef68a07698428784d0ca63dc82f4b4', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('e196390e7709433085cfdc3f44115571', 'pfc_3_1574977946514', '2019-11-29 05:52:26', null, null, '0', '0.07', 'd667fc27c7e246e4976836a89b507832', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('e6406e54fdf14679a09e7136b774c0c5', 'pfc_2_1573920609269', '2019-11-17 00:10:09', '4200000461201911178076562904', '2019-11-17 00:10:20', '1', '0.01', 'dd0cdd68ca6b4a8e9dd3783c28219891', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('e69dd3fc75304951b7f8cd982f606f66', 'pfc_1_1574247367685', '2019-11-20 18:56:07', '4200000470201911204208935235', '2019-11-20 18:56:15', '1', '0.50', 'c5c198a54e804e2dbf3b7a7a7dcfb144', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('e7d046090d704202b725ed4ab00177d1', 'pfc_2_1573981345180', '2019-11-17 17:02:25', '4200000471201911175148889374', '2019-11-17 17:02:33', '1', '0.01', '5bf7ca1f678d4befab028ebfeccd307d', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('f509b7cb84d4413db65cae9689840235', 'pfc_2_1573919509138', '2019-11-16 23:51:49', null, null, '0', '0.05', 'f6d865f27d8d4ba5873cbb5fe522c00c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('f584f7f9c18743c7805f478e5cca1f05', 'pfc_6_1574067958275', '2019-11-18 17:05:58', null, null, '0', '0.01', '2e78c1638872438e82d4d2812716d68d', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('f699064c03f04ea88100f34b6321d220', 'pfc_3_1573974801119', '2019-11-17 15:13:21', '4200000467201911176467736363', '2019-11-17 15:13:26', '1', '0.02', '7ede7f8dc74e471789f40d9ec2de6fbf,f956f830e0894cb782ebd79c9e25450c', 'da14b98e-cb26-4169-9b58-babe98b98047');
+INSERT INTO `t_sm_thirdpayflow` VALUES ('f8b9ba359abc464ba360bb41e14fb92a', 'pfc_6_1573913126920', '2019-11-16 22:05:26', '4200000456201911165650728783', '2019-11-16 22:05:32', '1', '0.02', '598f01acd00744fba4694265b23b894b', 'da14b98e-cb26-4169-9b58-babe98b98047');
 
 -- ----------------------------
 -- Table structure for t_wx_article
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_article`;
 CREATE TABLE `t_wx_article` (
-  `F_ARTICLEID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `F_SPID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_USER_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '�û�ID',
-  `F_USERNAME` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_TYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'pub_map\r\n            0-������ѯ1-�������',
-  `F_TITLE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PUBLISHDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_CONTEXT` text COLLATE utf8mb4_unicode_ci,
-  `F_FILENAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PROLINK` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PICURL` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_ISSHOWAPP` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '�Ƿ��ƶ�����ʾ   0��Ĭ�ϣ�  1�� ',
+  `F_ARTICLEID` varchar(50) NOT NULL,
+  `F_SPID` varchar(50) DEFAULT NULL,
+  `F_USER_ID` varchar(50) DEFAULT NULL COMMENT '用户ID',
+  `F_USERNAME` varchar(20) DEFAULT NULL,
+  `F_TYPE` varchar(1) DEFAULT NULL COMMENT 'pub_map：0-旅游咨询1-景点介绍',
+  `F_TITLE` varchar(100) DEFAULT NULL,
+  `F_PUBLISHDATE` varchar(23) DEFAULT NULL,
+  `F_CONTEXT` text,
+  `F_FILENAME` varchar(100) DEFAULT NULL,
+  `F_PROLINK` varchar(200) DEFAULT NULL,
+  `F_PICURL` varchar(500) DEFAULT NULL,
+  `F_ISSHOWAPP` varchar(1) DEFAULT NULL COMMENT '是否移动端显示   0否（默认）  1是 ',
+  `F_DELFLAG` varchar(1) DEFAULT NULL COMMENT '删除标识：0未删除；1删除',
+  `F_CREATORUID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人',
+  `F_CREATOR` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人姓名',
+  `F_CREATETIME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建时间',
+  `F_UPDATETIME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改时间',
+  `F_UPDATERUID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
+  `F_UPDATER` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人姓名',
   PRIMARY KEY (`F_ARTICLEID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='΢��������Ѷ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信文章';
 
 -- ----------------------------
 -- Records of t_wx_article
 -- ----------------------------
+INSERT INTO `t_wx_article` VALUES ('1e5479cbb91e46b8946bc110afb1481b', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '5', '售后服务', '2019-11-17 18:21:11', '<p><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191117182057648-84.jpg\" /></p>\r\n', 'article1e5479cbb91e46b8946bc110afb1481b.html', '', null, '1', '0', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('436984c664754bcfa60be352896a5dbc', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', '13333', '2019-10-20 12:45:45', '<p>1321</p>\r\n', 'article436984c664754bcfa60be352896a5dbc.html', '', 'd5c60f66ad6d4af68deb3096d0174d90', '0', '1', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('44d75b7c664f4fa78475062d08947688', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '6', '平台介绍', '2019-11-17 20:44:00', '<p style=\"margin-left: 21.2pt; text-align: center;\"><img src=\"http://www.3nong1gou.com/upload/ckImage/201911/20191117204217594-15.jpg\" />&nbsp; &nbsp; &nbsp;</p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">农壹购新零售运营平台将聚焦农村市场，融合互联网精神，创新独特模式，以农产品为切入点，以供应链管理为核心能力；以&ldquo;商流、社交电商、信息流、资金流&rdquo;四网融合的农村电商生态系统为市场定位；发展农村新零售运营模式，真正做到精准扶贫，走可持续化发展道路。</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\">&nbsp;</p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\"><strong>三农壹购平台&mdash;&mdash;打造新零售区块链+电商智慧生态系统。</strong></span></p>\r\n\r\n<p style=\"margin-left:21.25pt\"><span style=\"font-size:14px\">运用多用户系统以B2B2C的理念出发，创新模块化设计，整合运营商，供货商，用户于一体，进行异业联盟拉动消费。以平台为中心，整合优质资源；以数据为基础，打造优质产业；以产业为核心，掌握核心技术，形成行业标准；并紧密联系目标客户需求，营造一个集&ldquo;供应、销售、生活&rdquo;于一体的用户体验中心。</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\"><strong>三农壹购微商城与PC网站</strong></span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">精美UI界面，便捷下单购买，商城性能流畅，用户体验好</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">一键转发，图文分享，拉新拓客，实现快速起量</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">丰富营销活动，秒杀、团购、限时抢购，天天都有新玩法</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">抓住更多流量，实现规模扩张，先人一步抢占市场</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\"><strong>三农壹购管理平台</strong></span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">助力精细化运营，掌握平台命脉</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">商品经营多维度展示，销量排行、毛利报表、用户分析</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">精细化管控运营全流程，决策高效科学有依据</span></p>\r\n\r\n<p style=\"margin-left:21.2pt\"><span style=\"font-size:14px\">订单自动汇总，供应商管理，对接采购更便捷</span></p>\r\n', 'article44d75b7c664f4fa78475062d08947688.html', '', '0c52aeac8b2741b79110a1bab2e47c4c', '1', '0', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('7257f78d7cb44cda9778120d8cfc0685', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2', '巴西柔术巴西柔术', '2019-10-20 12:58:31', '<p>巴西柔术巴西柔术巴西柔术巴西柔术巴西柔术巴西柔术巴西柔术巴西柔术</p>\r\n', 'article7257f78d7cb44cda9778120d8cfc0685.html', '', '4be0b4b7e3a342de8e47ba03d3576668', '0', '1', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('7b646e0c2c1a40e9ac1160b5d6206e40', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2', '三江碗碗香、舌尖上的美味大米', '2019-11-11 13:25:09', '<p><img src=\"http://47.94.3.77/snyg/upload/ckImage/201911/20191111132151212-49.jpg\" /></p>\r\n\r\n<p><span style=\"font-family:optima-regular,pingfangtc-light\">​种植基地</span></p>\r\n\r\n<p style=\"text-align:left\"><span style=\"font-size:14px\"><span style=\"color:rgb(26, 26, 26); font-family:微软雅黑,sans-serif\">在中国大米饕餮排行榜里</span><span style=\"font-family:微软雅黑,sans-serif\">，北大荒的<span style=\"color:rgb(26, 26, 26)\">肥沃土地种出来的大米名列前茅。</span></span></span></p>\r\n\r\n<p style=\"text-align:left\"><span style=\"font-size:14px\"><span style=\"font-family:微软雅黑,sans-serif\"><span style=\"color:rgb(26, 26, 26)\">&ldquo;三江碗碗香&rdquo;原生态大米，</span></span></span><span style=\"font-family:微软雅黑,sans-serif; font-size:14px\">产地在北大荒，更是优中选优，属于寒地黑土，光照充足，降水充沛，具有生长期长，污染少等优点。</span><span style=\"font-family:微软雅黑,sans-serif; font-size:14px\">其米质纯正、气味清香、营养丰富，外观纤细，米质光亮细腻，色泽晶莹剔透，米粒原生态，无任何添加剂，无化学污染，营养健康，煮熟之后松软油亮，洁白清香，饭粒完整，颗粒分明，适口性好，被誉为米中精品。</span><span style=\"font-family:微软雅黑,sans-serif; font-size:14px\">纯天然无污染的种植环境保证了大米的原有品质，富含大米中原有的微量元素，保留了米饭的口感好，不回生的特性。</span></p>\r\n\r\n<p style=\"text-align:left\">&nbsp;</p>\r\n\r\n<p style=\"text-align:left\">&nbsp;</p>\r\n\r\n<p><img src=\"http://47.94.3.77/snyg/upload/ckImage/201911/20191111132219401-45.jpg\" /></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p style=\"text-align:center\"><span style=\"color:rgb(192, 0, 0)\"><strong>中国粮食&nbsp;</strong></span><strong>中国饭碗</strong></p>\r\n\r\n<p style=\"text-align:center\"><span style=\"color:rgb(192, 0, 0); font-size:20px\"><strong>三江碗碗香</strong></span></p>\r\n\r\n<p style=\"text-align:center\"><span style=\"color:rgb(192, 0, 0)\"><strong>生态大米</strong></span></p>\r\n\r\n<p><img src=\"http://47.94.3.77/snyg/upload/ckImage/201911/20191111132456706-25.jpg\" /></p>\r\n\r\n<p style=\"text-align:center\">&nbsp;</p>\r\n\r\n<p style=\"text-align:center\">&nbsp;</p>\r\n\r\n<p style=\"text-align:center\">&nbsp;</p>\r\n\r\n<p><span style=\"color:rgb(255, 255, 255); font-family:楷体,楷体_gb2312,simkai; font-size:20px\">&nbsp;我们承诺</span></p>\r\n\r\n<p style=\"text-align:center\"><span style=\"color:rgb(227, 0, 41); font-family:微软雅黑,sans-serif; font-size:15px\">我们的大米<strong>一年一造</strong>，保证你收到的都是当季新米。</span><span style=\"color:rgb(227, 0, 41); font-family:微软雅黑,sans-serif; font-size:15px\">原产地发货保证质量。</span></p>\r\n\r\n<p><img src=\"http://47.94.3.77/snyg/upload/ckImage/201911/20191111132438768-25.jpg\" /></p>\r\n\r\n<p style=\"text-align:center\"><span style=\"color:rgb(227, 0, 41); font-family:微软雅黑,sans-serif; font-size:15px\">由于大米过重，在运输过程中会产生摩擦和碰撞，</span><strong><span style=\"font-family:微软雅黑,sans-serif; font-size:15px\">出现漏气或松散属于正常现象</span></strong><span style=\"color:rgb(227, 0, 41); font-family:微软雅黑,sans-serif; font-size:15px\">。不影响产品本身的质量，可以正常食用。</span></p>\r\n\r\n<p style=\"text-align:center\">&nbsp;</p>\r\n\r\n<p style=\"text-align:center\"><span style=\"font-family:楷体,楷体_gb2312,simkai; font-size:17px\">关注我们更多了解更多</span></p>\r\n', 'article7b646e0c2c1a40e9ac1160b5d6206e40.html', '', '7870f212d48941239a470ee8ec1daa78', '1', '0', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('9e28f230c4ee48b9a257d0d290434d22', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2', '双十一活动', '2019-11-20 16:07:52', '<p>都发到各个符合规定很高很高的都发到各个符合规定很高很高的</p>\r\n', 'article9e28f230c4ee48b9a257d0d290434d22.html', '', null, '0', '0', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('cddc2f9d77994048a65f4b4f605ad45f', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '6', '测试文章', '2019-11-09 14:08:29', '<p>测试消息<img src=\"http://47.94.3.77/snyg/upload/ckImage/201911/20191109140820905-61.jpg\" /></p>\r\n', 'articlecddc2f9d77994048a65f4b4f605ad45f.html', '', null, '0', '0', null, null, null, null, null, null);
+INSERT INTO `t_wx_article` VALUES ('cf5c449b016342c7aad814d61308ca3e', 'da14b98e-cb26-4169-9b58-babe98b98047', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '1', '11', '2019-10-20 13:01:23', '<p>111</p>\r\n', 'articlecf5c449b016342c7aad814d61308ca3e.html', '', null, '0', '1', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for t_wx_fansuser
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_fansuser`;
 CREATE TABLE `t_wx_fansuser` (
-  `F_FANSID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `F_FAKEID` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '΢�ź�ΪopenID',
-  `F_WXSERVICEID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_FROM` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '��Դ����ID',
-  `F_TYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-΢��1-iosApp2-��׿App',
-  `F_USERNAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PASSWD` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_NICKNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_COUNTRY` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PROVINCE` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_CITY` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_CREATEDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_USERGROUP` decimal(1,0) DEFAULT NULL COMMENT '0-��ͨ�û�1-��Ӫ��Ա\r\n            pub_map',
-  `F_LANG` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_LOGO` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_SEX` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-Ů��1-����',
-  `F_LASTSIGNDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '��ʱ����',
-  `F_DELFLAG` decimal(1,0) DEFAULT NULL,
-  `F_HANDPHONE` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_BACKGROUNDURL` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_EMAIL` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_QQ` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_SINAWEIBO` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_LNG` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_LAT` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_STOCKADDRESS` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_BIRTH` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_USER_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_DEVICETOKEN` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_UNIONID` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`F_FANSID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='�������չΪ���з�˿�û�����������΢���û�';
+  `F_FANSID` varchar(50) NOT NULL,
+  `F_FAKEID` varchar(100) DEFAULT NULL COMMENT '微信号为openID',
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_FROM` varchar(30) DEFAULT NULL COMMENT '来源场景ID',
+  `F_TYPE` varchar(1) DEFAULT NULL COMMENT '0-微信1-iosApp2-安卓App',
+  `F_USERNAME` varchar(50) DEFAULT NULL,
+  `F_PASSWD` varchar(10) DEFAULT NULL,
+  `F_NICKNAME` varchar(100) DEFAULT NULL,
+  `F_COUNTRY` varchar(30) DEFAULT NULL,
+  `F_PROVINCE` varchar(30) DEFAULT NULL,
+  `F_CITY` varchar(30) DEFAULT NULL,
+  `F_CREATEDATE` varchar(23) DEFAULT NULL,
+  `F_USERGROUP` int(1) DEFAULT NULL COMMENT '0-普通用户1-运营人员 pub_map',
+  `F_LANG` varchar(10) DEFAULT NULL,
+  `F_LOGO` varchar(500) DEFAULT NULL,
+  `F_SEX` varchar(1) DEFAULT NULL COMMENT '0-女性1-男性',
+  `F_LASTSIGNDATE` varchar(23) DEFAULT NULL COMMENT '暂时不用',
+  `F_DELFLAG` int(1) DEFAULT NULL,
+  `F_HANDPHONE` varchar(30) DEFAULT NULL,
+  `F_BACKGROUNDURL` varchar(100) DEFAULT NULL,
+  `F_EMAIL` varchar(30) DEFAULT NULL,
+  `F_QQ` varchar(20) DEFAULT NULL,
+  `F_SINAWEIBO` varchar(30) DEFAULT NULL,
+  `F_LNG` varchar(30) DEFAULT NULL,
+  `F_LAT` varchar(30) DEFAULT NULL,
+  `F_STOCKADDRESS` varchar(2000) DEFAULT NULL,
+  `F_BIRTH` varchar(100) DEFAULT NULL,
+  `F_USER_ID` varchar(50) DEFAULT NULL,
+  `F_DEVICETOKEN` varchar(100) DEFAULT NULL,
+  `F_UNIONID` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`F_FANSID`),
+  KEY `IDX_FANSUSER_FROM` (`F_FROM`) USING BTREE,
+  KEY `IDX_FANSUSER_WXSERVICEID` (`F_WXSERVICEID`) USING BTREE,
+  KEY `F_FAKEID_UNIQUE` (`F_FAKEID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户表';
 
 -- ----------------------------
 -- Records of t_wx_fansuser
@@ -9444,47 +11536,95 @@ CREATE TABLE `t_wx_fansuser` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_feedback`;
 CREATE TABLE `t_wx_feedback` (
-  `F_WXSERVICEID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_FEEDBACKID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `F_MSGNAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_TITLE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '视频文件标题',
-  `F_MSGTYPE` decimal(1,0) DEFAULT NULL COMMENT '0文本、1-图片、2-图文、3-语音、4-视频、5-音乐 7-链接 8-客服消息',
-  `F_KEYWORD` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '以,分隔',
-  `F_KEYWORD2` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '以,分隔',
-  `F_CONTEXT` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_MEDIAID` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_SUMMARY` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_LINKURL` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_MEDIAFILENAME` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_MEDIAURL` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_HQMEDIAURL` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_THUMBID` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_DELFLAG` decimal(1,0) DEFAULT NULL,
-  `F_LASTUPDATE` varchar(23) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_XML` text COLLATE utf8mb4_unicode_ci,
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_FEEDBACKID` varchar(50) NOT NULL,
+  `F_MSGNAME` varchar(100) DEFAULT NULL,
+  `F_TITLE` varchar(100) DEFAULT NULL COMMENT '视频文件标题',
+  `F_MSGTYPE` int(1) DEFAULT NULL COMMENT '0文本、1-图片、2-图文、3-语音、4-视频、5-音乐 7-链接 8-客服消息',
+  `F_KEYWORD` varchar(100) DEFAULT NULL COMMENT '以,分隔',
+  `F_KEYWORD2` varchar(100) DEFAULT NULL COMMENT '以,分隔',
+  `F_CONTEXT` varchar(4000) DEFAULT NULL,
+  `F_MEDIAID` varchar(30) DEFAULT NULL,
+  `F_SUMMARY` varchar(2000) DEFAULT NULL,
+  `F_LINKURL` varchar(500) DEFAULT NULL,
+  `F_MEDIAFILENAME` varchar(100) DEFAULT NULL,
+  `F_MEDIAURL` varchar(500) DEFAULT NULL,
+  `F_HQMEDIAURL` varchar(500) DEFAULT NULL,
+  `F_THUMBID` varchar(30) DEFAULT NULL,
+  `F_DELFLAG` int(1) DEFAULT NULL,
+  `F_LASTUPDATE` varchar(23) DEFAULT NULL,
+  `F_XML` text,
   PRIMARY KEY (`F_FEEDBACKID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信回复信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回复信息';
 
 -- ----------------------------
 -- Records of t_wx_feedback
 -- ----------------------------
+INSERT INTO `t_wx_feedback` VALUES ('1', '2d83d0e5fcec4cc699abf8072eb0fa5d', '最新测试消息022', '最新测试消息022', '0', '三农', '农', '三农三农三农三农三农三农最新测试消息022', null, null, null, null, null, null, null, '0', '2019-11-17 20:30:09', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '332eed2d26174c07b3bb51bc2e5543e0', '支付测', '', '7', '', '', null, null, null, 'http://www.3nong1gou.com/snyg/wxpersonal?method=toWeixinFrameWorkTest', null, null, null, null, '0', '2019-11-12 19:12:19', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '3bec202f1c334c89951e818b1c9b2bef', '测试1', '', '2', '', '', null, null, '', '', null, null, null, null, '0', '2019-11-18 13:25:39', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '3df9dd3a35c54bdf8b86a188af858552', '1', '', '0', '', '', '121321', null, null, null, null, null, null, null, '1', '2019-11-19 21:34:13', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '4ad821d660484660b5f73a500ffb3176', '三农壹购-测试', '', '7', '', '', null, null, null, 'http://www.3nong1gou.com//wx.do?method=showArticle&articleId=44d75b7c664f4fa78475062d08947688', null, null, null, null, '0', '2019-11-17 20:40:02', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '5226905ead7944cdaf7dea3d7cb1b834', '111', '', '0', '', '', '1111', null, null, null, null, null, null, null, '0', '2019-10-16 20:41:39', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '589501713c174b96b10b5f71018114f7', '涔涔测试', '', '2', '', '', null, null, '', 'http://www.3nong1gou.com//wx.do?method=showArticle&articleId=1e5479cbb91e46b8946bc110afb1481b', null, null, null, null, '0', '2019-11-17 18:27:46', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '59078c78ede34114abe0f29fe8dad4fe', '百度推广', null, '6', '', null, null, null, null, null, null, null, null, null, '0', '2019-11-26 14:42:42', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '5ddb508637294962be19e6d40b790fa9', '测试', '', '2', '', '', null, null, '', '', null, null, null, null, '0', '2019-11-18 13:25:47', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '7e8266d9dfa64f9982bf014b8c6f4288', '最新测试消息', null, '6', '最新测试消息', '最新测试消息', null, null, null, null, null, null, null, null, '0', '2019-11-17 20:27:24', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '7f601251f77c49de950ce2b9b884e16f', '碗碗香', '', '7', '', '', null, null, null, 'http://www.3nong1gou.com/snyg/wx.do?method=showArticle&articleId=7b646e0c2c1a40e9ac1160b5d6206e40', null, null, null, null, '0', '2019-11-11 13:35:30', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '8a592442d9794a42adf0441dfdd7069b', '测试消息', null, '6', '', '', null, null, null, null, null, null, null, null, null, '2019-11-09 13:56:34', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '8b0aa89b607c466eb18d8d0a228c9ff4', '百度推广', '', '2', '', null, null, null, '', '', null, null, null, null, '0', '2019-11-26 14:34:42', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '8cf05b93fb2f41aea64c11fea1859068', '百度推广', null, '6', '', null, null, null, null, null, null, null, null, null, '0', '2019-11-26 14:42:45', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '954020e21a49423988ea37330c7f9b5b', '1', '', '0', '1', '美丽', '67896789678967896789678967896789', null, null, null, null, null, null, null, '0', '2019-11-20 16:23:04', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', '9c16460f7f9348f5a4503552348cbadf', '单图文测试', '', '2', '', '', null, null, '', '', null, null, null, null, '0', '2019-11-09 13:54:18', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'a423fdcd420c4cfdbca252e290abffc0', '111', null, '6', '', null, null, null, null, null, null, null, null, null, '0', '2019-11-20 16:24:03', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'b2cc38ebc4a64cdf9397bc05509af2df', '商城首页', '', '7', '', null, null, null, null, 'http://www.3nong1gou.com/wx.do?method=wxIndex&spId=da14b98e-cb26-4169-9b58-babe98b98047', null, null, null, null, '0', '2019-11-22 11:29:52', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'd1095e8b46df45349ff1eea97e7fc861', '测试消息', '', '7', '', '', null, null, null, 'http://47.94.3.77/snyg//wx.do?method=showArticle&articleId=9e28f230c4ee48b9a257d0d290434d22', null, null, null, null, '0', '2019-11-09 14:00:06', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'da04972af8a642b98961651fba8ef67e', '测试消息', '测试消息', '8', '', null, '0', null, null, null, null, null, null, null, '0', '2019-11-09 14:00:51', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'e09f509c35e04b3280178d5d3764df9c', '测试消息', '测试消息', '0', '测试', '好看', '测试消息', null, null, null, null, null, null, null, '0', '2019-11-20 13:24:40', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'e707724843a94a34add03c000ef0e917', '测试消息', '测试消息', '8', '', null, '1', null, null, null, null, null, null, null, '0', '2019-11-09 14:00:59', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'f9436d09c7ec4255974e14cb539d4d32', '联系客服', '', '0', '', null, '亲爱的会员们，如果您在三农壹购平台中出现任何疑问或需要解决的问题，如商品、订单、物流等咨询，可以直接拨打我们的服务热线，我们将竭诚为您服务。服务热线：400-8013841客服邮箱：quanyihui2018@sina.com工作时间：9：00-17：00', null, null, null, null, null, null, null, '0', '2019-11-26 13:27:08', null);
+INSERT INTO `t_wx_feedback` VALUES ('1', 'f94b09a5098843959456fbfd48c15eca', '百度推广', '', '7', '', null, null, null, null, 'http://www.baidu.com', null, null, null, null, '1', '2019-11-26 14:34:24', null);
 
 -- ----------------------------
 -- Table structure for t_wx_kfmsgmodle
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_kfmsgmodle`;
 CREATE TABLE `t_wx_kfmsgmodle` (
-  `F_MODULEID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '微信客服消息模板',
-  `F_WXSERVICEID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '服务号ID',
-  `F_SCENEID` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '模板场景编号：0-供应商收单用户付款成功后1-用户下单(未支付)2-用户下单付款成功后3-订单状态改变时(确认、取消等)4-订单验证通过后',
-  `F_RECROLE` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '接受人角色：0-客人1-供应商相关人员2-分销渠道3-客服人员',
-  `F_CONTEXT` text COLLATE utf8mb4_unicode_ci COMMENT '占位符统一为${表名_字段名}\r\n            供应商收单:\r\n                 收单编号：BILL_BILLCODE,供应商名称BILL_VENNAME\r\n                 应付金额：BILL_ORDERMONEY,实付金额BILL_PAYMONEY\r\n                 支付状态：BILL_PAYSTATUS\r\n            订单：\r\n                订单号：ORDER_ORDERCODE,下单日期：ORDER_ORDERDATE\r\n               供应商：ORDER_VENNAME,产品名称：ORDER_PRODUCTINFO\r\n               消费日期：ORDER_PLAYDATE,订单总金额：ORDER_MONEY\r\n               产品数量：ORDER_PCOUNT 订单状态：ORDER_STATUS\r\n            分销渠道\r\n               销售总额：PARTNER_ORDERMONEY,提成总额：PARTNER_DEDUCTMONEY,可体现金额：PARTNER_CASHABLEMONEY',
-  `F_SENDTYPE` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发送类型：1文本消息，2微信模板消息接口',
+  `F_MODULEID` varchar(50) NOT NULL COMMENT '微信客服消息模板',
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL COMMENT '服务号ID',
+  `F_SCENEID` varchar(4) DEFAULT NULL COMMENT '模板场景编号：0-供应商收单用户付款成功后1-用户下单(未支付)2-用户下单付款成功后3-订单状态改变时(确认、取消等)4-订单验证通过后',
+  `F_RECROLE` varchar(4) DEFAULT NULL COMMENT '接受人角色：0-客人1-供应商相关人员2-分销渠道3-客服人员',
+  `F_CONTEXT` text COMMENT '占位符统一为${表名_字段名}\r\n            供应商收单:\r\n                 收单编号：BILL_BILLCODE,供应商名称BILL_VENNAME\r\n                 应付金额：BILL_ORDERMONEY,实付金额BILL_PAYMONEY\r\n                 支付状态：BILL_PAYSTATUS\r\n            订单：\r\n                订单号：ORDER_ORDERCODE,下单日期：ORDER_ORDERDATE\r\n               供应商：ORDER_VENNAME,产品名称：ORDER_PRODUCTINFO\r\n               消费日期：ORDER_PLAYDATE,订单总金额：ORDER_MONEY\r\n               产品数量：ORDER_PCOUNT 订单状态：ORDER_STATUS\r\n            分销渠道\r\n               销售总额：PARTNER_ORDERMONEY,提成总额：PARTNER_DEDUCTMONEY,可体现金额：PARTNER_CASHABLEMONEY',
+  `F_SENDTYPE` varchar(1) DEFAULT NULL COMMENT '发送类型：1文本消息，2微信模板消息接口',
   PRIMARY KEY (`F_MODULEID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信客服消息模板';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信客服消息模板';
 
 -- ----------------------------
 -- Records of t_wx_kfmsgmodle
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_wx_material
+-- ----------------------------
+DROP TABLE IF EXISTS `t_wx_material`;
+CREATE TABLE `t_wx_material` (
+  `F_MATID` varchar(50) NOT NULL COMMENT '素材ID',
+  `F_SPID` varchar(50) DEFAULT NULL,
+  `F_MATTYPE` varchar(1) DEFAULT NULL COMMENT '素材类型pub_map;0-图片1-声音2-视频3-缩略图\r\n            图片特指多图文内嵌的图片',
+  `F_MATNAME` varchar(100) DEFAULT NULL COMMENT '素材名称',
+  `F_MATURL` varchar(100) DEFAULT NULL COMMENT '素材URL',
+  `F_ISFOREVER` varchar(1) DEFAULT NULL COMMENT '是否永久素材0-临时素材1-永久素材',
+  `F_DELTAG` varchar(1) DEFAULT NULL COMMENT '删除标志',
+  `F_WXMEDIAID` varchar(100) DEFAULT NULL COMMENT '媒体ID',
+  `F_WXURL` varchar(300) DEFAULT NULL COMMENT '微信资源URL',
+  `F_KEYWORD` varchar(2000) DEFAULT NULL COMMENT '关键字，',
+  `F_MEMO` varchar(2000) DEFAULT NULL COMMENT '备注',
+  `F_LASTSENDDATE` varchar(23) DEFAULT NULL COMMENT '最近一次推送时间',
+  PRIMARY KEY (`F_MATID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='素材表';
+
+-- ----------------------------
+-- Records of t_wx_material
 -- ----------------------------
 
 -- ----------------------------
@@ -9492,21 +11632,50 @@ CREATE TABLE `t_wx_kfmsgmodle` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_menu`;
 CREATE TABLE `t_wx_menu` (
-  `F_MENU_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单编号',
-  `F_WXSERVICEID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_FEEDBACKID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_MENU_NAME` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单名称',
-  `F_MENU_LEVEL` decimal(1,0) DEFAULT NULL COMMENT '菜单级别 最小为0级',
-  `F_PMENU_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '上级菜单编号',
-  `F_MENU_URL` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单链接URL',
-  `F_MENU_ORDER` decimal(3,0) DEFAULT NULL COMMENT '同一级别下的顺序号',
-  `F_MENU_DESC` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单描述',
-  `F_XML` text COLLATE utf8mb4_unicode_ci,
+  `F_MENU_ID` varchar(50) NOT NULL COMMENT '菜单编号',
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_FEEDBACKID` varchar(50) DEFAULT NULL,
+  `F_MENU_NAME` varchar(30) NOT NULL COMMENT '菜单名称',
+  `F_MENU_LEVEL` int(1) DEFAULT NULL COMMENT '菜单级别 最小为0级',
+  `F_PMENU_ID` varchar(50) DEFAULT NULL COMMENT '上级菜单编号',
+  `F_MENU_URL` varchar(255) DEFAULT NULL COMMENT '菜单链接URL',
+  `F_MENU_ORDER` int(3) DEFAULT NULL COMMENT '同一级别下的顺序号',
+  `F_MENU_DESC` varchar(255) DEFAULT NULL COMMENT '菜单描述',
+  `F_XML` text,
   PRIMARY KEY (`F_MENU_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信自定义菜单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信自定义菜单';
 
 -- ----------------------------
 -- Records of t_wx_menu
+-- ----------------------------
+INSERT INTO `t_wx_menu` VALUES ('1b2b48c927404961a9b6ed2334508c89', '1', 'b2cc38ebc4a64cdf9397bc05509af2df', '商城首页', '0', '0', null, '2', null, null);
+INSERT INTO `t_wx_menu` VALUES ('3fc4c92204c549cc9e6e31fec7c9af39', '1', 'b2cc38ebc4a64cdf9397bc05509af2df', '产品分布', '1', '90bdc33eb27f4b809bb8d0b794988e46', null, '1', null, null);
+INSERT INTO `t_wx_menu` VALUES ('90bdc33eb27f4b809bb8d0b794988e46', '1', '5226905ead7944cdaf7dea3d7cb1b834', '产品溯源', '0', '0', null, '3', null, null);
+INSERT INTO `t_wx_menu` VALUES ('99e4e19da1bf4c53ab54ad63a88773dc', '1', '8cf05b93fb2f41aea64c11fea1859068', '加盟招商', '1', 'b9392c6592d64dddb6631d2fa6139250', null, '1', null, null);
+INSERT INTO `t_wx_menu` VALUES ('b9392c6592d64dddb6631d2fa6139250', '1', '4ad821d660484660b5f73a500ffb3176', '授权直营', '0', '0', null, '1', null, null);
+INSERT INTO `t_wx_menu` VALUES ('e91cecf3c7c6414b886884ccf104a0f7', '1', 'b2cc38ebc4a64cdf9397bc05509af2df', '品牌溯源', '1', '90bdc33eb27f4b809bb8d0b794988e46', null, '2', null, null);
+INSERT INTO `t_wx_menu` VALUES ('f58b61d7dae94b449c4e691023cad508', '1', 'e09f509c35e04b3280178d5d3764df9c', '直营查询', '1', 'b9392c6592d64dddb6631d2fa6139250', null, '2', null, null);
+INSERT INTO `t_wx_menu` VALUES ('f918eb95e13b4999a6725928ec024564', '1', 'f9436d09c7ec4255974e14cb539d4d32', '联系客服', '1', 'b9392c6592d64dddb6631d2fa6139250', null, '3', null, null);
+
+-- ----------------------------
+-- Table structure for t_wx_messagelog
+-- ----------------------------
+DROP TABLE IF EXISTS `t_wx_messagelog`;
+CREATE TABLE `t_wx_messagelog` (
+  `F_LOGID` varchar(50) NOT NULL,
+  `F_FANSID` varchar(50) DEFAULT NULL,
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_OPENID` varchar(50) DEFAULT NULL,
+  `F_FROMTYPE` varchar(1) DEFAULT NULL COMMENT '0-微信1-自驾游',
+  `F_DIRECT` varchar(1) DEFAULT NULL COMMENT '0-移动端到服务器1-服务器到移动端',
+  `F_MSGTYPE` varchar(2) DEFAULT NULL COMMENT '0-关注1-取消关注2-普通消息',
+  `F_CONTEXT` varchar(2000) DEFAULT NULL,
+  `F_DATE` varchar(23) DEFAULT NULL,
+  PRIMARY KEY (`F_LOGID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信消息日志';
+
+-- ----------------------------
+-- Records of t_wx_messagelog
 -- ----------------------------
 
 -- ----------------------------
@@ -9514,19 +11683,63 @@ CREATE TABLE `t_wx_menu` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_wx_msgnews`;
 CREATE TABLE `t_wx_msgnews` (
-  `F_NEWSID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `F_FEEDBACKID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_TITLE` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_DESC` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_PICURL` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_URL` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `F_ISMAIN` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0-否1-是',
-  `F_SORTNUM` decimal(2,0) DEFAULT NULL,
+  `F_NEWSID` varchar(50) NOT NULL,
+  `F_FEEDBACKID` varchar(50) DEFAULT NULL,
+  `F_TITLE` varchar(100) DEFAULT NULL,
+  `F_DESC` varchar(2000) DEFAULT NULL,
+  `F_PICURL` varchar(100) DEFAULT NULL,
+  `F_URL` varchar(500) DEFAULT NULL,
+  `F_ISMAIN` varchar(1) DEFAULT NULL COMMENT '0-否1-是',
+  `F_SORTNUM` int(2) DEFAULT NULL,
   PRIMARY KEY (`F_NEWSID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信回复图文消息项';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回复图文消息项';
 
 -- ----------------------------
 -- Records of t_wx_msgnews
+-- ----------------------------
+INSERT INTO `t_wx_msgnews` VALUES ('3cc2acf950904ce68fd2045fb2467c39', 'c6bf0118355e44a2ac5a18313a7784c6', '', '', '79d527f62ccc42db8b13d5633c91b775.jpg', 'http://47.94.3.77/snyg//wx.do?method=showArticle&articleId=7b646e0c2c1a40e9ac1160b5d6206e40', '0', null);
+INSERT INTO `t_wx_msgnews` VALUES ('5366e1da9d4f4f8fb0d3338b848dc73b', '8b0aa89b607c466eb18d8d0a228c9ff4', '', '', 'dd93481d44b94e3bae66d2cc836a323c.jpg', '', '0', null);
+INSERT INTO `t_wx_msgnews` VALUES ('62b4a360d8314b50a3d0d4bcfcb90282', '7e8266d9dfa64f9982bf014b8c6f4288', '1', '<p>最新测试消息</p>\r\n', '7d1d5b22eda144cb842e726164e86321.JPG', 'http://www.3nong1gou.com//wx.do?method=showArticle&articleId=1e5479cbb91e46b8946bc110afb1481b', '1', '0');
+INSERT INTO `t_wx_msgnews` VALUES ('6f419fa82c7c4a608e630d3d3442fd58', '8cf05b93fb2f41aea64c11fea1859068', '推广', '', 'c171fb5bec8d4b93a40a857ee486ad2c.jpg', '', '1', '0');
+INSERT INTO `t_wx_msgnews` VALUES ('8632ea99aaa3496b8decf5a6c43a04d2', '8a592442d9794a42adf0441dfdd7069b', '测试消息', '', 'b619ce4e06f24a5b97e55087123df66d.JPG', '', '1', '0');
+INSERT INTO `t_wx_msgnews` VALUES ('a65700c66297404a8e6b081439460664', '9c16460f7f9348f5a4503552348cbadf', '', '', 'f60dd7cf666149e18369b96b1e6315e5.JPG', '', '0', null);
+INSERT INTO `t_wx_msgnews` VALUES ('c6826abf67da4414b388326e0a343434', '589501713c174b96b10b5f71018114f7', '', '', '7c60ed0b96d2427593391cfbc71d56e2.JPG', 'http://www.3nong1gou.com//wx.do?method=showArticle&articleId=1e5479cbb91e46b8946bc110afb1481b', '0', null);
+INSERT INTO `t_wx_msgnews` VALUES ('f35b8b5716ad46c5a1ce666891329140', '5ddb508637294962be19e6d40b790fa9', '', '', '77d385fffb494344af8e157a7503c7d2.png', '', '0', null);
+INSERT INTO `t_wx_msgnews` VALUES ('f765f19ed21247a4bf811631cdb10ca8', 'a423fdcd420c4cfdbca252e290abffc0', '1', '', '', 'http://www.3nong1gou.com//wx.do?method=showArticle&articleId=9e28f230c4ee48b9a257d0d290434d22', '1', '0');
+
+-- ----------------------------
+-- Table structure for t_wx_printinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `t_wx_printinfo`;
+CREATE TABLE `t_wx_printinfo` (
+  `F_ID` varchar(50) NOT NULL,
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_GETKEY` varchar(10) DEFAULT NULL,
+  `F_TICKETFIX` varchar(10) DEFAULT NULL,
+  `F_DEVICECODE` varchar(30) DEFAULT NULL,
+  `F_PICTEXT` varchar(1000) DEFAULT NULL,
+  `F_SUCCTEXT` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`F_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信打印机设备';
+
+-- ----------------------------
+-- Records of t_wx_printinfo
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_wx_printpic
+-- ----------------------------
+DROP TABLE IF EXISTS `t_wx_printpic`;
+CREATE TABLE `t_wx_printpic` (
+  `F_PICID` varchar(50) NOT NULL,
+  `F_WXSERVICEID` varchar(50) DEFAULT NULL,
+  `F_OPENID` varchar(100) DEFAULT NULL,
+  `F_PICURL` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`F_PICID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信打印图片信息';
+
+-- ----------------------------
+-- Records of t_wx_printpic
 -- ----------------------------
 
 -- ----------------------------
@@ -9563,6 +11776,7 @@ CREATE TABLE `t_wx_servicecode` (
 -- ----------------------------
 -- Records of t_wx_servicecode
 -- ----------------------------
+INSERT INTO `t_wx_servicecode` VALUES ('1', '三农壹购', '三农壹购', 'gh_34798570658e', '1', 'wx43f80960a6089397', '669a917e7f2e5814c82fda981dd7bcbe', null, 'http://www.3nong1gou.com/', 'snyg_weixin', null, null, '1560146571', 'gXqjT7EPv6ZzEg34JIHkl6ZGu5JaaRGb', null, null, null, '0', null, 'e09f509c35e04b3280178d5d3764df9c', '954020e21a49423988ea37330c7f9b5b', null, null);
 
 -- ----------------------------
 -- View structure for v_pub_roledata
