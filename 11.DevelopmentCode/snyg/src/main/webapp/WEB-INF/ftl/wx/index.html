@@ -146,7 +146,10 @@ function getDataStr2(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){
 		//str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
-		str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';
+		if(i<4){
+			str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';	
+		}
+		
 	}
 	return str;
 }

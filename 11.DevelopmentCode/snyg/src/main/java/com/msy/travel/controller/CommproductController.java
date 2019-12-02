@@ -289,7 +289,7 @@ public class CommproductController extends BaseController {
 			super.saveBackUrl(request);
 			// 设置分页
 			PageHelper.startPage(super.getPageNum(commproduct.getEntityPage()), super.getPageSize(commproduct.getEntityPage()));
-			List<Commproduct> commproductlist = commproductService.queryCommproductList(commproduct);
+			List<Commproduct> commproductlist = commproductService.queryCommproductListAndPriceId(commproduct);
 			PageInfo<Commproduct> pageInfo = new PageInfo<Commproduct>(commproductlist);
 
 			Company c = new Company();
@@ -302,20 +302,21 @@ public class CommproductController extends BaseController {
 			p.setLevel("1");
 			List<PdcType> pdcTypeList = pdcTypeService.queryPdcTypeList(p);
 
-			if (commproductlist != null && commproductlist.size() > 0) {
-				for (int i = 0; i < commproductlist.size(); i++) {
-					GoodsPrice g = new GoodsPrice();
-					g.setProductId(commproductlist.get(i).getProductId());
-					g.setDelFlag("0");
-					g.setPriceType("0");
-					List<GoodsPrice> goodsPriceList = goodsPriceService.queryGoodsPriceList(g);
-					if (goodsPriceList != null && goodsPriceList.size() > 0) {
-						commproductlist.get(i).setPriceId(goodsPriceList.get(0).getPriceId());
-					} else {
-						commproductlist.get(i).setPriceId("");
-					}
-				}
-			}
+			// if (commproductlist != null && commproductlist.size() > 0) {
+			// for (int i = 0; i < commproductlist.size(); i++) {
+			// GoodsPrice g = new GoodsPrice();
+			// g.setProductId(commproductlist.get(i).getProductId());
+			// g.setDelFlag("0");
+			// g.setPriceType("0");
+			// List<GoodsPrice> goodsPriceList =
+			// goodsPriceService.queryGoodsPriceList(g);
+			// if (goodsPriceList != null && goodsPriceList.size() > 0) {
+			// commproductlist.get(i).setPriceId(goodsPriceList.get(0).getPriceId());
+			// } else {
+			// commproductlist.get(i).setPriceId("");
+			// }
+			// }
+			// }
 
 			view = new ModelAndView("commproduct/queryCommproduct");
 			view.addObject("commproductlist", commproductlist);

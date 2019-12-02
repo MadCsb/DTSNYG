@@ -129,10 +129,23 @@ public class GoodsPriceServiceImpl implements GoodsPriceService {
 		g.setPriceName(goodsPrice.getPriceName());
 		// 如果为空 数量不限
 		if (goodsPrice.getMaxBuyCount() == null || "".equals(goodsPrice.getMaxBuyCount())) {
+			g.setMaxBuyCount(null);
+		} else {
+			g.setMaxBuyCount(goodsPrice.getMaxBuyCount());
+		}
+
+		if (goodsPrice.getLimitBuyCount() == null || "".equals(goodsPrice.getLimitBuyCount())) {
+			g.setLimitBuyCount(null);
+		} else {
+			g.setLimitBuyCount(goodsPrice.getLimitBuyCount());
+		}
+
+		if (goodsPrice.getStoreCount() == null || "".equals(goodsPrice.getStoreCount())) {
 			g.setStoreCount(null);
 		} else {
 			g.setStoreCount(goodsPrice.getStoreCount());
 		}
+
 		g.setThumbPic(thumbPic);
 		g.setCreateTime(DateTimeUtil.getDateTime19());
 		g.setDelFlag("0");
@@ -198,10 +211,23 @@ public class GoodsPriceServiceImpl implements GoodsPriceService {
 		g.setPriceName(goodsPrice.getPriceName());
 		// 如果为空 数量不限
 		if (goodsPrice.getMaxBuyCount() == null || "".equals(goodsPrice.getMaxBuyCount())) {
+			g.setMaxBuyCount(null);
+		} else {
+			g.setMaxBuyCount(goodsPrice.getMaxBuyCount());
+		}
+
+		if (goodsPrice.getLimitBuyCount() == null || "".equals(goodsPrice.getLimitBuyCount())) {
+			g.setLimitBuyCount(null);
+		} else {
+			g.setLimitBuyCount(goodsPrice.getLimitBuyCount());
+		}
+
+		if (goodsPrice.getStoreCount() == null || "".equals(goodsPrice.getStoreCount())) {
 			g.setStoreCount(null);
 		} else {
 			g.setStoreCount(goodsPrice.getStoreCount());
 		}
+
 		g.setThumbPic(thumbPic);
 		g.setDelFlag("0");
 		if (goodsPrice.getFreight() == null || "".equals(goodsPrice.getFreight())) {

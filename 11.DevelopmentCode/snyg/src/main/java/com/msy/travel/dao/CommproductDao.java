@@ -87,4 +87,16 @@ public interface CommproductDao {
 	 * @return Commproduct
 	 */
 	Commproduct queryCommproductForWx(Commproduct commproduct) throws Exception;
+
+	/**
+	 * 后台查询，为了复制功能添加priceId
+	 * 
+	 * @author wzd
+	 * @date 2019年12月2日 上午10:54:39
+	 * @param commproduct
+	 * @return
+	 * @throws Exception
+	 * @return List<Commproduct>
+	 */
+	List<Commproduct> queryCommproductListAndPriceId(Commproduct commproduct) throws Exception;
 }

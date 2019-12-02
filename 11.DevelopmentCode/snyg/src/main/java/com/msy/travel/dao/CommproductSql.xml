@@ -313,8 +313,10 @@
 		</where>
 	</select>
 	
-	<!-- 查询单个详情 PC端-->
-	<select id="queryCommproductForPc" parameterType="String" resultType="commproduct">
+	
+	
+	<!-- 按条件查询所有 -->
+	<select id="queryCommproductListAndPriceId" parameterType="commproduct" resultType="commproduct">
 		SELECT
 			t.F_PRODUCTID as productId ,
 			t.F_SPID as spId ,
@@ -340,15 +342,36 @@
 			t.F_TYPE as type ,
 			t.F_SUBTYPE as subType,
 			t.F_PRODUCTCODE as productCode,
-			s.F_PRICETYPE as priceType,
-			s.F_PRICEID AS priceId,
-			s.F_PRICE as price   
+			p.F_TYPENAME as typeName,
+			tem.F_PRICEID as priceId
 		FROM
-			t_sm_sellprice s
-		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID
+		t_sm_commproduct t
+		LEFT JOIN t_sm_pdctype p on t.F_TYPE = p.F_PDCTYPEID
+		LEFT JOIN (select F_PRODUCTID,F_PRICEID FROM t_sm_sellprice s where s.F_PRICETYPE=0 group By s.F_PRODUCTID) tem on tem.F_PRODUCTID = t.F_PRODUCTID
 		<where>
-			<if test="priceId !=null and priceId !=''">
-		    	and s.F_PRICEID = #{priceId}
+			<if test="productId !=null and productId !=''">
+		    	and t.F_PRODUCTID = #{productId}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="productName !=null and productName !=''">
+		    	and t.F_PRODUCTNAME like concat('%',#{productName},'%')
+		    </if>
+		    <if test="productCode !=null and productCode !=''">
+		    	and t.F_PRODUCTCODE like concat('%',#{productCode},'%')
+		    </if>
+		    <if test="type !=null and type !=''">
+		    	and t.F_TYPE = #{type}
+		    </if>
+		    <if test="venId !=null and venId !=''">
+		    	and t.F_VENID = #{venId}
+		    </if>
+		    <if test="state !=null and state !=''">
+		    	and t.F_STATE = #{state}
 		    </if>
 		</where>
 		<if test="entityPage != null">
