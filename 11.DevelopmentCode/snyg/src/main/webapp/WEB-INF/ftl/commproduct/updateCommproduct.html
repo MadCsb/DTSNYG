@@ -23,14 +23,19 @@
 				</td>
 
 				<td width="16%" class="tdright"><b><font class="f2">*</font>商家：</b></td>
-				<td width="30%">
+				<td width="30%">					
+					<select name="venId" id="venId" class="validate[required] data-inputtxt-select">
+					<option value="">请选择</option>
 					<#if companyList?? && (companyList?size>0)>
 						<#list companyList as  li>
 						<#if commproduct.venId?? && commproduct.venId==li.venId>
-							<input type="text" readonly="readonly" value="${li.venName!''}" class="data-inputtxt" style="border:0px;">
+							<option value="${li.venId!''}" selected="selected">${li.venName!''}</option>
+						<#else>
+							<option value="${li.venId!''}">${li.venName!''}</option>		
 						</#if>
 						</#list>
 					</#if>
+					</select>
 				</td>
 			</tr>
 			<tr>
