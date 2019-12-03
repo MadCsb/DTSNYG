@@ -58,7 +58,7 @@
 <div class="snyg_contentb"> 
     <div class="cpbtdiv">
          <p>${commproduct.productName!''}</p>
-         <div class="ztwz">${commproduct.subject!''}</div>
+         <div class="ztwz" id="goodsPriceNameCheck">${commproduct.subject!''}</div>
 		 <div class="jgwz">&yen;${commproduct.price!''}</div>
          <div class="zswz"><span id="kuaidi"></span><span style="float: right;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
@@ -244,6 +244,8 @@ var alertHtml = "";
 						}else{
 							$("#kuaidi").html("快递 "+data[i].freight);
 						}
+						
+						$("#goodsPriceNameCheck").html(data[i].priceName);
 					}else{
 						str+="style='display:none;'"
 					}
