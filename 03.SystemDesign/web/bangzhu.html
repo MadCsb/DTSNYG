@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+<html lang="zh" style="overflow-x: hidden">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
+<title>三农壹购</title>
+<meta name="keywords" content="三农壹购">
+<meta name="description" content="三农壹购">
+
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link href="css/home_header.css" rel="stylesheet" type="text/css">
+<link href="css/home_login.css" rel="stylesheet" type="text/css">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/font_544447_h1gk5k73j7x5stt9.css">
+
+
+<link href="css/index.css" rel="stylesheet" type="text/css">
+<link href="css/home.css" rel="stylesheet" type="text/css">
+
+
+<link href="css/front-common.css" rel="stylesheet">
+<link href="css/sld-site-color.css" rel="stylesheet">
+
+<link href="css/list.css" rel="stylesheet">
+<link href="js/base.css" rel="stylesheet">
+<script type="text/javascript">var _head_over_time = (new Date()).getTime();</script>
+
+<script type="text/javascript" async="" defer="" src="js/stats.js"></script>
+
+<script src="js/jquery.js"></script>
+<script src="js/common.js" charset="utf-8"></script>
+<script src="js/jquery.ui.js"></script>
+<script src="js/jquery.validation.min.js"></script>
+<script src="js/jquery.masonry.js"></script>
+<script src="js/dialog.js" id="dialog_js" charset="utf-8"></script><link href="js/dialog.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+var PRICE_FORMAT = '&yen;%s';
+$(function(){
+	//首页左侧分类菜单
+	$(".category ul.menu").find("li").each(
+		function() {
+			$(this).hover(
+				function() {
+				    var cat_id = $(this).attr("cat_id");
+					var menu = $(this).find("div[cat_menu_id='"+cat_id+"']");
+					menu.show();
+					$(this).addClass("hover");
+					if(menu.attr("hover")>0) return;
+				//	menu.masonry({itemSelector: 'dl'});
+					var menu_height = menu.height();
+					if (menu_height < 480) menu.height(480);
+                    /*					menu_height = menu.height();
+					var li_top = $(this).position().top;
+					if ((li_top > 60) && (menu_height >= li_top)) $(menu).css("top",-li_top+50);
+					if ((li_top > 150) && (menu_height >= li_top)) $(menu).css("top",-li_top+90);
+					if ((li_top > 240) && (li_top > menu_height)) $(menu).css("top",menu_height-li_top+90);
+					if (li_top > 300 && (li_top > menu_height)) $(menu).css("top",60-menu_height);
+					if ((li_top > 40) && (menu_height <= 120)) $(menu).css("top",-5);
+				$(menu).css("top",40);
+                     */	                   var li_top = $(this).position().top;
+                    $(menu).css("top", -li_top+41);
+					menu.attr("hover",1);
+				},
+				function() {
+					$(this).removeClass("hover");
+				    var cat_id = $(this).attr("cat_id");
+					$(this).find("div[cat_menu_id='"+cat_id+"']").hide();
+				}
+			);
+		}
+	);
+  // 查看全部商品的 鼠标移上去 展开 左侧分类
+    var app = "goods_cat";
+    window.app = app;
+    function hide_category_layer(){
+        if(app!='index') {
+            $(".category-layer").hide();
+        }
+
+    }
+  var _timer;
+  if(!$(".home-category").hasClass('unhover')){
+    $(".home-category").hover(function(){
+      clearInterval(_timer);
+      $(".category-layer").show();
+    },function(){
+      _timer = setInterval(hide_category_layer,500);
+    });
+    $(".category-layer").hover(function(){
+        clearInterval(_timer);
+    },function(){
+      hide_category_layer();
+    });
+  }
+
+	$(".head-user-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+	$('.head-user-menu .my-mall').mouseover(function(){// 最近浏览的商品
+		load_history_information();
+		$(this).unbind('mouseover');
+	});
+	$('.head-user-menu .my-cart').mouseover(function(){// 运行加载购物车
+		load_cart_information();
+		$(this).unbind('mouseover');
+	});
+	$('#button').click(function(){
+	    if ($('#keyword').val() == '') {
+		    return false;
+	    }
+	});
+    $(function(){
+        //search
+        var app = "goods_cat";
+        var mod = "index";
+        if (app == "vendorlist"){
+          getSldNewTab("vendorlist");
+        }else if(app == "supplier"){
+          if (mod == 'goodslist') {
+            getSldNewTab("supplier","goodslist"); 
+          }else{
+            getSldNewTab("supplier"); 
+          }
+        }
+        $("#search ul li.otherli").click(function(){
+          var curApp =  $(this).attr('app');
+          var curMod =  $(this).attr('mod');
+
+            $('#search ul').removeClass('hover');
+            $('#search_app').attr("value",$(this).attr("app"));
+            $('#search_mod').attr("value",$(this).attr("mod"));
+            $('#keyword').attr("placeholder",$(this).attr("title"));
+          getSldNewTab(curApp,curMod);
+        });
+        $("#keyword").blur();
+          //根据当前的app，重新组装ul tab里面的数据
+          function getSldNewTab(curApp,curMod=''){
+            if(curApp == 'search'){
+              $('#search ul li').eq(0).attr('app', 'search');
+              $('#search ul li').eq(0).html('商品');
+              $('#search ul li').eq(1).attr('app', 'vendorlist');
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+              $('#search ul li').eq(1).html('店铺');
+            }else if(curApp == 'supplier'){
+              if (curMod == 'goodslist') {
+                $('#search ul li').eq(0).attr('app', 'supplier');
+                $('#search ul li').eq(0).attr('mod', 'goodslist');
+                $('#search ul li').eq(0).html('商品');
+                $('#search ul li').eq(1).attr('app', 'supplier');
+                $('#search ul li').eq(1).attr('mod', '');
+                $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+                $('#search ul li').eq(1).html('店铺');
+              }else{
+                $('#search ul li').eq(1).attr('app', 'supplier');
+                $('#search ul li').eq(1).attr('mod', 'goodslist');
+                $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+                $('#search ul li').eq(1).html('商品');
+                $('#search ul li').eq(0).attr('app', 'supplier');
+                $('#search ul li').eq(0).attr('mod', '');
+                $('#search ul li').eq(0).html('店铺');
+              }
+            }else{
+              $('#search ul li').eq(1).attr('app', 'search');
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+              $('#search ul li').eq(1).html('商品');
+              $('#search ul li').eq(0).attr('app', 'vendorlist');
+              $('#search ul li').eq(0).html('店铺');
+            }
+          }
+
+//        var cook = getCookie('dymall_banner');
+//        if(cook){
+//            $("#top-banner").hide();
+//        } else {
+//            $("#top-banner").slideDown(10);
+//        }
+//        $("#top-banner .close").click(function(){
+//            setCookie('dymall_banner','yes',1);
+//            $("#top-banner").hide();
+//        });
+    });
+});
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {
+	color: #FF0000;
+	font-weight: bold;
+	font-size: 24px;
+}
+-->
+</style>
+</head>
+<body>
+  <style>
+    .sldPcHomeAsdsv{
+        width: 1920px;
+        margin: auto;
+        overflow: hidden;
+        margin-left: -960px;
+        left: 50%;
+        position: relative;
+    }
+    .sldCloseAsdsv{
+        position: absolute;
+        left: 50%;
+        margin-left: 580px;
+        top: 13px;
+        z-index: 2;
+
+    }
+    .sldCloseAsdsv .iconfont{
+        font-size: 21px;
+    }
+    .user,.im_list{
+        position: relative;
+    }
+    .user p,.p90{
+        width: 90px;
+        text-align: center;
+        letter-spacing: 1px;
+        white-space: nowrap;
+        height:36px;
+        line-height:36px;
+        padding-left:5px;
+        border-radius:5px;
+        background:#ffbb32;
+        color: #fff;
+        position: absolute;
+        right:-98px;/*20*/
+        top: 0;
+        transition:0.5s;
+        transition-timing-function:linear;
+    }
+    .user:hover p,.im_list:hover .p90,.ever:hover .p90{
+        right:20px;
+    }
+    .img{
+        position: absolute;
+        left:45px;
+        top:-55px;
+        transition:0.3s;
+        width: 156px;
+        transition-timing-function:linear;
+    }
+    .erma:hover .img{
+        left:-172px;
+        /*transform:rotate(1081deg);*/
+    }
+</style>
+<script>
+    $('.sldCloseAsdsv').click(function () {
+       $('.sldPcHomeAsdsv').fadeOut(500);
+    });
+</script>
+<div id="append_parent"></div>
+<div id="sld_byuTP9yr"></div>
+<div id="sldToolbar" class="jmys-appbar">
+  <div class="jmys-appbar-tabs" id="appBarTabs">
+    <div class="ever">
+            <div class="cart"><a target="_blank" class="right" href="gouwc.html"><i class="iconfont icon-gouwuche"></i></a> <p class="p90">购物车</p></div>
+    </div>
+    <div class="variation">
+      <div class="middle">
+        <div class="user" bbctype="a-barLoginBox">
+        <a target="_blank" class="right" href="">
+          <div class="avatar"><i class="iconfont icon-huiyuan"></i></div>
+        </a>
+            <p class="p90">请登录</p>
+        </div>
+		
+
+          <div class="l_qrcode erma"><a class="Right" href="javascript:void(0);"><i class="iconfont icon-saoma"></i>
+                  <div class="barSldQrcode">
+                      <img src="images/05977763755637882.jpg">
+                  </div>
+<!--                  <code><img src="--><!--"></code>-->
+              </a>
+              <img class="img" onselectstart="return true" src="images/ggh2wm.jpg" alt="" style="position: absolute; left: 45px;">
+          </div>
+      </div>
+
+
+      <div class="gotop"><a href="javascript:void(0);" id="gotop" style="opacity: 1;"><i class="iconfont icon-jiantou"></i></a></div>
+    </div>
+    <div class="content-box" id="content-cart">
+      <div class="top">
+        <h3>我的购物车</h3>
+        <a href="javascript:void(0);" class="close" title="隐藏"></a></div>
+      <div id="rtoolbar_cartlist"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+//返回顶部
+backTop=function (btnId){
+	var btn=document.getElementById(btnId);
+	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	window.onscroll=set;
+	btn.onclick=function (){
+		btn.style.opacity="0";
+		window.onscroll=null;
+		this.timer=setInterval(function(){
+		    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+			scrollTop-=Math.ceil(scrollTop*0.1);
+			if(scrollTop==0) clearInterval(btn.timer,window.onscroll=set);
+			if (document.documentElement.scrollTop > 0) document.documentElement.scrollTop=scrollTop;
+			if (document.body.scrollTop > 0) document.body.scrollTop=scrollTop;
+		},10);
+	};
+	function set(){
+	    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	    btn.style.opacity=scrollTop?'1':"0";
+	}
+};
+backTop('gotop');
+
+//动画显示边条内容区域
+$(function() {
+    //右侧bar显示二维码事件
+    $('.l_qrcode').hover(function () {
+        $('.l_qrcode .barSldQrcode').animate({'display':'inline-block'},500);
+    },function () {
+        $('.l_qrcode .barSldQrcode').animate({'display':'none'},500);
+    });
+    sldToolbar();
+    $(window).resize(function() {
+        sldToolbar();
+    });
+    function sldToolbar() {
+        if ($(window).width() >= 1240) {
+            $('#appBarTabs >.variation').show();
+        } else {
+            $('#appBarTabs >.variation').hide();
+        }
+    }
+    $('#appBarTabs').hover(
+        function() {
+            $('#appBarTabs >.variation').show();
+        },
+        function() {
+            sldToolbar();
+        }
+    );
+	$(".close").click(function(){
+		$(".content-box").animate({right:'-210px'});
+      });
+
+	$(".quick-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+		$(".links_a").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+
+    // 右侧bar用户信息
+    $('div[bbctype="a-barUserInfo"]').click(function(){
+        $('div[bbctype="barUserInfo"]').toggle();
+    });
+    // 右侧bar登录
+    $('div[bbctype="a-barLoginBox"]').click(function(){
+        $('div[bbctype="barLoginBox"]').toggle();
+        document.getElementById('codeimage').src='index.php?app=randcode&rand='+ Math.random();
+    });
+    $('a[bbctype="close-barLoginBox"]').click(function(){
+        $('div[bbctype="barLoginBox"]').toggle();
+    });
+        });
+</script>
+
+<div class="common-layout-top w">
+  <div class="topbar wrapper">
+
+    <div class="user-entry">
+    
+       <span><a href="login.html">请登录</a></span>
+       <span><a href="zhuce.html">免费注册</a></span>
+    </div>
+
+    <div class="quick-menu">
+      <dl class="down_weixin">
+        <dt><em class="ico_shop"></em><a href="javascript:void(0)">微信关注</a><i></i></dt>
+        <dd>
+            <div class="qrcode">
+                <img src="images/ggh2wm.jpg">
+            </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt><a href="user.html">我的订单</a><i></i></dt>
+        <dd>
+          <ul>
+            <li><a href="dingdan.html">待付款订单</a></li>
+            <li><a href="dingdan.html">待确认收货</a></li>
+            <li><a href="dingdan.html">待评价交易</a></li>
+          </ul>
+        </dd>
+      </dl>
+      <dl>
+        <dt>客户服务<i></i></dt>
+        <dd>
+          <ul>
+            <li><a href="bangzhu.html">帮助中心</a></li>
+            <li><a href="shouhoufuwu.html">售后服务</a></li>
+            <li><a href="kefuzx.html">客服中心</a></li>
+          </ul>
+        </dd>
+      </dl>
+          </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+
+
+
+	$(".quick-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+    $(".changeSldBox").hover(function() {
+            $(this).addClass("hover");
+        },
+        function() {
+            $(this).removeClass("hover");
+        });
+    });
+
+    //首字母检索
+    $('#jsCityLayerChar a').click(function () {
+        var sldClassName = $(this).attr('class');
+        var sldCharHeight = $('#jsCityLayerChar').height()*1+15;
+        var chartoTop = $(this).offset().top;
+        console.info($(this).offset().top);
+        if(chartoTop>170&&chartoTop<180||(chartoTop>70&&chartoTop<80)){
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1;
+        }else{
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1-20;
+        }
+
+        //获取当前的margin-top值
+        var curheight = ($('#jsCityLayerScrollWarrper').css('margin-top')).replace("px","");
+        $('#jsCityLayerScrollWarrper').animate({'margin-top':height*1+curheight*1},500);
+    });
+
+
+    //右侧固定栏事件
+var index;
+    $(".p90").hover(function(){
+        $(this).siblings("a").css({"background":"#ffbb32"});
+        console.log($(this).siblings("a"));
+    },function(){
+        $(this).siblings("a").css({"background":"#00ae60"});
+    });
+  $(".right").hover(function(){
+      $(this).css("background","#ffbb32");
+  },function(){
+      $(this).css("background","#00ae60");
+  });
+  $(".img").hover(function(){
+      $(".img").css({"position":"absolute","left":"45px"});
+  },function(){
+      $(".img").css({"position":"absolute","left":"45px"});
+  });
+    $(".Right").hover(function(){
+        $(".img").css({"position":"absolute","left":"-172px"});
+    },function(){
+        $(".img").css({"position":"absolute","left":"45px"});
+    })
+</script>
+  <!-- PublicHeadLayout Begin -->
+<p></p>
+  <div class="wrapper" style="overflow: hidden;width:100%">
+      <div style=";margin: auto;margin-top: 15px;overflow:hidden;margin-left: -960px;left: 50%;position: relative">
+
+      </div>
+  </div>
+<div class="header-wrap">
+  <header class="public-head-layout wrapper">
+    <h1 class="site-logo"><a href="index.html"><img src="images/logo.jpg" class="pngFix"></a></h1>
+    <div id="search" class="head-search-bar">
+                <ul class="tab">
+            <li title="请输入您要搜索的商品关键字" app="search" class="current">商品</li>
+            <i></i>
+        </ul>
+      <form action="" method="get" class="search-form" onSubmit="return checkSubmit();">
+        <input name="app" id="search_app" value="goodslist" type="hidden">
+                <input name="keyword" id="keyword" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
+        <input type="submit" id="button" value="搜  索" class="input-submit">
+      </form>
+      <div class="keyword">
+        <ul>
+                    <li><a href="">土鸡蛋</a></li>
+                    <li><a href="">蜂蜜</a></li>
+                    <li><a href="">苹果</a></li>
+                  </ul>
+      </div>
+    </div>
+    <div class="head-user-menu">
+      <dl class="my-cart">
+
+        <dt><a href="gouwc.html"><i class="iconfont icon-gouwuche"></i><span>购物车结算</span></a></dt>
+        <dd>
+          <div class="sub-title">
+            <h4>最新加入的商品</h4>
+          </div>
+          <div class="incart-goods-box">
+            <div class="incart-goods">
+				<dl id="cart_item_1498" data-is_supplier="0">
+                <dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>
+                <dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="images/sp.png"></a></dd>
+                <dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>
+                <dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>
+                </dl>
+             </div>
+             <div class="checkout"> <span class="total-price">共<i>1</i>种商品&nbsp;&nbsp;共计&nbsp;<em>¥78.00</em></span><a href="" class="btn-cart">去购物车</a> </div>
+       	 </div>
+        </dd>
+      </dl>
+    </div>
+  </header>
+</div>
+<!-- PublicHeadLayout End -->
+<style>
+  #nav{
+    width: 990px !important;
+  }
+</style>
+<div class="category-box" style="border-bottom: 2px solid #00ae60">
+  <div class="w1210 wrap-line-all">
+    <div class="home-category bg-color fl">
+      <a href="spfl.html" class="menu-event" title="查看全部商品分类">
+        <i class="fa fa-bars"></i>
+        所有商品分类      
+      </a>
+    </div>
+    <div class="all-category fl" id="nav">
+
+      <ul>
+           <li class="fl"><a style="padding:0 15px" href="index.html">网站首页</a></li>
+           <li class="fl"><a style="padding:0 15px" href="miaosha.html">秒杀专区</a></li>
+           <li class="fl"><a style="padding:0 15px" href="tuang.html">团购中心</a></li>
+           <li class="fl"><a style="padding:0 15px" href="spfl.html">商品分类</a></li>
+           <li class="fl"><a style="padding:0 15px" href="shfw.html">售后服务</a></li>
+           <li class="fl"><a style="padding:0 15px" href="gywm.html">关于我们</a></li>
+                                                                                    
+      </ul>
+      <div class="wrap-line" style="left: 0px; width: 94px;">
+        <span style="left: 15px;"></span>
+      </div>
+    </div>
+
+    <!-- 左侧分类导航 slodon_left_category_menu_start -->
+    <div class="category-layer category-layer2" style="display: none;">
+      
+      <span class="category-layer-bg bg-color"></span>
+      
+      <div class="list  ">
+        <dl class="cat">
+          <dt class="cat-name">
+                <span class="ico"><img src="images/icofl.png"></span>
+                <a href="" title="精品蔬菜">精品蔬菜</a>
+          </dt>
+           
+          <dd>
+                <a href="" title="天农精选">天农精选</a>
+                <a href="" title="礼盒/宅配">礼盒/宅配</a>
+          </dd>
+        </dl>
+        <div class="categorys">
+          <div class="item-left fl">
+            <!-- 推荐分类 -->
+            <div class="item-channels">
+              <div class="channels">
+                <a href="" title="农家蔬菜"> 农家蔬菜 </a>
+              </div>
+            </div>
+            <div class="item-channels">
+              <div class="channels">
+                <a href="" title="叶菜类"> 叶菜类 </a>
+              </div>
+            </div>
+            <div class="item-channels">
+              <div class="channels">
+                <a href="" title="根茎类"> 根茎类 </a>
+              </div>
+            </div>
+
+                                    
+            <div class="subitems">
+              <dl class="fore1">
+                <dd>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+                                                                                  
+                </dd>
+              </dl>
+                                          
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list  ">
+        <dl class="cat">
+          <dt class="cat-name">
+                <span class="ico"><img src="images/icofl.png"></span>
+                <a href="" title="禽肉蛋品">禽肉蛋品</a>
+          </dt>
+           
+          <dd>
+                <a href="" title="猪肉类">猪肉类</a>
+                <a href="" title="禽肉类">禽肉类</a>
+          </dd>
+        </dl>
+        <div class="categorys">
+          <div class="item-left fl">
+            <!-- 推荐分类 -->
+                        
+            <div class="subitems">
+              <dl class="fore1">
+                <dd>                 
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+                </dd>
+              </dl>
+                                          
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="list  ">
+        <dl class="cat">
+          <dt class="cat-name">
+              <span class="ico"><img src="images/icofl.png"></span>
+              <a href="" title="水产海鲜">水产海鲜</a>
+          </dt>
+           
+          <dd>
+             <a href="" title="鱼类">鱼类</a>
+             <a href="" title="虾类">虾类</a>
+          </dd>
+        </dl>
+        <div class="categorys">
+          <div class="item-left fl">
+            <!-- 推荐分类 -->
+                        
+            <div class="subitems">
+              <dl class="fore1">
+                <dd>                  
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                </dd>
+              </dl>
+                                        
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list  ">
+        <dl class="cat">
+          <dt class="cat-name">
+                  <span class="ico"><img src="images/icofl.png"></span>
+                  <a href="" title="粮油副食">粮油副食</a>
+          </dt>
+           
+          <dd>
+                  <a href="" title="调味酱料">调味酱料</a>
+                  <a href="" title="食用油">食用油</a>
+           </dd>
+        </dl>
+        <div class="categorys">
+          <div class="item-left fl">
+            <!-- 推荐分类 -->
+                        
+            <div class="subitems">
+               <dl class="fore1">
+                <dd>
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+                </dd>
+              </dl>
+                                        
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="list  ">
+        <dl class="cat">
+          <dt class="cat-name">
+              <span class="ico"><img src="images/icofl.png"></span>
+              <a href="" title="测试分类">一级分类</a>
+          </dt>
+           
+          <dd>
+               <a href="" title="测试分类111">测试分类111</a>
+          </dd>
+        </dl>
+        <div class="categorys">
+          <div class="item-left fl">
+            <!-- 推荐分类 -->
+                        
+            <div class="subitems">
+               <dl class="fore1">
+                <dd>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类测试二级分类</a>                  
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>                                                                              
+                </dd>
+              </dl>
+                                          
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+                  
+    </div>
+    <!-- 左侧分类导航 slodon_left_category_menu__end -->
+  </div>
+</div>
+
+
+
+<div class="gywm-banner">
+
+</div>
+
+
+<div class="breadcrumbs">
+    <div class="container"><a href="">首页</a><span class="sep">&gt;</span><a href="">帮助中心</a></div>
+</div>
+
+
+<div class="page" style="padding-top:0;">
+
+<div class="container aptitude-list J_aptitude">
+        <div class="row">
+            <div class="span5 aptitude-list-banner">
+                <div class="box" id="J_menu"><div class="list"> <a href="shfw.html" class="name  J_menuExtend active">帮助中心</a>  
+                <ul class="">  
+                <li class="J_item item-name active"><a href="shfw.html">帮助中心</a></li>   
+                </ul> 
+                </div>
+            </div>
+            </div>
+            <div class="span15 aptitude-list-con">
+                <div class="box" id="J_list">
+                <h2>帮助中心</h2>
+                <p class="desc"></p>
+                <div class="list"> 
+                <div class="J_marked">
+
+<p>亲爱的顾客：</p>
+
+
+<p>首先，非常感谢您选择我们平台购买商品，在互联网的海洋里，我们能够相遇，是需要莫大的缘分和机遇！！！<br>
+
+但是每款产品都不一定都称心如意，或多或少会出现退换货的情况，为此我们特此说明。<br>
+
+本平台主要是销售农产品，农产品又有很多属于生鲜品类，比如：水果蔬菜、冰鲜鸡鸭、鸡蛋鹅蛋等，目前外地<br>
+
+的朋友购买，我们都是采用的快递方式发货，发货的时候非常用心用爱，尽量保证宝贝无损的到亲手中，但是到<br>
+
+货后发现不满意的情况下，这时候怎么办呢？<br>
+
+</p>
+
+<h4>问：收到的冰鲜鸡鸭，觉得太瘦？太肥？想退货？</h4>
+
+
+<p>答：我们是7天无条件退货的，但是考虑亲寄回来时，冰鲜鸡鸭会直接坏掉，所以店铺商家会跟亲联系，看看可否<br>
+
+
+以补贴现金券、赠送产品、退部分款等方式弥补亲！具体解决方式商家会跟亲沟通好的，请放心！</p>
+
+
+
+<h4>问：收到的冰鲜鸡鸭，直接坏掉，怎么办？</h4>
+
+
+<p>答：生鲜鸡鸭不能存放过久，亲不能让他们待在存物柜里哦，我们会以快递签收24小时为参照，快递签收后24<br>
+
+小时内发现有异常，应当及时联系客服，拍照取证发于客服，确定相互无异议后，商家将采取重新补发或者全额<br>
+
+退款的方式补偿亲！</p>
+
+
+<h4>问：收到产品不喜欢，想换另一种，怎么办？</h4>
+
+
+<p>答：我们是7天无条件换货的，对于生鲜鸡鸭，生鲜水果考虑亲寄回来时，它们会直接坏掉，所以店铺商家会跟亲<br>
+
+联系，看看可否以补贴现金券、赠送产品、退部分款等方式弥补亲！具体解决方式商家会跟亲沟通好的，请放心！！</p>
+
+
+<p>如果是购买的正常包装好的产品，比如：酱菜、鸡精味精、面粉、调料等有保质期，有外包装的产品，亲亲可以<br>
+
+直接申请换货哦，商家会及时处理！！</p><br>
+<br>
+
+</div>  </div></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="faq">
+  <div class="wrapper">
+    <ul>
+       <li> 
+       	<dl class="s2">
+      		<dt>购物指南</dt>
+            <dd><i></i><a href="" title="购物流程"> 购物流程 </a></dd>
+            <dd><i></i><a href="" title="商品咨询"> 商品咨询 </a></dd>
+            <dd><i></i><a href="" title="交易条款"> 交易条款 </a></dd>
+      	</dl>
+      </li>
+      <li> 
+      	<dl class="s3">
+      		<dt>关于订单</dt>
+            <dd><i></i><a href="" title="订单查询"> 订单查询 </a></dd>
+            <dd><i></i><a href="" title="订单确定"> 订单确定 </a></dd>
+            <dd><i></i><a href="" title="晒单评价"> 晒单评价 </a></dd>
+         </dl>
+       </li>
+       <li> 
+       		<dl class="s4">
+      		<dt>售后服务</dt>
+            <dd><i></i><a href="" title="售后说明"> 售后说明 </a></dd>
+            <dd><i></i><a href="" title="退换货说明"> 退换货说明 </a></dd>
+            <dd><i></i><a href="" title="售后维权"> 售后维权 </a></dd>
+            </dl>
+        </li>
+		<li> 
+        	<dl class="s6">
+      		<dt>关于我们</dt>
+            <dd><i></i><a href="" title="平台简介"> 平台简介 </a></dd>
+            <dd><i></i><a href="" title="联系我们"> 联系我们 </a></dd>
+
+            </dl>
+        </li>
+        <li style="width:33%; text-align:center; border-left:1px solid #39c471;">
+			<dl class="s1">
+            <dt>400-801-3841</dt> 
+            <dd><a href="#">周一至周日 8:00-18:00（仅收市话费）</a></dd> 
+            <dd><a rel="nofollow" href="" target="_blank" class="btn">人工客服</a></dd>
+            </dl>        
+        </li>
+        </ul>
+      </div>
+</div>
+<div class="wrapfoot">
+<div id="footer" class="wrapper">
+    <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
+    <p style="display: none"> </p>
+    <a href=""><img src="images/05987954210414380.png" border="0"></a>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+
+<script src="js/home_index.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="js/web_home_tpl_common.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/web_home_tpl_nav.js" type="text/javascript" charset="utf-8"></script>
+
+<script language="javascript">
+$(function(){
+	// Membership card
+	$('[bbctype="mcard"]').membershipCard({type:'shop'});
+});
+</script>
+<script type="text/javascript">
+    _sld_stats.uid = 0;
+    _sld_stats.gid = 0;
+    (function() {
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src='http://www.tnwmall.com/static/js/stats.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+
+<script>
+    $('#search .tab').hover(function() {
+            $(this).addClass("hover");
+        },
+        function() {
+            $(this).removeClass("hover");
+        });
+    function checkSubmit() {
+        var keyword = $('#keyword').val();
+        keyword = keyword.replace('<','');
+        keyword = keyword.replace('>','');
+        $('#keyword').val(keyword);
+        return true;
+    }
+</script>
+
+
+<script src="js/base.js"></script>
+<script type="text/javascript">
+$(function(){
+    $(".J_box-hd").on("click",function(){
+        $(this).toggleClass("current");
+        var $bd = $(this).siblings(".J_box-bd");
+        var $icon = $(this).find("i");
+
+        if($bd.is(":visible")){
+            $bd.hide();
+        } else {
+            $bd.fadeIn();
+        }
+    });
+});
+</script>
+
+</body></html>

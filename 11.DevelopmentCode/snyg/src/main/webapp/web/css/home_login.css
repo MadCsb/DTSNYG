@@ -1,0 +1,782 @@
+@charset "utf-8";
+/* ================================ */
+/* 商城注册登录页面相关样式定义 			*/
+/* ================================ */
+
+label.error {
+    color: #F30;
+}
+
+.clears {
+    clear: both;
+    overflow: hidden;
+}
+
+.quick-login {
+    background: #FFF;
+    overflow: hidden;
+    width: 358px;
+    padding: 0 20px;
+}
+
+.quick-login dl {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.quick-login dl dt {
+    line-height: 20px;
+    height: 20px;
+    margin: 8px 0 2px 0;
+    text-shadow: 1px 1px 0 #FFF;
+}
+
+.quick-login dl dd span {
+    line-height: 28px;
+    color: #999;
+    margin-left: 8px;
+}
+
+.quick-login .text {
+    font-family: Tahoma;
+    width: 95%;
+    height: 36px;
+    line-height: 36px;
+    background-color: #FFF;
+    margin-top: 22px;
+    padding: 0 0 0 12px;
+}
+
+.inajax_captcha {
+    width: 135px !important;
+}
+
+.inajax_img {
+    margin-top: 22px;
+    height: 38px;
+}
+
+.quick-login .text:focus {
+    background-color: #FFF;
+    border:1px solid #eee!important;
+}
+
+.quick-login ul {
+    width: 100%;
+    display: block;
+    clear: both;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+.quick-login ul li {
+    line-height: 20px;
+    color: #666;
+}
+
+.quick-login ul li a {
+    margin: 0 2px;
+}
+
+.quick-login ul li a.forget {
+    color: #999;
+}
+
+.quick-login ul li a.register {
+    color: #249ee4;
+}
+
+.quick-login .enter {
+    width: 100%;
+    margin: 10px auto 5px auto;
+    overflow: hidden;
+}
+
+.forget_password_li {
+    text-align: right;
+}
+
+.go_register_li {
+    text-align: center;
+}
+
+.login_inajax_title {
+    text-align: center;
+    font-size: 20px;
+    color: #e4393c;
+    font-weight: bold;
+    margin: 10px 0 -10px 0;
+}
+
+.quick-login .enter .submit {
+    color: #FFF;
+    font-size: 20px;
+    width: 100%;
+    height: 42px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+    background: #e4393c;
+    text-align: center;
+}
+.ljgm_part .enter .submit {
+    background: #ee0f20;
+    border-radius: 4px;
+}
+.ljgm_part input.text{color: #666;
+    border: 1px solid #eee;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 14px;}
+/*.quick-login .enter .submit:hover {  }*/
+.quick-login .enter span {
+    border-left: dotted 1px #ccc;
+    padding-left: 6px;
+    margin: 0 0 0 6px;
+    line-height: 28px;
+}
+
+.quick-login .enter span a {
+    background-image: url(../images/login.png);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 28px;
+    display: inline-block;
+}
+
+.quick-login .enter span a.qq {
+    background-position: -88px 0px;
+    width: 78px;
+}
+
+.quick-login .enter span a:hover.qq {
+    background-position: -88px -28px;
+    text-decoration: none;
+}
+
+.quick-login .enter span a.sina {
+    background-position: -166px 0px;
+    width: 88px;
+}
+
+.quick-login .enter span a:hover.sina {
+    background-position: -166px -28px;
+    text-decoration: none;
+}
+
+/* 注册表单样式 */
+.full_scrren_bg {
+    background: #303136;
+    height: 600px;
+}
+
+.jmys-login-layout {
+    width: 850px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.forget_password {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    height: 600px;
+}
+
+.jmys-login {
+    width: 400px;
+    position: absolute;
+    right: 10px;
+    top: 110px;
+    z-index: 2;
+}
+
+.jmys-login-layout .left-pic img {
+    padding-top: 143px;
+    /*padding-left: 115px;*/
+}
+
+.jmys-login-title {
+    background: #fff;
+    border: #D8D8D8 solid;
+    border-width: 1px 1px 0 1px;
+}
+
+.jmys-login-title h3 {
+    font-size: 18px;
+    font-family: "microsoft yahei";
+    font-weight: 700;
+    line-height: 20px;
+    padding: 15px 0 25px 25px;
+    color: #555;
+}
+
+.jmys-login-content {
+    background: #fff;
+    padding: 0 20px;
+    border: #D8D8D8 solid;
+    border-width: 0 1px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.jmys-login-content dl {
+    width: 100%;
+    float: left;
+    clear: both;
+    padding: 0;
+}
+
+.jmys-login-content dt {
+    font-size: 14px;
+    line-height: 38px;
+    color: #777;
+    text-align: right;
+    width: 22%;
+    float: left;
+}
+
+.jmys-login-content dd {
+    text-align: left;
+    width: 75%;
+    float: right;
+}
+
+.jmys-login-content dd label {
+    clear: both;
+    float: left;
+    line-height: 24px;
+    height: 24px;
+    width: 210px;
+    margin: 0;
+}
+
+.jmys-login-content dd .text {
+    font-family: Tahoma;
+    width: 220px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #FFF;
+    padding: 3px !important;
+    border: solid 1px;
+    border-color: #BBB;
+}
+
+.jmys-login-content dd .text:focus {
+    background-color: #FFF;
+}
+
+.jmys-login-content dd a {
+    line-height: 28px;
+    height: 28px;
+    text-align: left;
+    color: #999;
+}
+
+.jmys-login-content .submit {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFF;
+    background: url(../images/login.png) no-repeat scroll 0px -56px;
+    vertical-align: middle;
+    width: 98px;
+    height: 34px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.jmys-login-content .submit:hover {
+    background: url(../images/login.png) no-repeat scroll 0px -90px;
+}
+
+.jmys-login-layout a.forget {
+    font-weight: 500;
+    color: #666;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.jmys-login-layout a.register {
+    line-height: 26px;
+    color: #51B8F1;
+    font-size: 12px;
+    text-align: center;
+    width: 70px;
+    height: 26px;
+    margin: 0 6px;
+}
+
+.jmys-login-layout a.agreement {
+    color: #c53801;
+    font-weight: 600;
+}
+
+.jmys-login-layout a.agreement:hover {
+    text-decoration: underline;
+}
+
+.jmys-login-other {
+    text-align: center;
+    border-top: dashed 1px #D8D8D8;
+    margin-top: 8px; /*padding:10px 0px 20px 28%;*/
+}
+
+.jmys-login-other p {
+    line-height: 20px;
+    color: #777;
+    margin-top: 5px;
+}
+
+.jmys-login-other a {
+    margin-left: 10px;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10px;
+    height: 28px;
+}
+
+.jmys-login-other a.qq {
+    background-position: -88px 0px;
+    width: 35px;
+}
+.jmys-login-other a.qq img{
+    width: 25px;
+}
+
+.jmys-login-other a:hover.qq {
+    background-position: -88px -28px;
+}
+
+.jmys-login-other a.sina {
+    background-position: -166px 0px;
+    width: 35px;
+}
+.jmys-login-other a.sina img{
+    width: 29px;
+}
+.jmys-login-other a.wx img{
+    width: 29px;
+}
+
+.jmys-login-other a:hover.sina {
+    background-position: -166px -28px;
+}
+
+.jmys-login-bottom {
+    clear: both;
+    width: 400px;
+    height: 8px;
+}
+
+.jmys-login-layout .left-pic {
+    float: left;
+    position: relative;
+    z-index: 1;
+}
+
+/*.jmys-login-layout .left-pic img {  position: absolute; z-index:1; top:0; left:0 }*/
+.jmys-login-layout .left-pic span {
+    position: absolute;
+    z-index: 2;
+    top: 220px;
+    left: 100px;
+    line-height: 32px;
+    font-size: 24px;
+    font-family: "microsoft yahei";
+    width: 250px;
+    text-align: center;
+}
+
+.jmys-login-layout .left-pic p a {
+    color: #262626;
+    position: absolute;
+    z-index: 2;
+    top: 63px;
+    left: 58px;
+    line-height: 28px;
+    font-size: 12px;
+    width: 120px;
+    text-align: center;
+}
+
+.jmys-login-left {
+    line-height: 22px;
+    color: #626A73;
+    display: inline;
+    width: 450px;
+    float: left;
+    margin: 10px 0;
+}
+
+.jmys-login-left h3 {
+    font-size: 18px;
+    font-family: "microsoft yahei";
+    font-weight: 700;
+    color: #555;
+    line-height: 30px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
+.jmys-login-left ol {
+    width: 420px;
+    margin-top: 20px;
+    border-bottom: dashed 1px #E7E7E7;
+}
+
+.jmys-login-left ol li {
+    font-family: "microsoft yahei";
+    font-size: 14px;
+    line-height: 48px;
+    display: block;
+    vertical-align: middle;
+    width: 200px;
+    height: 48px;
+    float: left;
+    padding: 0 0 12px 0;
+    margin: 0 0 5px 10px;
+    overflow: hidden;
+}
+
+.jmys-login-left ol li i {
+    display: inline-block;
+    background: url(../images/login.png) no-repeat scroll;
+    vertical-align: middle;
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+}
+
+.jmys-login-left ol li.ico01 i {
+    background-position: -256px 0;
+}
+
+.jmys-login-left ol li.ico02 i {
+    background-position: -304px 0;
+}
+
+.jmys-login-left ol li.ico03 i {
+    background-position: -352px 0;
+}
+
+.jmys-login-left ol li.ico04 i {
+    background-position: -256px -48px;
+}
+
+.jmys-login-left ol li.ico05 i {
+    background-position: -304px -48px;
+}
+
+.jmys-login-left ol li.ico06 i {
+    background-position: -352px -48px;
+}
+
+@media projection, screen {
+    .ui-tabs-hide {
+        display: none;
+    }
+}
+
+@media print {
+    .ui-tabs-nav {
+        display: none;
+    }
+}
+
+.ui-tabs-nav:after {
+    display: block;
+    clear: both;
+    content: " ";
+}
+
+.ui-tabs-disabled {
+    opacity: .4;
+    filter: alpha(opacity=40);
+}
+
+.ui-tabs-loading em {
+    background: url(../images/loading.gif) no-repeat 0 50%;
+    padding: 0 0 0 20px;
+}
+
+* html .ui-tabs-nav {
+    display: inline-block;
+}
+
+*:first-child + html .ui-tabs-nav {
+    display: inline-block;
+}
+
+.jmys-login ul li {
+    background: #FFF;
+    display: block; /*	border: solid #D8D8D8;*/
+    border-width: 1px 1px 1px 1px;
+    float: left;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 5px -1px 0 -1px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.jmys-login ul li a {
+    color: #666;
+}
+
+.jmys-login ul li.ui-tabs-selected {
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: 600;
+    border: solid #D8D8D8;
+    border-width: 1px 1px 0 1px;
+    background: #F9F9F9;
+    float: left;
+    width: 198px;
+    height: 36px;
+    margin: 0;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.jmys-login ul li.ui-tabs-selected a {
+    color: #333;
+}
+
+/* 注册表单样式 */
+.weixin-login-layout {
+    width: 1200px;
+    margin: 60px auto;
+    position: relative;
+    z-index: 1;
+}
+
+.weixin-login-layout .openid {
+    font-size: 14px;
+    color: #AAA;
+    line-height: 20px;
+    height: 40px;
+    position: absolute;
+    z-index: 1;
+    top: -40px;
+}
+
+.weixin-login-layout .openid span {
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+.weixin-login-layout .openid .avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 6px;
+    border-radius: 100%;
+}
+
+.weixin-login-layout .openid .avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+
+.weixin-login-layout .openid a {
+    font-weight: 600;
+    margin: 0 4px;
+}
+
+.weixin-login {
+    background-color: #FFF;
+    width: 440px;
+    padding: 19px 19px 29px 19px;
+    border: solid 1px #E6E6E6;
+    border-radius: 5px;
+    float: left;
+    position: relative;
+    z-index: 1;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.weixin-login .arrow {
+    background: url(../images/login_pic.png) no-repeat -280px 0;
+    width: 17px;
+    height: 9px;
+    position: absolute;
+    z-index: 1;
+    top: -9px;
+    left: 160px;
+}
+
+.weixin-login .tabs-container {
+    margin-top: 30px;
+    padding: 0 40px 20px 40px;
+}
+
+.weixin-login .tabs-content {
+    width: 352px;
+}
+
+.weixin-login .weixin-login-form dl {
+    width: 348px;
+}
+
+.weixin-login .weixin-login-form dl dd .text {
+    width: 240px;
+    border: 1px solid #eee;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 7px 5px;
+}
+
+.weixin-login .weixin-login-form .code-div dl {
+    width: 228px;
+}
+
+.weixin-login .weixin-login-form .handle-div {
+    line-height: 20px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.weixin-login .weixin-login-form .handle-div .auto {
+    color: #999;
+    float: left;
+}
+
+.weixin-login .weixin-login-form .handle-div .auto .checkbox {
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.weixin-login .weixin-login-form .handle-div .auto em {
+    line-height: 20px;
+    color: #ff3238;
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.weixin-login .weixin-login-form .handle-div .forget {
+    float: right;
+}
+
+.weixin-login .weixin-login-form .submit-div .submit {
+    width: 348px;
+    height: 40px;
+    border-radius: 4px;
+}
+
+.weixin-login-api {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    width: 340px;
+    margin: 0 auto;
+}
+
+.weixin-login-api h4 {
+    font-size: 12px;
+    line-height: 20px;
+    color: #333;
+    font-weight: 600;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.weixin-login-api a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #AAA;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    height: 32px;
+    margin-right: 24px;
+    *zoom: 1;
+}
+
+.weixin-login-api a i {
+    background: url(../images/login_pic.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+    *zoom: 1;
+}
+
+.weixin-login-api a.qq i {
+    background-position: 0 0;
+}
+
+.weixin-login-api a.sina i {
+    background-position: -32px 0;
+}
+
+.weixin-login-api a.wx i {
+    background-position: -64px 0;
+}
+
+.weixin-login-api a.qq:hover {
+    color: #3EB6E8;
+}
+
+.weixin-login-api a.qq:hover i {
+    background-position: -96px 0;
+}
+
+.weixin-login-api a.sina:hover {
+    color: #F77260;
+}
+
+.weixin-login-api a.sina:hover i {
+    background-position: -128px 0;
+}
+
+.weixin-login-api a.wx:hover {
+    color: #4EA335;
+}
+
+.weixin-login-api a.wx:hover i {
+    background-position: -160px 0;
+}
+
+
+.ljgm_part .reg_pds_part{clear: both;overflow:hidden;padding: 20px 0 0 0;}
+.ljgm_part .sld_forget_psd{
+    float: right;
+    margin-right: 20px;
+}
+.ljgm_part .sld_go_register{
+    float: left;
+    margin-left: 20px;
+}
+.inajax_sanfang_part{text-align: center;margin: 20px auto;display: block}
+.inajax_sanfang_part a{
+    display: inline-block;
+    margin-right: 38px;
+}
+.inajax_sanfang_part a:last-child{margin-right: 0}
+.ljgm_part .reg_pds_part li.sld_forget_psd a,.ljgm_part .reg_pds_part li.sld_go_register a{color: #666;}
+.ljgm_part dl dd #captcha{
+    width: 215px!important;
+}
+.ljgm_part .inajax_img{
+    margin-left: 5px;
+    height: 45px;
+    width: 120px;
+}

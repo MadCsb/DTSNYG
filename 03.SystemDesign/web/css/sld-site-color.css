@@ -1,0 +1,145 @@
+
+@charset "utf-8";
+
+/********** slodon 主体颜色**********/
+.color{ color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.home-category.bg-color{ background:/*slodon_main_color_start*/#00ae60/*slodon_main_color_end*/;}
+.bg-color{ background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+a:hover { color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+
+/********** slodon 网站导航**********/
+.wrap-line-all{ border-color: /*slodon_main_color_start*/#00ae60/*slodon_main_color_end*/;}
+.category-box .all-category .wrap-line{ background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.category-box-border{ border-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.category-box .all-category li a.nav:hover, .category-box .all-category li a.current{ color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/ !important;}
+.category-box-border .home-category .menu-event{ background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.category-box .home-category .menu-event.main-bg-color { background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+
+/********** slodon 左侧分类 **********/
+.category-layer .list:hover { border-left-color: /*slodon_left_nav_color_start*/#ffbb32/*slodon_left_nav_color_end*/;}
+.category-layer .list:hover .cat i.iconfontfa{ color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.category-layer .list:hover .cat .cat-name a, .category-layer2 .list:hover .cat dd a,.category-layer1 .list:hover .cat,.category-layer2 .list:hover .cat,.category-layer1 .list:hover .cat i.right-arrow,.category-layer2 .list:hover .cat i.right-arrow { color:/*slodon_main_color_start*/#FFFFFF/*slodon_main_color_end*/;}
+.category-layer .list .categorys { border-color: /*slodon_left_nav_color_start*/#3A3A3A/*slodon_left_nav_color_end*/;}
+.category-layer .list .categorys .item-channels a { background: /*slodon_left_second_color_start*/#ffbb32/*slodon_left_second_color_end*/;}
+
+/********** slodon 左侧楼层定位 **********/
+.elevator .elevator-floor .fs-name { background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.elevator .elevator-floor .fs-line { border-top-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.elevator .elevator-floor a.active .fs-name { background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.elevator .elevator-floor a.active .fs-name:hover { background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+
+/********** slodon 右侧快捷入口 **********/
+.quick-links li:hover .quick-links-a, .quick-links li.current .quick-links-a, .quick-toggle li:hover .quick-links-a, .quick-toggle li.current .quick-links-a{ background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.quick-links .cart-list .cart_num{ background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.quick-links li.current .cart-list .cart_num, .quick-links li:hover .cart-list .cart_num { color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.sidebar-user .btn:hover{ border-color:/*slodon_main_color_start*/#403f47/*slodon_main_color_end*/; color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+
+/********** slodon 右侧登录版式 **********/
+.nav-login .nav-login-info a.nav-login-btn.nav-apply{ border-color:/*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.nav-login .nav-login-info a.nav-login-btn:hover{ border-color:/*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+
+
+.floor-layout .floor-content .floor-left .floor-words a:hover{ color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale .tabs-nav .tabs-selected{ border-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale .tabs-nav .tabs-selected i.arrow{ border-color: transparent transparent /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale .tabs-nav .tabs-selected h3 { color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale2 .sale2-title-box { border-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale2 .tabs-nav .tabs-selected { border-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/; background: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/;}
+.index-sale2 .tabs-nav .tabs-selected i.arrow { border-color: /*slodon_main_color_start*/#403f47/*slodon_main_color_end*/ transparent transparent;}
+
+
+/*前台样式处理*/
+.banner>.selector{width:88px;height:24px;margin-left:-395px;left: 50%;top: 0px;}
+.w1210,.store-wall2 h2,.index-sale2 .index-sale-title,.article-nav{ position:relative;}
+
+.index-sale .tabs-nav li:hover .selector,
+.index-sale2 .tabs-nav li:hover .selector,
+.index-sale2 .index-sale-title:hover .selector,
+.floor-banner:hover .selector,
+.floor-words:hover .selector,
+.floor-title h2:hover .selector,
+.floor-brand:hover .selector,
+.store-wall1 h2:hover .selector,
+.store-wall-ad:hover .selector,
+.ad-groups1:hover .selector,
+.ad-groups2:hover .selector,
+.ad-groups4:hover .selector,
+.ad-groups5:hover .selector,
+.ad-groups-more-left:hover .selector,
+.ad-groups-more-right:hover .selector,
+.store-rec-content:hover .selector,
+.fixed-ad-layer-uid:hover .selector,
+.floor-con1 .floor-right:hover .selector,
+.floor-tabs-nav li.floor-tabs-selected:hover .selector,
+.floor-con2 h2:hover a.title-selector,
+.hot-word-con:hover .selector,
+.big-banner-con:hover a.selector,
+.middle-column-con:hover a.selector,
+.right-column-con:hover a.selector,
+.floor .floor-title3:hover .selector,
+.floor .floor-con3 .floor-ad3 .first:hover .selector1,
+.floor .floor-con3 .floor-ad3 .up-three-ad:hover .selector2,
+.floor .floor-con3 .floor-goods3 .floor-category3:hover .selector,
+.floor .floor-con3 .floor-goods3 .down-three-ad:hover .selector,
+.floor-layout .floor-content4 .floor-left .floor-left-con .floor-left-up:hover .selector,
+.floor-layout .floor-content4 .floor-left .floor-left-con .floor-left-down:hover .selector,
+.floor-layout .floor-content4 .floor-left .floor-banner:hover .selector,
+.floor-layout .floor-content4 .floor-right:hover .selector,
+.banner:hover .selector,
+.shop-floor h2:hover .selector,
+.shop-ad-group2 .shop-ad1:hover .selector,
+.shop-ad-group2 .shop-ad2:hover .selector,
+.shop-ad-group2 .shop-ad3:hover .selector,
+.shop-ad-group2 .shop-ad4:hover .selector,
+.shop-category-ad2:hover .selector,
+.shop-floor-ad:hover .selector,
+.shop-floor-goods:hover .selector,
+.shop3-title:hover .selector,
+.shop-ad-group-up:hover .selector,
+.shop-ad-group-middle:hover .selector,
+.shop-ad-group-down:hover .selector,
+.shop-category-con:hover .selector,
+.store-wall2 h2:hover .selector,
+.store-wall2-ad:hover .selector,
+.store-wall2-list:hover .selector,
+.floor-content5 .floor-ad:hover .selector,
+.floor-tabs-ad-up:hover .selector,
+.floor-tabs-ad-down:hover .selector,
+.floor-right:hover .selector,
+.custom:hover .selector,
+.industry-floor-img:hover .selector,
+.floor-content .floor-head:hover .selector,
+.floor-body-right.logo:hover .selector,
+.floor-body-left:hover .selector,
+.scroll-box:hover .selector,
+.pic-group:hover .selector,
+.article-title:hover .selector,
+.article-list:hover .selector,
+.story-list:hover .selector,
+.right-pic:hover .selector,
+.industry-text h3:hover .selector,
+.industry-text ul:hover .selector,
+.industry-hot:hover .selector,
+.industry-story:hover .selector,
+.topic-tab:hover .selector,
+.topic-goods:hover .selector,
+.topic-goods-border:hover .selector,
+.shop-floor .shop-goods-list:hover .selector,
+.right-sidebar .drop-item .proclamation1:hover .selector,
+.right-sidebar .drop-item .proclamation2:hover .selector,
+.right-sidebar .drop-item .sale-discount:hover .selector,
+.right-sidebar .drop-item .shortcut-menu:hover .selector,
+.right-sidebar .drop-item .nav-custom:hover .selector,
+.right-sidebar .drop-item .nav-shop-apply:hover .selector,
+.shop-menu-right:hover .selector,
+.floor-title h3:hover .selector,
+.floor-title .title-tags:hover .selector,
+.floor-img-left:hover .selector,
+.floor-img-right:hover .selector,
+.floor-con6 .floor-img-down:hover .selector,
+.floor-con6-brand:hover .selector,
+.img-down-left:hover .selector,
+.img-down-right:hover .selector,
+.floor-con8 .floor-img-down:hover .selector,
+.floor-con9 .floor-layout:hover .selector
+/*.floor:hover .selector*/{ visibility: visible;}

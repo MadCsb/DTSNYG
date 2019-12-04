@@ -32,8 +32,9 @@
                 /plugin/**=anon
                 /wx/**=anon
                 /upload/**=anon
-                /wx**=anon
-                /web**=anon
+                /wx**=anon 
+                /web** = anon
+                /web/** = anon
                 /** = sessionFilter
             </value>  
         </property>

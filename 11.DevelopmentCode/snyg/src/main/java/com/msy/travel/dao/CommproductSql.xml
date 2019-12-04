@@ -302,10 +302,14 @@
 			s.F_PRICESTARTDATE as priceStartDate ,
 			s.F_PRICEENDDATE as priceEndDate ,
 			s.F_PEOPLENUM as peopleNum  ,
-			s.F_GOODSPRICEID as goodsPriceId
+			s.F_GOODSPRICEID as goodsPriceId,
+			g.F_STORECOUNT as storeCount,
+			sub.F_SUBJECT as subjectName
 		FROM
 			t_sm_sellprice s
 		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID
+		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_sm_subject sub on sub.F_SUBJECTID = t.F_SUBJECT
 		<where>
 			<if test="priceId !=null and priceId !=''">
 		    	and s.F_PRICEID = #{priceId}

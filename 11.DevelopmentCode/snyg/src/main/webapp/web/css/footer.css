@@ -1,0 +1,1024 @@
+@charset "utf-8";
+/* CSS Document */
+
+#faq {
+    width: 100%;
+    border-bottom: solid 1px #39c471;
+    overflow: hidden;
+    margin:30px auto 0 auto;
+	background:url(../images/wave_bg.png) top repeat-x #00ae60;
+	
+}
+
+#faq ul {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    white-space: nowrap;
+    padding: 0 0 20px 0;
+    margin-left: -1%;
+	margin-top:30px;
+}
+
+#faq li {
+    font-size: 12px;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE7*/;
+    width: 17%;
+    zoom: 1;
+}
+
+#faq dl {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#faq .s1 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 15px 0 0 0;
+    position: relative;
+	text-align:center;
+}
+
+#faq .s2 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 5px 0;
+    border-bottom: solid 1px #39c471;
+    position: relative
+}
+
+#faq .s3 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 5px 0;
+    border-bottom: solid 1px #39c471;
+    position: relative
+}
+
+#faq .s4 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 5px 0;
+    border-bottom: solid 1px #39c471;
+    position: relative
+}
+
+#faq .s5 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 5px 0;
+    border-bottom: solid 1px #39c471;
+    position: relative
+}
+
+#faq .s6 dt {
+    font: bold 16px/20px "microsoft yahei";
+    color: #fff;
+    padding: 10px 0px;
+    margin: 5px 0;
+    border-bottom: solid 1px #39c471;
+    position: relative
+}
+
+#faq dl dd {
+    font: 12px/20px "microsoft yahei";
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    clear: both;
+    padding: 2px 5px 2px 0;
+    overflow: hidden;
+}
+
+#faq dl dd i {
+    font-size: 0;
+    line-height: 0;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+#faq dl dd a {
+    color: #fff;
+}
+#footer {
+    font-size: 12px !important;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+#footer p {
+    color: #fff;
+    word-spacing: 5px;
+    padding: 10px 0;
+}
+
+#footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+.jmys-appbar {
+    position: fixed;
+    z-index: 1998;
+    width: 35px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.jmys-appbar-tabs {
+    width: 35px;
+    height: 100%;
+}
+
+.jmys-appbar-tabs .ever {
+    width: 36px;
+    background-color: #00ae60;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 50%;
+    height: 36px;
+    border-radius: 4px 0 0 4px;
+    margin-top: 54px;
+}
+
+
+.jmys-appbar-tabs .cart a {
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    z-index: 1;
+    border-radius: 4px 0 0 4px;
+}
+.jmys-appbar-tabs .variation {
+    width: 35px;
+    height: 100%;
+    border-right: 4px solid #707070;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.jmys-appbar-tabs .variation .middle {
+    width: 36px;
+    height: 250px;
+    position: absolute;
+    bottom: -40px;
+    right: -4px;
+}
+
+.jmys-appbar-tabs .chat a,
+.jmys-appbar-tabs .user a,
+.jmys-appbar-tabs .compare a,
+.jmys-appbar-tabs .gotop a {
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    z-index: 1;
+    background: #00ae60;
+    border-radius: 4px 0 0 4px;
+}
+
+.jmys-appbar-tabs .l_qrcode {
+    width: 36px;
+    float: right;
+    position: fixed;
+    right: 0;
+    margin-top: 7px;
+    _position: absolute;
+    _bottom: auto;
+    background: #00ae60;
+    _margin-bottom: 0;
+    font-size: 14px;
+    z-index: 90;
+    border-radius: 4px 0 0 4px;
+}
+
+
+
+.jmys-appbar-tabs .variation .user #predeposit i{
+    font-size: 16px;
+    top: 9px;
+}
+.jmys-appbar-tabs .variation .user a i{
+    font-size: 17px;
+    right: 9px;
+}
+.jmys-appbar-tabs .variation .l_qrcode a i{
+    font-size: 19px;
+    right: 8px;
+    top: 5px;
+}
+.jmys-appbar-tabs .im_list #chat_show_user i{
+    font-size: 17px;
+    right: 8px;
+    top: 5px;
+}
+.jmys-hidebar {
+    display: block;
+    position: absolute;
+    z-index: 3;
+    bottom: 15px;
+    right: -79px;
+    cursor: pointer;
+}
+
+.jmys-hidebar .jmys-hidebar-bg {
+    background: url(../images/toolbar.png) no-repeat -100px 0;
+    width: 79px;
+    height: 56px;
+    position: relative;
+    z-index: 1;
+}
+
+.jmys-hidebar .jmys-hidebar-bg .user-avatar,
+.jmys-hidebar .jmys-hidebar-bg .frame,
+.jmys-hidebar .jmys-hidebar-bg .show {
+    background: url(../images/toolbar.png) no-repeat;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+
+.jmys-hidebar .jmys-hidebar-bg .user-avatar {
+    background-position: -100px 0px;
+    z-index: 1;
+}
+
+.jmys-hidebar .jmys-hidebar-bg .user-avatar img {
+    max-width: 36px;
+    max-height: 36px;
+}
+
+.jmys-hidebar .jmys-hidebar-bg .frame {
+    background-position: -100px -70px;
+    z-index: 2;
+}
+
+.jmys-hidebar .jmys-hidebar-bg .show {
+    display: none;
+    background-position: -140px -70px;
+    z-index: 3;
+}
+
+.jmys-hidebar .jmys-hidebar-bg:hover .show {
+    display: block;
+}
+
+.jmys-hidebar:hover {
+    background-position: -100px -60px;
+}
+
+.jmys-appbar-tabs .user {
+    display: block;
+    margin-top: 7px;
+}
+
+.jmys-appbar-tabs .user .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 14px;
+}
+
+.jmys-appbar-tabs .user .avatar img {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin-top: 7px;
+    margin-left: 8px;
+}
+
+.jmys-appbar-tabs span.icon {
+    display: block;
+    background: url(../images/toolbar.png) no-repeat;
+    width: 35px;
+    height: 35px;
+}
+
+.jmys-appbar-tabs .chat {
+    display: block;
+    margin-top: 7px;
+}
+
+.jmys-appbar-tabs .chat .icon {
+    background-position: 0 0;
+}
+
+.jmys-appbar-tabs .cart a {
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    z-index: 1;
+    border-radius: 4px 0 0 4px;
+}
+.jmys-appbar-tabs .cart a i{
+    top: 5px;
+    font-size: 19px;
+    right: 8px;
+}
+.barSldQrcode{
+    width: 140px;
+    height: 140px;
+    display: none;
+    position: absolute;
+    right: 45px;
+    top: 15px;
+    transition: 0.5s;
+}
+.barSldQrcode img{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+.jmys-appbar-tabs .cart a:hover,
+.jmys-appbar-tabs .user a:hover,
+.jmys-appbar-tabs .compare a:hover{
+    background-color: #ffbb32;
+}
+
+.jmys-appbar-tabs .gotop a:hover{
+
+}
+    /*.jmys-appbar-tabs .compare .icon {*/
+    /*background-position: 0 -40px;*/
+/*}*/
+
+/*.jmys-appbar-tabs .cart .icon {*/
+    /*background-position: 0 -120px;*/
+/*}*/
+
+.jmys-appbar-tabs .cart .name {
+    line-height: 16px;
+    color: #FFF;
+    display: block;
+    text-align: center;
+    width: 15px;
+    padding: 0 10px;
+    white-space: pre-wrap;
+}
+
+.jmys-appbar-tabs .prech {
+    display: block;
+    width: 35px;
+    height: 158px;
+}
+
+.jmys-appbar-tabs .gotop {
+    position: fixed;
+    bottom: 15px;
+    right: 0;
+}
+
+.jmys-appbar-tabs .gotop .icon {
+    background-position: 0 -80px;
+    opacity: 1;
+}
+
+.jmys-appbar-tabs .gotop:hover .icon {
+    opacity: 1;
+}
+.jmys-appbar-tabs #gotop i{
+    top:3px;
+}
+.jmys-appbar-tabs a i {
+    color: #FFF;
+    text-align: center;
+    padding: 1px;
+    position: absolute;
+    z-index: 1;
+    top: 6px;
+    right: 4px;
+    font-size: 27px;
+}
+
+.jmys-appbar-tabs a:hover {
+    background-color: #ffbb32;
+}
+
+.jmys-appbar-tabs a span.tit {
+    line-height: 30px;
+    color: #FFF;
+    background: url(../images/toolbar.png) no-repeat -50px 0;
+    white-space: nowrap;
+    display: none;
+    width: 86px;
+    height: 30px;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    right: 33px;
+    padding-left: 16px;
+}
+
+.jmys-appbar-tabs a:hover span.tit {
+    display: block;
+}
+
+.jmys-appbar-tabs a code {
+    display: none;
+    position: absolute;
+    right: 35px;
+    bottom: 0px;
+    padding: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #B7B7B7;
+    border-right: 0;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0 0 5px #ccc;
+    -moz-box-shadow: 0 0 5px #ccc;
+    -webkit-box-shadow: 0 0 5px #ccc;
+    z-index: 95;
+    -webkit-animation: fadeInLeft .4s .1s ease both;
+    -moz-animation: fadeInLeft .4s .1s ease both;
+}
+
+.jmys-appbar-tabs a.hover code {
+    display: block;
+}
+
+.jmys-appbar-tabs a code a {
+    color: #d8d8d8;
+}
+
+.jmys-appbar-tabs .hover {
+    z-index: 101;
+}
+
+
+
+/*解决IE6下不兼容 position:fixed 的问题*/
+.jmys-appbar-tabs .l_qrcode a {
+    position: relative;
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    z-index: 1;
+    border-radius: 4px 0 0 4px;
+}
+
+.jmys-appbar-tabs .l_qrcode .icon {
+    background-position: 0 -160px;
+    opacity: 1;
+}
+
+.jmys-appbar-tabs .l_qrcode:hover .icon {
+    opacity: 1;
+}
+
+.jmys-appbar-tabs .l_qrcode a i {
+    position: absolute;
+    right: auto;
+    right: 10px;
+}
+
+.jmys-appbar-tabs .l_qrcode:hover i {
+    display: block;
+}
+
+.jmys-appbar-tabs .l_qrcode a code {
+    padding: 0;
+}
+
+.jmys-appbar-tabs .l_qrcode a code img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/*工具条-会员登录*/
+.jmys-appbar-tabs .user-login-box {
+    background-color: #FFF;
+    width: 326px;
+    padding: 10px 30px 5px 30px;
+    border: solid 1px #CCC;
+    position: absolute;
+    z-index: 2;
+    top: -32px;
+    right: 35px;
+    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.jmys-appbar-tabs .user-login-box i.arrow {
+    background: url(../images/toolbar.png) no-repeat -100px -150px;
+    width: 7px;
+    height: 13px;
+    position: absolute;
+    z-index: 3;
+    top: 45px;
+    right: -7px;
+}
+
+.jmys-appbar-tabs .user-login-box a.close-a {
+    font: 600 11px /16px Verdana, Geneva, sans-serif;
+    text-decoration: none;
+    color: #999;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    z-index: 3;
+    top: 10px;
+    right: 10px;
+}
+
+.jmys-appbar-tabs .user-login-box a {
+    line-height: 20px;
+    color: #666;
+}
+
+.jmys-appbar-tabs .user-login-box dl {
+}
+
+.jmys-appbar-tabs .user-login-box dt {
+    font: 13px/20px Arial, "microsoft yahei";
+    height: 20px;
+    padding: 10px 0 0;
+}
+
+.jmys-appbar-tabs .user-login-box dt a {
+    font: 12px/20px arial, "宋体";
+    color: #005EA6;
+    text-decoration: underline;
+    float: right;
+}
+
+.jmys-appbar-tabs .user-login-box dd {
+}
+
+.jmys-appbar-tabs .user-login-box dd .text {
+    color: #666;
+    border: 1px solid #eee;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 14px;
+    width: 95%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #FFF;
+    margin-top: 22px;
+    padding: 0 0 0 12px;
+}
+.reg_pds_part{
+    clear: both;
+    overflow: hidden;
+    padding: 20px 0 0 0;
+}
+.forget_password_li {
+    float: right;
+    margin-right: 20px;
+    line-height: 20px;
+    color: #666;
+}
+.go_register_li {
+    float: left;
+    margin-left: 20px;
+}
+.jmys-appbar-tabs .user-login-box .bottom {
+    margin-top: 20px;
+}
+
+.jmys-appbar-tabs .user-login-box .submit {
+    color: #FFF;
+    font-size: 20px;
+    width: 100%;
+    height: 42px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+    text-align: center;
+    background: #ffbb32;
+    border-radius: 4px;
+    margin: 10px auto 5px auto;
+    overflow: hidden;
+}
+
+.jmys-appbar-tabs .user-info {
+    background-color: #FFF;
+    width: 240px;
+    padding: 9px 19px;
+    border: solid 1px #CCC;
+    position: absolute;
+    z-index: 2;
+    top: -32px;
+    right: 35px;
+    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.jmys-appbar-tabs .user-info i.arrow {
+    background: url(../images/toolbar.png) no-repeat -100px -150px;
+    width: 7px;
+    height: 13px;
+    position: absolute;
+    z-index: 3;
+    top: 45px;
+    right: -7px;
+}
+
+.jmys-appbar-tabs .user-info .avatar {
+    width: 88px;
+    height: 88px;
+    float: left;
+    position: relative;
+    z-index: 1;
+}
+
+.jmys-appbar-tabs .user-info .avatar .frame {
+    background: url(../images/point_bg.png) no-repeat 0 0;
+    width: 88px;
+    height: 88px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+}
+
+.jmys-appbar-tabs .user-info .avatar img {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    left: 4px;
+}
+
+.jmys-appbar-tabs .user-info dl {
+    display: block;
+    width: 140px;
+    float: left;
+    margin: 10px 0 0 10px;
+}
+
+.jmys-appbar-tabs .user-info dt {
+    font: 600 14px/20px "microsoft yahei";
+    margin-bottom: 6px;
+}
+
+.jmys-appbar-tabs .user-info dd {
+    line-height: 22px;
+}
+
+#sldToolbar .content-box {
+    background-color: #F5F5F5;
+    width: 200px;
+    height: 100%;
+    border-left: solid 1px #7C8994;
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: -210px;
+    bottom: 0;
+    box-shadow: -4px 0 2px rgba(0, 0, 0, 0.25);
+}
+
+#sldToolbar .content-box .top {
+    height: 24px;
+    padding: 9px 7px;
+    border-bottom: dotted 1px #CCC;
+    margin-bottom: 10px;
+}
+
+#sldToolbar .content-box .top h3 {
+    font: 16px/24px "microsoft yahei";
+    color: #333;
+    display: inline-block;
+}
+
+#sldToolbar .content-box .top a.close {
+    background: url(../images/toolbar.png) no-repeat -100px -120px;
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    float: right;
+}
+
+#sldToolbar .content-box .goods-list {
+    background-color: #FFF;
+    width: 180px;
+    padding: 10px 0;
+    margin: 0 auto;
+}
+
+#sldToolbar .content-box .goods-list li {
+    width: 160px;
+    padding: 0 0 10px 0;
+    margin: 0 auto;
+}
+
+#sldToolbar .content-box .goods-info {
+    width: auto;
+    margin: auto;
+}
+
+.jmys-appbar .goods-pic {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 10px auto;
+}
+
+.jmys-appbar .goods-pic a {
+    line-height: 0;
+    background: none;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    *display: block;
+    width: 120px;
+    height: 120px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.jmys-appbar .goods-pic a img {
+    max-width: 120px;
+    max-height: 120px;
+    margin-top: expression( 120-this.height/2);
+    *margin-top: expression(60-this.height/2) /*IE6,7*/;
+}
+
+.jmys-appbar .goods-name a {
+    font-weight: normal;
+    line-height: 16px;
+    color: #555;
+    background: none;
+    text-align: left;
+    display: block;
+    width: 100%;
+    height: 16px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jmys-appbar .goods-price {
+    font: 600 14px/20px Arial;
+    color: #C00;
+}
+
+.jmys-appbar .goods-price .del {
+    font: normal 12px/20px Arial;
+    color: #005EA6;
+    display: none;
+    float: right;
+    cursor: pointer;
+}
+
+#sldToolbar .goods-list li:hover .goods-price .del {
+    display: block;
+}
+
+#sldToolbar .content-box .no-compare {
+    color: #999;
+    line-height: 180px;
+    text-align: center;
+}
+
+.jmys-appbar .content-box .btn-box {
+    background-color: #F5F5F5;
+    text-align: center;
+    width: 160px;
+    padding: 10px;
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 10px;
+}
+
+.jmys-appbar .content-box .btn-box a {
+    background-color: #F32613;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.jmys-appbar .content-box .btn-box .total-price {
+    color: #777;
+    padding-bottom: 10px;
+}
+
+.jmys-appbar .cart-list {
+    width: 180px;
+    margin: 0 auto;
+}
+
+.jmys-appbar .cart-list li {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    background-color: #FFF;
+    padding: 4px;
+    border: solid 1px #FFF;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.jmys-appbar .cart-list li:hover {
+    border-color: #F32613;
+    box-shadow: 3px 3px 0 rgba(204, 204, 204, 0.75);
+}
+
+.jmys-appbar .cart-list .goods-pic,
+.jmys-appbar .cart-list dl {
+    font-size: 12px;
+    vertical-align: top;
+    letter-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    *zoom: 1;
+}
+
+.jmys-appbar .cart-list .goods-pic {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+}
+
+.jmys-appbar .cart-list .goods-pic a {
+    line-height: 0;
+    background: none;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    *display: block;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.jmys-appbar .cart-list .goods-pic a img {
+    max-width: 40px;
+    max-height: 40px;
+    margin-top: expression( 40-this.height/2);
+}
+
+.jmys-appbar .cart-list dl {
+    width: 125px;
+    margin-left: 5px;
+}
+
+.jmys-appbar .cart-list .goods-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.jmys-appbar .cart-list a.del {
+    font: 600 10px/14px Arial;
+    color: #FFF;
+    background-color: #CCC;
+    text-align: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: -5px;
+}
+
+.jmys-appbar .cart-list li:hover a.del {
+    background-color: #F32613;
+}
+
+#top_search_box .ui-widget-content {
+    background: #FFF none !important;
+    border-color: #CCC !important;
+    border: 1px solid #dddddd;
+}
+
+#top_search_box .ui-corner-all {
+    line-height: 24px;
+    display: block;
+    color: #555 !important;
+    text-indent: 8px;
+}
+
+#top_search_box .ui-state-hover {
+    font-weight: normal !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    background: #EEE none !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.trace {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #000;
+    line-height: 18px;
+    background: #FFF299;
+    padding: 8px;
+    margin: 8px;
+    border: 1px dashed silver;
+}
+
+.trace fieldset {
+    margin: 8px;
+}
+
+.trace fieldset legend {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+}
+
+.trace fieldset div {
+    overflow: auto;
+    max-height: 300px;
+    _height: 300px;
+    text-align: left;
+}
+
+.member-card {
+    width: 280px;
+    margin: -5px -9px;
+}
+
+.member-card dl {
+    padding: 5px 9px;
+    position: relative;
+    z-index: 1;
+}
+
+.member-card dl dt.member-id {
+    line-height: 20px;
+    color: #333;
+    height: 20px;
+    margin-left: 85px;
+}
+
+.member-card dl dt.member-id i {
+    background: url(../images/sex.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.member-card dl dt.member-id i.sex1 {
+    background-position: 0 0;
+}
+
+.member-card dl dt.member-id i.sex2 {
+    background-position: 100% 0;
+}
+
+.member-card dl dt.member-id i.sex3 {
+    display: none;
+}
+
+.member-card dl dt.member-id a {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.member-card dl dd.avatar {
+    width: 72px;
+    height: 72px;
+    padding: 2px;
+    border: solid 1px #E7E7E7;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    left: 9px;
+}

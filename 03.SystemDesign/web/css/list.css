@@ -1,0 +1,27 @@
+.gywm-banner{background:#f5f5f5 url("../images/spbanner.png") 50% 0 no-repeat;height:170px}
+
+
+.page{background:#f5f5f5;padding-bottom:50px}
+.page .aptitude-loading{margin-top:50px}
+.aptitude-list-banner{background:#fff}
+.aptitude-list-banner .box{padding:30px 0}
+.aptitude-list-banner .box .name{margin:0 55px 2px;font-size:16px;font-weight:400;line-height:34px;color:#333}
+.aptitude-list-banner .box ul{margin:10px 0;padding:3px 58px}
+.aptitude-list-banner .box li{display:block;list-style:none;margin-left:10px;margin-bottom:5px}
+.aptitude-list-banner .box a{color:#757575;display:block; line-height:32px;}
+.aptitude-list-banner .box a:hover{color:#ffbb32}
+.aptitude-list-banner .box .active{color:#ffbb32}
+.aptitude-list-banner .box .active a{color:#ffbb32}
+.aptitude-list-con{background:#fff;padding:20px 0}
+.aptitude-list-con .box{margin:0 50px}
+.aptitude-list-con h2{font-size:24px;font-weight:normal;color:#333;border-bottom:1px solid #ccc;padding-bottom:10px}
+.aptitude-list-con .desc{color:#757575;margin-bottom:30px;margin-top:15px}
+.aptitude-list-con .list h3{font-size:18px;font-weight:normal}
+.aptitude-list-con .list div{color:#757575;white-space:normal;word-wrap:break-word;word-break:break-all}
+.aptitude-list-con .list div img{max-width:100%}
+.aptitude-list-con .list .btn-download{display:block;margin-top:10px;margin-bottom:30px}
+.aptitude-list-con .list .history-box{margin-top:30px}
+.aptitude-list-con .list .history-box p{font-size:18px;margin-bottom:10px}
+.aptitude-list-con .list .history-box a{display:inline-block;*zoom:1;*display:inline;margin-bottom:5px;color:#ff6700}
+.J_marked{ font-size:14px; line-height:28px;}
+.J_marked h4{ font-weight:bold; line-height:48px;}

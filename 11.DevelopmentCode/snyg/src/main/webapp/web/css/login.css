@@ -1,0 +1,88 @@
+body{ margin:0; padding:0;font-family: arial,"Hiragino Sans GB", "Microsoft YaHei", sans-serif;}
+.login{width: 1130px;margin: 0 auto; height:100px;}
+.h_logo {
+    width: 200px;
+    height: 98px;
+    background: url(../images/logo.jpg) center no-repeat;
+	background-size:200px;
+	display:inline-block;
+}	
+	
+.login_banner_panel {
+    background: url(../images/banner2.png) center repeat-x ;
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    left: 0;
+    top: 98px;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+.layout_panel{
+	width: 1130px;
+	margin: 0px auto;
+	height:500px;
+	position:relative;
+
+}
+
+input{-webkit-box-flex: 1;
+-moz-box-flex: 1;
+box-flex: 1;
+flex-grow: 1;}
+
+.layout{ width:300px; height:400px;	padding: 20px 50px; background:#FFFFFF; position:absolute; top:30px; right:0;}
+.layout h3{ font-size:20px; margin:30px auto}
+
+.layoutzc{ width:300px; height:400px; margin:30px auto 0 auto;padding: 20px 50px; background:#FFFFFF;}
+.layoutzc h3{ font-size:20px;}
+
+.labelbox{display:block;margin-bottom:14px;border:1px solid #e0e0e0}
+
+.labelboxn{display: inline-block;margin-bottom:14px;border:0; color:#999999; }
+.labelboxn a{ text-decoration:none; color:#333;}
+.labelboxn input{ vertical-align:middle; margin-right:10px;}
+
+
+.labelbox input{height:22px;line-height:22px;padding:13px 16px 13px 14px;display:block; color:#4a4a4a; border:0; background:transparent;}
+.btnadpt {
+    background-color: #ff6700;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    margin-bottom: 14px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+	border:0;
+	font-family: "Microsoft YaHei",;
+}
+
+.n_links_area{text-align:right;color:#e0e0e0; margin:0 auto;}
+.n_links_area a{font-size:14px; text-decoration:none;color:#b2b2b2;}
+.n_links_area a:hover{color:#ff6700;}
+.n_links_area span{padding-left:5px;}
+.other_login_type{padding-top:30px;text-align:center}
+.oth_type_tit{border:0;border-top:1px solid #e0e0e0;padding-top:10px;padding-bottom:10px\9}
+.oth_type_txt{font-size:14px;color:#b0b0b0;margin:0 auto;text-align:center;width:100% \9}
+@media screen and (min-width: 0\0){.oth_type_tit{padding-bottom:0}.oth_type_txt{width:auto}}
+.oth_type_links{padding-top:0px;text-align:center}
+.icon_type{width:30px;height:30px;margin:0 12px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;-o-border-radius:50%;border-radius:50%}
+.icon_type .btn_sns_icontype{display:block;margin:4px auto 0}
+.icon_type .icon_default_alipay{margin-top:6px;margin-left:4px}
+.icon_type .icon_default_weixin{margin-top:6px}
+.btn_link{color:#ff6700}
+
+.icon_default_qq{background: url(../images/qq.png) no-repeat;background-size:30px;width:30px;height:30px;margin-right:10px;display:inline-block;vertical-align:middle;}
+
+
+.icon_default_weixin{background:url(../images/wx.png) no-repeat;background-size:30px;width:30px;height:30px;margin-right:10px;display:inline-block;vertical-align:middle;}
+
+.n-footer{height:60px; padding-top:20px; margin:0 auto;text-align:center; position:relative; width:100%;}
+.nf-link-area{text-align:center; font-size:12px; }
+
+.nf-link-area li{display:inline-block;*display:inline;*zoom:1}
+.nf-link-area a{display:inline-block;*display:inline;*zoom:1;padding:0 10px;color:#757575;text-decoration:none;}

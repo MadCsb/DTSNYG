@@ -23,7 +23,6 @@ import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.GoodsPriceService;
@@ -73,31 +72,6 @@ public class WebCommproductController extends BaseController {
 
 	@Resource(name = "sellPriceServiceImpl")
 	private SellPriceService sellPriceService;
-
-	/**
-	 * 跳转到列表
-	 */
-	@RequestMapping(params = "method=toQueryCommproduct")
-	public ModelAndView toQueryCommproduct(Commproduct commproduct, HttpServletRequest request, HttpServletResponse response, String priceType) {
-		ModelAndView view = null;
-		try {
-			if (commproduct.getEntityPage() == null) {
-				commproduct.setEntityPage(new EntityPage());
-			}
-
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-
-			view = new ModelAndView("wx/commproduct/queryCommproduct");
-			view.addObject("commproduct", commproduct);
-			view.addObject("entityPage", commproduct.getEntityPage());
-			view.addObject("serviceCode", serviceCode);
-			view.addObject("spId", Destsp.currentSpId);
-			view.addObject("priceType", priceType);
-		} catch (Exception e) {
-			log.error(e, e);
-		}
-		return view;
-	}
 
 	/**
 	 * 跳转到详情

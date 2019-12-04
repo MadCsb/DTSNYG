@@ -1,0 +1,1265 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*页面整体宽度控制*/
+.wrapper {
+    width: 1200px;
+    margin: auto;
+}
+
+/* 公用头部区域
+-------------------------------------- */
+.nav_title_wrap {
+    position: absolute;
+    left: 0;
+}
+
+.header-wrap {
+    background-color: #FFF;
+    width: 100%;
+}
+
+.public-head-layout {
+    height: 100px;
+}
+
+/* 站点logo */
+.public-head-layout .site-logo {
+    width: 200px;
+    height: 80px;
+    float: left;
+    margin: 0px 60px auto 0;
+}
+
+.public-head-layout .site-logo img {
+    max-width: 200px;
+    max-height: 80px;
+}
+
+#search ul.tab {
+    width: 60px;
+    height: 40px;
+    display: block;
+    z-index: 99;
+    overflow: hidden;
+    position: absolute;
+    margin-top: 1px;
+    margin-left: 1px;
+    background: #fff;
+}
+
+#search ul.tab.hover{
+    overflow:visible;
+    height: 40px;
+}
+#search ul.tab li:nth-child(2){
+    height: 35px;
+    line-height: 35px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#search ul.tab li {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    line-height: 26px;
+    color: #5c5c5c;
+    white-space: nowrap;
+    float: left;
+    height:26px;
+    float: left;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    background: #00ae60;
+    color: #fff;
+    margin-left: -1px;
+}
+
+.search-form #keyword {
+    font-size: 14px;
+    font-family: "microsoft yahei" !important;
+    color: rgb(153, 153, 153);
+}
+
+#search {
+    margin-left: 35px;
+    margin-top: 17px;
+    padding-bottom: 18px;
+}
+
+
+
+#search ul.tab li.current {
+    color: #5c5c5c;
+    float: left;
+    margin-left: 0;
+    width: 99%;
+    text-indent: -8px;
+    background: #fff;
+    border-right: 1px solid #e9e9e9;
+}
+
+
+#search ul i {
+    background: url(../images/top_bg.png) no-repeat 0 0;
+    vertical-align: middle;
+    display: inline-block;
+    width: 10px;
+    height: 5px;
+    margin-left: 6px;
+    -webkit-transition: .2s ease-in;
+    -moz-transition: -webkit-transform .2s ease-in;
+    -o-transition: -webkit-transform .2s ease-in;
+    transition: .2s ease-in;
+    top: 18px;
+    left: 38px;
+    position: absolute;
+}
+#search ul:hover i {
+    FILTER: progid: DXImageTransform . Microsoft . BasicImage(rotation = 2);
+    -moz-transform: rotate(180deg);
+    -moz-transform-origin: 50% 30%;
+    -webkit-transform: rotate(180deg);
+    -webkit-transform-origin: 50% 30%;
+    -o-transform: rotate(180deg);
+    -o-transform-origin: 50% 30%;
+    transform: rotate(180deg);
+    transform-origin: 50% 30%;
+}
+/* 头部搜索 */
+.head-search-bar {
+    width: 538px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+.head-search-bar .search-form {
+    background-color: #00ae60;
+    height: 40px;
+    padding: 1px;
+}
+
+.head-search-bar .input-text {
+    line-height: 32px;
+    color: #555;
+    width: 69%;
+    height: 32px;
+    float: left;
+    padding: 4px 1%;
+    border: none 0;
+    padding-left: 13%;
+}
+
+.head-search-bar .input-submit {
+    font-size: 16px;
+    color: #FFF;
+    background-color: transparent;
+    width: 15%;
+    height: 40px;
+    float: right;
+    border: none;
+    cursor: pointer;
+    font-size: 17px!important;
+    font-weight: bold;
+    text-indent: -6px;
+}
+
+.head-search-bar .keyword {
+    line-height: 20px;
+    color: #999;
+    width: 500px;
+    height: 20px;
+    margin-top: 2px;
+    overflow: hidden;
+}
+
+.head-search-bar .keyword ul {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+}
+
+.head-search-bar .keyword ul li {
+    font-size: 12px;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    margin-right: 12px;
+}
+
+.head-search-bar .keyword ul li a {
+    -webkit-font-smoothing: antialiased;
+    color: #999;
+    font: 12px/2 Microsoft YaHei,tahoma,arial,Hevetica,\\5b8b\4f53,sans-serif;
+}
+
+.head-search-bar .keyword ul li a:hover {
+    text-decoration: none;
+    color: #e4393c;
+}
+
+/* 头部用户型菜单*/
+.head-user-menu {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    float: right;
+    margin: 15px 0 0 0;
+}
+
+.head-user-menu dl {
+    font-size: 13px;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    margin-right: 10px;
+    position: relative;
+    z-index: 3;
+    *zoom: 1 /*IE6、7*/;
+}
+
+.head-user-menu dl.my-mall {
+    width: 108px;
+}
+
+.head-user-menu dl.my-cart {
+    width: 124px;
+}
+
+.head-user-menu dl.my-cart .sub-title h4{
+    font-size: 12px;
+    color: #666;
+    height: 25px;
+    line-height: 25px;
+}
+
+.head-user-menu dl.hover {
+    z-index: 101;
+}
+
+.head-user-menu dl dt {
+    line-height: 20px;
+    color: #555;
+    height: 20px;
+    padding: 11px;
+    border: solid 1px #F0F0F0;
+    position: absolute;
+    z-index: 2;
+    top: 1px;
+    right: 60px;
+    cursor: pointer;
+}
+
+.head-user-menu dl.my-mall dt {
+    width: 95px;
+}
+
+.head-user-menu dl.my-cart dt {
+    width: 130px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.head-user-menu dl.hover dt {
+    background-color: #FFF;
+    border-width: 1px;
+    border-color: #F0F0F0 #F0F0F0 #FFF #F0F0F0;
+}
+
+/*.head-user-menu dl dt span.ico { background: url(../images/member_top.png) no-repeat; vertical-align: middle; display: inline-block; width: 20px; height: 16px; }*/
+.head-user-menu .my-mall dt span.ico {
+    background: url(../images/member_top.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    width: 20px;
+    height: 16px;
+}
+
+.head-user-menu .my-cart dt span.ico {
+    background: url(../images/member_cart.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    width: 20px;
+    height: 16px;
+}
+
+.head-user-menu dl.my-mall span.ico {
+    margin-top: -3px;
+    margin-right: 4px;
+}
+.head-user-menu dl.my-cart a{
+    display: inline-block;
+    vertical-align: middle;
+}
+.head-user-menu dl.my-cart i {
+    margin-right: 6px;
+    font-size: 15px;
+    vertical-align: middle;
+    font-weight: bold;
+}
+.head-user-menu dl.my-cart span{
+    color: #202020;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+    /*.head-user-menu dl dt i {*/
+    /*font-size: 0px;*/
+    /*line-height: 0;*/
+    /*vertical-align: middle;*/
+    /*display: inline-block;*/
+    /*width: 0px;*/
+    /*height: 0px;*/
+    /*margin-left: 8px;*/
+    /*border-width: 4px;*/
+    /*border-color: #777 transparent transparent transparent;*/
+    /*border-style: solid dashed dashed dashed;*/
+    /*-webkit-transition: .2s ease-in;*/
+    /*-moz-transition: -webkit-transform .2s ease-in;*/
+    /*-o-transition: -webkit-transform .2s ease-in;*/
+    /*transition: .2s ease-in;*/
+/*}*/
+
+/*.head-user-menu dl.hover dt i {*/
+    /*FILTER: progid: DXImageTransform . Microsoft . BasicImage(rotation = 2);*/
+    /*-moz-transform: rotate(180deg);*/
+    /*-moz-transform-origin: 50% 30%;*/
+    /*-webkit-transform: rotate(180deg);*/
+    /*-webkit-transform-origin: 50% 30%;*/
+    /*-o-transform: rotate(180deg);*/
+    /*-o-transform-origin: 50% 30%;*/
+    /*transform: rotate(180deg);*/
+    /*transform-origin: 50% 30%;*/
+/*}*/
+
+.head-user-menu dl dd {
+    background-color: #FFF;
+    display: none;
+    border: solid 1px #F0F0F0;
+    position: absolute;
+    z-index: 1;
+    top: 44px;
+    right: 60px;
+}
+
+.head-user-menu dl.my-mall dd {
+    width: 308px;
+}
+
+.head-user-menu dl.my-cart dd {
+    width: 320px;
+}
+
+.head-user-menu dl.hover dd {
+    display: block;
+}
+
+.head-user-menu dl dd a {
+    color: #747474;
+}
+
+.head-user-menu a.arrow i {
+    background: url(../images/top_bg.png) no-repeat -150px 0;
+    vertical-align: middle;
+    display: inline-block;
+    width: 4px;
+    height: 7px;
+    margin-left: 4px;
+}
+
+.head-user-menu dl dd .goods-thumb {
+    width: 50px;
+    height: 50px;
+}
+
+.head-user-menu dl dd .goods-thumb a {
+    line-height: 0;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    *display: block;
+    width: 50px;
+    height: 50px;
+    border: solid 1px #DDD;
+    overflow: hidden;
+}
+
+.head-user-menu dl dd .goods-thumb img {
+    max-width: 50px;
+    max-height: 50px;
+    margin-top: expression(48-this.height/2);
+    *margin-top: expression(24-this.height/2);
+}
+
+.head-user-menu dl dd .sub-title {
+    line-height: 25px;
+    height: 25px;
+    margin: 6px 8px;
+}
+
+.head-user-menu .my-mall dd .user-centent-menu ul li a span {
+    color: #e4393c;
+}
+
+.head-user-menu dl dd .sub-title h4 {
+    font-weight: 600;
+    float: left;
+}
+
+.head-user-menu dl dd .sub-title a {
+    float: right;
+}
+
+.head-user-menu dl dd .user-centent-menu {
+    width: 308px;
+    padding: 8px 0;
+    overflow: hidden;
+}
+
+.head-user-menu dl dd .user-centent-menu ul {
+    width: 310px;
+    margin-left: -2px;
+}
+
+.head-user-menu dl dd .user-centent-menu ul li {
+    width: 138px;
+    float: left;
+    padding: 4px 0 4px 16px;
+    border-left: solid 1px #EEE;
+}
+
+.incart-goods-box .incart-goods dl .handle em a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.head-user-menu dl dd .browse-history {
+    background-color: #FAFAFA;
+    width: 308px;
+    border-style: solid;
+    border-width: 1px 0 0;
+    border-color: #DDD transparent transparent;
+}
+
+.head-user-menu dl dd .browse-history .part-title {
+    height: 20px;
+    padding: 6px 8px;
+}
+
+.head-user-menu dl dd .browse-history .part-title h4 {
+    float: left;
+}
+
+.head-user-menu dl dd .browse-history .part-title a {
+    float: right;
+}
+
+.head-user-menu dl dd .browse-history ul {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    padding: 0 7px 7px 7px;
+}
+
+.head-user-menu dl dd .browse-history ul li {
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    margin: 0 4px;
+    *zoom: 1;
+}
+
+.head-user-menu dl dd .browse-history .no-goods {
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-size: 12px;
+}
+
+.head-user-menu dl dd .incart-goods-box {
+    display: block;
+    width: 320px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+    max-height: 344px;
+    background: #fff;
+}
+
+.head-user-menu dl dd .incart-goods {
+    text-align: center;
+    width: 100%;
+}
+
+.head-user-menu dl dd .incart-goods .no-order {
+    margin: 20px 0;
+}
+
+.head-user-menu dl dd .incart-goods .loading {
+    width: 16px;
+    height: 16px;
+    margin: 20px auto;
+}
+
+.head-user-menu dl dd .incart-goods dl {
+    display: block;
+    width: 100%;
+    height: 66px;
+    clear: both;
+    border-bottom: dotted 1px #DDD;
+    position: relative;
+    z-index: 1;
+}
+
+.head-user-menu dl dd .incart-goods dt, .head-user-menu dl dd .incart-goods dd {
+    background-color: transparent;
+    border: 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.head-user-menu dl dd .incart-goods dt.goods-name {
+    line-height: 16px;
+    background-color: transparent;
+    text-align: left;
+    width: 120px;
+    height: 48px;
+    padding: 0;
+    top: 8px;
+    left: 70px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #666;
+}
+
+.head-user-menu dl dd .incart-goods dt.goods-name a {
+    color: #333;
+    line-height: 17px;
+}
+.head-user-menu dl dd .incart-goods dt.goods-name a:hover{
+    color: #D90311;
+}
+.head-user-menu dl dd .incart-goods dd.goods-thumb {
+    top: 8px;
+    left: 10px;
+}
+
+.head-user-menu dl dd .incart-goods dd.goods-price {
+    text-align: right;
+    width: 100px;
+    height: 16px;
+    top: 6px;
+    right: 12px;
+}
+
+.head-user-menu dl dd .incart-goods dd.goods-price em {
+    font-size: 11px !important;
+    font-weight: 600;
+    line-height: 16px;
+    color: #666 !important;
+    word-break: break-all;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+    width: 50px;
+    overflow: hidden;
+    -webkit-text-size-adjust: none;
+}
+
+.head-user-menu dl dd .incart-goods dd.goods-sales {
+    line-height: 16px;
+    color: #999;
+    background-color: transparent;
+    width: 270px;
+    height: 16px;
+    top: 42px;
+    left: 64px;
+}
+
+.head-user-menu dl dd .incart-goods dd.handle {
+    width: 32px;
+    top: 22px;
+    right: 10px;
+}
+
+.head-user-menu dl dd .checkout {
+    background-color: #F0F0F0;
+    text-align: right;
+    padding: 8px;
+    overflow: hidden;
+}
+
+.head-user-menu dl dd .checkout .total-price {
+    line-height: 26px;
+    display: block;
+    float: left;
+}
+
+.head-user-menu dl dd .checkout .total-price i {
+    font-weight: 700;
+    color: #666;
+    margin: 0 4px;
+}
+
+.head-user-menu dl dd .checkout .total-price em {
+    font-family:Microsoft YaHei,tahoma,arial,Hiragino Sans GB,\\5b8b\4f53,sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+}
+
+.head-user-menu dl dd .checkout .btn-cart {
+    float: right;
+    line-height: 20px;
+    color: #FFF;
+    background-color: #ffbb32;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.head-user-menu dl .addcart-goods-num {
+    font: 12px/15px Verdana;
+    color: #FFF!important;
+    background: #da0011;
+    text-align: center;
+    display: inline-block;
+    height: 16px;
+    min-width: 16px;
+    max-width: auto !important;
+    border: none 0;
+    border-radius: 8px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* 公用导航区域 
+-------------------------------------- */
+.public-nav-layout {
+    border-bottom: 2px solid #151515;
+    height: 40px;
+    position: relative;
+    z-index: 99;
+    margin: auto;
+}
+
+/*站点导航菜单*/
+.public-nav-layout .site-menu {
+    font: 400 15px/44px "microsoft yahei";
+    *word-spacing: -1px /*IE6、7*/;
+    float: left;
+}
+
+.public-nav-layout .site-menu li {
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+}
+
+.public-nav-layout .site-menu li a {
+    font-size: 15px;
+    line-height: 40px;
+    color: #333;
+    height: 40px;
+    padding: 0 20px;
+    font-weight: bold;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    zoom: 1;
+}
+
+.res {
+    display: inline-block;
+    position: absolute;
+    width: 168px;
+    height: 68px;
+    z-index: 105;
+    right: 0;
+    top: -29px;
+}
+
+.public-nav-layout .site-menu li a:hover {
+    text-decoration: none;
+    color: #e4393c; /*background-color: #CA3300;*/
+}
+
+.public-nav-layout .site-menu li a.current {
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2); /* background-color: #B22D00;*/
+}
+
+/* 分类导航菜单*/
+.public-nav-layout .all-category {
+    display: block;
+    width: 168px;
+    height: 40px;
+    float: left;
+    background-color: #151515;
+    border: solid #151515;
+    border-width: 0 1px;
+}
+
+.public-nav-layout .all-category .title {
+    font: 400 15px/44px "microsoft yahei";
+    line-height: 40px;
+    height: 40px;
+    padding: 0 10px;
+}
+
+.public-nav-layout .all-category .title h3 a {
+    color: #FFF;
+    float: left;
+    margin-left: 4px;
+}
+
+.public-nav-layout .all-category .title i {
+    font-size: 0px;
+    line-height: 0;
+    width: 0px;
+    height: 0px;
+    float: right;
+    margin: 19px 4px 0 0;
+    border-width: 5px;
+    border-color: #FFF transparent transparent transparent;
+    border-style: solid dashed dashed dashed;
+}
+
+.public-nav-layout .all-category .category {
+    display: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#19000000', endColorstr='#19000000');
+    width: 170px;
+    padding: 2px 0px 1px 0px;
+    margin-left: -1px;
+}
+
+.public-nav-layout .all-category:hover .category, .public-nav-layout .all-category:hover .title a {
+    display: block;
+    text-decoration: none;
+}
+
+.public-nav-layout .category .menu li {
+    position: relative; /*background-color: #FAFAFA;*/
+    width: 170px;
+    position: relative;
+    z-index: 1;
+    /*zoom:1;*/
+    /*clear: both;*/
+    float: left;
+    height: 40px;
+    line-height: 40px;
+}
+
+.clear {
+    clear: both;
+    overflow: hidden;
+}
+
+/*.category .menu{background: rgba(15,15,15,.82);}*/
+.category .menu {
+    line-height: 40px;
+}
+
+.category .menu li {
+    padding: 0;
+    margin: 0;
+}
+
+.category {
+    line-height: 40px;
+}
+
+.public-nav-layout .category .menu li.odd {
+    background: #000;
+    filter: alpha(opacity:82);
+    background: rgba(15, 15, 15, .82);
+}
+
+.public-nav-layout .category .menu li.even {
+    background: #000;
+    filter: alpha(opacity:82);
+    background: rgba(15, 15, 15, .82);
+}
+
+.public-nav-layout .category .menu li.hover {
+    z-index: 2;
+}
+
+.public-nav-layout .category .class {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    z-index: 1;
+    top: -1px;
+    left: -1px;
+    padding-left: 20px;
+}
+
+.public-nav-layout .category .hover .class {
+    background-color: #555;
+    z-index: 2;
+}
+
+.public-nav-layout .category .class span.ico {
+    width: 19px;
+    height: 19px;
+    float: left;
+    float: left;
+    filter: alpha(opacity=50) /*IE*/;
+    -moz-opacity: 0.5 /*Moz+FF*/;
+    opacity: 0.5;
+}
+
+.public-nav-layout .category .menu li.hover .ico {
+    filter: alpha(opacity=100) /*IE*/;
+    -moz-opacity: 1 /*Moz+FF*/;
+    opacity: 1;
+}
+
+.public-nav-layout .category .class span.ico img {
+    padding: 10px;
+    max-width: 19px;
+    max-height: 19px;
+    -webkit-filter: grayscale(100%) /*Webkit*/;
+    -o-filter: grayscale(100%);
+    filter: gray;
+}
+
+.public-nav-layout .category .menu li.hover .ico img {
+    -webkit-filter: grayscale(0) /*Webkit*/;
+    -o-filter: grayscale(0);
+    filter: none;
+}
+
+.public-nav-layout .category .class h4 {
+    font-weight: 600;
+    line-height: 38px;
+    color: #333;
+    height: 38px;
+    float: left;
+    padding-left: 20px;
+}
+
+.public-nav-layout .category .class h4 a {
+    color: #FFFFFF;
+    font: 12px/150% Arial, Verdana, "\5b8b\4f53";
+    font-size: 14px;
+    height: 38px;
+    line-height: 38px;
+}
+
+.public-nav-layout .category .menu li:hover .class h4 a {
+    text-decoration: none
+}
+
+.public-nav-layout .category .class .recommend-class {
+    line-height: 16px;
+    width: 168px;
+    height: 16px;
+    float: left;
+    clear: both;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.public-nav-layout .category .class .recommend-class a {
+    color: #999;
+    white-space: nowrap;
+    margin-right: 6px;
+}
+
+.public-nav-layout .category .class .arrow {
+    background: url(../images/top_bg.png) no-repeat -150px -10px;
+    width: 5px;
+    height: 9px;
+    float: left;
+    margin: 15px 0px 0 20px;
+}
+
+.public-nav-layout .category .sub-class {
+    height: 480px;
+    overflow: hidden;
+    background-color: #FAFAFA;
+    display: none;
+    width: 1028px;
+    border: 1px solid #333;
+    position: absolute;
+    z-index: 1;
+    top: -1px;
+    left: 170px;
+    border-width: 0 1px 1px 0;
+}
+
+.public-nav-layout .category .sub-class-item {
+    display: block;
+    width: 750px;
+    float: left;
+    height: 460px;
+    overflow: hidden;
+    padding-left: 15px;
+}
+
+.public-nav-layout .category .sub-class-pic {
+    display: block;
+    width: 200px;
+    float: right;
+    margin: 0px;
+}
+
+.public-nav-layout .category li.hover .sub-class {
+    display: block;
+}
+
+.public-nav-layout .category .sub-class dl {
+    width: 47%;
+    margin: 8px;
+    float: left;
+}
+
+.public-nav-layout .category .sub-class dl dt {
+    position: relative;
+    padding: 0px 20px 0 0;
+    line-height: 24px;
+    border-bottom: solid 1px #EAEAEA;
+}
+
+.public-nav-layout .category .sub-class dl dt h3 {
+    font-weight: 600;
+    color: #333;
+    text-indent: 5px;
+}
+
+.public-nav-layout .category .sub-class dl dd {
+    width: 100%;
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    padding: 3px 0;
+    float: left;
+}
+
+.public-nav-layout .category .sub-class dl dd.brands-class {
+    border-top: dotted 1px #333;
+    margin-top: 4px;
+}
+
+.public-nav-layout .category .sub-class dl dd a {
+    font-family: Tahoma;
+    font-size: 13px;
+    line-height: 16px;
+    color: #666;
+    border-right: 1px solid #ccc;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE6、7*/;
+    height: 16px;
+    padding: 0 8px 0 10px;
+    margin-top: 5px;
+    *zoom: 1 /*IE6、7*/;
+}
+
+.public-nav-layout .category .sub-class dl dd a:hover {
+    color: #e4393c;
+}
+
+.public-nav-layout .category .sub-class dl dd h5 {
+    font-size: 12px;
+    line-height: 20px;
+    color: #333;
+    margin: 4px 0 2px 0;
+}
+
+.public-nav-layout .category .recommend-class {
+    font-size: 0;
+    word-spacing: -1em;
+    display: block;
+    overflow: hidden;
+    padding-left: 15px;
+    padding-top: 8px;
+}
+
+.public-nav-layout .category .recommend-class span {
+    font-size: 12px;
+    background-color: #7C7171;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE7*/;
+    margin: 0 10px 0 0;
+    *zoom: 1 /*IE7*/;
+}
+
+.public-nav-layout .category .recommend-class span:hover {
+    background: #c81623;
+}
+
+.sub-class-item dl dt h3 a {
+    color: #333;
+    font-weight: 700;
+    font-size: 14px;
+    height: 34px;
+    line-height: 34px;
+}
+
+.sub-class-item dl dt h3 a:hover {
+    color: #e4393c;
+}
+
+.public-nav-layout .category .recommend-class span a {
+    color: #FFF;
+    line-height: 20px;
+    display: block;
+    padding: 2px 10px;
+}
+
+.public-nav-layout .category .sub-class-right {
+    display: block;
+    width: 230px;
+    height: 460px;
+    float: right;
+    background: #f6f6f6;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.public-nav-layout .category .brands-list ul {
+    font-size: 0;
+    word-spacing: -1em;
+    height: 168px;
+    overflow: hidden;
+}
+
+.public-nav-layout .category .brands-list li {
+    font-size: 12px;
+    background-color: transparent !important;
+    vertical-align: top;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /*IE7*/;
+    width: 110px;
+    height: 55px;
+    margin: 0 1px 3px 2px;
+    *zoom: 1 /*IE7*/;
+    border: none;
+}
+
+.public-nav-layout .category .brands-list li a {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.public-nav-layout .category .brands-list li a img {
+    width: 110px;
+    height: 55px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.public-nav-layout .category .brands-list li a span {
+    color: #333;
+    line-height: 55px;
+    background-color: #FFF;
+    white-space: nowrap;
+    text-align: center;
+    width: 110px;
+    height: 55px;
+    padding: 3px 4px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+}
+
+.public-nav-layout .category .brands-list li a:hover span {
+    color: #FFF;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#F27C7171', endColorstr='#F27C7171');
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+}
+
+.public-nav-layout .category .adv-promotions {
+    display: block;
+    width: 226px;
+    margin: 0 2px;
+}
+
+.public-nav-layout .category .adv-promotions a {
+    background: #FFF;
+    display: block;
+    width: 226px;
+    height: 130px;
+    margin-top: 10px;
+}
+
+.public-nav-layout .category .adv-promotions img {
+    background: #D3D3D3;
+    width: 190px;
+    height: 130px;
+}
+
+/* 商品列表页热销推荐样式 */
+.sld_hotsale_base_cat{
+    width: 1210px;
+    margin: 10px auto 0;
+}
+#sld_hot_sale {
+    height: 120px;
+    padding: 15px 0;
+    overflow: hidden;
+    position: relative;
+    padding-left: 40px;
+    background: #f3f3f3;
+}
+#sld_hot_sale .hd {
+    font-size: 16px;
+    color: #fff;
+    float: left;
+    padding: 33px 12px;
+    width: 16px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#sld_hot_sale .bg-color {
+    background: /*main_color_start*/#E31939/*main_color_end*/;
+}
+#sld_hot_sale dl {
+    width: 254px;
+    overflow: hidden;
+    margin-left: 13px;
+    background: #fff;
+    padding: 10px;
+    float: left;
+    border: 1px solid #fff;
+}
+#sld_hot_sale dl:hover{
+    border: 1px solid #ec5051;
+}
+#sld_hot_sale dt {
+    float: left;
+    width: 100px;
+    margin-right: 10px;
+}
+#sld_hot_sale dt a {
+    display: table-cell;
+    height: 100px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    width: 100px;
+}
+#sld_hot_sale dt a img {
+    width: 100px;
+    height: 100px;
+}
+#sld_hot_sale dd {
+    float: left;
+    width: 144px;
+    text-align: left;
+}
+#sld_hot_sale .p-name {
+    height: 40px;
+    line-height: 20px;
+    overflow: hidden;
+}
+#sld_hot_sale .p-name a:hover{
+    color: #ec5051;
+}
+#sld_hot_sale .p-price {
+    margin-top: 5px;
+    color: #999;
+}
+#sld_hot_sale .p-price .shop-price {
+    font-size: 15px;
+    font-weight: bold;
+}
+.second-color {
+    color: /*second_color_start*/#f42424;
+}
+#sld_hot_sale .btns {
+    margin-top: 5px;
+}
+#sld_hot_sale .btns a:link, #sld_hot_sale .btns a:visited {
+    display: block;
+    width: 72px;
+    height: 25px;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 25px;
+    font-size: 12px;
+    color: #fff;
+    cursor: pointer;
+}
+/* 面包屑所在位置 */
+.sldh-breadcrumb-layout {
+    text-align: center;
+}
+
+.sldh-breadcrumb {
+    font-size: 0;
+    *word-spacing: -1px /*IE6、7*/;
+    text-align: left;
+    height: 40px;
+    padding: 2px 10px;
+    margin: 0 auto;
+    width: 1180px;
+}
+
+.sldh-breadcrumb span {
+    font-size: 14px;
+    line-height: 40px !important;
+    color: #999;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display: inline-block;
+    *display: inline /* IE6,7*/;
+    height: 20px;
+    zoom: 1;
+}
+
+.sldh-breadcrumb i {
+    font-size: 14px;
+    color: #AAA;
+    margin-right: 4px;
+}
+
+.sldh-breadcrumb span.arrow {
+    font-family: "宋体";
+    line-height: 20px;
+    color: #333;
+    margin: 0 6px;
+}
+
+.sldh-breadcrumb a {
+    color: #333;
+    display: block;
+}
+
+.sldh-breadcrumb a:hover {
+    color: #D93600;
+    text-decoration: none;
+}
+
+.brands-list {
+    padding-top: 5px;
+}

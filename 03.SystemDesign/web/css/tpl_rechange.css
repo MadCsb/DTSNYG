@@ -1,0 +1,29 @@
+
+
+/***********首页广告组3***********/
+.ad-groups3 .ad-groups3-list .item { float: left; width: 403px; min-height: 0px; height: auto !important; overflow: hidden;}
+.ad-groups3 .ad-groups3-list .item .ad-img { display: block; width: 403px;min-height: 0px;  height: auto !important;}
+
+/***********首页广告组4***********/
+.ad-groups4 .ad-groups4-list .item { float: left; width: 302px; min-height: 0px; height: auto !important; overflow: hidden;}
+.ad-groups4 .ad-groups4-list .item .ad-img { display: block; width: 302px;min-height: 0px;  height: auto !important;}
+
+/***********首页广告组5***********/
+.ad-groups5 .ad-groups5-list .item { float: left; width: 242px; min-height: 0px; height: auto !important; overflow: hidden;}
+.ad-groups5 .ad-groups5-list .item .ad-img { display: block; width: 242px;min-height: 0px;  height: auto !important;}
+
+/***********多栏广告1***********/
+.ad-mutil-column1 .ad-mutil-column1-list .item { float: left; width: 326px; min-height: 0px; height: auto !important; overflow: hidden;}
+.ad-mutil-column1 .ad-mutil-column1-list .item .ad-img { display: block; width: 326px; min-height: 0px; height: auto !important;}
+.ad-mutil-column1 .ad-mutil-column1-list .item.big-item { float: left; width: 864px; min-height: 0px; height: auto !important;margin: 0 0 0 20px; overflow: hidden;}
+.ad-mutil-column1 .ad-mutil-column1-list .item.big-item .ad-img { display: block; width: 864px; min-height: 0px; height: auto !important;}
+
+/***********多栏广告3***********/
+.ad-mutil-column3 .ad-mutil-column3-list .item { float: left; width: 284px; min-height: 0px; height: auto !important; overflow: hidden;position: relative;}
+.ad-mutil-column3 .ad-mutil-column3-list .item .ad-img { display: block; width: 284px; min-height: 0px; height: auto !important;}
+.ad-mutil-column3 .ad-mutil-column3-list .item.big-item{margin: 0 21px; width: 600px;}
+.ad-mutil-column3 .ad-mutil-column3-list .item.big-item .ad-img { display: block; width: 600px; min-height: 0px; height: auto !important;}
+
+/**/
+.banner-ad{ width: 1210px;min-height: 0px; height: auto !important; display: inline-block;}
+
