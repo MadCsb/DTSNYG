@@ -975,7 +975,7 @@ input[type="checkbox"]:checked + .check{
 	line-height:28px;
 }
 
-.spjscss img{ width:100%; margin:10px auto;}
+.spjscss img{ width:100%; margin:0px auto; display:block;}
 
 /*3n1g产品购买须知*/
 .spgmxz {
