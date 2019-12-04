@@ -33,6 +33,7 @@
                 /wx/**=anon
                 /upload/**=anon
                 /wx**=anon
+                /web**=anon
                 /** = sessionFilter
             </value>  
         </property>
