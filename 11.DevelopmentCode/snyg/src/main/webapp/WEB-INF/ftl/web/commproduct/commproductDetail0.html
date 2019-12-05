@@ -1,0 +1,3151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WEB_INC_HEAD.html"> 
+<style>
+
+.brick-list{width:1224px}
+
+.brick-item {
+
+    position: relative;
+
+    z-index: 1;
+
+    float: left;
+
+    width: 230.6px;
+
+    margin-left: 14px;
+
+    margin-bottom: 14px;
+
+    -webkit-transition: all .2s linear;
+
+    transition: all .2s linear;
+
+	}
+
+</style>
+
+
+
+<script type="text/javascript">var _head_over_time = (new Date()).getTime();</script>
+
+<script type="text/javascript">
+
+var PRICE_FORMAT = '&yen;%s';
+
+$(function(){
+
+	//首页左侧分类菜单
+
+	$(".category ul.menu").find("li").each(
+
+		function() {
+
+			$(this).hover(
+
+				function() {
+
+				    var cat_id = $(this).attr("cat_id");
+
+					var menu = $(this).find("div[cat_menu_id='"+cat_id+"']");
+
+					menu.show();
+
+					$(this).addClass("hover");
+
+					if(menu.attr("hover")>0) return;
+
+				//	menu.masonry({itemSelector: 'dl'});
+
+					var menu_height = menu.height();
+
+					if (menu_height < 480) menu.height(480);
+
+                    /*					menu_height = menu.height();
+
+					var li_top = $(this).position().top;
+
+					if ((li_top > 60) && (menu_height >= li_top)) $(menu).css("top",-li_top+50);
+
+					if ((li_top > 150) && (menu_height >= li_top)) $(menu).css("top",-li_top+90);
+
+					if ((li_top > 240) && (li_top > menu_height)) $(menu).css("top",menu_height-li_top+90);
+
+					if (li_top > 300 && (li_top > menu_height)) $(menu).css("top",60-menu_height);
+
+					if ((li_top > 40) && (menu_height <= 120)) $(menu).css("top",-5);
+
+				$(menu).css("top",40);
+
+                     */	                   var li_top = $(this).position().top;
+
+                    $(menu).css("top", -li_top+41);
+
+					menu.attr("hover",1);
+
+				},
+
+				function() {
+
+					$(this).removeClass("hover");
+
+				    var cat_id = $(this).attr("cat_id");
+
+					$(this).find("div[cat_menu_id='"+cat_id+"']").hide();
+
+				}
+
+			);
+
+		}
+
+	);
+
+  // 查看全部商品的 鼠标移上去 展开 左侧分类
+
+    var app = "goods_cat";
+
+    window.app = app;
+
+    function hide_category_layer(){
+
+        if(app!='index') {
+
+            $(".category-layer").hide();
+
+        }
+
+
+
+    }
+
+  var _timer;
+
+  if(!$(".home-category").hasClass('unhover')){
+
+    $(".home-category").hover(function(){
+
+      clearInterval(_timer);
+
+      $(".category-layer").show();
+
+    },function(){
+
+      _timer = setInterval(hide_category_layer,500);
+
+    });
+
+    $(".category-layer").hover(function(){
+
+        clearInterval(_timer);
+
+    },function(){
+
+      hide_category_layer();
+
+    });
+
+  }
+
+
+
+	$(".head-user-menu dl").hover(function() {
+
+		$(this).addClass("hover");
+
+	},
+
+	function() {
+
+		$(this).removeClass("hover");
+
+	});
+
+	$('.head-user-menu .my-mall').mouseover(function(){// 最近浏览的商品
+
+		load_history_information();
+
+		$(this).unbind('mouseover');
+
+	});
+
+	$('.head-user-menu .my-cart').mouseover(function(){// 运行加载购物车
+
+		load_cart_information();
+
+		$(this).unbind('mouseover');
+
+	});
+
+	$('#button').click(function(){
+
+	    if ($('#keyword').val() == '') {
+
+		    return false;
+
+	    }
+
+	});
+
+    $(function(){
+
+        //search
+
+        var app = "goods_cat";
+
+        var mod = "index";
+
+        if (app == "vendorlist"){
+
+          getSldNewTab("vendorlist");
+
+        }else if(app == "supplier"){
+
+          if (mod == 'goodslist') {
+
+            getSldNewTab("supplier","goodslist"); 
+
+          }else{
+
+            getSldNewTab("supplier"); 
+
+          }
+
+        }
+
+        $("#search ul li.otherli").click(function(){
+
+          var curApp =  $(this).attr('app');
+
+          var curMod =  $(this).attr('mod');
+
+
+
+            $('#search ul').removeClass('hover');
+
+            $('#search_app').attr("value",$(this).attr("app"));
+
+            $('#search_mod').attr("value",$(this).attr("mod"));
+
+            $('#keyword').attr("placeholder",$(this).attr("title"));
+
+          getSldNewTab(curApp,curMod);
+
+        });
+
+        $("#keyword").blur();
+
+          //根据当前的app，重新组装ul tab里面的数据
+
+          function getSldNewTab(curApp,curMod=''){
+
+            if(curApp == 'search'){
+
+              $('#search ul li').eq(0).attr('app', 'search');
+
+              $('#search ul li').eq(0).html('商品');
+
+              $('#search ul li').eq(1).attr('app', 'vendorlist');
+
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+
+              $('#search ul li').eq(1).html('店铺');
+
+            }else if(curApp == 'supplier'){
+
+              if (curMod == 'goodslist') {
+
+                $('#search ul li').eq(0).attr('app', 'supplier');
+
+                $('#search ul li').eq(0).attr('mod', 'goodslist');
+
+                $('#search ul li').eq(0).html('商品');
+
+                $('#search ul li').eq(1).attr('app', 'supplier');
+
+                $('#search ul li').eq(1).attr('mod', '');
+
+                $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+
+                $('#search ul li').eq(1).html('店铺');
+
+              }else{
+
+                $('#search ul li').eq(1).attr('app', 'supplier');
+
+                $('#search ul li').eq(1).attr('mod', 'goodslist');
+
+                $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+
+                $('#search ul li').eq(1).html('商品');
+
+                $('#search ul li').eq(0).attr('app', 'supplier');
+
+                $('#search ul li').eq(0).attr('mod', '');
+
+                $('#search ul li').eq(0).html('店铺');
+
+              }
+
+            }else{
+
+              $('#search ul li').eq(1).attr('app', 'search');
+
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+
+              $('#search ul li').eq(1).html('商品');
+
+              $('#search ul li').eq(0).attr('app', 'vendorlist');
+
+              $('#search ul li').eq(0).html('店铺');
+
+            }
+
+          }
+
+
+
+//        var cook = getCookie('dymall_banner');
+
+//        if(cook){
+
+//            $("#top-banner").hide();
+
+//        } else {
+
+//            $("#top-banner").slideDown(10);
+
+//        }
+
+//        $("#top-banner .close").click(function(){
+
+//            setCookie('dymall_banner','yes',1);
+
+//            $("#top-banner").hide();
+
+//        });
+
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+<!--
+
+.STYLE1 {
+
+	color: #FF0000;
+
+	font-weight: bold;
+
+	font-size: 24px;
+
+}
+
+-->
+
+</style>
+
+</head>
+
+<body>
+
+  <style>
+
+    .sldPcHomeAsdsv{
+
+        width: 1920px;
+
+        margin: auto;
+
+        overflow: hidden;
+
+        margin-left: -960px;
+
+        left: 50%;
+
+        position: relative;
+
+    }
+
+    .sldCloseAsdsv{
+
+        position: absolute;
+
+        left: 50%;
+
+        margin-left: 580px;
+
+        top: 13px;
+
+        z-index: 2;
+
+
+
+    }
+
+    .sldCloseAsdsv .iconfont{
+
+        font-size: 21px;
+
+    }
+
+    .user,.im_list{
+
+        position: relative;
+
+    }
+
+    .user p,.p90{
+
+        width: 90px;
+
+        text-align: center;
+
+        letter-spacing: 1px;
+
+        white-space: nowrap;
+
+        height:36px;
+
+        line-height:36px;
+
+        padding-left:5px;
+
+        border-radius:5px;
+
+        background:#ffbb32;
+
+        color: #fff;
+
+        position: absolute;
+
+        right:-98px;/*20*/
+
+        top: 0;
+
+        transition:0.5s;
+
+        transition-timing-function:linear;
+
+    }
+
+    .user:hover p,.im_list:hover .p90,.ever:hover .p90{
+
+        right:20px;
+
+    }
+
+    .img{
+
+        position: absolute;
+
+        left:45px;
+
+        top:-55px;
+
+        transition:0.3s;
+
+        width: 156px;
+
+        transition-timing-function:linear;
+
+    }
+
+    .erma:hover .img{
+
+        left:-172px;
+
+        /*transform:rotate(1081deg);*/
+
+    }
+
+</style>
+
+<script>
+
+    $('.sldCloseAsdsv').click(function () {
+
+       $('.sldPcHomeAsdsv').fadeOut(500);
+
+    });
+
+</script>
+
+
+
+<div class="common-layout-top w">
+
+  <div class="topbar wrapper">
+
+
+
+    <div class="user-entry">
+
+    
+
+       <span><a href="login.html">请登录</a></span>
+
+       <span><a href="zhuce.html">免费注册</a></span>
+
+    </div>
+
+
+
+    <div class="quick-menu">
+
+      <dl class="down_weixin">
+
+        <dt><em class="ico_shop"></em><a href="javascript:void(0)">微信关注</a><i></i></dt>
+
+        <dd>
+
+            <div class="qrcode">
+
+                <img src="images/ggh2wm.jpg">
+
+            </div>
+
+        </dd>
+
+      </dl>
+
+      <dl>
+
+        <dt><a href="user.html">我的订单</a><i></i></dt>
+
+        <dd>
+
+          <ul>
+
+            <li><a href="dingdan.html">待付款订单</a></li>
+
+            <li><a href="dingdan.html">待确认收货</a></li>
+
+            <li><a href="dingdan.html">待评价交易</a></li>
+
+          </ul>
+
+        </dd>
+
+      </dl>
+
+      <dl>
+
+        <dt>客户服务<i></i></dt>
+
+        <dd>
+
+          <ul>
+
+            <li><a href="bangzhu.html">帮助中心</a></li>
+
+            <li><a href="shouhoufuwu.html">售后服务</a></li>
+
+            <li><a href="kefuzx.html">客服中心</a></li>
+
+          </ul>
+
+        </dd>
+
+      </dl>
+
+          </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+
+
+
+
+
+
+
+	$(".quick-menu dl").hover(function() {
+
+		$(this).addClass("hover");
+
+	},
+
+	function() {
+
+		$(this).removeClass("hover");
+
+	});
+
+    $(".changeSldBox").hover(function() {
+
+            $(this).addClass("hover");
+
+        },
+
+        function() {
+
+            $(this).removeClass("hover");
+
+        });
+
+    });
+
+
+
+    //首字母检索
+
+    $('#jsCityLayerChar a').click(function () {
+
+        var sldClassName = $(this).attr('class');
+
+        var sldCharHeight = $('#jsCityLayerChar').height()*1+15;
+
+        var chartoTop = $(this).offset().top;
+
+        console.info($(this).offset().top);
+
+        if(chartoTop>170&&chartoTop<180||(chartoTop>70&&chartoTop<80)){
+
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1;
+
+        }else{
+
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1-20;
+
+        }
+
+
+
+        //获取当前的margin-top值
+
+        var curheight = ($('#jsCityLayerScrollWarrper').css('margin-top')).replace("px","");
+
+        $('#jsCityLayerScrollWarrper').animate({'margin-top':height*1+curheight*1},500);
+
+    });
+
+
+
+
+
+    //右侧固定栏事件
+
+var index;
+
+    $(".p90").hover(function(){
+
+        $(this).siblings("a").css({"background":"#ffbb32"});
+
+        console.log($(this).siblings("a"));
+
+    },function(){
+
+        $(this).siblings("a").css({"background":"#00ae60"});
+
+    });
+
+  $(".right").hover(function(){
+
+      $(this).css("background","#ffbb32");
+
+  },function(){
+
+      $(this).css("background","#00ae60");
+
+  });
+
+  $(".img").hover(function(){
+
+      $(".img").css({"position":"absolute","left":"45px"});
+
+  },function(){
+
+      $(".img").css({"position":"absolute","left":"45px"});
+
+  });
+
+    $(".Right").hover(function(){
+
+        $(".img").css({"position":"absolute","left":"-172px"});
+
+    },function(){
+
+        $(".img").css({"position":"absolute","left":"45px"});
+
+    })
+
+</script>
+
+  <!-- PublicHeadLayout Begin -->
+
+<p></p>
+
+  <div class="wrapper" style="overflow: hidden;width:100%">
+
+      <div style=";margin: auto;margin-top: 15px;overflow:hidden;margin-left: -960px;left: 50%;position: relative">
+
+
+
+      </div>
+
+  </div>
+
+<div class="header-wrap">
+
+  <header class="public-head-layout wrapper">
+
+    <h1 class="site-logo"><a href="index.html"><img src="images/logo.jpg" class="pngFix"></a></h1>
+
+    <div id="search" class="head-search-bar">
+
+                <ul class="tab">
+
+            <li title="请输入您要搜索的商品关键字" app="search" class="current">商品</li>
+
+            <i></i>
+
+        </ul>
+
+      <form action="" method="get" class="search-form" onSubmit="return checkSubmit();">
+
+        <input name="app" id="search_app" value="goodslist" type="hidden">
+
+                <input name="keyword" id="keyword" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
+
+        <input type="submit" id="button" value="搜  索" class="input-submit">
+
+      </form>
+
+      <div class="keyword">
+
+        <ul>
+
+                    <li><a href="">土鸡蛋</a></li>
+
+                    <li><a href="">蜂蜜</a></li>
+
+                    <li><a href="">苹果</a></li>
+
+                  </ul>
+
+      </div>
+
+    </div>
+
+    <div class="head-user-menu">
+
+      <dl class="my-cart">
+
+
+
+        <dt><a href="gouwc.html"><i class="iconfont icon-gouwuche"></i><span>购物车结算</span></a></dt>
+
+        <dd>
+
+          <div class="sub-title">
+
+            <h4>最新加入的商品</h4>
+
+          </div>
+
+          <div class="incart-goods-box">
+
+            <div class="incart-goods">
+
+				<dl id="cart_item_1498" data-is_supplier="0">
+
+                <dt class="goods-name"><a href=""></a></dt>
+
+                <dd class="goods-thumb"><a href="" title=""><img src="images/sp.png"></a></dd>
+
+                <dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>
+
+                <dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>
+
+                </dl>
+
+             </div>
+
+             <div class="checkout"> <span class="total-price">共<i>1</i>种商品&nbsp;&nbsp;共计&nbsp;<em>¥78.00</em></span><a href="" class="btn-cart">去购物车</a> </div>
+
+       	 </div>
+
+        </dd>
+
+      </dl>
+
+    </div>
+
+  </header>
+
+</div>
+
+<!-- PublicHeadLayout End -->
+
+<style>
+
+  #nav{
+
+    width: 990px !important;
+
+  }
+
+</style>
+
+<div class="category-box" style="border-bottom: 2px solid #00ae60">
+
+  <div class="w1210 wrap-line-all">
+
+    <div class="home-category bg-color fl">
+
+      <a href="spfl.html" class="menu-event" title="查看全部商品分类">
+
+        <i class="fa fa-bars"></i>
+
+        所有商品分类      
+
+      </a>
+
+    </div>
+
+    <div class="all-category fl" id="nav">
+
+
+
+      <ul>
+
+           <li class="fl"><a style="padding:0 15px" href="index.html">网站首页</a></li>
+
+           <li class="fl"><a style="padding:0 15px" href="miaosha.html">秒杀专区</a></li>
+
+           <li class="fl"><a style="padding:0 15px" href="tuang.html">团购中心</a></li>
+
+           <li class="fl"><a style="padding:0 15px" href="spfl.html">商品分类</a></li>
+
+           <li class="fl"><a style="padding:0 15px" href="shfw.html">售后服务</a></li>
+
+           <li class="fl"><a style="padding:0 15px" href="gywm.html">关于我们</a></li>
+
+                                                                                    
+
+      </ul>
+
+      <div class="wrap-line" style="left: 0px; width: 94px;">
+
+        <span style="left: 15px;"></span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 左侧分类导航 slodon_left_category_menu_start -->
+
+    <div class="category-layer category-layer2" style="display: none;">
+
+      
+
+      <span class="category-layer-bg bg-color"></span>
+
+      
+
+      <div class="list  ">
+
+        <dl class="cat">
+
+          <dt class="cat-name">
+
+                <span class="ico"><img src="images/icofl.png"></span>
+
+                <a href="" title="精品蔬菜">精品蔬菜</a>
+
+          </dt>
+
+           
+
+          <dd>
+
+                <a href="" title="天农精选">天农精选</a>
+
+                <a href="" title="礼盒/宅配">礼盒/宅配</a>
+
+          </dd>
+
+        </dl>
+
+        <div class="categorys">
+
+          <div class="item-left fl">
+
+            <!-- 推荐分类 -->
+
+            <div class="item-channels">
+
+              <div class="channels">
+
+                <a href="" title="农家蔬菜"> 农家蔬菜 </a>
+
+              </div>
+
+            </div>
+
+            <div class="item-channels">
+
+              <div class="channels">
+
+                <a href="" title="叶菜类"> 叶菜类 </a>
+
+              </div>
+
+            </div>
+
+            <div class="item-channels">
+
+              <div class="channels">
+
+                <a href="" title="根茎类"> 根茎类 </a>
+
+              </div>
+
+            </div>
+
+
+
+                                    
+
+            <div class="subitems">
+
+              <dl class="fore1">
+
+                <dd>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+
+                                                                                  
+
+                </dd>
+
+              </dl>
+
+                                          
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="list  ">
+
+        <dl class="cat">
+
+          <dt class="cat-name">
+
+                <span class="ico"><img src="images/icofl.png"></span>
+
+                <a href="" title="禽肉蛋品">禽肉蛋品</a>
+
+          </dt>
+
+           
+
+          <dd>
+
+                <a href="" title="猪肉类">猪肉类</a>
+
+                <a href="" title="禽肉类">禽肉类</a>
+
+          </dd>
+
+        </dl>
+
+        <div class="categorys">
+
+          <div class="item-left fl">
+
+            <!-- 推荐分类 -->
+
+                        
+
+            <div class="subitems">
+
+              <dl class="fore1">
+
+                <dd>                 
+
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+
+                </dd>
+
+              </dl>
+
+                                          
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+
+
+      <div class="list  ">
+
+        <dl class="cat">
+
+          <dt class="cat-name">
+
+              <span class="ico"><img src="images/icofl.png"></span>
+
+              <a href="" title="水产海鲜">水产海鲜</a>
+
+          </dt>
+
+           
+
+          <dd>
+
+             <a href="" title="鱼类">鱼类</a>
+
+             <a href="" title="虾类">虾类</a>
+
+          </dd>
+
+        </dl>
+
+        <div class="categorys">
+
+          <div class="item-left fl">
+
+            <!-- 推荐分类 -->
+
+                        
+
+            <div class="subitems">
+
+              <dl class="fore1">
+
+                <dd>                  
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                </dd>
+
+              </dl>
+
+                                        
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="list  ">
+
+        <dl class="cat">
+
+          <dt class="cat-name">
+
+                  <span class="ico"><img src="images/icofl.png"></span>
+
+                  <a href="" title="粮油副食">粮油副食</a>
+
+          </dt>
+
+           
+
+          <dd>
+
+                  <a href="" title="调味酱料">调味酱料</a>
+
+                  <a href="" title="食用油">食用油</a>
+
+           </dd>
+
+        </dl>
+
+        <div class="categorys">
+
+          <div class="item-left fl">
+
+            <!-- 推荐分类 -->
+
+                        
+
+            <div class="subitems">
+
+               <dl class="fore1">
+
+                <dd>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg2.jpg">测试二级分类</a>
+
+                </dd>
+
+              </dl>
+
+                                        
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+
+      <div class="list  ">
+
+        <dl class="cat">
+
+          <dt class="cat-name">
+
+              <span class="ico"><img src="images/icofl.png"></span>
+
+              <a href="" title="测试分类">一级分类</a>
+
+          </dt>
+
+           
+
+          <dd>
+
+               <a href="" title="测试分类111">测试分类111</a>
+
+          </dd>
+
+        </dl>
+
+        <div class="categorys">
+
+          <div class="item-left fl">
+
+            <!-- 推荐分类 -->
+
+                        
+
+            <div class="subitems">
+
+               <dl class="fore1">
+
+                <dd>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类测试二级分类</a>                  
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>
+
+                  <a href="" title="测试二级分类"><img src="images/flgg1.jpg">测试二级分类</a>                                                                              
+
+                </dd>
+
+              </dl>
+
+                                          
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+
+
+                  
+
+    </div>
+
+    <!-- 左侧分类导航 slodon_left_category_menu__end -->
+
+  </div>
+
+</div>
+
+
+
+<div class="breadcrumbs">
+
+    <div class="container"><a href="">首页</a><span class="sep">&gt;</span><a href="">商品详情</a></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+
+    .jmyss-goods-picture .levelB, .jmyss-goods-picture .levelC {
+
+        cursor: url(), pointer;
+
+    }
+
+    .jmyss-goods-picture .levelD {
+
+        cursor: url(), move\9;
+
+    }
+
+
+
+    video::-webkit-media-controls-enclosure {
+
+        overflow: hidden;
+
+    }
+
+
+
+    video::-webkit-media-controls-panel {
+
+        width: calc(100% + 30px);
+
+        background:transparent;
+
+    }
+
+
+
+    video::-webkit-media-controls-fullscreen-button {
+
+
+
+
+
+    }
+
+    video::-internal-track-segment-background{
+
+
+
+    }
+
+    video{
+
+        background:transparent;
+
+    }
+
+
+
+
+
+    ul .tb-video-logo {
+
+        position: absolute;
+
+        top: 14px;
+
+        left: 14px;
+
+        height: 24px;
+
+        width: 24px;
+
+        text-align: center;
+
+        line-height: 24px;
+
+        font-size: 24px;
+
+        border-radius: 50%;
+
+        background: #fff;
+
+        cursor: pointer;
+
+        font-family: tb-iconfont !important;
+
+        font-style: normal;
+
+        -webkit-font-smoothing: antialiased;
+
+        background-image: url()
+
+    }
+
+
+
+    .vjs-center-container {
+
+        position: absolute;
+
+        left: 0;
+
+        right: 0;
+
+        bottom: 0;
+
+        top: 0;
+
+        width: 100px;
+
+        height: 100px;
+
+        text-align: center;
+
+        margin: auto;
+
+        z-index: 2;
+
+    }
+
+
+
+    .vjs-center-start {
+
+        width: 100px;
+
+        height: 100px;
+
+        background-size: contain;
+
+        border: none;
+
+        background-repeat: no-repeat;
+
+        opacity: 0.6;
+
+    }
+
+
+
+    .vjs-center-load {
+
+        opacity: 0;
+
+        display: none;
+
+        border-radius: 100%;
+
+        animation-fill-mode: both;
+
+        border: 1px solid #fff;
+
+        border-bottom-color: transparent;
+
+        width: 90px;
+
+        height: 90px;
+
+        background: transparent !important;
+
+        animation: rotate .75s 0s linear infinite;
+
+    }
+
+
+
+    .ev_left .btn_right {
+
+        left: 397px;
+
+    }
+
+
+
+    .ev_left ul {
+
+        width: 450px;
+
+    }
+
+
+
+    .fa-angle-right, .fa-angle-left {
+
+        display: none;
+
+    }
+
+
+
+    .ev_left ul li {
+
+        width: 50px;
+
+        height:50px;
+
+    }
+
+    .gdt_ul {
+
+        width: 355px;
+
+        /* margin-left: 19px; */
+
+    }
+
+
+
+   
+</style>
+
+
+
+<!--<div class="wrapper pr">-->
+
+<div style="background:#f5f5f5;">
+
+    <div class="wrapper" style="width:1210px;">
+
+        <div class="t_goods_detail">
+
+            <div class="t_goods_ev clearfix">
+
+                <div class="ev_left">
+
+                    <div class="ev_left_img">
+
+					<#if rsPicList?? && (rsPicList?size>0)>
+			    		<#list rsPicList as li>
+                            <#if li_index==0>
+                    		<img src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" style="height:350px;width:350px;" class="cloudzoom" >
+                    		</#if>
+			        	 </#list>
+			    	</#if>
+
+                    <!-- 
+                    <video controls="" playsinline="playsinline" type="video/mp4" id="video" width="350" height="350" style="cursor: pointer;" poster="images/spxx1.jpg">
+
+                                <input type="hidden" value="" name="video_play_on">
+
+
+
+                                <source src="images/move.mp4" type="video/mp4">
+
+                                定义视频来源 以及类型。type不加也可以正常播放
+
+                            </video>
+ -->
+                            <style>
+
+                                .ev_left_img{
+
+                                    position: relative;
+
+                                }
+
+                                .guanbi{
+
+                                    position: absolute;
+
+                                    top: 0;
+
+                                    right: 0;
+
+                                    width:21px;
+
+                                    height:21px;
+
+                                }
+
+                                .guanbi img{
+
+                                    width: 100%;
+
+                                }
+
+                            </style>
+
+                            <div class="vjs-center-container" style="cursor: pointer">
+
+                                <button class="vjs-center-load vjs-button" role="button" type="button">
+
+                                    <span class="vjs-control-text">Load</span>
+
+                                </button>
+
+                            </div>
+
+                        
+
+                    </div>
+                    <div class="retw">
+
+                        <a><i class="iconfontfa fa-angle-left btn_left"></i></a>
+
+                        <div class="gdt_ul">
+
+                            <ul class="clearfix" id="jqzoom">
+									<#if rsPicList?? && (rsPicList?size>0)>
+							    		<#list rsPicList as li>
+							        		<li class="check video_img ">
+			                                    <img class="" src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" data-cloudzoom="">
+			                                </li>
+							        	 </#list>
+							    	</#if>
+                           </ul>
+
+                        </div>
+
+                        <a><i class="iconfontfa fa-angle-right btn_right"></i></a>
+
+                    </div>
+
+
+
+                    <div class="ev_left_num" style="padding-left: 0">
+
+
+
+                        <span class="others_imp share sharegoods">
+
+                                <a data-param="{&quot;gid&quot;:&quot;1329&quot;}">
+
+                                <b class="iconfontfa fa-share-alt icon-1 bbc_color"></b><span class="spans">分享</span></a>
+
+                            <div class="bshare-custom icon-medium" style="padding-top: 18px; display: none; position: absolute; top: -2px; left: 0px; z-index: 2; width: 370px;"><div class="bsPromo bsPromo2"></div>
+
+                        <div class="bsPromo bsPromo2"></div>
+
+                        <a style="margin-bottom: 5px!important;" title="分享到微信" class="bshare-weixin" href="javascript:void(0);"></a>
+
+                    </div>
+
+                            </span>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="ev_center">
+
+                    <div class="ev_head">
+
+                        <h3>${commproduct.productName!''}</h3>
+
+                    </div>
+
+                    <div class="small_title">
+
+                       <p class="bbc_color">绿色食品 产地直供</p>
+
+                    </div>
+
+
+
+                    <div class="obvious ">
+
+
+
+                        <p class="clears market_goods">
+
+                            <span class="mar-r _letter-spacing" style="line-height: 30px;height: 30px!important;">商城价</span>
+
+                            <span class="mar-b-2">
+
+                               <strong class="color-db0a07 bbc_color goods_detail_price">¥4888.00</strong>
+
+                            </span>
+
+                        </p>
+
+                            <p class="clears market_price_goods">
+
+                                <span class="mar-r _letter-spacing"></span>
+
+                                <span class="mar-b-1" style="color:#555"><del></del></span>
+
+                            </p>
+
+                                                <div class="sld_goods_detail_info">
+
+
+
+                            <div class="sld-cumulative">累计销量<em>${commproduct.saleNum!'0'}</em></div>
+
+                        </div>
+
+                        <div class="sld_mobile_qrcode">
+
+                            <div class="qrcode-wrap">
+
+                                <div class="qrcode_tit">手机购买<i class="iconfont icon-erweima"></i></div>
+
+                                <div class="qrcode_pop">
+
+                                    <div class="mobile-qrcode"><img src="images/ggh2wm.jpg" alt="商品二维码" title="" width="155"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                    
+
+                        <div class="goods_style_sel jmyss-sale">
+
+                            <div class="promotion-info">
+
+                                <input type="hidden" id="common_id" value="">
+
+                                <input type="hidden" name="gid" value="1329">
+
+                                <input type="hidden" name="is_login" value="">
+
+                                                                <!--E 团购 -->
+
+                          <p bbctype="bbc-spec" class="goods_pl" title="类型"><span class="span_w lineh-3 mar_l ">类型</span>
+
+                             <!-- 图片类型规格-->
+
+                             <a value="46" href="javascript:void(0);" class="imageguige spec_item check" title="阳光橙"><span class="guige"><img src="images/sp.png"><span class="goods_img">阳光橙</span></span></a>
+
+                          </p>
+
+                          <p bbctype="bbc-spec" class="goods_pl" title="规格"><span class="span_w lineh-3 mar_l ">规格</span>
+
+                                                                                                                                                    <!-- 文字类型规格-->
+
+                                                    <a value="44" href="javascript:void(0)" class="spec_item check">重量算</a>
+
+                                                                                                                                                                                                        <!-- 文字类型规格-->
+
+                                                    <a value="45" href="javascript:void(0)" class="spec_item ">5kg</a>
+
+                                                                                                                                                                                                        <!-- 文字类型规格-->
+
+                                                    <a value="47" href="javascript:void(0)" class="spec_item ">10kg</a>
+
+
+
+                                                                                                                                        </p>
+
+                                    
+
+                                <p class="need_num clears">
+
+                                    <span class="span_w lineh-6 mar_l ">数量</span>
+
+                                    <span class="goods_num">
+
+                                    <input id="quantity" name="nums" value="1" size="3" maxlength="6">
+
+                                </span>
+
+                                    <!--实物显示当前库存，虚拟商品显示限购数量-->
+
+                                <span class="goods_stock">当前库存<span bbctype="goods_stock" class="goods_stock_num">48</span>件</span>
+
+                              </p>
+
+
+
+
+
+                            </div>
+
+                                                                    <div style="position: relative;">
+
+                                        <p class="buy_box">
+
+                                            <a class="tuan_join_cart bbc_btns">加入购物车</a>
+
+                                            <a class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
+
+                                        </p>
+
+                                        <!-- S 加入购物车弹出提示框 -->
+
+                                        <div class="jmyss-cart-popup">
+
+                                            <dl>
+
+                                                <dt>宝贝已成功添加到购物车！<a title="关闭" onClick="$(&#39;.jmyss-cart-popup&#39;).css({&#39;display&#39;:&#39;none&#39;});">X</a></dt>
+
+                                                <dd>购物车共有 <strong id="bold_num"></strong> 种商品 总金额为：<em id="bold_mly" class="saleP"></em></dd>
+
+                                                <dd class="btns"><a href="javascript:void(0);" class="jmyss-btn-mini jmyss-btn-orange2" onClick="location.href=&#39;&#39;">去结算</a> <a href="javascript:void(0);" class="jmyss-btn-mini" value="" onClick="$(&#39;.jmyss-cart-popup&#39;).css({&#39;display&#39;:&#39;none&#39;});">继续购物</a></dd>
+
+                                            </dl>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- E 加入购物车弹出提示框 -->
+
+                                                                
+
+                        </div>
+
+                    
+
+
+
+
+
+                </div>
+
+                <div class="ev_right ">
+
+                    <!-- 随机产品 -->
+
+                    <div class="track-tit">
+
+                        <h3>
+
+                            看了又看
+
+                        </h3>
+
+                        <span></span>
+
+                    </div>
+
+                                            <ul class="look_again_goods clearfix ">
+
+                                                            <li>
+
+                                    <a target="_blank" href="">
+
+                                        <img src="images/sp.png">
+
+                                        <h5 class=" sld_goods_view_name">¥150.00</h5>
+
+                                    </a>
+
+                                </li>
+
+                                                                <li>
+
+                                    <a target="_blank" href="">
+
+                                        <img src="images/sp.png">
+
+                                        <h5 class=" sld_goods_view_name">¥93.60</h5>
+
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+                         </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+<div class="jmyss-promotion" id="jmys-suite" style="display:none;"></div>
+
+<div class="jmyss-promotion" id="jmys-bundling" style="display:none;"></div>
+
+
+
+
+
+<div class="wap">
+
+    <div class="jmyss-goods-layout expanded wrap" style="width:1210px;">
+
+        <div class="jmyss-goods-main" id="main-nav-holder">
+
+            <nav class="tabbar pngFix" id="main-nav">
+
+                <div class="jmyss-goods-title-nav">
+
+                    <ul id="categorymenu">
+
+                        <li class="current"><a id="tabGoodsIntro" href="">商品详情</a></li>
+
+                    </ul>
+
+
+
+            </div></nav>
+
+            <div class="jmyss-intro">
+
+                <div class="content bd" id="sldGoodsIntro">
+
+
+
+                        <div class="jmyss-goods-info-content">
+
+                                <div class="default">
+                                ${commproduct.productInfo!''}
+                                </div>
+
+                        </div>
+
+                </div>
+
+            </div>
+
+            <div class="jmyss-comment">
+
+                <div class="jmyss-goods-title-bar hd">
+
+                    <h4><a href="javascript:void(0);">商品评价</a></h4>
+
+                </div>
+
+
+
+                <div class="jmyss-goods-info-content bd" id="sldGoodsRate">
+
+                    <div class="top">
+
+                        <div class="rate">
+
+                            <p><strong>100</strong><sub>%</sub>好评</p>
+
+                            <span>共有0人参与评分</span></div>
+
+                        <div class="percent">
+
+                            <dl>
+
+                                <dt>好评<em>(100%)</em></dt>
+
+                                <dd><i style="width: 100%"></i></dd>
+
+                            </dl>
+
+                            <dl>
+
+                                <dt>中评<em>(0%)</em></dt>
+
+                                <dd><i style="width: 0%"></i></dd>
+
+                            </dl>
+
+                            <dl>
+
+                                <dt>差评<em>(0%)</em></dt>
+
+                                <dd><i style="width: 0%"></i></dd>
+
+                            </dl>
+
+                        </div>
+
+                    </div>
+
+                    <div class="jmyss-goods-title-nav">
+
+                        <ul id="comment_tab">
+
+                            <li data-type="all" class="current"><a href="javascript:void(0);">商品评价(0)</a></li>
+
+                            <li data-type="1"><a href="javascript:void(0);">好评(0)</a></li>
+
+                            <li data-type="2"><a href="javascript:void(0);">中评(0)</a></li>
+
+                            <li data-type="3"><a href="javascript:void(0);">差评(0)</a></li>
+
+                        </ul></div>
+
+                    <!-- 商品评价内容部分 -->
+
+                    <div id="goodseval" class="jmyss-commend-main"><div class="jmyss-norecord">暂无符合条件的数据记录</div>
+
+ 
+
+</div>
+
+                </div>
+
+            </div>
+
+            <div class="sld_tuangou_salelog">
+
+                <div class="jmyss-goods-title-bar hd">
+
+                    <h4><a href="javascript:void(0);">销售记录</a></h4>
+
+                </div>
+
+                <div class="jmyss-goods-info-content bd" id="sldGoodsTraded">
+
+                    <div class="top">
+
+                        <div class="price">商&nbsp;城&nbsp;价<strong>4888.00</strong>元<span>购买的价格不同可能是由于店铺往期促销活动引起的，详情可以咨询卖家</span></div>
+
+                    </div>
+
+                    <!-- 成交记录内容部分 -->
+
+                    <div id="salelog_demo" class="jmyss-loading">
+
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mt10">
+
+  <thead>
+
+    <tr>
+
+      <th class="w200">买家</th>
+
+      <th class="w100">购买价</th>
+
+      <th class="">购买数量</th>
+
+      <th class="w200">购买时间</th>
+
+    </tr>
+
+  </thead>
+
+    <tbody>
+
+        <tr>
+
+      <td><a href="" target="_blank" data-param="{&#39;id&#39;:38}" bbctype="mcard" data-hasqtip="0">真如307</a></td>
+
+      <td><em class="price">¥4888.00</em> <i style="color:red;"></i></td>
+
+      <td>2</td>
+
+      <td><time>2019-01-11 09:59:16</time></td>
+
+    </tr>
+
+      </tbody>
+
+  <tfoot>
+
+    <tr>
+
+      <td colspan="10" class="tr"><div class="pagination"> <ul><li><span>首页</span></li><li><span>上一页</span></li><li><span class="currentpage">1</span></li><li><span>下一页</span></li><li><span>末页</span></li></ul> </div></td>
+
+    </tr>
+
+  </tfoot>
+
+  </table>
+
+</div>
+
+                </div>
+
+            </div>
+
+            <div class="jmyss-consult">
+
+            </div>
+
+                            </div>
+
+        <div class="t_goods_bot_left ">
+
+          <div class="goods_ranking ">
+
+                <p class="selling"><a id="sld_goods_sele" class="hot_salle" href="javascript:void(0)">热销推荐</a></p>
+
+                <ul id="hot_salle" class="hotuls">
+
+                     <li class="clearfix">
+
+                                <a target="_blank" href="" class="selling_goods_img"><span class="hot_sale_pic_span">
+
+                                        <img class="hot_sale_pic_span_img" src="images/sp.png"></span></a>
+
+                                <p>
+
+                                    <a class="sld_sell_goods_name" target="_blank" href="">碑庙的土鸡蛋   碑牌河农家散养土鸡   下的土鸡蛋  营养丰富  口感棒棒 土鸡蛋 30枚装</a>
+
+                                    <span class="bbc_color sld_goods_sell_price">￥60.00</span>
+
+                                    <span class="sld_goods_detail_desc">
+
+                                              热销380件
+
+                                           </span>
+
+                                </p>
+
+                            </li>
+
+                                                       
+
+                 </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--</div>-->
+
+<form id="buynow_form" method="post" action="">
+
+    <input id="app" name="app" type="hidden" value="buy">
+
+    <input id="mod" name="mod" type="hidden" value="confirm">
+
+    <input id="cart_id" name="cart_id[]" type="hidden">
+
+    <input id="dian_id" name="dian_id" type="hidden">
+
+    <input id="is_supplier" name="is_supplier" type="hidden">
+
+    <input id="spec_quantities" name="spec_quantities" type="hidden">
+
+</form>
+
+
+
+
+
+<script type="text/javascript">
+
+    var pleaseaddnum = "请填写购买数量";
+
+    $(function () {
+
+                $('#video').show();
+
+        $('#video').prev('img').hide();
+
+                regionInit("region");
+
+        $(".selling a").click(
+
+            function () {
+
+                $(".selling a").removeAttr('id');
+
+                $(this).attr('id','sld_goods_sele');
+
+                $(".hotuls").hide();
+
+                $("#"+$(this).attr('class')).show();
+
+            }
+
+        );
+
+    });
+
+    //举报功能
+
+    function jubao(goods) {
+
+        $.get('index.php?app=index&mod=login', function(result){
+
+            if(result=='0'){
+
+                login_dialog();
+
+            }else{
+
+                window.location.href="index.php?app=userjubao&mod=jubao_submit&gid="+goods;
+
+            }
+
+        });
+
+    }
+
+    /** 辅助浏览 **/
+
+    //产品图片
+
+    jQuery(function($){
+
+        // 放大镜效果 产品图片
+
+        CloudZoom.quickStart();
+
+        // 图片切换效果
+
+//            $(".gdt_ul li").first().addClass('current');
+
+        $('.gdt_ul').find('li').mouseover(function(){
+
+            $(this).first().addClass("check").siblings().removeClass("check");
+
+        });
+
+    });
+
+
+
+    //收藏分享处下拉操作
+
+    jQuery.divselect = function(divselectid,inputselectid) {
+
+        var inputselect = $(inputselectid);
+
+        $(divselectid).mouseover(function(){
+
+            var ul = $(divselectid+" ul");
+
+            ul.slideDown("fast");
+
+            if(ul.css("display")=="none"){
+
+                ul.slideDown("fast");
+
+            }
+
+        });
+
+        $(divselectid).live('mouseleave',function(){
+
+            $(divselectid+" ul").hide();
+
+        });
+
+    };
+
+    $(function(){
+
+        //赠品处滚条
+
+        if($('#jmyssGoodsGift').size()>0) {
+
+            $('#jmyssGoodsGift').perfectScrollbar({suppressScrollX: true});
+
+        }
+
+
+              
+
+                        // 到货通知
+
+        
+
+
+
+
+
+        // 分享收藏下拉操作
+
+        $.divselect("#handle-l");
+
+        $.divselect("#handle-r");
+
+
+
+        // 规格选择
+
+        $('.goods_pl').find('a.spec_item').each(function(){
+
+            $(this).click(function(){
+
+                if ($(this).hasClass('check')) {
+
+                    return false;
+
+                }
+
+                $(this).parent().find('a').removeClass('check');
+
+                $(this).addClass('check');
+
+                                checkSpec();
+
+                            });
+
+        });
+
+
+
+    });
+
+
+
+    function checkSpec() {
+
+
+
+        var spec = new Array();
+
+        $('.goods_pl').find('.check').each(function(){
+
+            spec.push($(this).attr("value"));
+
+        });
+
+        spec1 = spec.sort(function(a,b){
+
+            return a-b;
+
+        });
+
+        var spec_sign = spec1.join('|');
+
+        $.each(spec_param, function(i, n){
+
+            if (n.sign == spec_sign) {
+
+                window.location.href = n.url;
+
+            }
+
+        });
+
+    }
+
+
+
+
+
+    // 验证购买数量
+
+    function checkQuantity(){
+
+        var quantity = parseInt($("#quantity").val());
+
+        if (quantity < 1) {
+
+            var error_msg = "请填写购买数量";
+
+            layer.msg(error_msg,{id:'error_close',shade:0.4,time: 2000});
+
+            $("#quantity").val('1');
+
+            return false;
+
+        }
+
+        max = parseInt($('[bbctype="goods_stock"]').text());
+
+        if(quantity > max){
+
+            var error_msg = "库存不足";
+
+            layer.msg(error_msg,{id:'error_close',shade:0.4,time: 2000});
+
+            return false;
+
+        }
+
+        return quantity;
+
+    }
+
+
+
+    // 规格页面跳转
+
+    // function
+
+
+
+    // 立即购买js
+
+    function buynow(gid,quantity){
+
+                login_dialog();
+
+            }
+
+
+
+    var gid = "1329";
+
+    $(function(){
+
+        var vid = "5";
+
+
+
+        var app = "goods";
+
+        var mod  = "index";
+
+        $.getJSON("index.php?app=vendor&mod=ajax_flowstat_record",{vid:vid,gid:gid,app_param:app,mod_param:mod},function(result){
+
+        });
+
+    });
+
+    $('.selectarea').hover(function () {
+
+        $('.jmyss-freight-box').css('display','block');
+
+    },function () {
+
+        $('.jmyss-freight-box').css('display','none');
+
+    });
+
+
+
+        $("#jmys-suite").load('index.php?app=goods&mod=get_suite&gid=1329', function(){
+
+        if($(this).html() != '') {
+
+            $(this).show();
+
+        }
+
+    });
+
+        $("#jmys-bundling").load('index.php?app=goods&mod=get_bundling&gid=1329&vid=5', function(){
+
+
+
+        $("#salelog_demo").load('index.php?app=goods&mod=salelog&gid=1329&vid=5', function(){
+
+            // Membership card
+
+            $(this).find('[bbctype="mcard"]').membershipCard({type:'shop'});
+
+        });
+
+        $("#cosulting_demo").load('index.php?app=goods&mod=cosulting&gid=1329&vid=5', function(){
+
+            // Membership card
+
+            $(this).find('[bbctype="mcard"]').membershipCard({type:'shop'});
+
+        });
+
+    });
+
+
+
+    /** goods.php **/
+
+    $(function(){
+
+        // 商品内容部分折叠收起侧边栏控制
+
+        $('#fold').click(function(){
+
+            $('.jmyss-goods-layout').toggleClass('expanded');
+
+        });
+
+        // 商品内容介绍Tab样式切换控制
+
+        $('#categorymenu').find("li").click(function(){
+
+            $('#categorymenu').find("li").removeClass('current');
+
+            $(this).addClass('current');
+
+        });
+
+        // 商品详情默认情况下显示全部
+
+        $('#tabGoodsIntro').click(function(){
+
+            $('.bd').css('display','');
+
+            $('.hd').css('display','');
+
+            $('.jmyss-comment').hide();
+
+            $('.jmyss-consult').hide();
+
+        });
+
+        // 点击评价隐藏其他以及其标题栏
+
+        $('#tabGoodsRate').click(function(){
+
+            $('.bd').css('display','none');
+
+            $('#sldGoodsRate').css('display','');
+
+            $('.jmyss-comment').show();
+
+            $('.hd').css('display','none');
+
+        });
+
+        // 点击成交隐藏其他以及其标题
+
+        $('#tabGoodsTraded').click(function(){
+
+            $('.bd').css('display','none');
+
+            $('#sldGoodsTraded').css('display','');
+
+            $('.hd').css('display','none');
+
+        });
+
+        // 满即送显示隐藏
+
+        $('[bbctype="show-rule"]').click(function(){
+
+            $(this).parent().find('[bbctype="rule-content"]').show();
+
+        });
+
+        $('[bbctype="hide-rule"]').click(function(){
+
+            $(this).parents('[bbctype="rule-content"]:first').hide()
+
+        });
+
+
+
+        $('.jmyss-buy').bind({
+
+            mouseover:function(){$(".jmyss-point").show();},
+
+            mouseout:function(){$(".jmyss-point").hide();}
+
+        });
+
+        // 点击咨询隐藏其他以及其标题
+
+        $('#tabGuestbook').click(function(){
+
+            $('.bd').css('display','none');
+
+            $('#sldGuestbook').css('display','');
+
+            $('.jmyss-consult').show();
+
+            $('.hd').css('display','none');
+
+        });
+
+        //商品排行Tab切换
+
+        $(".jmyss-top-tab > li > a").mouseover(function(e) {
+
+            if (e.target == this) {
+
+                var tabs = $(this).parent().parent().children("li");
+
+                var panels = $(this).parent().parent().parent().children(".jmyss-top-panel");
+
+                var index = $.inArray(this, $(this).parent().parent().find("a"));
+
+                if (panels.eq(index)[0]) {
+
+                    tabs.removeClass("current ").eq(index).addClass("current ");
+
+                    panels.addClass("hide").eq(index).removeClass("hide");
+
+                }
+
+            }
+
+        });
+
+        //信用评价动态评分打分人次Tab切换
+
+        $(".jmyss-rate-tab > li > a").mouseover(function(e) {
+
+            if (e.target == this) {
+
+                var tabs = $(this).parent().parent().children("li");
+
+                var panels = $(this).parent().parent().parent().children(".jmyss-rate-panel");
+
+                var index = $.inArray(this, $(this).parent().parent().find("a"));
+
+                if (panels.eq(index)[0]) {
+
+                    tabs.removeClass("current ").eq(index).addClass("current ");
+
+                    panels.addClass("hide").eq(index).removeClass("hide");
+
+                }
+
+            }
+
+        });
+
+
+
+//触及显示缩略图
+
+        $('.goods-pic > .thumb').hover(
+
+            function(){
+
+                $(this).next().css('display','block');
+
+            },
+
+            function(){
+
+                $(this).next().css('display','none');
+
+            }
+
+        );
+
+
+
+        /* 商品购买数量增减js */
+
+        // 增加
+
+        $('.increase').click(function(){
+
+            num = parseInt($('#quantity').val());
+
+                        max = parseInt($('[bbctype="goods_stock"]').text());
+
+            if(num < max){
+
+                $('#quantity').val(num+1);
+
+            }
+
+        });
+
+        //减少
+
+        $('.decrease').click(function(){
+
+            num = parseInt($('#quantity').val());
+
+            if(num > 1){
+
+                $('#quantity').val(num-1);
+
+            }
+
+        });
+
+
+
+        // 搜索价格不能填写非数字。
+
+        var re = /^[1-9]+[0-9]*(\.\d*)?$|^0(\.\d*)?$/;
+
+        $('input[name="start_price"]').change(function(){
+
+            if(!re.test($(this).val())){
+
+                $(this).val('');
+
+            }
+
+        });
+
+        $('input[name="end_price"]').change(function(){
+
+            if(!re.test($(this).val())){
+
+                $(this).val('');
+
+            }
+
+        });
+
+    });
+
+
+
+    /* add cart */
+
+    function addcart(gid, quantity)
+
+    {
+
+        if (!quantity) return false;
+
+
+
+        var url = 'index.php?app=cart&mod=add';
+
+        $.getJSON(url, {'gid':gid, 'quantity':quantity }, function(data){
+
+            if(data != null){
+
+                if (data.state)
+
+                {
+
+                    $('#bold_num').html(data.num);
+
+                    $('#bold_mly').html(price_format(data.amount));
+
+                    $('.jmyss-cart-popup').fadeIn('fast');
+
+//                 setTimeout(slideUp_fn, 5000);
+
+                    // 头部加载购物车信息
+
+                    load_cart_information();
+
+                }
+
+                else
+
+                {
+
+                    var error_msg = data.msg;
+
+                    layer.msg(error_msg,{id:'error_close',shade:0.4,time: 2000});
+
+                }
+
+            }
+
+        });
+
+    }
+
+    // 显示举报下拉链接
+
+    $(document).ready(function() {
+
+        $(".jmyss-inform").hover(function() {
+
+                $(this).addClass("hover");
+
+            },
+
+            function() {
+
+                $(this).removeClass("hover");
+
+            });
+
+    });
+
+
+
+    //评价列表
+
+    $(document).ready(function(){
+
+        $('#comment_tab').on('click', 'li', function() {
+
+            $('#comment_tab li').removeClass('current');
+
+            $(this).addClass('current');
+
+            load_goodseval($(this).attr('data-type'));
+
+        });
+
+
+
+        load_goodseval('all');
+
+
+
+        function load_goodseval(type) {
+
+            var url = '';
+
+            url += '&type=' + type;
+
+            $("#goodseval").load(url, function(){
+
+                $(this).find('[bbctype="mcard"]').membershipCard({type:'shop'});
+
+            });
+
+        }
+
+
+
+    });
+
+    $.get("index.php?app=goods&mod=addfootprint",{gid:1329});
+
+    //分享功能点击事件
+
+    $('.sharegoods').hover(function()
+
+    {
+
+            $('.bshare-custom').css('display','inline-block');
+
+    },function () {
+
+        $('.bshare-custom').css('display','none');
+
+    });
+
+
+
+    $('.video_img').live('mouseover', function () {
+
+        $('#video').show();
+
+        $('#video').prev('img').hide();
+
+        var video_play_on=$('input[name="video_play_on"]').val();
+
+        console.log(video_play_on);
+
+        if(video_play_on==1) {
+
+            $('.vjs-center-start').hide();
+
+        }else{
+
+            $('.vjs-center-start').show();
+
+        }
+
+
+
+
+
+    })
+
+
+
+
+
+    $('.goods_img_pic').live('mouseover', function () {
+
+        $('#video').hide();
+
+        $('#video').prev('img').show();
+
+        $('.vjs-center-start').hide();
+
+    })
+
+
+
+
+
+    function vidplay() {
+
+        var video = document.getElementById("video");
+
+
+
+        var i = $('li.check').index();
+
+
+
+        if (video.paused) {
+
+            video.play();
+
+            $('input[name="video_play_on"]').val(1); //判断视频是否在播放中
+
+            $('.vjs-center-start').hide();
+
+
+
+        } else {
+
+            video.pause();
+
+            $('.vjs-center-start').show();
+
+        }
+
+
+
+    }
+
+
+
+    $('.vjs-center-start').live('click', function () {
+
+        vidplay();
+
+    })
+
+
+
+    var video = document.getElementById("video");
+
+    if(video) {
+
+        video.addEventListener('ended', function () {
+
+            $('input[name="video_play_on"]').val(2);
+
+            $('.vjs-center-start').show();
+
+        }, false);
+
+    }
+
+
+
+
+
+</script>
+
+
+
+<script>
+
+
+
+  
+
+    //商品曝光统计记录
+
+    _sld_stats.gids = concat_(_sld_stats.gids,[,,]);
+
+    //商品曝光统计记录
+
+    _sld_stats.gids = concat_(_sld_stats.gids,[1351,1355,1329,1349,1345,1347,1339]);
+
+    //商品曝光统计记录
+
+    _sld_stats.gids = concat_(_sld_stats.gids,[1345,1349,1355,1351,1326]);
+
+    //商品曝光统计记录
+
+    _sld_stats.gids = concat_(_sld_stats.gids,[1310,1311,1312,1326,1327]);
+
+
+
+
+
+    $(".rightImg p img").hover(function(){
+
+        $(".rightImg .Img").css("display","block");
+
+    },function(){
+
+        $(".rightImg .Img").css("display","none");
+
+    })
+
+
+
+    //----------限时折扣标签--start----------------------
+
+    var addTine = setInterval(timee,1000);
+
+    function timee(){
+
+        var end_time_str = $(".promotion_time").data('end_time_str');
+
+        var date = new Date();//获取当前实时时间
+
+        var moren = new Date(end_time_str);//获取指定时间
+
+        var Moren = moren.getTime();//转换成毫秒
+
+        var Time=date.getTime();//转换成毫秒
+
+        var t =Moren-Time;//指定时间减去当前时间
+
+        //------------------获得多少个半个小时------------
+
+        var d=Math.floor(t/1000/60/60/24);//获取天
+
+        var h=Math.floor(t/1000/60/60);//获取小时
+
+        var m=Math.floor(t/1000/60%60);//获取除去天数剩余的分
+
+        var s=Math.floor(t/1000%60);//获取除去天数剩余的秒
+
+        $(".shi").text(h<10?'0'+h:h);
+
+        $(".fen").text(m<10?'0'+m:m);
+
+        $(".miao").text(s<10?'0'+s:s);
+
+        if(h<0||m<0||s<0){
+
+            clearInterval(addTine);
+
+            $(".Time_switch").html('活动已结束');
+
+        }
+
+    }
+
+    //----------限时折扣标签--end----------------------
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+<div id="faq">
+
+  <div class="wrapper">
+
+    <ul>
+
+       <li> 
+
+       	<dl class="s2">
+
+      		<dt>购物指南</dt>
+
+            <dd><i></i><a href="" title="购物流程"> 购物流程 </a></dd>
+
+            <dd><i></i><a href="" title="商品咨询"> 商品咨询 </a></dd>
+
+            <dd><i></i><a href="" title="交易条款"> 交易条款 </a></dd>
+
+      	</dl>
+
+      </li>
+
+      <li> 
+
+      	<dl class="s3">
+
+      		<dt>关于订单</dt>
+
+            <dd><i></i><a href="" title="订单查询"> 订单查询 </a></dd>
+
+            <dd><i></i><a href="" title="订单确定"> 订单确定 </a></dd>
+
+            <dd><i></i><a href="" title="晒单评价"> 晒单评价 </a></dd>
+
+         </dl>
+
+       </li>
+
+       <li> 
+
+       		<dl class="s4">
+
+      		<dt>售后服务</dt>
+
+            <dd><i></i><a href="" title="售后说明"> 售后说明 </a></dd>
+
+            <dd><i></i><a href="" title="退换货说明"> 退换货说明 </a></dd>
+
+            <dd><i></i><a href="" title="售后维权"> 售后维权 </a></dd>
+
+            </dl>
+
+        </li>
+
+		<li> 
+
+        	<dl class="s6">
+
+      		<dt>关于我们</dt>
+
+            <dd><i></i><a href="" title="平台简介"> 平台简介 </a></dd>
+
+            <dd><i></i><a href="" title="联系我们"> 联系我们 </a></dd>
+
+
+
+            </dl>
+
+        </li>
+
+        <li style="width:33%; text-align:center; border-left:1px solid #39c471;">
+
+			<dl class="s1">
+
+            <dt>400-801-3841</dt> 
+
+            <dd><a href="#">周一至周日 8:00-18:00（仅收市话费）</a></dd> 
+
+            <dd><a rel="nofollow" href="" target="_blank" class="btn">人工客服</a></dd>
+
+            </dl>        
+
+        </li>
+
+        </ul>
+
+      </div>
+
+</div>
+
+<div class="wrapfoot">
+
+<div id="footer" class="wrapper">
+
+    <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
+
+    <p style="display: none"> </p>
+
+    <a href=""><img src="images/05987954210414380.png" border="0"></a>
+
+</div>
+
+</div>
+
+
+
+<script language="javascript">
+
+$(function(){
+
+	// Membership card
+
+	$('[bbctype="mcard"]').membershipCard({type:'shop'});
+
+});
+
+</script>
+
+<script type="text/javascript">
+
+    _sld_stats.uid = 0;
+
+    _sld_stats.gid = 0;
+
+    (function() {
+
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=''; s.parentNode.insertBefore(g,s);
+
+    })();
+
+</script>
+
+
+
+<script>
+
+    $('#search .tab').hover(function() {
+
+            $(this).addClass("hover");
+
+        },
+
+        function() {
+
+            $(this).removeClass("hover");
+
+        });
+
+    function checkSubmit() {
+
+        var keyword = $('#keyword').val();
+
+        keyword = keyword.replace('<','');
+
+        keyword = keyword.replace('>','');
+
+        $('#keyword').val(keyword);
+
+        return true;
+
+    }
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+$(function(){
+
+    $(".J_box-hd").on("click",function(){
+
+        $(this).toggleClass("current");
+
+        var $bd = $(this).siblings(".J_box-bd");
+
+        var $icon = $(this).find("i");
+
+
+
+        if($bd.is(":visible")){
+
+            $bd.hide();
+
+        } else {
+
+            $bd.fadeIn();
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+
+</body></html>
