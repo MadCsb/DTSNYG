@@ -20,7 +20,6 @@ import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.IDestspService;
-import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.SellPriceService;
 
@@ -35,9 +34,6 @@ public class WebSellPriceController extends BaseController {
 
 	@Resource(name = "destspServiceImpl")
 	private IDestspService destspService;
-
-	@Resource(name = "serviceCodeServiceImpl")
-	private IServiceCodeService serviceCodeService;
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;

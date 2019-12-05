@@ -42,7 +42,7 @@ $(function(){
 		function() {
 			$(this).hover(
 				function() {
-				    var cat_id = $(this).attr("cat_id");
+				    var cat_id = $(this).attr("cat_id");										alert(cat_id);
 					var menu = $(this).find("div[cat_menu_id='"+cat_id+"']");
 					menu.show();
 					$(this).addClass("hover");

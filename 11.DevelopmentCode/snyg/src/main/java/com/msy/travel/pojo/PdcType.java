@@ -58,6 +58,16 @@ public class PdcType extends BaseEntity implements java.io.Serializable {
 	 */
 	private String sort;
 
+	private List<PdcType> pdcTypeList;
+
+	public List<PdcType> getPdcTypeList() {
+		return pdcTypeList;
+	}
+
+	public void setPdcTypeList(List<PdcType> pdcTypeList) {
+		this.pdcTypeList = pdcTypeList;
+	}
+
 	public String getSort() {
 		return sort;
 	}

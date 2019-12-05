@@ -9,7 +9,7 @@
 
 
 <div class="breadcrumbs">
-    <div class="container"><a href="">首页</a><span class="sep">&gt;</span><a href="">商品详情</a></div>
+    <div class="container"><a href="http://www.3nong1gou.com/">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">商品详情</a></div>
 </div>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
@@ -69,7 +69,7 @@
                         <p class="clears market_goods">
                             <span class="mar-r _letter-spacing" style="line-height: 30px;height: 30px!important;">商城价</span>
                             <span class="mar-b-2">
-                               <strong class="color-db0a07 bbc_color goods_detail_price">¥${commproduct.price!''}</strong>
+                               <strong class="color-db0a07 bbc_color goods_detail_price" id="commproductPrice">¥${commproduct.price!''}</strong>
                             </span>
                         </p>
                         <p class="clears market_price_goods">
@@ -99,14 +99,14 @@
 	                          	<p class="need_num clears">
 	                          		<span class="span_w lineh-6 mar_l ">数量</span>
 	                          		<span class="goods_num">
-	                          			<input id="quantity" name="nums" value="1" size="3" maxlength="6">
+	                          			<input id="quantity" value="1" size="3" maxlength="6">
 	                          		</span>
 	                          		<span class="goods_stock">当前库存<span class="goods_stock_num"></span></span>
 	                          	</p>
                       	</div>
                       	<div style="position: relative;">
                       		<p class="buy_box">
-	                      		<a class="tuan_join_cart bbc_btns">加入购物车</a>
+	                      		<a class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a>
 	                      		<a class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
                       		</p>
                       	</div>
@@ -169,6 +169,7 @@ $(function(){
 	getSellPriceList();
 })
 
+var checkPriceId = "";
 function getSellPriceList(){
 	$.post("webSellPrice?method=queryGoodsPriceListForWx",{
 		productId:$("#productId").val(),
@@ -179,14 +180,15 @@ function getSellPriceList(){
 			var str = "";
 			for(var i=0;i<data.length;i++){
 				if($("#priceId").val() ==  data[i].priceId){
-					str+='<a href="javascript:void(0)" class="spec_item check">'+data[i].priceName+'</a>';
+					checkPriceId = data[i].priceId;
+					str+='<a href="javascript:void(0)" price="'+data[i].price+'" storeCount="'+data[i].storeCount+'"  onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)" class="spec_item check goodsPriceItem">'+data[i].priceName+'</a>';
 					if(data[i].storeCount==""){
 						$(".goods_stock_num").html("充足");
 					}else{
-						$(".goods_stock_num").html(data[i].storeCount);
+						$(".goods_stock_num").html(data[i].storeCount+"&nbsp;&nbsp;件");
 					}
 				}else{
-					str+='<a href="javascript:void(0)" class="spec_item ">'+data[i].priceName+'</a>';
+					str+='<a href="javascript:void(0)"  price="'+data[i].price+'"  storeCount="'+data[i].storeCount+'" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)" class="spec_item goodsPriceItem">'+data[i].priceName+'</a>';
 				}
 			}
 			$("#goodsPriceListSpan").html(str);
@@ -194,6 +196,38 @@ function getSellPriceList(){
 	},'json');
 }
 
+function checkGoodsPrice(priceId,obj){
+	$(".goodsPriceItem").removeClass("check");
+	$(obj).addClass("check");
+	
+	$("#commproductPrice").html("&yen;"+$(obj).attr("price"));
+	
+	var storeCount=$(obj).attr("storeCount");
+	if(storeCount==""){
+		$(".goods_stock_num").html("充足");
+	}else{
+		$(".goods_stock_num").html(storeCount+"&nbsp;&nbsp;件");
+	}
+	
+	checkPriceId = priceId;
+}
+
+function addShopCart(showType){
+	if(showType == "1"){
+		$.post("webShopcart?method=toAddOrUpdateShopCart",{
+			priceId:checkPriceId,
+			num:$("#quantity").val()
+		},function(data){
+			if(data=="success"){
+				alert("加入购物车成功");
+			}else{
+				alert("没有登录");
+			}
+		});
+	}else{
+		submitOrder();
+	}
+}
 
     //分享功能点击事件
     $('.sharegoods').hover(function(){

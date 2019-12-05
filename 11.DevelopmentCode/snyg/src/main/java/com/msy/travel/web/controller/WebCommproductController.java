@@ -29,7 +29,6 @@ import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IAccessrecordService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IRsPicService;
-import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.SellPriceService;
@@ -57,9 +56,6 @@ public class WebCommproductController extends BaseController {
 
 	@Resource(name = "destspServiceImpl")
 	private IDestspService destspService;
-
-	@Resource(name = "serviceCodeServiceImpl")
-	private IServiceCodeService serviceCodeService;
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
