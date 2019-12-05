@@ -303,13 +303,14 @@
 			s.F_PRICEENDDATE as priceEndDate ,
 			s.F_PEOPLENUM as peopleNum  ,
 			s.F_GOODSPRICEID as goodsPriceId,
-			g.F_STORECOUNT as storeCount,
-			sub.F_SUBJECT as subjectName
+			sub.F_SUBJECT as subjectName,
+			p.F_TYPENAME as typeName,
+			p.F_PICURL as typeUrl
 		FROM
 			t_sm_sellprice s
 		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID
-		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
 		LEFT JOIN t_sm_subject sub on sub.F_SUBJECTID = t.F_SUBJECT
+		LEFT JOIN t_sm_pdctype p on t.F_SUBTYPE = p.F_PDCTYPEID and p.F_LEVEL='2'
 		<where>
 			<if test="priceId !=null and priceId !=''">
 		    	and s.F_PRICEID = #{priceId}

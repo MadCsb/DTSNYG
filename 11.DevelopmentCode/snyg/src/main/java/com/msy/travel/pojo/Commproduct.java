@@ -143,6 +143,16 @@ public class Commproduct extends BaseEntity implements java.io.Serializable {
 
 	private String subjectName;
 
+	private String typeUrl;
+
+	public String getTypeUrl() {
+		return typeUrl;
+	}
+
+	public void setTypeUrl(String typeUrl) {
+		this.typeUrl = typeUrl;
+	}
+
 	public String getSubjectName() {
 		return subjectName;
 	}
