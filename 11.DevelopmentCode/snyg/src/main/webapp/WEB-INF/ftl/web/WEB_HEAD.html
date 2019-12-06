@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WEB_INC_HEAD.html"> 
+<#include "WEB_INC_HEAD.html"> 
 
 </head>
 
@@ -145,7 +145,7 @@
             	<h4>最新加入的商品</h4>
           	</div>
           	<div class="incart-goods-box">
-            	<div class="incart-goods">
+            	<div class="incart-goods" id="shopCartListDiv">
 					<dl id="cart_item_1498" data-is_supplier="0">
 	                	<dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>
 	                	<dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="${rc.contextPath}/web/images/sp.png"></a></dd>
@@ -300,19 +300,16 @@ function getShopCartList(){
 		
 	},function(data){
 		if(data!=null && data!="" && data.length>0){
-			$("#shopCartUl").html(getShopCartStr(data));	
-			$(".snyg_nav").show();
-			$("#divHasData").hide();
+			$("#shopCartListDiv").html(getShopCartStr(data));	
 		}else{
-			$(".snyg_nav").hide();
-			$("#divHasData").show();
+			$("#shopCartListDiv").html("");
 		}		
 	},'json')
 }
 function getShopCartStr(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){
-		str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
+	/*	str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
 		str+='<div class="iconleft">';
 		str+='<div class="leftdivf">';
 		str+='<label>';
@@ -338,7 +335,7 @@ function getShopCartStr(data){
 		str+='<input name="" readonly id="num'+data[i].cartId+'" type="text" class="input_sl" value="'+data[i].num+'">';
 		str+='<button class="btnadd"  onclick="changeNum(\'2\',\''+data[i].cartId+'\')"></button></div>';
 		str+='</div>';
-		str+='</li>';
+		str+='</li>';*/
 		
 		
 		str+='<dl id="cart_item_1498" data-is_supplier="0">';
