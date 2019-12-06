@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/WEB_INC_HEAD.html"> 
+
 </head>
 
 
@@ -222,6 +223,7 @@
 <script>
 $(function(){
 	getPdcTypeData('1','');
+	getShopCartList();
 });
 
 
@@ -241,7 +243,7 @@ function getPdcTypeData(level,ppdcTypeId){
 function getDataStr1(data,level){
 	var str = "";
 	for(var i=0;i<data.length;i++){
-		str+='<div class="list ">';
+		str+='<div class="list" onmouseover="checkGoodsPriceParent(\''+i+'\')">';
 		str+='<dl class="cat">';
 		str+='<dt class="cat-name">';
 		str+='<span class="ico"><img src="${rc.contextPath}/web/images/icofl.png"></span>';
@@ -258,7 +260,7 @@ function getDataStr1(data,level){
 		}
 		str+='</dd>';
 		str+='</dl>';
-		str+='<div cat_id="'+i+'" class="categorys">';
+		str+='<div class="categorys" id="categorys'+i+'">';
 		str+='<div class="item-left fl">';
 		str+='<div class="subitems">';
 		str+='<dl class="fore1">';
@@ -266,7 +268,7 @@ function getDataStr1(data,level){
 		if(data[i].pdcTypeList!=null && data[i].pdcTypeList.length>0){
 			for(var j =0;j<data[i].pdcTypeList.length;j++){
 				var subPdcType = data[i].pdcTypeList[j];
-				str+='<a href="javascript:void(0)" title="'+subPdcType.typeName+'"><img src="images/flgg1.jpg">'+subPdcType.typeName+'</a>';
+				str+='<a href="javascript:void(0)" title="'+subPdcType.typeName+'"><img src="${rc.contextPath}/upload/wxpic/'+subPdcType.picUrl+'">'+subPdcType.typeName+'</a>';
 				
 			}
 		}
@@ -282,6 +284,73 @@ function getDataStr1(data,level){
 	}
 	return str;
 }
+
+var lastPdcCheck = "";
+function checkGoodsPriceParent(i){
+	$("#categorys"+i).show();
+	if(lastPdcCheck != i){
+		$("#categorys"+lastPdcCheck).hide();	
+	}
+	lastPdcCheck = i;
+}
+
+
+function getShopCartList(){
+	$.post("webShopcart?method=getShopCartListWeb",{
+		
+	},function(data){
+		if(data!=null && data!="" && data.length>0){
+			$("#shopCartUl").html(getShopCartStr(data));	
+			$(".snyg_nav").show();
+			$("#divHasData").hide();
+		}else{
+			$(".snyg_nav").hide();
+			$("#divHasData").show();
+		}		
+	},'json')
+}
+function getShopCartStr(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+		str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
+		str+='<div class="iconleft">';
+		str+='<div class="leftdivf">';
+		str+='<label>';
+		str+='<input name="checkCart" onclick="checkCartList()" type="checkbox" id="adviceRadio'+data[i].cartId+'" value="'+data[i].cartId+'" hidden/>';
+		str+='<label for="adviceRadio'+data[i].cartId+'" class="check"></label>';
+		str+='</label>';
+		str+='</div>';
+            
+		str+='<div class="icon" >';
+		str+='<a href="javascript:void(0)" title="商品详情">';
+		str+='<img title="" src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="" /></a>';                   
+		str+='</div>';         
+		str+='</div>';
+		str+='<div class="info">';
+		str+='<a href="javascript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')"  title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
+		//str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
+		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span><span class="fr del_btn1" style="top:24px;" onclick="delShopCart(\''+data[i].cartId+'\')"></span></p>';
+		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
+		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
+		str+='<p class="txt"><span class="f2">&yen;'+data[i].price+'</span></p>';
+		str+='<div class="sl">';
+		str+='<button class="btnhui"  onclick="changeNum(\'1\',\''+data[i].cartId+'\')"></button>';
+		str+='<input name="" readonly id="num'+data[i].cartId+'" type="text" class="input_sl" value="'+data[i].num+'">';
+		str+='<button class="btnadd"  onclick="changeNum(\'2\',\''+data[i].cartId+'\')"></button></div>';
+		str+='</div>';
+		str+='</li>';
+		
+		
+		str+='<dl id="cart_item_1498" data-is_supplier="0">';
+		str+='<dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>';
+		str+='<dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="${rc.contextPath}/web/images/sp.png"></a></dd>';
+		str+='<dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>';
+		str+='<dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>';
+		str+='</dl>';
+	}
+	return str;
+}
+
 </script>
 <script type="text/javascript">
 
@@ -661,13 +730,6 @@ $(function() {
 <script type="text/javascript">
 
 $(function(){
-
-
-
-
-
-
-
 	$(".quick-menu dl").hover(function() {
 
 		$(this).addClass("hover");
