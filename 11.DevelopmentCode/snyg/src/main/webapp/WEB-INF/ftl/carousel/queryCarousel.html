@@ -24,6 +24,7 @@
 
 <div class="cont-div">
 <!--  
+   -->
   <div class="waybill-title">
   	<div align="left">
 
@@ -31,7 +32,6 @@
 		           		value="新增" onClick="javascript:window.location.href='carousel.do?method=toAdd'">
 	
     </div>
-   -->
   </div>
 		 
        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
@@ -57,9 +57,9 @@
 					</#list>
 				</#if>
   			</td> -->
-  			<td title="">
+  			<td title=""><!-- 
   				<a href="carousel.do?method=toUpdate&carouselId=${item.carouselId!''}"  class="ico_btn1">修改</a>
-  				<!-- 
+  				
 				<a href="javascript:void(0);" onClick="artConfirmUrl('确定要删除这条记录吗？','carousel.do?method=delete&carouselId=${item.carouselId!''}');" class="ico_btn1">删除</a>
 				 -->
 				<a href="carouselItem.do?method=query&carouselId=${item.carouselId!''}" class="ico_btn1">图片明细</a>

@@ -5,7 +5,471 @@
 
 </head>
 <body>
+<div class="banner-sidebar SLD-TPL-BANNER-CON-SLD ui-droppable ui-sortable">
+<div class="drop-item " id="15338849071849" data-tpl_name="" data-is_valid="">
+     <ul id="fullScreenSlidesUl" class="full-screen-slides">
+     </ul>
+     <ul id="SlidesPaginationUl" class="full-screen-slides-pagination" style="margin-left: -388px;">
+     </ul>
+</div>
+</div>
+<div class="page-main home-main">
+
+<div class="container">
+
+<!--限时秒杀 start-->
+
+<div class="home-flashsale xm-plain-box">
+	<div class="box-hd">
+		<h2 class="title">限时秒杀</h2>
+		<div class="more"><a href="miaosha.html"  class="more-link">查看全部<i class="iconfont"></i></a></div>
+	</div>
+	<div class="box-bd clearfix">
+		<div class="row">
+			<div class="flashsale-countdown rainbow-item-1 span4">
+				<div class="round">9:00-10:00 场</div>
+				<img src="images/icoms.png" alt="闪购">
+                <div class="desc">本场已结束</div>
+                <div class="countdown clearfix">
+                	<span>00</span><i>:</i><span>00</span><i>:</i><span>00</span>
+                </div>
+           </div>
+           <div id="J_flashSaleList" style="width:962px;" class="span16 flashsale-list swiper-container swiper-no-swiping swiper-container-initialized swiper-container-horizontal">
+           		<ul class="swiper-wrapper" id="dataList2">
+           		</ul>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<!--限时秒杀 end-->
+
+<!--通栏小广告-->
+
+<div class="home-banner-box" id="home-banner-box0"></div>
+
+<!--团购商品start-->
+
+<div class="home-brick-box home-brick-row-2-box xm-plain-box">
+	<div class="box-hd">
+	    <h2 class="title">团购商品</h2>
+	    <div class="more"><a href="tuangou.html"  class="more-link">查看全部<i class="iconfont"></i></a></div>	
+	</div>
+<!-- 团购商品图 -->
+	<div class="box-bd clearfix">
+		<div class="row">
+		    <div class="span4">
+		        <ul class="brick-promo-list clearfix" id="tuanBanner">
+		        </ul>
+		    </div>
+		    <div class="span16" style="width:962px;">
+		        <ul class="brick-list clearfix" id="dataList1">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--通栏小广告-->
+
+<div class="home-banner-box" id="home-banner-box1"></div>
+
+<div class="home-brick-box home-brick-row-2-box xm-plain-box">
+	<div class="box-hd clearfix">
+		<h2 class="title">地方特色</h2>
+		<div class="more">
+			<ul class="tab-list" id="pdcSubType">
+		    </ul>
+		</div>
+	</div>
+	<div class="box-bd">
+		<div class="row">
+			<div class="span4">
+			    <ul class="brick-promo-list clearfix" id="proSubPdcTypeBanner">
+			    </ul>
+			</div>
+			<!-- 地方特色商品 -->
+			<div class="span16"  style="width:962px;">
+				<div>
+					<ul class="brick-list clearfix" id="subTypePdcList" >
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+ 
+
+<!--通栏小广告-->
+
+<div class="home-banner-box" id="home-banner-box2"></div>
+
+<!--商品分类-->
+<div class="home-brick-box home-brick-row-2-box xm-plain-box">
+    <div class="box-hd clearfix">
+        <h2 class="title">商品分类</h2>
+        <div class="more">
+            <ul class="tab-list" id="ppdcTypeList">
+            </ul>
+        </div>
+    </div>
+
+    <div class="box-bd">
+        <div class="row">
+            <div class="span4">
+                <ul class="brick-promo-list clearfix" id="proPdcTypeBanner">
+                </ul>
+            </div>
+            <div class="span16" style="width:962px;">
+                <div>
+                    <ul class="brick-list clearfix" id="typePdcList">
+                    </ul>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ 
+
+<!--通栏小广告-->
+
+<div class="home-banner-box" id="home-banner-box3"></div>
+
+</div>                                                
 
 
 
+</div> 
+<script> 
+
+$(function(){
+	setCarousel('380ce94b95fc43d88a2ea1f2d16ef6b8');
+	
+	setCarouselBanner();
+	
+	//秒杀
+	getDataList('2','4','','','1','','');
+	
+	// 团购
+	getDataList('1','8','','','1','','');
+	
+	//地方特色 分类
+	getPdcTypeDataList('2','9833f5329c74467ca987a543d4cba9d1','7');  
+	
+	//商品分类
+	getPdcTypeDataList('1','','7');  
+})
+
+//广告轮播图管理
+function setCarousel(carouselId)
+{
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webIndex?method=wxAjaxCarouselDetail",
+      data: {
+    	  carouselId:carouselId
+      },
+      success: function (data) {
+        var linkUrl = "";
+        for(var j=0;j<data.length;j++)
+        {
+        	var linkUrl = "";
+        	if(data[j].linkUrl == null || data[j].linkUrl == "")
+			{
+    			linkUrl = 'javascript:void(0)';
+			}else
+			{
+    			linkUrl = data[j].linkUrl;
+			}
+        	
+        	$("#fullScreenSlidesUl").append('<li style="background:url(${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +') no-repeat scroll center top;"><a href="'+linkUrl+'"  title="">&nbsp;</a></li>');
+        	if(j==0){
+            	$("#SlidesPaginationUl").append('<li><a href="javaScript:void(0)">'+j+'</a></li>');
+        	}else{
+            	$("#SlidesPaginationUl").append('<li class=""><a href="javaScript:void(0)">'+j+'</a></li>');	
+        	}
+        }
+        banner_play(".full-screen-slides li", ".full-screen-slides-pagination li", "current", "#fullScreenSlidesUl");
+
+      }
+   });
+}
+
+function banner_play(a, b, c, d) {   
+	var blength = $(a).length;    
+	if (blength > 1) {      
+		$(b).mouseover(function() {
+			$(this).addClass(c).siblings().removeClass(c);        
+			$(a).eq($(this).index()).hide().fadeIn().siblings().fadeOut();        
+			num = $(this).index();        
+			clearInterval(bannerTime);      
+		});     
+		var num = 0;      
+		function bannerPlay() {
+			num++;        
+			if (num > blength - 1) {
+				num = 0;        
+			}       
+			$(b).eq(num).addClass(c).siblings().removeClass(c);       
+			$(a).eq(num).hide().fadeIn().siblings().fadeOut();      
+		}     
+		var bannerTime = setInterval(bannerPlay, 6000);     
+		$(d).hover(function() {       
+			clearInterval(bannerTime);      
+		}, function() {       
+			bannerTime = setInterval(bannerPlay, 6000);     
+		})    
+	} 
+};
+
+
+function ADDLI() {
+
+    for (var i = 0; i <= numpic; i++) {
+	     ulcontent += "<li>" + "<a href='javascript:void(0)'>" + (i + 1) + "</a>" + "</li>";
+	}
+
+    $("#fullScreenSlidesUl").after(ulstart + ulcontent + ulend);  
+}  
+
+
+//商品
+var currentTab = "1";
+function getDataList(priceType,rowsPerPage,sortOrder,sortField,cPage,type,subType){
+	var priceStartDate = "";
+	var priceEndDate  = "";
+	if(priceType=="2"){
+		if(currentTab=="1"){
+		//	priceStartDate = $("#currentDay").val()+' 09:00:00';
+		//	priceEndDate =  $("#currentDay").val()+' 10:00:00';
+		}else if(currentTab=="2"){
+		//	priceStartDate = $("#currentDay").val()+' 12:00:00';
+		//	priceEndDate =  $("#currentDay").val()+' 13:00:00';
+		}else if(currentTab=="3"){
+		//	priceStartDate = $("#currentDay").val()+' 21:00:00';
+		//	priceEndDate =  $("#currentDay").val()+' 22:00:00';
+		}
+	}
+	
+	$.post("webSellPrice?method=querySellPriceListForWeb",{
+		'entityPage.currentPage': cPage,
+		'entityPage.rowsPerPage': rowsPerPage,
+		'spId': $("#spId").val(),
+		'priceType':priceType,
+		'entityPage.sortOrder': sortOrder,
+		'entityPage.sortField': sortField,
+		'priceStartDate':priceStartDate,
+		'priceEndDate':priceEndDate,
+		'type':type,
+		'subType':subType
+	},function(data){
+		if(data.length==0){
+			
+		}else{
+			if(priceType=='2'){
+				$("#dataList"+priceType).html(getDataStrForMiao(data));
+			}else if(priceType=='1'){
+				$("#dataList"+priceType).html(getDataStrForTuan(data));
+			}else{
+				if(type!="" && subType!=""){
+					$("#subTypePdcList").html(getDataStrForSubType(data));
+				}else if(type!=""){
+					$("#typePdcList").html(getDataStrForSubType(data));
+				}
+			} 
+		}
+	},'json');
+}
+
+//秒杀商品
+function getDataStrForMiao(data){
+	var str = "";
+	if(data!=null && data.length>0){
+		for(var i = 0;i<data.length;i++){
+			var index = i+2;
+	        str+='<li class="swiper-slide rainbow-item-'+index+'" style="width: 234px; margin-right: 14px;" onclick="productDetail(\''+data[i].priceId+'\')">';
+	        str+='<a href="javascript:void(0)" >';
+	        str+='<div class="content">';
+	        str+='<div class="thumb"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" width="160" height="160"></div>';
+	        str+='<h3 class="title">' + data[i].productName + '</h3>';
+	        str+='<p class="desc">' + data[i].priceName + '</p>';
+	        str+='<p class="price"><span>' + data[i].price + '</span>元&nbsp;&nbsp;<del>' + data[i].oldPrice + '元</del></p>';
+            str+='</div></a>';
+            str+='</li>';
+		}
+	}
+	return str;
+}
+
+//团购商品
+function getDataStrForTuan(data){
+	var str = "";
+	if(data!=null && data.length>0){
+		for(var i = 0;i<data.length;i++){
+			var index = i+2;
+			str+='<li class="brick-item brick-item-m brick-item-m-2" onclick="productDetail(\''+data[i].priceId+'\')">';
+            str+='<a href="javascript:void(0)" target="_blank">';
+            str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loaded" width="160" height="160"></div>';
+            str+='<h3 class="title">' + data[i].productName + '</h3>';
+            str+='<p class="desc">' + data[i].priceName + '</p>';
+            str+='<p class="price">';
+            str+='<span class="num">' + data[i].price + '</span>元<span>起</span></p>';
+            str+='</a>';
+            str+='</li>';
+		}
+	}
+	return str;
+}
+//广告栏位管理
+function setCarouselBanner()
+{
+  var carouselIds = new Array();
+  carouselIds.push("71a68c40b8684ae9a1add679f0e1414f");//横栏1
+  carouselIds.push("d253d3ff78124c6dafd2973d71013576");//横栏2
+  carouselIds.push("a46a33224f464cf583cd6a84e744a7a8");//横栏3
+  carouselIds.push("cc9154b62b0f4289a4a2ed052c2e35e2");//横栏
+  carouselIds.push("2d11a05ae43d433e8507ec59521bcbfe");//团购商品图
+  carouselIds.push("78eea7de4de543939f0e705aeb322c51");//地方特色图
+  carouselIds.push("0e756e94446d4108ba6a46edfbcf1fdb");//商品分类图
+
+	for(var i=0;i<carouselIds.length;i++)
+	{
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webIndex?method=wxAjaxCarouselDetail",
+      data: {
+        carouselId:carouselIds[i]
+      },
+      success: function (data) {
+        var linkUrl = "";
+        for(var j=0;j<data.length;j++)
+        {
+          if(data[j].linkUrl == null || data[j].linkUrl == ""){
+            linkUrl = 'javascript:void(0)';
+		  }else{
+            linkUrl = data[j].linkUrl;
+		  }
+          if(data[j].carouselId == carouselIds[0]){
+            $("#home-banner-box0").html('<a href="'+linkUrl+'"><img alt="test" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded" width="1226" height="120"></a>');
+		  }else if(data[j].carouselId == carouselIds[1]){
+			  $("#home-banner-box1").html('<a href="'+linkUrl+'"><img alt="test" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded" width="1226" height="120"></a>');
+		  }else if(data[j].carouselId == carouselIds[2]){
+			  $("#home-banner-box2").html('<a href="'+linkUrl+'"><img alt="test" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded" width="1226" height="120"></a>');
+		  }else if(data[j].carouselId == carouselIds[3]){
+			  $("#home-banner-box3").html('<a href="'+linkUrl+'"><img alt="test" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded" width="1226" height="120"></a>');
+		  }else if(data[j].carouselId == carouselIds[4]){
+			  $("#tuanBanner").html('<li class="brick-item brick-item-l"><a href="'+linkUrl+'" ><img alt="" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded"></a></li>');
+		  }else if(data[j].carouselId == carouselIds[5]){
+			  if(j<2){
+				  $("#proSubPdcTypeBanner").append('<li class="brick-item  brick-item-m"><a href="'+linkUrl+'"><img alt="" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded"></a></li>');
+			  }
+		  }else if(data[j].carouselId == carouselIds[6]){
+			  if(j<2){
+				  $("#proPdcTypeBanner").append('<li class="brick-item  brick-item-m"><a href="'+linkUrl+'"><img alt="" src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" lazy="loaded"></a></li>');
+			  }
+		  }
+         }
+      }
+    });
+	}
+}
+
+function productDetail(priceId){
+	alert(priceId);
+	//window.location.href="";
+}
+
+function getPdcTypeDataList(level,ppdcTypeId,limit){
+	$.post("webPdcType?method=getPdcTypeListForWeb",{
+		level:level,
+		ppdcTypeId:ppdcTypeId,
+		limit:limit
+	},function(data){
+		if(data!=null && data.length>0){
+			if(level=="2"){
+				$("#pdcSubType").html(getDataStrSubPdcType(data));
+			}else{
+				$("#ppdcTypeList").html(getDataStrPdcType(data));
+			}
+		}else{
+			$("#pdcSubType").html("");
+		}
+	},'json');
+}
+
+function getDataStrSubPdcType(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+			if(i==0){
+				str+='<a href="splb.html"><li class="tab-active">'+data[i].typeName+'</li></a>';
+				//本地特色
+				getDataList('0','8','DESC','s.F_UPDATETIME','1',data[i].ppdcTypeId,data[i].pdcTypeId);
+			}else{
+				str+='<li class="">'+data[i].typeName+'</li>';
+			}
+			//str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';	
+		
+	}
+	return str;
+}
+function getDataStrForSubType(data){
+	var str = "";
+	if(data!=null && data.length>0){
+		for(var i = 0;i<data.length;i++){            
+            if(i==7){
+            	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
+            	str+='<li class="brick-item brick-item-s">';
+            	str+='<a href="javascript:void(0)">';
+            	str+='<div class="figure figure-img"><img alt="' + data[i].productName + '" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loading" width="80" height="80"></div>';
+            	str+='<h3 class="title">' + data[i].productName + '</h3>';
+            	str+='<p class="price"><span class="num">' + data[i].price + '</span>元</p>';
+            	str+='</a>';
+            	str+='</li>';
+            	str+='</div>';
+			
+            	str+='<li class="brick-item brick-item-s">';
+            	str+='<a href="splb.html">';
+            	str+='<div class="figure figure-more"></div>';
+            	str+='<div class="more">浏览更多<small>热门</small></div>';
+            	str+='</a>';
+            	str+='</li>';
+            }else{
+            	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
+                str+='<li class="brick-item brick-item-m brick-item-m-2">';
+                str+='<a href="javascript:void(0)">';
+                str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loaded" width="160" height="160"></div>';
+                str+='<h3 class="title">' + data[i].productName + '</h3>';
+                str+='<p class="desc">' + data[i].priceName + '</p>';
+                str+='<p class="price"><span class="num">' + data[i].price + '</span>元<span>起</span></p>';
+                str+='</a>';
+                str+='</li>';
+                str+='</div>';
+            }
+		}
+	}
+	return str;
+}
+
+function getDataStrPdcType(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+		if(i==0){
+			str+='<a href="splb.html"><li class="tab-active">'+data[i].typeName+'</li></a>';
+			//本地特色
+			getDataList('0','8','DESC','s.F_UPDATETIME','1',data[i].pdcTypeId,'');
+		}else{
+			str+='<li class="">'+data[i].typeName+'</li>';
+		}
+	}
+	return str;
+}
+</script>   
+
+<#include "WEB_FOOTER.html"> 
 </body></html>

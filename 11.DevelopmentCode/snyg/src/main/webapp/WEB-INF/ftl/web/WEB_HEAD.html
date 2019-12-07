@@ -146,14 +146,8 @@
           	</div>
           	<div class="incart-goods-box">
             	<div class="incart-goods" id="shopCartListDiv">
-					<dl id="cart_item_1498" data-is_supplier="0">
-	                	<dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>
-	                	<dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="${rc.contextPath}/web/images/sp.png"></a></dd>
-	                	<dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>
-	                	<dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>
-	                </dl>
              	</div>
-             	<div class="checkout"> <span class="total-price">共<i>1</i>种商品&nbsp;&nbsp;共计&nbsp;<em>¥78.00</em></span><a href="" class="btn-cart">去购物车</a> </div>
+             	<div class="checkout"><span class="total-price">共<i id="numAll">0</i>种商品&nbsp;&nbsp;共计&nbsp;<em id="moneyAll">¥0.00</em></span><a href="" class="btn-cart">去购物车</a> </div>
         	</div>
         </dd>
       </dl>
@@ -308,6 +302,8 @@ function getShopCartList(){
 }
 function getShopCartStr(data){
 	var str = "";
+	var priceAll = 0.00;
+	
 	for(var i =0;i<data.length;i++){
 	/*	str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
 		str+='<div class="iconleft">';
@@ -339,12 +335,21 @@ function getShopCartStr(data){
 		
 		
 		str+='<dl id="cart_item_1498" data-is_supplier="0">';
-		str+='<dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>';
-		str+='<dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="${rc.contextPath}/web/images/sp.png"></a></dd>';
-		str+='<dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>';
+		str+='<dt class="goods-name"><a href="">'+data[i].productName+'</a></dt>';
+		str+='<dd class="goods-thumb"><a href="" title="'+data[i].productName+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></a></dd>';
+		str+='<dd class="goods-sales"></dd><dd class="goods-price"><em>¥'+data[i].price+'×'+data[i].num+'</em></dd>';
 		str+='<dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>';
 		str+='</dl>';
+		
+		var num = parseFloat(data[i].num);
+		var price = parseFloat(data[i].price);
+		var p = num * price;
+		priceAll+=p;
 	}
+	
+	$("#moneyAll").html("&yen;"+priceAll.toFixed(2));
+	$("#numAll").html(data.length);
+	
 	return str;
 }
 

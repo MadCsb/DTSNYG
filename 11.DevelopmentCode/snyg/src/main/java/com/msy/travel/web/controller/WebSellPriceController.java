@@ -1,6 +1,8 @@
 package com.msy.travel.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +16,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.github.pagehelper.PageHelper;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.EntityPage;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
@@ -86,6 +90,44 @@ public class WebSellPriceController extends BaseController {
 			// }
 			// }
 			// }
+
+			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
+			response.getWriter().print(jsonArray.toString());
+
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	@RequestMapping(params = "method=querySellPriceListForWeb")
+	public void querySellPriceListForWeb(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+				sellPrice.getEntityPage().setRowsPerPage(10);
+			} else if (sellPrice.getEntityPage().getRowsPerPage() == 0) {
+				sellPrice.getEntityPage().setRowsPerPage(10);
+			}
+			sellPrice.setDelFlag("0");
+			sellPrice.setState("1");
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("pageNum", super.getPageNum(sellPrice.getEntityPage()));
+			map.put("pageSize", super.getPageSize(sellPrice.getEntityPage()));
+			map.put("reasonable", false);
+			PageHelper.startPage(map);
+			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
+
+			if (sellPricelist != null && sellPricelist.size() > 0) {
+				for (int i = 0; i < sellPricelist.size(); i++) {
+					SellPrice oldSellPrice = new SellPrice();
+					oldSellPrice.setGoodsPriceId(sellPricelist.get(i).getGoodsPriceId());
+					oldSellPrice.setPriceType("0");
+					oldSellPrice = sellPriceService.displaySellPrice(oldSellPrice);
+
+					sellPricelist.get(i).setOldPrice(oldSellPrice.getPrice());
+				}
+			}
 
 			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
 			response.getWriter().print(jsonArray.toString());

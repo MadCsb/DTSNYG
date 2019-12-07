@@ -60,6 +60,16 @@ public class PdcType extends BaseEntity implements java.io.Serializable {
 
 	private List<PdcType> pdcTypeList;
 
+	private int limit;
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
 	public List<PdcType> getPdcTypeList() {
 		return pdcTypeList;
 	}

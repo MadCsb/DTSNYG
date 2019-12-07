@@ -153,6 +153,9 @@
 		    </if>
 		</where>
 		ORDER BY ISNULL(t.F_SORT),t.F_SORT ASC 
+		<if test="limit !=null and limit !=''">
+	    	limit #{limit}
+	    </if>
 	</select>
 	
 	<!-- 按条件查询所有 -->

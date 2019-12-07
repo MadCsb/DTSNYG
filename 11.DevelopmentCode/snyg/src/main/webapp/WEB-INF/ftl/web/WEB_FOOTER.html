@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "WEB_INC_HEAD.html"> 
+
+</head>
+
+
+<body>
+<div id="faq">
+
+  <div class="wrapper">
+
+    <ul>
+
+       <li> 
+
+       	<dl class="s2" id="articleList3">
+
+      		<dt>购物指南</dt>
+
+
+      	</dl>
+
+      </li>
+
+      <li> 
+
+      	<dl class="s3" id="articleList4">
+
+      		<dt>关于订单</dt>
+
+
+         </dl>
+
+       </li>
+
+       <li> 
+
+       		<dl class="s4" id="articleList5">
+
+      		<dt>售后服务</dt>
+
+
+            </dl>
+
+        </li>
+
+		<li> 
+
+        	<dl class="s6" id="articleList6">
+
+      		<dt>关于我们</dt>
+            </dl>
+
+        </li>
+
+        <li style="width:33%; text-align:center; border-left:1px solid #39c471;">
+
+			<dl class="s1">
+
+            <dt>400-801-3841</dt> 
+
+            <dd><a href="#">周一至周日 8:00-18:00（仅收市话费）</a></dd> 
+
+            <dd><a rel="nofollow" href="javascript:void(0)" target="_blank" class="btn">人工客服</a></dd>
+
+            </dl>        
+
+        </li>
+
+        </ul>
+
+      </div>
+
+</div>
+
+<div class="wrapfoot">
+<div id="footer" class="wrapper">
+
+    <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
+
+    <p style="display: none"> </p>
+
+    <a href="javascript:void(0)"><img src="${rc.contextPath}/web/images/05987954210414380.png" border="0"></a>
+</div>
+</div>
+<script>
+$(function(){
+	getArticle('3');
+	getArticle('4');
+	getArticle('5');
+	getArticle('6');
+})
+
+function getArticle(type){
+	$.post("webArticle?method=getArticleWeb",{
+		type:type
+	},function(data){
+		if(data !=null && data.length>0){
+			var str = "";
+			for(var i=0;i<data.length;i++){
+				if(i<3){
+					str +='<dd><i></i><a href="javascript:void(0)" title="'+data[i].title+'"> '+data[i].title+' </a></dd>';	
+				}
+			}
+			$("#articleList"+type).append(str);
+		}
+	},'json')
+}
+</script>
+</body></html>

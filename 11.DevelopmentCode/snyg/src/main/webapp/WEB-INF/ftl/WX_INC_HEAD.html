@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${rc.contextPath}/wx/js/scrolltopcontrol.js"></script>
 <script src="${rc.contextPath}/wx/js/msywxutil.js"></script>
 <script src="${rc.contextPath}/wx/js/snyg.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	
 <script type="text/javascript">
 $(function () {
@@ -31,6 +32,40 @@ $(function () {
 
 });
 
+$(function () {
+    //进入页面后获取微信js sdk权限
+    var url = encodeURIComponent(location.href.split('#')[0]);
+    $.post("wxorder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
+      if(ret!=''){
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: ret.appId, // 必填，公众号的唯一标识
+          timestamp: ret.timestamp , // 必填，生成签名的时间戳
+          nonceStr: ret.nonceStr, // 必填，生成签名的随机串
+          signature: ret.signature,// 必填，签名
+          jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+        });
+        wx.error(function(res){
+          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+          $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+        })
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+       	  wx.updateAppMessageShareData({ 
+       	    title: '三农壹购', // 分享标题
+       	    desc: '三农壹购', // 分享描述
+       	    link: 'www.3nong1gou.com/wx?method=wxIndex&spId=da14b98e-cb26-4169-9b58-babe98b98047', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+       	    imgUrl: 'http://www.3nong1gou.com/wx/images/3nlogo.png', // 分享图标
+       	    success: function () {
+       	    },
+            error:function (res) {
+                alert("该版本微信不支持目前功能!");
+            }
+       	  })
+        }); 
+
+      }
+    },"json");
+  })
 
 //修改底部样式
 function changeBottomClass(type){

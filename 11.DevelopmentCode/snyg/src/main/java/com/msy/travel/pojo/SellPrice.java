@@ -108,6 +108,16 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 	 */
 	private String companyExpressId;
 
+	private String oldPrice;
+
+	public String getOldPrice() {
+		return oldPrice;
+	}
+
+	public void setOldPrice(String oldPrice) {
+		this.oldPrice = oldPrice;
+	}
+
 	public String getCompanyExpressId() {
 		return companyExpressId;
 	}

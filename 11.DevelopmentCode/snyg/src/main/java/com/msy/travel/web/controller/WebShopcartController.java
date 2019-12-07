@@ -74,26 +74,46 @@ public class WebShopcartController extends BaseController {
 	@RequestMapping(params = "method=getShopCartListWeb")
 	public void getShopCartListWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
 		try {
-			// if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER)
-			// == null) {
-			// response.getWriter().print("");
-			// } else {
-			shopcart = new Shopcart();
-			shopcart.setUserId(getLoginUser(request).getUserId());
-			shopcart.setUserId("d417d39463f34103bf376677a1db0fae");
-			shopcart.setDelFlag("0");
-			shopcart.setState("1");
-			EntityPage en = new EntityPage();
-			en.setSortOrder("DESC");
-			en.setSortField("t.F_UPDATETIME");
-			shopcart.setEntityPage(en);
-			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
-			JSONArray jsonArray = JSONArray.fromObject(shopCartList);
-			response.getWriter().print(jsonArray.toString());
-			// }
+			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
+				response.getWriter().print("");
+			} else {
+				shopcart = new Shopcart();
+				shopcart.setUserId(getLoginUser(request).getUserId());
+				// shopcart.setUserId("d417d39463f34103bf376677a1db0fae");
+				shopcart.setDelFlag("0");
+				shopcart.setState("1");
+				EntityPage en = new EntityPage();
+				en.setSortOrder("DESC");
+				en.setSortField("t.F_UPDATETIME");
+				shopcart.setEntityPage(en);
+				List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+
+				JSONArray jsonArray = JSONArray.fromObject(shopCartList);
+				response.getWriter().print(jsonArray.toString());
+			}
 		} catch (Exception e) {
 			log.error(e, e);
 		}
 	}
 
+	/**
+	 * 删除购物车
+	 * 
+	 * @author wzd
+	 * @date 2019年12月7日 上午11:57:47
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=deleteShopCartWeb")
+	public void deleteShopCartWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			shopcart = shopcartService.displayShopcart(shopcart);
+			shopcartService.deleteShopcart(shopcart);
+			response.getWriter().print("success");
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
 }
