@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.pojo.Carousel;
 import com.msy.travel.pojo.CarouselItem;
@@ -62,6 +63,10 @@ public class WebIndexController extends BaseController {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("web/index");
+
+			String currentDay = DateTimeUtil.getDateTime10();
+
+			view.addObject("currentDay", currentDay);
 
 		} catch (Exception e) {
 			view = new ModelAndView("error");

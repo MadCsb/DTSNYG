@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.ResourceCommon;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Accessrecord;
@@ -23,6 +24,7 @@ import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
+import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.GoodsPriceService;
@@ -76,30 +78,19 @@ public class WebCommproductController extends BaseController {
 	public ModelAndView toQueryCommproductDetailByPriceId(Commproduct commproduct, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			// commproduct = new Commproduct();
-			// commproduct.setPriceId("a9b082e73d8a4d4bab956a6d01a342ab");
 			commproduct = commproductService.queryCommproductForWx(commproduct);
 
 			view = new ModelAndView("web/commproduct/commproductDetail" + commproduct.getPriceType());
 
-			// if ("0".equals(commproduct.getPriceType())) {
-			// view = new ModelAndView("web/commproduct/commproductDetail0");
-			// } else if ("1".equals(commproduct.getPriceType())) {
-			// view = new ModelAndView("web/commproduct/commproductDetail1");
-			// } else if ("2".equals(commproduct.getPriceType())) {
-			//
-			// SellPrice sellPrice = new SellPrice();
-			// sellPrice.setGoodsPriceId(commproduct.getGoodsPriceId());
-			// sellPrice.setPriceType("0");
-			// sellPrice = sellPriceService.displaySellPrice(sellPrice);
-			//
-			// view.addObject("price", sellPrice.getPrice());
-			// }
+			if (!"0".equals(commproduct.getPriceType())) {
 
-			// view.addObject("user", new User());
-			// ServiceCode serviceCode =
-			// serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			// wxSetViewObjects(view, request, serviceCode, userService);
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setGoodsPriceId(commproduct.getGoodsPriceId());
+				sellPrice.setPriceType("0");
+				sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+				view.addObject("price", sellPrice.getPrice());
+			}
 
 			RsPic rsPic = new RsPic();
 			rsPic.setRsId(commproduct.getProductId());
@@ -117,11 +108,13 @@ public class WebCommproductController extends BaseController {
 			ol.setOrderListType("0");
 			ol = orderListService.queryGoodPriceCount(ol);
 
-			// User user = request.getSession("user");
-
 			Accessrecord accessrecord = new Accessrecord();
 			accessrecord.setSpId(commproduct.getSpId());
-			// accessrecord.setUserId(user.getUserId());
+			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
+				accessrecord.setUserId("");
+			} else {
+				accessrecord.setUserId(getLoginUser(request).getUserId());
+			}
 			accessrecord.setAccessTime(DateTimeUtil.getDateTime19());
 			accessrecord.setPdcId(commproduct.getProductId());
 			accessrecord.setType("1");
@@ -142,4 +135,5 @@ public class WebCommproductController extends BaseController {
 		}
 		return view;
 	}
+
 }

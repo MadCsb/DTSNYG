@@ -15,8 +15,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
@@ -135,6 +137,63 @@ public class WebSellPriceController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+	}
+
+	/**
+	 * 跳转列表页
+	 * 
+	 * @author wzd
+	 * @date 2019年12月8日 下午2:07:38
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=querySellPriceListForWebList")
+	public ModelAndView querySellPriceListForWebList(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+			if (sellPrice.getEntityPage().getSortField() == null || "".equals(sellPrice.getEntityPage().getSortField())) {
+				sellPrice.getEntityPage().setSortField("p.F_UPDATETIME");
+				sellPrice.getEntityPage().setSortOrder("DESC");
+			}
+
+			sellPrice.setDelFlag("0");
+			sellPrice.setState("1");
+
+			PageHelper.startPage(super.getPageNum(sellPrice.getEntityPage()), super.getPageSize(sellPrice.getEntityPage()));
+			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
+			PageInfo<SellPrice> pageInfo = new PageInfo<SellPrice>(sellPricelist);
+
+			if (sellPricelist != null && sellPricelist.size() > 0) {
+				for (int i = 0; i < sellPricelist.size(); i++) {
+					if (!"0".equals(sellPricelist.get(i).getPriceType())) {
+						SellPrice oldSellPrice = new SellPrice();
+						oldSellPrice.setGoodsPriceId(sellPricelist.get(i).getGoodsPriceId());
+						oldSellPrice.setPriceType("0");
+						oldSellPrice = sellPriceService.displaySellPrice(oldSellPrice);
+
+						sellPricelist.get(i).setOldPrice(oldSellPrice.getPrice());
+					}
+				}
+			}
+
+			view = new ModelAndView("web/commproduct/queryCommproduct");
+			view.addObject("entityPage", sellPrice.getEntityPage());
+			view.addObject("pageInfo", pageInfo);
+			view.addObject("sellPricelist", sellPricelist);
+			view.addObject("sellPrice", sellPrice);
+
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
 	}
 
 }

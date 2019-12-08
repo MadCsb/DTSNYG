@@ -185,6 +185,7 @@
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
 		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
 		LEFT JOIN t_sm_subject su on p.F_SUBJECT = su.F_SUBJECTID
+		LEFT JOIN (select sum(F_NUM) as F_NUM,F_PRICEID from t_sm_orderlist l group by l.F_PRICEID) orderTemp on s.F_PRICEID = orderTemp.F_PRICEID
 		<where>
 			<if test="state !=null and state !=''">
 		    	and p.F_STATE = #{state}

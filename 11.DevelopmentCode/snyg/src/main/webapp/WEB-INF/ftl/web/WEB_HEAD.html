@@ -7,11 +7,8 @@
 
 
 <body>
-
 <div id="append_parent"></div>
-
 <div id="sld_byuTP9yr"></div>
-
 <div id="sldToolbar" class="jmys-appbar">
 
   <div class="jmys-appbar-tabs" id="appBarTabs">
@@ -21,55 +18,30 @@
     <div class="variation">
       <div class="middle">
         <div class="user" bbctype="a-barLoginBox">
-        <a target="_blank" class="right" href="login.html">
-          <div class="avatar"><i class="iconfont icon-huiyuan"></i></div>
-        </a>
-
-            <p class="p90">请登录</p>
-
-        </div>
-
-		
-
-
-
-          <div class="l_qrcode erma"><a class="Right" href="javascript:void(0);"><i class="iconfont icon-saoma"></i>
-
-                  <div class="barSldQrcode">
-
-                      <img src="${rc.contextPath}/web/images/05977763755637882.jpg">
-
-                  </div>
-              </a>
-
-              <img class="img" onselectstart="return true" src="${rc.contextPath}/web/images/ggh2wm.jpg" alt="" style="position: absolute; left: 45px;">
-
-          </div>
-
+	        <a target="_blank" class="right" href="login.html">
+	          <div class="avatar"><i class="iconfont icon-huiyuan"></i></div>
+	        </a>
+	        <p class="p90">请登录</p>
+		</div>
+		<div class="l_qrcode erma">
+			<a class="Right" href="javascript:void(0);"><i class="iconfont icon-saoma"></i>
+				<div class="barSldQrcode">
+					<img src="${rc.contextPath}/web/images/05977763755637882.jpg">
+				</div>
+			</a>
+			<img class="img" onselectstart="return true" src="${rc.contextPath}/web/images/ggh2wm.jpg" alt="" style="position: absolute; left: 45px;">
+		</div>
       </div>
-
-
-
-
-
       <div class="gotop"><a href="javascript:void(0);" id="gotop" style="opacity: 1;"><i class="iconfont icon-jiantou"></i></a></div>
-
     </div>
-
     <div class="content-box" id="content-cart">
-
-      <div class="top">
-
-        <h3>我的购物车</h3>
-
-        <a href="javascript:void(0);" class="close" title="隐藏"></a></div>
-
-      <div id="rtoolbar_cartlist"></div>
-
+    	<div class="top">
+    		<h3>我的购物车</h3>
+    		<a href="javascript:void(0);" class="close" title="隐藏"></a>
+    	</div>
+      	<div id="rtoolbar_cartlist"></div>
     </div>
-
   </div>
-
 </div>
 
 
@@ -118,13 +90,13 @@
 
 <div class="header-wrap">
 	<header class="public-head-layout wrapper">
-    <h1 class="site-logo"><a href="javascript:void(0)"><img src="${rc.contextPath}/web/images/logo.jpg" class="pngFix"></a></h1>
+    <h1 class="site-logo"><a href="webIndex?method=webIndex"><img src="${rc.contextPath}/web/images/logo.jpg" class="pngFix"></a></h1>
     <div id="search" class="head-search-bar">
     	<ul class="tab">
     		<li title="请输入您要搜索的商品关键字" app="search" class="current">商品</li><i></i>
         </ul>
-        <form action="" method="get" class="search-form" onSubmit="return checkSubmit();">
-	        <input name="keyword" id="keyword" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
+        <form action="webSellPrice?method=querySellPriceListForWebList" method="post" class="search-form" onSubmit="return checkSubmit();">
+	        <input name="productName" id="productNameHead" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
 	        <input type="submit" id="button" value="搜  索" class="input-submit">
 	    </form>
 	    <!-- 
@@ -821,7 +793,7 @@ var index;
 
     function checkSubmit() {
 
-        var keyword = $('#keyword').val();
+        var keyword = $('#productName').val();
 
         keyword = keyword.replace('<','');
 

@@ -3,6 +3,96 @@
 <head>
 <#include "../WEB_HEAD.html"> 
 
+<style type="text/css">
+/*-------------------------------------------拼团----start--------------------------*/
+
+    .pintuan{
+
+        background:url(web/images/pingtuan2.png)no-repeat;
+
+        background-size:100% 100%;
+
+        /*width: 551px;*/
+
+        width: 627px;
+
+        height: 51px;
+
+        color: #fff;
+
+        line-height:51px;
+
+    }
+
+    .pintuan ins{
+
+        text-decoration: none;
+
+        font-size: 20px;
+
+    }
+
+    .leftJg{
+
+        padding-left:15px;
+
+        float: left;
+
+    }
+
+    .leftJg span{
+
+        font-size:14px;
+
+        padding-right:18px;
+
+        position: relative;
+
+        top:-2px;
+
+    }
+
+    .rightImg{
+
+        position: relative;
+
+        padding-right:17px;
+
+        float: right;
+
+    }
+
+    .rightImg p img{
+
+        padding-left:19px;
+
+		vertical-align:middle;
+
+    }
+
+    .rightImg>img{
+
+        display: none;
+
+        position: absolute;
+
+        top: 56px;
+
+        left:60px;
+
+        z-index: 100;
+
+		width:200px; 
+
+		height:200px;
+
+    }
+
+
+
+  /*-------------------------------------------拼团----end--------------------------*/
+
+</style>
 </head>
 
 <body>
@@ -65,11 +155,23 @@
                     <div class="small_title">
                        <p class="bbc_color">${commproduct.subjectName!''}</p>
                     </div>
+                    <div class="pintuan" style="display:block;">
+                        <div class="leftJg">
+                            <span>拼团价格</span><ins>¥${commproduct.price!''}</ins>
+                        </div>
+                        <div class="rightImg">
+                            <p style="color:#464646;font-size: 16px;font-weight: bold">
+                            	手机端参加拼团 <img src="images/hei_erweima.png" alt="">
+                            </p>
+                            <img class="Img" src="images/ggh2wm.jpg" alt="">
+                        </div>
+
+                    </div>
 					<div class="obvious ">
                         <p class="clears market_goods">
                             <span class="mar-r _letter-spacing" style="line-height: 30px;height: 30px!important;">商城价</span>
                             <span class="mar-b-2">
-                               <strong class="color-db0a07 bbc_color goods_detail_price" id="commproductPrice">¥${commproduct.price!''}</strong>
+                               <strong class="color-db0a07 bbc_color goods_detail_price" id="commproductPrice">¥${price!''}</strong>
                             </span>
                         </p>
                         <p class="clears market_price_goods">

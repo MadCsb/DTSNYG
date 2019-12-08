@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WEB_HEAD.html"> 
+<link href="${rc.contextPath}/web/css/spfl.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fl-banner" id="pdcListBanner">
+
+</div>
+
+<div class="breadcrumbs">
+    <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span><a href="">商品列表</a></div>
+</div>
+
+<form id="queryFrm" action="webSellPrice?method=querySellPriceListForWebList"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="productName" name="productName" value="${sellPrice.productName!''}">
+
+<div class="page-main home-main">
+	<div class="container">
+		<div class="home-brick-box home-brick-row-2-box xm-plain-box">
+    		<div class="box-slhd clearfix">
+    			<div class="sldh-sortbar-array"> 排序方式：
+    				<ul>
+    					<#if entityPage.sortField??>
+    						<#if entityPage.sortField=='p.F_UPDATETIME'>
+		                		<li class="selected"><a href="javascript:void(0)" onclick="changeSortField('p.F_UPDATETIME')" title="点击按时间从高到低排序">上新<i></i></a></li>
+    							<li><a href="javascript:void(0)" onclick="changeSortField('orderTemp.F_NUM')" title="点击按销量从高到低排序">销量<i></i></a></li>
+		                		<li><a href="javascript:void(0)" onclick="changeSortField('s.F_PRICE')" title="点击按价格从高到低排序">价格<i></i></a></li>
+		                	<#elseif entityPage.sortField=='orderTemp.F_NUM'>
+		                		<li><a href="javascript:void(0)" onclick="changeSortField('p.F_UPDATETIME')" title="点击按时间从高到低排序">上新<i></i></a></li>
+    							<li class="selected"><a href="javascript:void(0)" onclick="changeSortField('orderTemp.F_NUM')" title="点击按销量从高到低排序">销量<i></i></a></li>
+		                		<li><a href="javascript:void(0)" onclick="changeSortField('s.F_PRICE')" title="点击按价格从高到低排序">价格<i></i></a></li>
+		                	<#elseif entityPage.sortField=='s.F_PRICE'>
+		                		<li><a href="javascript:void(0)" onclick="changeSortField('p.F_UPDATETIME')" title="点击按时间从高到低排序">上新<i></i></a></li>
+    							<li><a href="javascript:void(0)" onclick="changeSortField('orderTemp.F_NUM')" title="点击按销量从高到低排序">销量<i></i></a></li>
+		                		<li class="selected"><a href="javascript:void(0)" onclick="changeSortField('s.F_PRICE')" title="点击按价格从高到低排序">价格<i></i></a></li>
+		                	<#else>
+	    						<li><a href="javascript:void(0)" onclick="changeSortField('p.F_UPDATETIME')" title="点击按时间从高到低排序">上新<i></i></a></li>
+	   							<li><a href="javascript:void(0)" onclick="changeSortField('orderTemp.F_NUM')" title="点击按销量从高到低排序">销量<i></i></a></li>
+		                		<li><a href="javascript:void(0)" onclick="changeSortField('s.F_PRICE')" title="点击按价格从高到低排序">价格<i></i></a></li>
+    						</#if>
+    					<#else>
+    						<li><a href="javascript:void(0)" onclick="changeSortField('p.F_UPDATETIME')" title="点击按时间从高到低排序">上新<i></i></a></li>
+   							<li><a href="javascript:void(0)" onclick="changeSortField('orderTemp.F_NUM')" title="点击按销量从高到低排序">销量<i></i></a></li>
+	                		<li><a href="javascript:void(0)" onclick="changeSortField('s.F_PRICE')" title="点击按价格从高到低排序">价格<i></i></a></li>
+    					</#if>
+                	</ul>
+        		</div>
+    		</div>
+    		<div class="box-bd">
+    			<div class="row">
+    				<div class="span20">
+                		<div>
+                   			<ul class="brick-list clearfix" style="width:1230px;">
+                   				<#if sellPricelist?? && (sellPricelist?size>0)> 
+                   				<#list sellPricelist as li>
+                  				<li class="brick-item brick-item-m brick-item-m-2" style="width:231px" onclick="productDetail('${li.priceId}')"/>
+                               		<a href="javascript:void(0)">
+                               			<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}" lazy="loaded" width="160" height="160"></div>
+                               			<h3 class="title">${li.productName!''}</h3>
+                               			<p class="desc">${li.priceName!''}</p>
+                               			<p class="price"><span class="num">${li.price!''}</span>元<span>起</span>
+                               			<#if li.oldPrice??><del><span class="num">${li.oldPrice!''}</span>元</del></#if>
+                               			</p>
+                               		</a>
+                           		</li>
+                           		</#list>
+                           		</#if>
+                    		</ul>
+                 		</div>
+             		</div>
+        	 	</div>
+     		</div>
+ 		</div>
+ 	</div>
+</div>
+<#if sellPricelist?? && (sellPricelist?size>0)> 
+	<#include "/pagination.html"> 
+<#else>
+	<div id='ListIsNullMsg' style="font-size:17px;color:red">
+		<script type="text/javascript">
+			showListIsNullMsg();
+		</script>
+	</div>
+</#if>
+</form>
+<script type="text/javascript">
+
+$(function(){
+	setCarousel();
+	$("#productNameHead").val($("#productName").val());
+})
+//广告轮播图管理
+function setCarousel()
+{
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webIndex?method=wxAjaxCarouselDetail",
+      data: {
+    	  carouselId:'16347781135446788b6a05fb6f7b05c1'
+      },
+      success: function (data) {
+        var linkUrl = "";
+        for(var j=0;j<data.length;j++)
+        {
+        	var linkUrl = "";
+        	if(data[j].linkUrl == null || data[j].linkUrl == "")
+			{
+    			linkUrl = 'javascript:void(0)';
+			}else
+			{
+    			linkUrl = data[j].linkUrl;
+			}
+        	$("#pdcListBanner").css("background-image","url(${rc.contextPath}/upload/wxpic/"+ data[j].picUrl+")");
+        }
+
+      }
+   });
+}
+function changeSortField(sortField){
+	document.getElementById("entityPage.sortField").value=sortField;
+	$("#queryFrm").submit();
+}
+
+function productDetail(priceId){
+	window.location.href="webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+}
+</script>
+<#include "../WEB_FOOTER.html"> 
+</body>
+</html>
