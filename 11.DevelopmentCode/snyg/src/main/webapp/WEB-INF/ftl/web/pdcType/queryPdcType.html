@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WEB_HEAD.html"> 
+<link href="${rc.contextPath}/web/css/spfl.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fl-banner" id="pdcListBanner">
+
+</div>
+
+<div class="breadcrumbs">
+    <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">所有分类</a></div>
+</div>
+<div class="container J_category category-index">
+	<#if parentPdcTypeList?? && (parentPdcTypeList?size>0)>
+		<#list parentPdcTypeList as li>
+			<div class="xm-plain-box category-list">
+		        <div class="box-hd J_box-hd current">
+		            <h2 class="title"><i></i>${li.typeName!''}</h2>
+		        </div>
+		        <div class="box-bd J_box-bd">
+		            <ul class="clearfix">
+						<#if li.pdcTypeList?? && (li.pdcTypeList?size>0)>
+							<#list li.pdcTypeList as subLi>
+								<li>
+				                    <a href="webSellPrice?method=querySellPriceListForWebList&subType=${subLi.pdcTypeId!''}" class="category-list-img"><img src="${rc.contextPath}/upload/wxpic/${subLi.picUrl!''}" alt="" width="70" height="70"></a>
+				                    <a href="webSellPrice?method=querySellPriceListForWebList&subType=${subLi.pdcTypeId!''}" class="category-list-title">${subLi.typeName!''}</a>
+				               </li>
+							</#list>
+						</#if>
+		            </ul>
+		        </div>
+		    </div>
+		</#list>
+	</#if>
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+	setCarousel();
+})
+//广告轮播图管理
+function setCarousel()
+{
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webIndex?method=wxAjaxCarouselDetail",
+      data: {
+    	  carouselId:'c4c750748af74629a444e1df8fa1afd6'
+      },
+      success: function (data) {
+        var linkUrl = "";
+        for(var j=0;j<data.length;j++)
+        {
+        	var linkUrl = "";
+        	if(data[j].linkUrl == null || data[j].linkUrl == "")
+			{
+    			linkUrl = 'javascript:void(0)';
+			}else
+			{
+    			linkUrl = data[j].linkUrl;
+			}
+        	$("#pdcListBanner").css("background-image","url(${rc.contextPath}/upload/wxpic/"+ data[j].picUrl+")");
+        }
+
+      }
+   });
+}
+</script>
+<#include "../WEB_FOOTER.html"> 
+</body>
+</html>

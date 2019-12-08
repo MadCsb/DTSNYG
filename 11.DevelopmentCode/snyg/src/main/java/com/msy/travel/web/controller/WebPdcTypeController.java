@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.config.ConfigParameter;
@@ -68,5 +69,42 @@ public class WebPdcTypeController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+	}
+
+	/**
+	 * 跳转列表页
+	 * 
+	 * @author wzd
+	 * @date 2019年12月8日 下午6:14:01
+	 * @param pdcType
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toQueryPdcTypeListWeb")
+	public ModelAndView toQueryPdcTypeListWeb(PdcType pdcType, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			pdcType.setSpId(Destsp.currentSpId);
+			pdcType.setDelFlag("0");
+			List<PdcType> pdcTypeList = pdcTypeService.queryPdcTypeList(pdcType);
+			if (pdcTypeList != null && pdcTypeList.size() > 0) {
+				for (int i = 0; i < pdcTypeList.size(); i++) {
+					if ("1".equals(pdcTypeList.get(i).getLevel())) {
+						PdcType subType = new PdcType();
+						subType.setPpdcTypeId(pdcTypeList.get(i).getPdcTypeId());
+						subType.setLevel("2");
+						List<PdcType> subTypeList = pdcTypeService.queryPdcTypeList(subType);
+						pdcTypeList.get(i).setPdcTypeList(subTypeList);
+					}
+				}
+			}
+			view = new ModelAndView("web/pdcType/queryPdcType");
+			view.addObject("parentPdcTypeList", pdcTypeList);
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+		return view;
 	}
 }
