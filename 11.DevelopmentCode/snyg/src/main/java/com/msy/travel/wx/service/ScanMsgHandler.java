@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.IServiceCodeService;
@@ -101,7 +102,11 @@ public class ScanMsgHandler extends AbstractMsgHandler {
 						user.setWxServiceId(serviceCode.getServiceId());
 						user.setUserLoginName(msg.getToUserName());
 						user.setType("0");
-						user.setUserName(wxuser.getNickname());
+						try {
+							user.setUserName(wxuser.getNickname());
+						} catch (Exception e) {
+							user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+						}
 						user.setUserState("1");
 						user.setCountry(wxuser.getCountry());
 						user.setProvince(wxuser.getCountry());

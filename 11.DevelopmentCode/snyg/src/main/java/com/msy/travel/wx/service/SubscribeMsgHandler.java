@@ -131,7 +131,11 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setWxServiceId(serviceCode.getServiceId());
 					user.setUserLoginName(msg.getToUserName());
 					user.setType("0");
-					user.setUserName(wxuser.getNickname());
+					try {
+						user.setUserName(wxuser.getNickname());
+					} catch (Exception e) {
+						user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+					}
 					user.setUserState("1");
 					user.setCountry(wxuser.getCountry());
 					user.setProvince(wxuser.getProvince());

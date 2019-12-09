@@ -228,4 +228,25 @@ public class PrimaryKeyUtil {
 
 	}
 
+	/**
+	 * 微信用户默认名称
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午6:51:23
+	 * @return
+	 * @return String
+	 */
+	public static String getDefaultWxUserName() {
+
+		String wxUserName = "";
+		try {
+			wxUserName = "用户" + PrimaryKeyUtil.generateNumCode();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return wxUserName;
+	}
+
 }
