@@ -340,4 +340,161 @@
 			</if>
 		</if>
 	</select>
+	
+	<!-- 按条件查询所有 -->
+	<select id="querySellPriceListOrderByAccess" parameterType="sellPrice" resultType="sellPrice">
+		SELECT
+			s.F_PRICEID as priceId ,
+			s.F_PRICE as price,
+		    s.F_PRICETYPE as priceType,
+			s.F_DELFLAG as delFlag,
+			s.F_PRICESTARTDATE as priceStartDate ,
+			s.F_PRICEENDDATE as priceEndDate ,
+			s.F_MAXBUYCOUNT as maxBuyCount ,
+			s.F_LIMITBUYCOUNT as limitBuyCount ,
+			s.F_PEOPLENUM as peopleNum  ,
+		    s.F_PRODUCTID as productId,
+		    g.F_PRICENAME as priceName,
+			p.F_PRODUCTNAME as productName,
+		    p.F_THUMBPIC as thumbPic,
+			p.F_STATE as state,
+			p.F_PRODUCTCODE as productCode,
+		    su.F_SUBJECT as subject ,
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId,
+			g.F_GOODSPRICEID as goodsPriceId
+		FROM
+			t_sm_sellprice s
+		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
+		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_sm_subject su on p.F_SUBJECT = su.F_SUBJECTID
+		LEFT JOIN (select count(F_PDCID) as F_PDCCOUNT ,F_PDCID from t_sm_accessrecord GROUP BY F_PDCID ) accTemp on accTemp.F_PDCID = s.F_PRODUCTID
+		<where>
+			<if test="state !=null and state !=''">
+		    	and p.F_STATE = #{state}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and p.F_SPID = #{spId}
+		    </if>
+		    <if test="productName !=null and productName !=''">
+		    	and p.F_PRODUCTNAME like concat('%',#{productName},'%')
+		    </if>
+		    <if test="type !=null and type !=''">
+		    	and p.F_TYPE = #{type}
+		    </if>
+		    <if test="subType !=null and subType !=''">
+		    	and p.F_SUBTYPE = #{subType}
+		    </if>
+		    <if test="priceStartDate !=null and priceStartDate !=''">
+		    	and s.F_PRICESTARTDATE &gt;= #{priceStartDate}
+		    </if>
+		    <if test="priceEndDate !=null and priceEndDate !=''">
+		    	and s.F_PRICEENDDATE &lt;= #{priceEndDate}
+		    </if>
+		    <if test="priceType !=null and priceType !=''">
+		    	and s.F_PRICETYPE = #{priceType}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and s.F_DELFLAG = #{delFlag} and p.F_DELFLAG = #{delFlag} and g.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="productCode !=null and productCode !=''">
+		    	and p.F_PRODUCTCODE like concat('%',#{productCode},'%')
+		    </if>
+		    <if test="venId !=null and venId !=''">
+		    	and p.F_VENID = #{venId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+		<if test='limit !=null and entityPage.sortOrder !="" '>
+	    	limit ${limit}
+		</if>
+	</select>
+	
+	<!-- 按条件查询所有 -->
+	<select id="querySellPriceListOrderByOrderCount" parameterType="sellPrice" resultType="sellPrice">
+		SELECT
+			s.F_PRICEID as priceId ,
+			s.F_PRICE as price,
+		    s.F_PRICETYPE as priceType,
+			s.F_DELFLAG as delFlag,
+			s.F_PRICESTARTDATE as priceStartDate ,
+			s.F_PRICEENDDATE as priceEndDate ,
+			s.F_MAXBUYCOUNT as maxBuyCount ,
+			s.F_LIMITBUYCOUNT as limitBuyCount ,
+			s.F_PEOPLENUM as peopleNum  ,
+		    s.F_PRODUCTID as productId,
+		    g.F_PRICENAME as priceName,
+			p.F_PRODUCTNAME as productName,
+		    p.F_THUMBPIC as thumbPic,
+			p.F_STATE as state,
+			p.F_PRODUCTCODE as productCode,
+		    su.F_SUBJECT as subject ,
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId,
+			g.F_GOODSPRICEID as goodsPriceId,
+			IFNULL(orderTemp.F_NUM,0)+IFNULL(p.F_SALENUM,0) as saleNum
+		FROM
+			t_sm_sellprice s
+		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
+		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_sm_subject su on p.F_SUBJECT = su.F_SUBJECTID
+		LEFT JOIN (select sum(F_NUM) as F_NUM,F_PRICEID from t_sm_orderlist l group by l.F_PRICEID) orderTemp on s.F_PRICEID = orderTemp.F_PRICEID
+		<where>
+			<if test="state !=null and state !=''">
+		    	and p.F_STATE = #{state}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and p.F_SPID = #{spId}
+		    </if>
+		    <if test="productName !=null and productName !=''">
+		    	and p.F_PRODUCTNAME like concat('%',#{productName},'%')
+		    </if>
+		    <if test="type !=null and type !=''">
+		    	and p.F_TYPE = #{type}
+		    </if>
+		    <if test="subType !=null and subType !=''">
+		    	and p.F_SUBTYPE = #{subType}
+		    </if>
+		    <if test="priceStartDate !=null and priceStartDate !=''">
+		    	and s.F_PRICESTARTDATE &gt;= #{priceStartDate}
+		    </if>
+		    <if test="priceEndDate !=null and priceEndDate !=''">
+		    	and s.F_PRICEENDDATE &lt;= #{priceEndDate}
+		    </if>
+		    <if test="priceType !=null and priceType !=''">
+		    	and s.F_PRICETYPE = #{priceType}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and s.F_DELFLAG = #{delFlag} and p.F_DELFLAG = #{delFlag} and g.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="productCode !=null and productCode !=''">
+		    	and p.F_PRODUCTCODE like concat('%',#{productCode},'%')
+		    </if>
+		    <if test="venId !=null and venId !=''">
+		    	and p.F_VENID = #{venId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+		<if test='limit !=null and entityPage.sortOrder !="" '>
+	    	limit ${limit}
+		</if>
+	</select>
 </mapper>	

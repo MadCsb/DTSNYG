@@ -110,4 +110,28 @@ public interface SellPriceDao {
 	 */
 	List<SellPrice> queryGoodsPriceListForAdd(SellPrice sellPrice) throws Exception;
 
+	/**
+	 * 按浏览量排序
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午8:46:47
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	List<SellPrice> querySellPriceListOrderByAccess(SellPrice sellPrice) throws Exception;
+
+	/**
+	 * 销量
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午9:45:54
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	List<SellPrice> querySellPriceListOrderByOrderCount(SellPrice sellPrice) throws Exception;
+
 }

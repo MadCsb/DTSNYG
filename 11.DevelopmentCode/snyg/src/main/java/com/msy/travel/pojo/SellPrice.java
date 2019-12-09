@@ -110,6 +110,26 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 
 	private String oldPrice;
 
+	private int limit;
+
+	private String saleNum;
+
+	public String getSaleNum() {
+		return saleNum;
+	}
+
+	public void setSaleNum(String saleNum) {
+		this.saleNum = saleNum;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
 	public String getOldPrice() {
 		return oldPrice;
 	}

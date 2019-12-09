@@ -196,4 +196,71 @@ public class WebSellPriceController extends BaseController {
 		return view;
 	}
 
+	/**
+	 * 获得热销数量
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午8:01:59
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=getSellPriceByOrderCount")
+	public void getSellPriceByOrderCount(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (sellPrice == null) {
+				sellPrice = new SellPrice();
+			}
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+			if (sellPrice.getEntityPage().getSortField() == null || "".equals(sellPrice.getEntityPage().getSortField())) {
+				sellPrice.getEntityPage().setSortField("saleNum");
+				sellPrice.getEntityPage().setSortOrder("DESC");
+			}
+
+			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListOrderByOrderCount(sellPrice);
+
+			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
+			response.getWriter().print(jsonArray.toString());
+
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 获取浏览量
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午8:49:46
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=querySellPriceListOrderByAccess")
+	public void querySellPriceListOrderByAccess(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (sellPrice == null) {
+				sellPrice = new SellPrice();
+			}
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+			if (sellPrice.getEntityPage().getSortField() == null || "".equals(sellPrice.getEntityPage().getSortField())) {
+				sellPrice.getEntityPage().setSortField("accTemp.F_PDCCOUNT");
+				sellPrice.getEntityPage().setSortOrder("DESC");
+			}
+
+			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListOrderByAccess(sellPrice);
+
+			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
+			response.getWriter().print(jsonArray.toString());
+
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
 }

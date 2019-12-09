@@ -119,4 +119,28 @@ public interface SellPriceService {
 	 *            SellPrice对象
 	 */
 	public void createOrUpdateSellPrice(SellPrice sellPrice) throws Exception;
+
+	/**
+	 * 按浏览量排序
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午8:49:00
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	public List<SellPrice> querySellPriceListOrderByAccess(SellPrice sellPrice) throws Exception;
+
+	/**
+	 * 销量
+	 * 
+	 * @author wzd
+	 * @date 2019年12月9日 下午9:45:54
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	public List<SellPrice> querySellPriceListOrderByOrderCount(SellPrice sellPrice) throws Exception;
 }

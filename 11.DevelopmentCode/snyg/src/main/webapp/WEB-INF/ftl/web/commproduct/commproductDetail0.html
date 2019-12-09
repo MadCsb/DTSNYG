@@ -9,7 +9,7 @@
 
 
 <div class="breadcrumbs">
-    <div class="container"><a href="http://www.3nong1gou.com/">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">商品详情</a></div>
+    <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">商品详情</a></div>
 </div>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
@@ -83,7 +83,7 @@
                             <div class="qrcode-wrap">
                                 <div class="qrcode_tit">手机购买<i class="iconfont icon-erweima"></i></div>
                                 <div class="qrcode_pop">
-                                    <div class="mobile-qrcode"><img src="images/ggh2wm.jpg" alt="商品二维码" title="" width="155"></div>
+                                    <div class="mobile-qrcode"><img src="web/images/ggh2wm.jpg" alt="商品二维码" title="" width="155"></div>
                                 </div>
                             </div>
                         </div>
@@ -116,13 +116,7 @@
 				<div class="track-tit">
 					<h3>看了又看</h3><span></span>
 				</div>
-				<ul class="look_again_goods clearfix ">
-					<li>
-						<a target="_blank" href=""><img src="images/sp.png"><h5 class=" sld_goods_view_name">¥150.00</h5></a>
-					</li>
-					<li>
-						<a target="_blank" href=""><img src="images/sp.png"><h5 class=" sld_goods_view_name">¥93.60</h5></a>
-					</li>
+				<ul class="look_again_goods clearfix " id="sellPriceAccessList">
 				</ul>
 			</div>
 		</div>
@@ -152,12 +146,7 @@
         <div class="t_goods_bot_left ">
 			<div class="goods_ranking ">
 				<p class="selling"><a id="sld_goods_sele" class="hot_salle" href="javascript:void(0)">热销推荐</a></p>
-	            <ul id="hot_salle" class="hotuls">
-	            	<li class="clearfix">
-	            		<a target="_blank" href="" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="images/sp.png"></span></a>
-	            		<p><a class="sld_sell_goods_name" target="_blank" href="">碑庙的土鸡蛋   碑牌河农家散养土鸡   下的土鸡蛋  营养丰富  口感棒棒 土鸡蛋 30枚装</a>
-						<span class="bbc_color sld_goods_sell_price">￥60.00</span><span class="sld_goods_detail_desc">热销380件</span></p>
-					</li>
+	            <ul id="hotSellPriceList" class="hotuls">
 				</ul>
 			</div>
         </div>
@@ -167,7 +156,43 @@
 <script type="text/javascript">
 $(function(){
 	getSellPriceList();
+	getSellPriceHot();
+	getSellPriceAccess();
 })
+
+function getSellPriceHot(){
+	$.post("webSellPrice?method=getSellPriceByOrderCount",{
+    	limit:'5'
+    },function(data){
+    	if(data!=null && data.length>0){
+    		var str = "";
+    		for(var i=0;i<data.length;i++){
+    			str+='<li class="clearfix" onclick="productDetail(\''+data[i].priceId+'\')">';
+    			str+='<a href="javascript:void(0)" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"></span></a>';
+    			str+='<p><a class="sld_sell_goods_name" href="javascript:void(0)">' + data[i].productName + '</a>';
+    			str+='<span class="bbc_color sld_goods_sell_price">￥' + data[i].price + '</span><span class="sld_goods_detail_desc">热销' + data[i].saleNum + '件</span></p>';
+    			str+='</li>';
+    		}
+    		$("#hotSellPriceList").html(str);
+    	}
+    },'json')
+}
+
+function getSellPriceAccess(){
+	$.post("webSellPrice?method=querySellPriceListOrderByAccess",{
+    	limit:2
+    },function(data){
+    	if(data!=null && data.length>0){
+    		var str = "";
+    		for(var i=0;i<data.length;i++){
+    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
+    		}
+    		$("#sellPriceAccessList").html(str);
+    	}
+    },'json')
+}
+ 
+    
 
 var checkPriceId = "";
 function getSellPriceList(){
@@ -235,6 +260,8 @@ function addShopCart(showType){
     },function () {
         $('.bshare-custom').css('display','none');
     });
+    
+    
 </script>
 <#include "../WEB_FOOTER.html"> 
 </body>
