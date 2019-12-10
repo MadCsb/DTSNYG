@@ -34,11 +34,11 @@
 								<#if rsPicList?? && (rsPicList?size>0)>
 						    		<#list rsPicList as li>
 						    			<#if li_index==0>
-							        		<li class="check video_img ">
+							        		<li class="check video_img " onmouseover="checkRspic(this)" imgUrl="${rc.contextPath}/upload/wxpic/${li.picFileName!''}">
 			                                    <img class="" src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" data-cloudzoom="">
 			                                </li>
 		                                <#else>
-			                                <li class="video_img ">
+			                                <li class="video_img "  onmouseover="checkRspic(this)" imgUrl="${rc.contextPath}/upload/wxpic/${li.picFileName!''}">
 			                                    <img class="" src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" data-cloudzoom="">
 			                                </li>
 		                                </#if>
@@ -47,7 +47,9 @@
                            </ul>
                         </div>
                     </div>
+                    
 					<div class="ev_left_num" style="padding-left: 0">
+					<!-- 
 						<span class="others_imp share sharegoods">
 							<a data-param="{&quot;gid&quot;:&quot;1329&quot;}">
 							<b class="iconfontfa fa-share-alt icon-1 bbc_color"></b><span class="spans">分享</span></a>
@@ -56,6 +58,7 @@
 	                        	<a style="margin-bottom: 5px!important;" title="分享到微信" class="bshare-weixin" href="javascript:void(0);"></a>
 	                        </div>
                         </span>
+                        -->
                     </div>
                 </div>
                 <div class="ev_center">
@@ -261,6 +264,14 @@ function addShopCart(showType){
         $('.bshare-custom').css('display','none');
     });
     
+    alert(document.getElementsByTagName('img')[0].src);
+    function checkRspic(obj){
+    	$(".video_img").removeClass("check");
+    	$(obj).addClass("check");
+    	var picUrl = $(obj).attr("imgUrl");
+    	
+    	$(".cloudzoom").attr("src",picUrl);
+    }
     
 </script>
 <#include "../WEB_FOOTER.html"> 

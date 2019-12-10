@@ -13,7 +13,8 @@
 <script type="text/javascript" src="${rc.contextPath}/wx/js/scrolltopcontrol.js"></script>
 <script src="${rc.contextPath}/wx/js/msywxutil.js"></script>
 <script src="${rc.contextPath}/wx/js/snyg.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+
 	
 <script type="text/javascript">
 $(function () {
@@ -32,40 +33,7 @@ $(function () {
 
 });
 
-$(function () {
-    //进入页面后获取微信js sdk权限
-    var url = encodeURIComponent(location.href.split('#')[0]);
-    $.post("wxorder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
-      if(ret!=''){
-        wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: ret.appId, // 必填，公众号的唯一标识
-          timestamp: ret.timestamp , // 必填，生成签名的时间戳
-          nonceStr: ret.nonceStr, // 必填，生成签名的随机串
-          signature: ret.signature,// 必填，签名
-          jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
-        });
-        wx.error(function(res){
-          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-          $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
-        })
-        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
-       	  wx.updateAppMessageShareData({ 
-       	    title: '三农壹购', // 分享标题
-       	    desc: '三农壹购', // 分享描述
-       	    link: 'www.3nong1gou.com/wx?method=wxIndex&spId=da14b98e-cb26-4169-9b58-babe98b98047', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-       	    imgUrl: 'http://www.3nong1gou.com/wx/images/3nlogo.png', // 分享图标
-       	    success: function () {
-       	    },
-            error:function (res) {
-                alert("该版本微信不支持目前功能!");
-            }
-       	  })
-        }); 
-
-      }
-    },"json");
-  })
+       
 
 //修改底部样式
 function changeBottomClass(type){
@@ -79,6 +47,108 @@ function changeBottomClass(type){
 	$("#tabDiv"+type).addClass(className);
 	$("#tabDivShow"+type).addClass("f1");
 }
+
+
+
+$(window).load(function(){
+	//进入页面后获取微信js sdk权限
+    var url = encodeURIComponent(location.href.split('#')[0]);
+    $.post("wxorder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
+      if(ret!=''){
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: ret.appId, // 必填，公众号的唯一标识
+          timestamp: ret.timestamp , // 必填，生成签名的时间戳
+          nonceStr: ret.nonceStr, // 必填，生成签名的随机串
+          signature: ret.signature,// 必填，签名
+          jsApiList: ['updateAppMessageShareData','updateTimelineShareData','onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表
+        });
+        wx.error(function(res){
+          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+          $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+        })
+        
+         var shareImgUrl = "";//"http://www.3nong1gou.com/wx/images/3nlogo.png";
+		   shareImgUrl = document.getElementsByTagName('img')[0].src;
+		   if(shareImgUrl==""){
+			   shareImgUrl = "http://www.3nong1gou.com/wx/images/3nlogo.png";
+		   }
+  
+  		 wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+          	 wx.updateAppMessageShareData({ 
+          	    title: '三农壹购', // 分享标题
+          	    desc: '邀您共享三农壹购更多精彩内容', // 分享描述
+          	    link:window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          	    imgUrl: shareImgUrl, // 分享图标
+          	    success: function (res) {
+          	    },
+               error:function (res) {
+                   alert("该版本微信不支持目前功能!");
+               }
+          	  });
+        
+          	wx.updateTimelineShareData({ 
+          	    title: '三农壹购', // 分享标题
+          	    desc: '邀您共享三农壹购更多精彩内容', // 分享描述
+          	    link:window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          	    imgUrl: shareImgUrl, // 分享图标
+          	    success: function (res) {
+          	    },
+               error:function (res) {
+                   alert("该版本微信不支持目前功能!");
+               }
+          	  });
+          	
+          	wx.onMenuShareAppMessage({
+          	     title: '三农壹购', // 分享标题
+          	     desc: '邀您共享三农壹购更多精彩内容',
+          	     link:window.location.href,
+          	     imgUrl: shareImgUrl, // 分享图标
+          	     trigger: function (res) {
+          	      // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+          	     },
+          	     success: function (res) {
+          	          // 分享成功执行此回调函数
+          	    //  alert('已分享');
+          	     },
+          	     cancel: function (res) {
+          	    //  alert('已取消');
+          	     },
+          	     fail: function (res) {
+          	    //  alert(JSON.stringify(res));
+          	     }
+          	    });
+          	wx.onMenuShareTimeline({
+         	     title: '三农壹购', // 分享标题
+         	     desc: '邀您共享三农壹购更多精彩内容',
+         	     link:window.location.href,
+         	     imgUrl: shareImgUrl, // 分享图标
+         	     trigger: function (res) {
+         	      // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+         	     },
+         	     success: function (res) {
+         	          // 分享成功执行此回调函数
+         	    //  alert('已分享');
+         	     },
+         	     cancel: function (res) {
+         	     // alert('已取消');
+         	     },
+         	     fail: function (res) {
+         	   //   alert(JSON.stringify(res));
+         	     }
+         	    });
+  			}); 
+
+          
+      }
+    },"json");
+})
+
+$(function () {
+    
+  })
+  
+ 
 </script>
 
 
