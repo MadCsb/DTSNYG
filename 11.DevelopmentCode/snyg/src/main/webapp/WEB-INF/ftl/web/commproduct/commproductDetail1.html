@@ -2,108 +2,108 @@
 <html>
 <head>
 <#include "../WEB_HEAD.html"> 
+<style>
+.brick-list{width:1224px}
+.brick-item {
+    position: relative;
+    z-index: 1;
+    float: left;
+    width: 230.6px;
+    margin-left: 14px;
+    margin-bottom: 14px;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+	}
+	
+	
+/*3n1g拼团订单*/
 
-<style type="text/css">
-/*-------------------------------------------拼团----start--------------------------*/
+.ptxx{ margin:0 auto; padding:0; list-style:none; width:100%}
+.ptxx li{ border-bottom:1px solid #efefef; margin:0 auto 10px auto;padding:10px 0; font-size:13px;}
 
-    .pintuan{
+.ptxx .tzli{ border-bottom:2px solid #00ae60; margin:0 auto 10px auto;padding:10px 0; font-size:13px;}
+.ptxx li .divleft{ width:45%; float:left; line-height:40px; overflow:hidden; vertical-align:middle;}
+.usertx{ display:inline-block; width:40px; height:40px; overflow:hidden; border-radius:40px; vertical-align:middle; margin-right:10px;}
+.usertx img{ width:100%;}
 
+.ptxx li .divcen{ width:35%; float:left; line-height:20px;}
+.ptxx li .divright{width:20%; float:left; text-align:right; position:relative;}
+.s_btn{ font-size: 14px;display:inline-block;height:24px; border-radius:30px; padding:0 10px; vertical-align:middle; line-height:22px; text-align:center; background:#ffbb32; color:#fff; position:absolute; top:6px; right:0; width:50px;}
+
+.s_g_btn{ font-size: 14px;display:inline-block;height:24px; border-radius:30px; padding:0 10px; vertical-align:middle; line-height:22px; text-align:center; background:#00ae60; color:#fff; position:absolute; top:6px; right:0; width:50px;}
+
+.s_h_btn{ font-size: 14px;display:inline-block;height:24px; border-radius:30px; padding:0 10px; vertical-align:middle; line-height:22px; text-align:center; background:#ddd; color:#fff; position:absolute; top:6px; right:0; width:50px;}
+
+.yhrkdiv{	
+	height:50px; overflow:hidden; font-size:14px; color:#555;
+	width: 100%; /*forFF*/
+	margin:0 auto;
+	line-height:20px;
+	padding:0;
+	box-sizing:border-box;
+	position: relative;
+	}
+
+.yhrkdiv .leftzi{ position: absolute; top:10px; left:0px;font-size:14px; }
+.yhrkdiv .leftzi span{ padding-left:10px;}	
+.yhrkdiv .rzi{ position: absolute; top:20px; right:20px; color:#999;font-size:14px; background:url(../images/jt1.png) right no-repeat;padding-right:20px;}
+.pintuan{
         background:url(web/images/pingtuan2.png)no-repeat;
-
         background-size:100% 100%;
-
         /*width: 551px;*/
-
         width: 627px;
-
         height: 51px;
-
         color: #fff;
-
         line-height:51px;
-
     }
-
     .pintuan ins{
-
         text-decoration: none;
-
         font-size: 20px;
-
     }
-
     .leftJg{
-
         padding-left:15px;
-
         float: left;
-
     }
-
     .leftJg span{
-
         font-size:14px;
-
         padding-right:18px;
-
         position: relative;
-
         top:-2px;
-
     }
-
     .rightImg{
-
         position: relative;
-
         padding-right:17px;
-
         float: right;
-
     }
-
     .rightImg p img{
-
         padding-left:19px;
-
 		vertical-align:middle;
-
     }
-
     .rightImg>img{
-
         display: none;
-
         position: absolute;
-
         top: 56px;
-
         left:60px;
-
         z-index: 100;
-
 		width:200px; 
-
 		height:200px;
-
     }
-
-
-
-  /*-------------------------------------------拼团----end--------------------------*/
 
 </style>
+
 </head>
 
 <body>
 
 
 <div class="breadcrumbs">
-    <div class="container"><a href="http://www.3nong1gou.com/">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">商品详情</a></div>
+    <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">商品详情</a></div>
 </div>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
 <input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
+<input type="hidden" id="priceStartDate" name="priceStartDate" value="${commproduct.priceStartDate!''}"/>
+<input type="hidden" id="priceEndDate" name="priceEndDate" value="${commproduct.priceEndDate!''}"/>
 <div style="background:#f5f5f5;">
 	<div class="wrapper" style="width:1210px;">
 		<div class="t_goods_detail">
@@ -124,11 +124,11 @@
 								<#if rsPicList?? && (rsPicList?size>0)>
 						    		<#list rsPicList as li>
 						    			<#if li_index==0>
-							        		<li class="check video_img ">
+							        		<li class="check video_img " onmouseover="checkRspic(this)" imgUrl="${rc.contextPath}/upload/wxpic/${li.picFileName!''}">
 			                                    <img class="" src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" data-cloudzoom="">
 			                                </li>
 		                                <#else>
-			                                <li class="video_img ">
+			                                <li class="video_img "  onmouseover="checkRspic(this)" imgUrl="${rc.contextPath}/upload/wxpic/${li.picFileName!''}">
 			                                    <img class="" src="${rc.contextPath}/upload/wxpic/${li.picFileName!''}" data-cloudzoom="">
 			                                </li>
 		                                </#if>
@@ -137,7 +137,9 @@
                            </ul>
                         </div>
                     </div>
+                    
 					<div class="ev_left_num" style="padding-left: 0">
+					<!-- 
 						<span class="others_imp share sharegoods">
 							<a data-param="{&quot;gid&quot;:&quot;1329&quot;}">
 							<b class="iconfontfa fa-share-alt icon-1 bbc_color"></b><span class="spans">分享</span></a>
@@ -146,6 +148,7 @@
 	                        	<a style="margin-bottom: 5px!important;" title="分享到微信" class="bshare-weixin" href="javascript:void(0);"></a>
 	                        </div>
                         </span>
+                        -->
                     </div>
                 </div>
                 <div class="ev_center">
@@ -157,22 +160,22 @@
                     </div>
                     <div class="pintuan" style="display:block;">
                         <div class="leftJg">
-                            <span>拼团价格</span><ins>¥${commproduct.price!''}</ins>
+                            <span>团购商品  <#if commproduct.peopleNum??>${commproduct.peopleNum!'1'}人成团</#if></span>
                         </div>
                         <div class="rightImg">
-                            <p style="color:#464646;font-size: 16px;font-weight: bold">
-                            	手机端参加拼团 <img src="images/hei_erweima.png" alt="">
-                            </p>
-                            <img class="Img" src="images/ggh2wm.jpg" alt="">
+                            <p style="color:#464646;font-size: 16px;font-weight: bold"><span id="activeTitle"></span><span id="activeTime"></span></p>
                         </div>
-
                     </div>
 					<div class="obvious ">
                         <p class="clears market_goods">
-                            <span class="mar-r _letter-spacing" style="line-height: 30px;height: 30px!important;">商城价</span>
+                            <span class="mar-r _letter-spacing" style="line-height: 30px;height: 30px!important;">团购价</span>
                             <span class="mar-b-2">
-                               <strong class="color-db0a07 bbc_color goods_detail_price" id="commproductPrice">¥${price!''}</strong>
+                               <strong class="color-db0a07 bbc_color goods_detail_price" id="commproductPrice">¥${commproduct.price!''}</strong>
                             </span>
+                        </p>
+                        <p class="clears market_price_goods">
+                            <span class="mar-r _letter-spacing">原价</span>
+                            <span class="mar-b-1" style="color:#555"><del>¥${price!''}</del></span>
                         </p>
                         <p class="clears market_price_goods">
                             <span class="mar-r _letter-spacing"></span>
@@ -185,7 +188,7 @@
                             <div class="qrcode-wrap">
                                 <div class="qrcode_tit">手机购买<i class="iconfont icon-erweima"></i></div>
                                 <div class="qrcode_pop">
-                                    <div class="mobile-qrcode"><img src="images/ggh2wm.jpg" alt="商品二维码" title="" width="155"></div>
+                                    <div class="mobile-qrcode"><img src="web/images/ggh2wm.jpg" alt="商品二维码" title="" width="155"></div>
                                 </div>
                             </div>
                         </div>
@@ -208,8 +211,9 @@
                       	</div>
                       	<div style="position: relative;">
                       		<p class="buy_box">
-	                      		<a class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a>
-	                      		<a class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
+                      			<!-- 
+	                      		<a id="shopCartA" class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a> -->
+	                      		<a id="buyA" class="tuan_join_cart bbc_btns">立即购买</a>
                       		</p>
                       	</div>
                   </div>
@@ -218,19 +222,29 @@
 				<div class="track-tit">
 					<h3>看了又看</h3><span></span>
 				</div>
-				<ul class="look_again_goods clearfix ">
-					<li>
-						<a target="_blank" href=""><img src="images/sp.png"><h5 class=" sld_goods_view_name">¥150.00</h5></a>
-					</li>
-					<li>
-						<a target="_blank" href=""><img src="images/sp.png"><h5 class=" sld_goods_view_name">¥93.60</h5></a>
-					</li>
+				<ul class="look_again_goods clearfix " id="sellPriceAccessList">
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
+<div class="wrapper" style="width:1210px; margin-top:20px;"  id="price1RefDiv">
+    <div class="t_goods_detail" style="padding:20px;">
 
+    <a href="javascript:void(0)">
+    <div class="yhrkdiv">
+         <div class="leftzi"><span id="price1RefNum"></span>个小伙伴已开团<span class="f1">可直接参与</span></div>
+         <div class="rzi"></div>
+    </div>
+    </a>
+    
+    <ul class="ptxx" id="price1RefData">
+ 		
+    </ul>
+    
+
+</div>
+</div>
 <div class="wap">
 	<div class="jmyss-goods-layout expanded wrap" style="width:1210px;">
         <div class="jmyss-goods-main" id="main-nav-holder">
@@ -254,12 +268,7 @@
         <div class="t_goods_bot_left ">
 			<div class="goods_ranking ">
 				<p class="selling"><a id="sld_goods_sele" class="hot_salle" href="javascript:void(0)">热销推荐</a></p>
-	            <ul id="hot_salle" class="hotuls">
-	            	<li class="clearfix">
-	            		<a target="_blank" href="" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="images/sp.png"></span></a>
-	            		<p><a class="sld_sell_goods_name" target="_blank" href="">碑庙的土鸡蛋   碑牌河农家散养土鸡   下的土鸡蛋  营养丰富  口感棒棒 土鸡蛋 30枚装</a>
-						<span class="bbc_color sld_goods_sell_price">￥60.00</span><span class="sld_goods_detail_desc">热销380件</span></p>
-					</li>
+	            <ul id="hotSellPriceList" class="hotuls">
 				</ul>
 			</div>
         </div>
@@ -269,7 +278,180 @@
 <script type="text/javascript">
 $(function(){
 	getSellPriceList();
+	getSellPriceHot();
+	getSellPriceAccess();
+	checkActiveDate();
 })
+
+function checkActiveDate(){
+	var priceStartDate = $("#priceStartDate").val();
+	var priceEndDate = $("#priceEndDate").val();  
+	if(priceStartDate=="" &&priceEndDate==""){
+		$("#activeTitle").html("活动进行中");
+		$("#activeTime").html("");
+		$("#shopCartA").show();
+		$("#buyA").show();
+	}else{
+
+		var reg = new RegExp("-","g");
+		//当前时间
+		var currentTime = new Date().getTime();
+		
+		//有开始时间
+		if(priceStartDate != ""){			
+			priceStartDate = priceStartDate.replace(reg,"/");
+			//开始时间
+			var startTime = new Date(priceStartDate).getTime();//new Date(priceStartDate).getTime();
+			
+			
+			//有开始 有结束
+			if(priceEndDate!=""){
+				//如果开始时间 > 当前时间
+				if(startTime > currentTime){
+					$("#activeTitle").html("离活动开始还有：");
+					$("#activeTime").html("");
+					$("#shopCartA").hide();
+					$("#buyA").hide();
+					$("#price1RefDiv").hide();
+					
+					var date = startTime - currentTime; 
+					var days = date / 1000 ;
+					timer(days);
+				}else{
+					if(priceEndDate!=""){
+						priceEndDate = priceEndDate.replace(reg,"/");
+						//结束时间
+						var endTime = new Date(priceEndDate).getTime();  //new Date(priceEndDate).getTime();
+						
+						if(endTime < currentTime){
+							$("#activeTitle").html("活动已结束");
+							$("#activeTime").html("");
+							$("#shopCartA").hide();
+							$("#buyA").hide();	
+							$("#price1RefDiv").hide();
+						}else{
+							$("#activeTitle").html("离活动结束还有：");
+							$("#activeTime").html("");
+							$("#shopCartA").show();
+							$("#buyA").show();	
+							
+							var date = endTime - currentTime; 
+							var days = date / 1000 ;
+							timer(days);
+						}
+					}else{
+						
+					}
+				}
+			}else{				
+				if(startTime > currentTime){
+					$("#activeTitle").html("离活动开始还有：");
+					$("#activeTime").html("");
+					$("#shopCartA").hide();
+					$("#buyA").hide();
+					$("#price1RefDiv").hide();
+					
+					var date = startTime - currentTime; 
+					var days = date / 1000 ;
+					timer(days);
+				}else{
+					$("#activeTitle").html("活动进行中");
+					$("#activeTime").html("");
+					$("#shopCartA").show();
+					$("#buyA").show();
+				}
+			}
+		}else{
+			//只有结束时间
+			priceEndDate = priceEndDate.replace(reg,"/");
+			//结束时间
+			var endTime = new Date(priceEndDate).getTime();  //new Date(priceEndDate).getTime();
+			
+			if(endTime < currentTime){
+				$("#activeTitle").html("活动已结束");
+				$("#activeTime").html("");
+				$("#shopCartA").hide();
+				$("#buyA").hide();	
+				$("#price1RefDiv").hide();
+			}else{
+				$("#activeTitle").html("离活动结束还有：");
+				$("#activeTime").html("");
+				$("#shopCartA").show();
+				$("#buyA").show();	
+				
+				var date = endTime - currentTime; 
+				var days = date / 1000 ;
+				timer(days);
+			}
+		}
+	}
+}
+
+function timer(intDiff){
+	var timer =  window.setInterval(function(){
+    var day=0,
+        hour=0,
+        minute=0,
+        second=0;//时间默认值        
+    if(intDiff > 0){
+        day = Math.floor(intDiff / (60 * 60 * 24));
+        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+    }
+    if (hour <= 9) hour = '0' + hour;
+    if (minute <= 9) minute = '0' + minute;
+    if (second <= 9) second = '0' + second;
+    if (day <= 9) day = '0' + day;
+    
+    var str = "";
+    if(day!="00"){
+    	str = day+'天 '+hour+':'+minute+':'+second;
+    }else{
+    	str = ' '+hour+':'+minute+':'+second;	
+    }
+   	 $("#activeTime").html(str);
+    intDiff--;
+    if(intDiff<=0){
+    	checkActiveDate();
+    	clearInterval(timer)
+    }
+    }, 1000);
+} 
+
+function getSellPriceHot(){
+	$.post("webSellPrice?method=getSellPriceByOrderCount",{
+    	limit:'5'
+    },function(data){
+    	if(data!=null && data.length>0){
+    		var str = "";
+    		for(var i=0;i<data.length;i++){
+    			str+='<li class="clearfix" onclick="productDetail(\''+data[i].priceId+'\')">';
+    			str+='<a href="javascript:void(0)" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"></span></a>';
+    			str+='<p><a class="sld_sell_goods_name" href="javascript:void(0)">' + data[i].productName + '</a>';
+    			str+='<span class="bbc_color sld_goods_sell_price">￥' + data[i].price + '</span><span class="sld_goods_detail_desc">热销' + data[i].saleNum + '件</span></p>';
+    			str+='</li>';
+    		}
+    		$("#hotSellPriceList").html(str);
+    	}
+    },'json')
+}
+
+function getSellPriceAccess(){
+	$.post("webSellPrice?method=querySellPriceListOrderByAccess",{
+    	limit:2
+    },function(data){
+    	if(data!=null && data.length>0){
+    		var str = "";
+    		for(var i=0;i<data.length;i++){
+    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
+    		}
+    		$("#sellPriceAccessList").html(str);
+    	}
+    },'json')
+}
+ 
+    
 
 var checkPriceId = "";
 function getSellPriceList(){
@@ -283,6 +465,7 @@ function getSellPriceList(){
 			for(var i=0;i<data.length;i++){
 				if($("#priceId").val() ==  data[i].priceId){
 					checkPriceId = data[i].priceId;
+					getPrice1Ref();
 					str+='<a href="javascript:void(0)" price="'+data[i].price+'" storeCount="'+data[i].storeCount+'"  onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)" class="spec_item check goodsPriceItem">'+data[i].priceName+'</a>';
 					if(data[i].storeCount==""){
 						$(".goods_stock_num").html("充足");
@@ -290,7 +473,7 @@ function getSellPriceList(){
 						$(".goods_stock_num").html(data[i].storeCount+"&nbsp;&nbsp;件");
 					}
 				}else{
-					str+='<a href="javascript:void(0)"  price="'+data[i].price+'"  storeCount="'+data[i].storeCount+'" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)" class="spec_item goodsPriceItem">'+data[i].priceName+'</a>';
+					//str+='<a href="javascript:void(0)"  price="'+data[i].price+'"  storeCount="'+data[i].storeCount+'" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)" class="spec_item goodsPriceItem">'+data[i].priceName+'</a>';
 				}
 			}
 			$("#goodsPriceListSpan").html(str);
@@ -337,6 +520,105 @@ function addShopCart(showType){
     },function () {
         $('.bshare-custom').css('display','none');
     });
+    
+    function checkRspic(obj){
+    	$(".video_img").removeClass("check");
+    	$(obj).addClass("check");
+    	var picUrl = $(obj).attr("imgUrl");
+    	
+    	$(".cloudzoom").attr("src",picUrl);
+    }
+    
+    function getPrice1Ref(){
+		$.post("webPrice1Ref?method=queryPrice1RefForJson",{
+			'priceId':checkPriceId,
+			'isBegin':'1'
+		},function(data){
+			if(data !=null && data.length>0){
+				$("#price1RefNum").html(data.length);
+				$("#price1RefData").html(getRefData(data));
+				$("#price1RefDiv").show();
+			}else{
+				$("#price1RefDiv").hide();
+			}
+		},'json');
+	}
+    
+    function getRefData(data){
+		var str = "";
+		for(var i=0;i<data.length;i++){
+		/*	str+='<li onclick="showListByRefPatchCode(\''+data[i].refPatchCode+'\')" id="li'+data[i].refPatchCode+'">';
+			if(data[i].headPic==""){
+				str+='<div class="divleft"><i class="usertx"><img src="${rc.contextPath}/wx/images/tx.jpg"></i>'+data[i].userName+'</div>';
+			}else{
+				str+='<div class="divleft"><i class="usertx"><img src="'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
+			}
+			str+='<div class="divcen">还差'+data[i].num+'人成团<p class="f4" id=refTime'+data[i].refPatchCode+'></p></div>';
+			str+='<div class="divright"><a href="javascript:void(0)" onclick="ydShow(\'1\',\''+data[i].refPatchCode+'\')"><span class="s_btn">去参团</span></a></div>';
+			str+='<div style="clear:both;"></div>';
+			str+='</li>';   */
+			
+			str+='<li  id="li'+data[i].refPatchCode+'">';
+			if(data[i].headPic==""){
+				str+='<div class="divleft"><i class="usertx"><img src="web/images/tx.jpg"></i>'+data[i].userName+'</div>';
+			}else{
+				str+='<div class="divleft"><i class="usertx"><img src="'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
+			}
+			str+='<div class="divcen">还差'+data[i].num+'人成团<p class="f4 fz12" id=refTime'+data[i].refPatchCode+'></p></div>';
+			str+='<div class="divright"><a href="javascript:void(0)"><span class="s_btn">去参团</span></a></div>';
+			str+='<div style="clear:both;"></div>';
+			str+='</li>';
+			
+			checkOrderDate(data[i].refPatchCode,data[i].priceEndDate);
+		}
+		return str;
+	}
+	
+	
+	function checkOrderDate(refPatchCode,priceEndDate){
+		var reg = new RegExp("-","g");
+		
+		//当前时间
+		var currentTime = new Date().getTime();
+		priceEndDate = priceEndDate.replace(reg,"/");
+		var endTime = new Date(priceEndDate).getTime();
+		
+		var date = endTime - currentTime; 
+		var days = date / 1000 ;
+		timerForOrder(days,refPatchCode);
+	}
+
+	function timerForOrder(intDiff,refPatchCode){
+		var t= "time"+refPatchCode ;
+		t = window.setInterval(function(){
+	    	var day=0,
+	        hour=0,
+	        minute=0,
+	        second=0;//时间默认值        
+	    if(intDiff > 0){
+	        day = Math.floor(intDiff / (60 * 60 * 24));
+	        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+	        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+	        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+	    }
+	    if (minute <= 9) minute = '0' + minute;
+	    if (second <= 9) second = '0' + second;
+	    var str = "剩余"+" "+hour+":"+minute+":"+second;//'<s id="h"></s>'+hour+'时'+'<s></s>'+minute+'分'+'<s></s>'+second+'秒';
+	   	 $("#refTime"+refPatchCode).html(str);
+	    intDiff--;
+	    if(intDiff<=0){
+	    	$("#li"+refPatchCode).remove();
+	    	clearInterval(t);
+	    	
+	    	var peopleCount = parseInt($("#price1RefNum").html())-1;
+	    	if(peopleCount == 0){
+	    		$("#price1RefDiv").hide();
+	    	}else{
+	    		$("#price1RefNum").html(peopleCount);
+	    	}
+	    }
+	    }, 1000);
+	} 
 </script>
 <#include "../WEB_FOOTER.html"> 
 </body>

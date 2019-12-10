@@ -3,6 +3,7 @@
 <head>
 <#include "../WEB_HEAD.html"> 
 <link href="${rc.contextPath}/web/css/spfl.css" rel="stylesheet">
+<link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -81,7 +82,7 @@
  	</div>
 </div>
 <#if sellPricelist?? && (sellPricelist?size>0)> 
-	<#include "/pagination.html"> 
+	<#include "/pagination2.html"> 
 <#else>
 	<div id='ListIsNullMsg' style="font-size:17px;color:red">
 		<script type="text/javascript">
