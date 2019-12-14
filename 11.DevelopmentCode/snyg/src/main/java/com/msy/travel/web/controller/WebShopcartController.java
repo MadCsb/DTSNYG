@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.EntityPage;
@@ -74,23 +75,23 @@ public class WebShopcartController extends BaseController {
 	@RequestMapping(params = "method=getShopCartListWeb")
 	public void getShopCartListWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
 		try {
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
-				response.getWriter().print("");
-			} else {
-				shopcart = new Shopcart();
-				shopcart.setUserId(getLoginUser(request).getUserId());
-				// shopcart.setUserId("d417d39463f34103bf376677a1db0fae");
-				shopcart.setDelFlag("0");
-				shopcart.setState("1");
-				EntityPage en = new EntityPage();
-				en.setSortOrder("DESC");
-				en.setSortField("t.F_UPDATETIME");
-				shopcart.setEntityPage(en);
-				List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+			// if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER)
+			// == null) {
+			// response.getWriter().print("");
+			// } else {
+			shopcart = new Shopcart();
+			// shopcart.setUserId(getLoginUser(request).getUserId());
+			shopcart.setDelFlag("0");
+			shopcart.setState("1");
+			EntityPage en = new EntityPage();
+			en.setSortOrder("DESC");
+			en.setSortField("t.F_UPDATETIME");
+			shopcart.setEntityPage(en);
+			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
 
-				JSONArray jsonArray = JSONArray.fromObject(shopCartList);
-				response.getWriter().print(jsonArray.toString());
-			}
+			JSONArray jsonArray = JSONArray.fromObject(shopCartList);
+			response.getWriter().print(jsonArray.toString());
+			// }
 		} catch (Exception e) {
 			log.error(e, e);
 		}
@@ -115,5 +116,31 @@ public class WebShopcartController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+	}
+
+	/**
+	 * 跳转购物车列表
+	 * 
+	 * @author wzd
+	 * @date 2019年12月14日 下午5:11:57
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toQueryShopCartWeb")
+	public ModelAndView toQueryShopCartWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+
+			view = new ModelAndView("web/shopcart/queryShopcartWeb");
+			view.addObject("shopcart", shopcart);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
 	}
 }

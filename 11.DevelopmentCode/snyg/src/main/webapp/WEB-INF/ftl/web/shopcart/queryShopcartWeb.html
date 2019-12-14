@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WEB_HEAD.html"> 
+<link href="${rc.contextPath}/web/css/home_cart.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="breadcrumbs">
+
+    <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span><a href="javascript:void(0)">我的购物车</a></div>
+
+</div>
+<div class="slds-wrapper">
+
+	<div class="slds-title">
+
+        <h3>  </h3>
+
+    </div>
+
+  <style>
+
+    .slds-table-style tbody tr.item_disabled td {
+
+        background: none repeat scroll 0 0 #F9F9F9;
+
+        height: 30px;
+
+        padding: 10px 0;
+
+        text-align: center;
+
+    }
+
+</style>
+
+<div class="slds-main">
+
+
+
+    <style>
+
+	.cart-tabs{
+
+		display: block;
+
+		height: 40px;
+
+		line-height: 40px;
+
+		margin: 0 0 10px 0;
+
+		padding: 0 0 0 30px;
+
+		border-style: solid;
+
+		border-color: #CCCCCC;
+
+		border-width: 0 0 1px 0;
+
+	}
+
+	.cart-tabs .cart-tab-item{
+
+		display: inline-block;
+
+		border-style: solid;
+
+		border-color: #CCCCCC;
+
+		border-width: 1px 1px 0 1px;
+
+		padding: 0 10px;
+
+		background-color: #c3c3c3;
+
+		color: #FFFFFF;
+
+		cursor: pointer;
+
+	}
+
+	.cart-tabs .cart-tab-item.selected,.cart-tabs .cart-tab-item:hover{
+
+		background-color: #FFFFFF;
+
+		color: #000000;
+
+	}
+
+</style>
+
+<div class="cart-tabs">
+	<a href="javascript:void(0);" class="cart-tab-item selected">
+		普通购物车
+	</a>
+</div>        
+	<form action="" method="POST" id="form_buy">
+        <table class="slds-table-style" bbc_type="table_cart">
+        	<thead>
+        		<tr>
+	       			<th class="w50">
+	       				<label><input type="checkbox" value="1" id="selectAll"> 全选</label>
+	       			</th>
+                	<th></th>
+	                <th>商品</th>
+	                <th class="w120">单价(元)</th>
+	                <th class="w120">数量</th>
+	                <th class="w80">操作</th>
+            	</tr>
+            </thead>
+            <tbody id="cartList">
+            </tbody>
+            <tfoot>
+            	<tr>
+            		<td colspan="20">
+	                    <div class="slds-all-account">商品总价（不含运费）<em id="priceAll">0.00</em>元
+	                    </div>
+                    	<a id="next_submit" href="javascript:void(0)" class="slds-btn slds-btn-acidblue fr">去结算</a>
+                    </td>
+               </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	getShopCartList()
+})
+function getShopCartList(){
+	$.post("webShopcart?method=getShopCartListWeb",{
+	},function(data){
+		if(data!=null && data.length>0){
+			$("#cartList").html(getShopCartStr(data));	
+		}else{
+		}		
+	},'json')
+}
+
+function getShopCartStr(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+	/*	str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
+		str+='<div class="iconleft">';
+		str+='<div class="leftdivf">';
+		str+='<label>';
+		str+='<input name="checkCart" onclick="checkCartList()" type="checkbox" id="adviceRadio'+data[i].cartId+'" value="'+data[i].cartId+'" hidden/>';
+		str+='<label for="adviceRadio'+data[i].cartId+'" class="check"></label>';
+		str+='</label>';
+		str+='</div>';
+            
+		str+='<div class="icon" >';
+		str+='<a href="javascript:void(0)" title="商品详情">';
+		str+='<img title="" src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="" /></a>';                   
+		str+='</div>';         
+		str+='</div>';
+		str+='<div class="info">';
+		str+='<a href="javascript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')"  title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
+		//str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
+		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span><span class="fr del_btn1" style="top:24px;" onclick="delShopCart(\''+data[i].cartId+'\')"></span></p>';
+		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
+		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
+		str+='<p class="txt"><span class="f2">&yen;'+data[i].price+'</span></p>';
+		str+='<div class="sl">';
+		str+='<button class="btnhui"  onclick="changeNum(\'1\',\''+data[i].cartId+'\')"></button>';
+		str+='<input name="" readonly id="num'+data[i].cartId+'" type="text" class="input_sl" value="'+data[i].num+'">';
+		str+='<button class="btnadd"  onclick="changeNum(\'2\',\''+data[i].cartId+'\')"></button></div>';
+		str+='</div>';
+		str+='</li>';*/
+		
+		
+		str+='<tr class="shop-list "><td class="td-border-left"><input type="checkbox" name="checkCart" onclick="checkCartList()" value="'+data[i].cartId+'" id="cartRadio'+data[i].cartId+'" ></td>';
+		str+='<td class="w100"><a href="javascript:void" target="_blank" onclick="productDetail(\''+data[i].priceId+'\')" class="slds-goods-thumb"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="'+data[i].productName+'"></a>';
+		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
+		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
+		str+='</td>';
+		str+='<td class="tl">';
+		str+='<dl class="slds-goods-info">';
+		str+='<dt><a href="javascipt:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')" target="_blank">'+data[i].productName+'    '+data[i].priceName+'</a></dt>';
+		str+='<dd>';
+		str+='</dd>';
+		str+='</dl>';
+		str+='</td>';
+		str+='<td class="w120">';
+		str+='<em class="goods-price">'+data[i].price+'                    </em></td>';
+		str+='<td class="w120 ws0"><a href="JavaScript:void(0);" onclick="changeNum(\'1\',\''+data[i].cartId+'\')" title="减少商品件数" class="add-substract-key tip">-</a>';
+		str+='<input id="num'+data[i].cartId+'" value="'+data[i].num+'" readonly type="text" class="text w20 cart_num_input">';
+		str+='<a href="JavaScript:void(0);"  title="增加商品件数" onclick="changeNum(\'2\',\''+data[i].cartId+'\')" class="add-substract-key tip">+</a>';
+		str+='</td>';
+		str+='<td class="w80 td-border-right">';
+		str+='<a class="del_cart_good" style="text-align:center;" href="javascript:void(0)"  onclick="delShopCart(\''+data[i].cartId+'\')">删除</a>';
+		str+='</td>';
+		str+='</tr>';
+	}
+	return str;
+}
+
+
+var delCartId = "";
+function delShopCart(cartId){
+	delCartId = cartId;
+	parent.layer.alert("1");
+}
+
+function delInfoClear(){
+	$.post("wx.do?method=deleteShopCart", {
+		cartId:delCartId
+	}, function (data) {
+		$("#shopCartLi" + delCartId).remove();
+		checkCartList();
+	})
+}
+
+function changeNum(type,cartId){
+	var num = parseInt($("#num"+cartId).val());
+	if(type=="1"){
+		if(num >1){
+			num --;
+		}else{
+			num = 1;
+		}
+	}else{
+		num++;
+	}
+	changeCartNum(cartId,num)
+	$("#num"+cartId).val(num);
+	checkCartList();
+	event.cancelBubble=true;
+}
+
+function checkCartList(){
+	var priceAll = 0.00;
+	$("input[name='checkCart']:checked").each(function(i){
+		var cartId = $(this).val();
+		var num = parseFloat($("#num"+cartId).val());
+		var price = parseFloat($("#price"+cartId).val());
+		var p = num * price;
+		priceAll+=p;
+	});
+	$("#priceAll").html(priceAll.toFixed(2));
+}
+
+function changeCartNum(cartId,num){
+	$.post("wx?method=changeShopCartNum",{
+		cartId:cartId,
+		num:num
+	},function(data){
+		
+	})
+}
+    
+</script>
+<#include "../WEB_FOOTER.html"> 
+</body>
+</html>
