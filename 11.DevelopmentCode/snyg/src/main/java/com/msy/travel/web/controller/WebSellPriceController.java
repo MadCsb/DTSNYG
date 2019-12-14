@@ -263,4 +263,135 @@ public class WebSellPriceController extends BaseController {
 			log.error(e, e);
 		}
 	}
+
+	/**
+	 * 跳转活动列表
+	 * 
+	 * @author wzd
+	 * @date 2019年12月12日 下午7:26:06
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=querySellPriceListForPriceType")
+	public ModelAndView querySellPriceListForPriceType(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response, String currentTab) {
+		ModelAndView view = null;
+		try {
+
+			view = new ModelAndView("web/commproduct/queryCommproductForPriceType" + sellPrice.getPriceType());
+
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+			if (sellPrice.getEntityPage().getSortField() == null || "".equals(sellPrice.getEntityPage().getSortField())) {
+				sellPrice.getEntityPage().setSortField("p.F_UPDATETIME");
+				sellPrice.getEntityPage().setSortOrder("DESC");
+			}
+
+			sellPrice.setDelFlag("0");
+			sellPrice.setState("1");
+
+			if ("2".equals(sellPrice.getPriceType())) {
+				getActivitiesDate(sellPrice, view, currentTab);
+			}
+
+			PageHelper.startPage(super.getPageNum(sellPrice.getEntityPage()), super.getPageSize(sellPrice.getEntityPage()));
+			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
+			PageInfo<SellPrice> pageInfo = new PageInfo<SellPrice>(sellPricelist);
+
+			if (sellPricelist != null && sellPricelist.size() > 0) {
+				for (int i = 0; i < sellPricelist.size(); i++) {
+					if (!"0".equals(sellPricelist.get(i).getPriceType())) {
+						SellPrice oldSellPrice = new SellPrice();
+						oldSellPrice.setGoodsPriceId(sellPricelist.get(i).getGoodsPriceId());
+						oldSellPrice.setPriceType("0");
+						oldSellPrice = sellPriceService.displaySellPrice(oldSellPrice);
+
+						sellPricelist.get(i).setOldPrice(oldSellPrice.getPrice());
+					}
+				}
+			}
+
+			view.addObject("entityPage", sellPrice.getEntityPage());
+			view.addObject("pageInfo", pageInfo);
+			view.addObject("sellPricelist", sellPricelist);
+			view.addObject("sellPrice", sellPrice);
+
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	public void getActivitiesDate(SellPrice sellPrice, ModelAndView view, String currentTab) {
+		String currentDate = DateTimeUtil.getDateTime19();
+
+		String priceDateStart1 = DateTimeUtil.getDateTime10() + " 09:00:00";
+		String priceDateEnd1 = DateTimeUtil.getDateTime10() + " 10:00:00";
+
+		String priceDateStart2 = DateTimeUtil.getDateTime10() + " 12:00:00";
+		String priceDateEnd2 = DateTimeUtil.getDateTime10() + " 13:00:00";
+
+		String priceDateStart3 = DateTimeUtil.getDateTime10() + " 21:00:00";
+		String priceDateEnd3 = DateTimeUtil.getDateTime10() + " 22:00:00";
+		if (currentTab == null || "".equals(currentTab) || "4".equals(currentTab)) {
+
+			// 如果当前时间大于等于开始时间并且当前时间小于
+			if (("3".equals(DateTimeUtil.compareDate(currentDate, priceDateStart1)) || "2".equals(DateTimeUtil.compareDate(currentDate, priceDateStart1)))
+					&& "1".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd1))) {
+				currentTab = "1";
+
+				sellPrice.setPriceStartDate(priceDateStart1);
+				sellPrice.setPriceEndDate(priceDateEnd1);
+			} else if (("3".equals(DateTimeUtil.compareDate(currentDate, priceDateStart2)) || "2".equals(DateTimeUtil.compareDate(currentDate, priceDateStart2)))
+					&& "1".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd2))) {
+
+				currentTab = "2";
+
+				sellPrice.setPriceStartDate(priceDateStart2);
+				sellPrice.setPriceEndDate(priceDateEnd2);
+			} else if (("3".equals(DateTimeUtil.compareDate(currentDate, priceDateStart3)) || "2".equals(DateTimeUtil.compareDate(currentDate, priceDateStart3)))
+					&& "1".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd3))) {
+				currentTab = "3";
+
+				sellPrice.setPriceStartDate(priceDateStart3);
+				sellPrice.setPriceEndDate(priceDateEnd3);
+			} else if ("3".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd1)) && "1".equals(DateTimeUtil.compareDate(currentDate, priceDateStart2))) {
+				currentTab = "4";
+				sellPrice.setPriceStartDate(priceDateStart2);
+				sellPrice.setPriceEndDate(priceDateEnd2);
+			} else if ("3".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd2)) && "1".equals(DateTimeUtil.compareDate(currentDate, priceDateStart3))) {
+				currentTab = "4";
+				sellPrice.setPriceStartDate(priceDateStart3);
+				sellPrice.setPriceEndDate(priceDateEnd3);
+			} else if ("3".equals(DateTimeUtil.compareDate(currentDate, priceDateEnd3))) {
+				currentTab = "4";
+				sellPrice.setPriceStartDate(priceDateStart1);
+				sellPrice.setPriceEndDate(priceDateEnd1);
+			}
+		} else {
+
+			if ("1".equals(currentTab)) {
+				sellPrice.setPriceStartDate(priceDateStart1);
+				sellPrice.setPriceEndDate(priceDateEnd1);
+			} else if ("2".equals(currentTab)) {
+				sellPrice.setPriceStartDate(priceDateStart2);
+				sellPrice.setPriceEndDate(priceDateEnd2);
+			} else if ("3".equals(currentTab)) {
+				sellPrice.setPriceStartDate(priceDateStart3);
+				sellPrice.setPriceEndDate(priceDateEnd3);
+			}
+		}
+
+		view.addObject("currentTab", currentTab);
+		view.addObject("priceStartDate", sellPrice.getPriceStartDate());
+		view.addObject("priceEndDate", sellPrice.getPriceEndDate());
+
+		sellPrice.setPriceStartDate("");
+		sellPrice.setPriceEndDate("");
+	}
 }

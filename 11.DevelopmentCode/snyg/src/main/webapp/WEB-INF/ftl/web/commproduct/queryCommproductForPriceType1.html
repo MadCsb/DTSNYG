@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WEB_HEAD.html"> 
+<link href="${rc.contextPath}/web/css/seckill.css" rel="stylesheet">
+<link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
+</head>
+<body>
+<div class="seckill ">
+    <div class="tg-head">
+    </div>
+ <form id="queryFrm" action="webSellPrice?method=querySellPriceListForPriceType"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="priceType" name="priceType" value="${sellPrice.priceType!''}"/>
+    <div class="container J_seckill"> 
+        
+        <div class="seckill-con"> 
+            <span class="container J_sectillCon">   
+                <ul class="active J_currentCon clearfix">   
+                	<#if sellPricelist?? && (sellPricelist?size>0)> 
+                   	<#list sellPricelist as li>
+                    <li data-seckilltype="goods" onclick="productDetail('${li.priceId!''}')"> 
+                        <a href="javascript:void(0);" class="item-box" > 
+                            <span class="img-con"> 
+                                <img class="done" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}"> 
+                            </span> 
+                            <span class="pro-con">  
+                                <span class="name" title="">${li.productName!''}</span> 
+                                <span class="desc">${li.priceName!''}</span> 
+                                <span class="price">${li.price!''}元  <del>${li.oldPrice!''}元</del>                                  </span>  
+                                <span class="btn btn-green btn-small btn-primary J_buy">立即抢购</span>  
+                            </span> 
+                        </a> 
+                    </li>  
+					</#list>
+					</#if>      
+                </ul> 
+             </span>
+         </div> 
+    </div>
+     <#if sellPricelist?? && (sellPricelist?size>0)> 
+		<div style="width:1215px;margin-left:65px;">
+		<#include "/pagination2.html">
+		</div> 
+	<#else>
+		<div id='ListIsNullMsg' style="font-size:17px;color:red">
+			<script type="text/javascript">
+				showListIsNullMsg();
+			</script>
+		</div>
+	</#if>
+   </form> 
+    <div class="container notic">
+    *团购活动规则：<br>
+    1.团购商品是否参加活动，以订单结算页显示为准；<br>
+    2.团购商品数量有限，活动以下单支付成功为准，请尽快下单支付；<br>
+    3.团购价不含运费，最终以订单结算页价格为准。<br>
+    温馨提示：因可能存在系统缓存、页面更新导致价格变动异常等不确定性情况出现，如您发现活动商品标价或促销信息有异常，请您立即联系客
+    服，以便我们及时补正。
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+<#include "../WEB_FOOTER.html"> 
+</body>
+</html>

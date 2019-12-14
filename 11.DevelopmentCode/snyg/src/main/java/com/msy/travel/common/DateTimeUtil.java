@@ -595,4 +595,39 @@ public class DateTimeUtil {
 		return "";
 	}
 
+	/**
+	 * 比较两个时间大小
+	 * 
+	 * @author wzd
+	 * @date 2019年12月12日 下午8:30:55
+	 * @param time1
+	 * @param time2
+	 * @return
+	 * @return boolean
+	 */
+	public static String compareDate(String time1, String time2) {
+		String result = "0";
+		try {
+			// 如果想比较日期则写成"yyyy-MM-dd"就可以了
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			// 将字符串形式的时间转化为Date类型的时间
+			Date a = sdf.parse(time1);
+			Date b = sdf.parse(time2);
+			// Date类的一个方法，如果a早于b返回1，否则返回3
+			if (a.before(b))
+				return "1";
+			else if (a.equals(b))
+				return "2";
+			else
+				return "3";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static void main(String[] args) throws Exception {
+		String result = compareDate(DateTimeUtil.getDateTime19(), DateTimeUtil.getDateTime10() + " 22:00:00");
+		System.out.println(result);
+	}
 }

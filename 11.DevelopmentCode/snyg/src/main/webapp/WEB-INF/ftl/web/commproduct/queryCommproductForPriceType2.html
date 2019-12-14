@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WEB_HEAD.html"> 
+<link href="${rc.contextPath}/web/css/seckill.css" rel="stylesheet">
+<link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
+</head>
+<body>
+<div class="seckill ">
+    <div class="tg-head">
+    </div>
+ <form id="queryFrm" action="webSellPrice?method=querySellPriceListForPriceType"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="currentTab" name="currentTab" value="${currentTab!''}">
+		<input type="hidden" id="priceStartDate" name="priceStartDate" value="${priceStartDate!''}"/>
+		<input type="hidden" id="priceEndDate" name="priceEndDate" value="${priceEndDate!''}"/>
+		<input type="hidden" id="priceType" name="priceType" value="${sellPrice.priceType!''}"/>
+    <div class="container J_seckill"> 
+        <div class="seckill-banner J_seckillBannerWrap"> 
+            <div class="container J_seckillBanner relative"> 
+            <!-- 活动未开始 --> 
+                <div id="J_modalNostart" class=" modal-nostart"> <i></i>活动未开始 </div> 
+                <ul>     
+                	<li onclick="changeTab('1')" class="currentTabClass" style="width:33.31%" id="currentTab1"><a href="javascript:void(0);"><em>09:00</em><span id="currentTabShow1">   即将开始</span></a>  </li>   
+                    <li onclick="changeTab('2')" class="currentTabClass" id="currentTab2" style="width:33.31%"><a href="javascript:void(0);"><em>12:00</em><span id="currentTabShow2">   即将开始</span></a>  </li>   
+                    <li onclick="changeTab('3')" class="currentTabClass" id="currentTab3" style="width:33.31%"><a href="javascript:void(0);"><em>21:00</em><span id="currentTabShow3">   即将开始</span></a>  </li>   
+                </ul> 
+            </div> 
+        </div> 
+        
+        <div class="seckill-con"> 
+            <span class="container J_sectillCon">   
+                <ul class="active J_currentCon clearfix">   
+                	<#if sellPricelist?? && (sellPricelist?size>0)> 
+                   	<#list sellPricelist as li>
+                    <li data-seckilltype="goods" onclick="productDetail('${li.priceId!''}')"> 
+                        <a href="javascript:void(0);" class="item-box" > 
+                            <span class="img-con"> 
+                                <img class="done" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}"> 
+                            </span> 
+                            <span class="pro-con">  
+                                <span class="name" title="">${li.productName!''}</span> 
+                                <span class="desc">${li.priceName!''}</span> 
+                                <span class="price">${li.price!''}元  <del>${li.oldPrice!''}元</del>                                  </span>  
+                                <span class="btn btn-green btn-small btn-primary J_buy">立即抢购</span>  
+                            </span> 
+                        </a> 
+                    </li>  
+					</#list>
+					</#if>      
+                </ul> 
+             </span>
+         </div> 
+    </div>
+     <#if sellPricelist?? && (sellPricelist?size>0)> 
+		<div style="width:1215px;margin-left:65px;">
+		<#include "/pagination2.html">
+		</div> 
+	<#else>
+		<div id='ListIsNullMsg' style="font-size:17px;color:red">
+			<script type="text/javascript">
+				showListIsNullMsg();
+			</script>
+		</div>
+	</#if>
+   </form> 
+    <div class="container notic">
+    *秒杀活动规则：<br>
+    1.秒杀商品是否参加活动，以订单结算页显示为准；<br>
+    2.秒杀商品数量有限，活动以下单支付成功为准，请尽快下单支付；<br>
+    3.秒杀价不含运费，最终以订单结算页价格为准。<br>
+    温馨提示：因可能存在系统缓存、页面更新导致价格变动异常等不确定性情况出现，如您发现活动商品标价或促销信息有异常，请您立即联系客
+    服，以便我们及时补正。
+    </div>
+</div>
+<script type="text/javascript">
+var currentTab = $("#currentTab").val();
+$(function(){
+	$("#currentTab"+currentTab).addClass("active");
+	checkActiveDate();
+})
+function checkActiveDate(){
+	var priceStartDate = $("#priceStartDate").val();
+	var priceEndDate = $("#priceEndDate").val();  
+	
+	var reg = new RegExp("-","g");
+	//当前时间
+	var currentTime = new Date().getTime();	
+	priceEndDate = priceEndDate.replace(reg,"/");
+	//结束时间
+	var endTime = new Date(priceEndDate).getTime();
+	
+	priceStartDate = priceStartDate.replace(reg,"/");
+	//开始时间
+	var startTime = new Date(priceStartDate).getTime();//new Date(priceStartDate).getTime();
+	
+	if(currentTab!="4"){
+		if(startTime < currentTime && endTime > currentTime){
+			var date = endTime - currentTime; 
+			var days = date / 1000 ;
+			timer(days);
+		}
+	}else{
+		var date = endTime - currentTime; 
+		var days = date / 1000 ;
+		timer(days);
+	}
+	
+}
+
+function timer(intDiff){
+	var timer =  window.setInterval(function(){
+    var day=0,
+        hour=0,
+        minute=0,
+        second=0;//时间默认值        
+    if(intDiff > 0){
+        day = Math.floor(intDiff / (60 * 60 * 24));
+        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+    }
+    if (hour <= 9) hour = '0' + hour;
+    if (minute <= 9) minute = '0' + minute;
+    if (second <= 9) second = '0' + second;
+    if (day <= 9) day = '0' + day;
+    
+    var str  = hour+':'+minute+':'+second;	
+    
+   	 $("#activeTime").html(str);
+ 	$("#currentTabShow"+currentTab).html("<em>抢购中<br>距结束  "+str+"</em>");
+    intDiff--;
+    if(intDiff<=0){
+    	alert(currentTab);
+    	if(currentTab!="4"){
+        	//$("#queryFrm").submit();
+    	}
+    	clearInterval(timer)
+    }
+    }, 1000);
+} 
+
+function changeTab(type){
+	$("#currentTab").val(type);
+	$("#queryFrm").submit();
+}
+</script>
+<#include "../WEB_FOOTER.html"> 
+</body>
+</html>

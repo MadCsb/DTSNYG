@@ -17,7 +17,8 @@
 			F_EXPRESSNUMADD ,
 			F_EXPRESSPRICEADD ,
 			F_GROUPNUM,
-			F_PROVINCEID
+			F_PROVINCEID,
+			F_ISSEND
 		) VALUES (
 			#{expressPriceId} ,
 			#{companyExpressId} ,
@@ -27,7 +28,8 @@
 			#{expressNumAdd} ,
 			#{expressPriceAdd} ,
 			#{groupNum},
-			#{provinceId}
+			#{provinceId},
+			#{isSend}
 		)
 	</insert>
 
@@ -44,7 +46,8 @@
 			F_EXPRESSNUMADD ,
 			F_EXPRESSPRICEADD ,
 			F_GROUPNUM,
-			F_PROVINCEID
+			F_PROVINCEID,
+			F_ISSEND
 		) VALUES (
 			#{expressPriceId} ,
 			#{companyExpressId} ,
@@ -54,7 +57,8 @@
 			#{expressNumAdd} ,
 			#{expressPriceAdd} ,
 			#{groupNum},
-			#{provinceId}
+			#{provinceId},
+			#{isSend}
 		)
 	</insert>
 
@@ -70,7 +74,8 @@
 			F_EXPRESSNUMADD = #{expressNumAdd} ,
 			F_EXPRESSPRICEADD = #{expressPriceAdd} ,
 			F_GROUPNUM =  #{groupNum} ,
-			F_PROVINCEID = #{provinceId}
+			F_PROVINCEID = #{provinceId},
+			F_ISSEND = #{isSend}
 		<where>
 			F_EXPRESSPRICEID = #{expressPriceId} 
 			
@@ -111,7 +116,8 @@
 			t.F_EXPRESSNUMADD as expressNumAdd ,
 			t.F_EXPRESSPRICEADD as expressPriceAdd ,
 			t.F_GROUPNUM as groupNum ,
-			t.F_PROVINCEID as provinceId
+			t.F_PROVINCEID as provinceId,
+			t.F_ISSEND as isSend
 		FROM
 			t_sm_expressprice t
 		<where>
@@ -140,7 +146,8 @@
 			t.F_EXPRESSNUMADD as expressNumAdd ,
 			t.F_EXPRESSPRICEADD as expressPriceAdd ,
 			t.F_GROUPNUM as groupNum,
-			t.F_PROVINCEID as provinceId
+			t.F_PROVINCEID as provinceId,
+			t.F_ISSEND as isSend
 		FROM
 		t_sm_expressprice t
 		<where>
@@ -179,6 +186,7 @@
 			t.F_EXPRESSNUMADD AS expressNumAdd,
 			t.F_EXPRESSPRICEADD AS expressPriceAdd,
 			t.F_GROUPNUM AS groupNum,
+			t.F_ISSEND as isSend,
 			group_concat(t.F_PROVINCEID) AS provinceId
 		FROM
 		t_sm_expressprice t

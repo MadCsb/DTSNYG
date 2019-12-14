@@ -179,7 +179,8 @@
 		    su.F_SUBJECT as subject ,
 			g.F_FREIGHT as freight,
 			g.F_COMPANYEXPRESSID as companyExpressId,
-			g.F_GOODSPRICEID as goodsPriceId
+			g.F_GOODSPRICEID as goodsPriceId,
+			p.F_PRODUCTID as productId
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID

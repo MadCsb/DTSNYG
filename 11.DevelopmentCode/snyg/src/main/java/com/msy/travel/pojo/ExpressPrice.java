@@ -62,6 +62,19 @@ public class ExpressPrice extends BaseEntity implements java.io.Serializable {
 	 */
 	private String provinceId;
 
+	/**
+	 * 发货类型 0:发货 1:不发货
+	 */
+	private String isSend;
+
+	public String getIsSend() {
+		return isSend;
+	}
+
+	public void setIsSend(String isSend) {
+		this.isSend = isSend;
+	}
+
 	public List<ExpressPrice> getExpressPriceList() {
 		return expressPriceList;
 	}

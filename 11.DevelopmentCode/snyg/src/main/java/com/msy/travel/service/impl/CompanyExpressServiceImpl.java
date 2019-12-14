@@ -155,6 +155,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 						newExpressPrice.setExpressNumAdd(e.getExpressNumAdd());
 						newExpressPrice.setExpressPriceAdd(e.getExpressPriceAdd());
 						newExpressPrice.setGroupNum(groupNum);
+						newExpressPrice.setIsSend(e.getIsSend());
 						expressPriceDao.insertExpressPrice(newExpressPrice);
 					}
 				}
@@ -199,6 +200,7 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 						newExpressPrice.setExpressNumAdd(e.getExpressNumAdd());
 						newExpressPrice.setExpressPriceAdd(e.getExpressPriceAdd());
 						newExpressPrice.setGroupNum(groupNum);
+						newExpressPrice.setIsSend(e.getIsSend());
 						expressPriceDao.insertExpressPrice(newExpressPrice);
 					}
 				}
@@ -274,43 +276,53 @@ public class CompanyExpressServiceImpl implements CompanyExpressService {
 						ExpressPrice ex = new ExpressPrice();
 						ex.setCompanyExpressId(sellPrice.getCompanyExpressId());
 						ex.setProvince(province);
+						ex.setIsSend("1");
 						List<ExpressPrice> expressPriceList = expressPriceDao.queryExpressPriceList(ex);
 
 						if (expressPriceList != null && expressPriceList.size() > 0) {
-							ex = expressPriceList.get(0);
-							int expressNum = Integer.parseInt(ex.getExpressNum());
-							// 如果数量少于首件 返回首件价格
-							if (Integer.parseInt(num) <= expressNum) {
-								result.setResultCode("0");
-								result.setResultMsg("");
-								jsonObject.put("expressFee", ex.getExpressPrice());
-								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
-								result.setResultPojo(jsonObject);
+							result.setResultCode("1");
+							result.setResultMsg("该地区不发货");
+							result.setResultPojo("");
+						} else {
+							ex.setIsSend("0");
+							expressPriceList = expressPriceDao.queryExpressPriceList(ex);
+							if (expressPriceList != null && expressPriceList.size() > 0) {
+								ex = expressPriceList.get(0);
+								int expressNum = Integer.parseInt(ex.getExpressNum());
+								// 如果数量少于首件 返回首件价格
+								if (Integer.parseInt(num) <= expressNum) {
+									result.setResultCode("0");
+									result.setResultMsg("");
+									jsonObject.put("expressFee", ex.getExpressPrice());
+									jsonObject.put("expressCode", companyExpress.getEpmeCompany());
+									result.setResultPojo(jsonObject);
+								} else {
+									// 首重价格
+									String expressPrice = ex.getExpressPrice();
+									// 续重数量
+									String numAdd = BigDecimalUtil.subtract(num, ex.getExpressNum());
+									// 续重数量/续重件数
+									String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
+									// 续重需要计算的数量*续重价格
+									String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
+
+									String money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
+
+									result.setResultCode("0");
+									result.setResultMsg("");
+									jsonObject.put("expressFee", money);
+									jsonObject.put("expressCode", companyExpress.getEpmeCompany());
+									result.setResultPojo(jsonObject);
+								}
 							} else {
-								// 首重价格
-								String expressPrice = ex.getExpressPrice();
-								// 续重数量
-								String numAdd = BigDecimalUtil.subtract(num, ex.getExpressNum());
-								// 续重数量/续重件数
-								String numAddForPrice = (int) Math.ceil(Double.parseDouble(BigDecimalUtil.divide(numAdd, ex.getExpressNumAdd()))) + "";
-								// 续重需要计算的数量*续重价格
-								String moneyAddPrice = BigDecimalUtil.multiply(numAddForPrice, ex.getExpressPriceAdd());
-
-								String money = BigDecimalUtil.add(expressPrice, moneyAddPrice);
-
 								result.setResultCode("0");
 								result.setResultMsg("");
-								jsonObject.put("expressFee", money);
+								jsonObject.put("expressFee", "0.00");
 								jsonObject.put("expressCode", companyExpress.getEpmeCompany());
 								result.setResultPojo(jsonObject);
 							}
-						} else {
-							result.setResultCode("0");
-							result.setResultMsg("");
-							jsonObject.put("expressFee", "0.00");
-							jsonObject.put("expressCode", companyExpress.getEpmeCompany());
-							result.setResultPojo(jsonObject);
 						}
+
 					}
 				}
 

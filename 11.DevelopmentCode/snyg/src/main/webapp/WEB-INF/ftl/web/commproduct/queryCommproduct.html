@@ -80,9 +80,11 @@
      		</div>
  		</div>
  	</div>
-</div>
+ 	
 <#if sellPricelist?? && (sellPricelist?size>0)> 
-	<#include "/pagination2.html"> 
+	<div style="width:1215px;margin-left:65px;">
+	<#include "/pagination2.html">
+	</div> 
 <#else>
 	<div id='ListIsNullMsg' style="font-size:17px;color:red">
 		<script type="text/javascript">
@@ -90,6 +92,7 @@
 		</script>
 	</div>
 </#if>
+</div>
 </form>
 <script type="text/javascript">
 

@@ -59,16 +59,29 @@
 				<#if expressPriceList?? && (expressPriceList?size>0)>
 				<#list expressPriceList as li>
 					<tr id="cityTr${li_index}">
+						<#if li.isSend=='0'>
 						<td width="24%">
+						<#elseif li.isSend=='1'>
+						<td width="24%" colspan="5">
+						</#if>
 							<input class="provinceIdClass" type="hidden" id="provinceId${li_index}" name="expressPriceList[${li_index}].provinceId" value="${li.provinceId!''}" >
 							<input type="hidden" id="province${li_index}" name="expressPriceList[${li_index}].province" value="${li.province!''}" >
+							<input type="hidden" id="isSend${li_index}" name="expressPriceList[${li_index}].isSend" value="${li.isSend!''}" >
 							<span id="areaName${li_index}">${li.province!''}&nbsp;&nbsp;</span>
+							<#if li.isSend=='0'>
 							<a href="javascript:void(0)" onclick="addCity('${li_index}')">收货地</a>
+							<#elseif li.isSend=='1'>
+							<a href="javascript:void(0)" onclick="addCity('${li_index}')">不发货地</a>
+							</#if>
 						</td>
+						<#if li.isSend=='0'>
 						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressNum" id="expressNum${li_index}" size="20" value="${li.expressNum!''}" style="width:100px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[required,maxSize[100],custom[integer]] data-inputtxt"/></td>
 						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressPrice" id="expressPrice${li_index}" size="20" value="${li.expressPrice!''}" style="width:100px;"  onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[required,custom[num6point2],maxSize[6]] data-inputtxt"/></td>
 						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressNumAdd" id="expressNumAdd${li_index}" size="20" value="${li.expressNumAdd!''}" style="width:100px;" onkeyup="value=value.replace(/[^\d]/g,'')" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>
-						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressPriceAdd" id="expressPriceAdd${li_index}" size="20" value="${li.expressPriceAdd!''}" style="width:100px;" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>
+						<td style="text-align:center;"><input type="text" name="expressPriceList[${li_index}].expressPriceAdd" id="expressPriceAdd${li_index}" size="20" value="${li.expressPriceAdd!''}" style="width:100px;" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>	
+						<#elseif li.isSend=='1'>
+						
+						</#if>
 						<td><a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo('${li_index}');" >删除</a></td>
 					</tr>
 				</#list>
@@ -85,7 +98,8 @@
 					<td>删除</td>
 				</tr> -->
 				<tr id="addTr">
-					<td colspan="6"><a href="javascript:void(0)" onclick="addCityTr()">增加一条</a></td>
+					<td colspan="6"><a href="javascript:void(0)" onclick="addCityTr('0')">增加发货地</a>
+					<a href="javascript:void(0)" onclick="addCityTr('1')">增加不发货地</a></td>
 				</tr>
 			</table>
 		</form>
@@ -139,20 +153,31 @@ function beforeSubmit(){
 }
 
 var areaListLen = $("#cityTable").find("tr").length-2;
-function addCityTr(){
+function addCityTr(isSend){
 	var index = areaListLen;
 	var str = "";
 	str+='<tr id="cityTr'+index+'">';
-	str+='<td width="24%">';
+	if(isSend=='0'){
+		str+='<td width="24%">';
+	}else if(isSend=='1'){
+		str+='<td width="24%" colspan="5">';
+	}
 	str+='<input class="provinceIdClass" type="hidden" id="provinceId'+index+'" name="expressPriceList['+index+'].provinceId" value="" >';
 	str+='<input type="hidden" id="province'+index+'" name="expressPriceList['+index+'].province" value="" >';
+	str+='<input type="hidden" id="isSend'+index+'" name="expressPriceList['+index+'].isSend" value="'+isSend+'" >';
 	str+='<span id="areaName'+index+'"></span>';
-	str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">收货地</a>';
+	if(isSend=='0'){
+		str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">收货地区</a>';
+	}else if(isSend=='1'){
+		str+='<a href="javascript:void(0)" onclick="addCity(\''+index+'\')">不发货地区</a>';
+	}
 	str+='</td>';
+	if(isSend=='0'){
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNum" id="expressNum'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,maxSize[100],custom[integer]] data-inputtxt"/></td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPrice" id="expressPrice'+index+'" size="20" value="" style="width:100px;"  onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,custom[num6point2],maxSize[6]] data-inputtxt"/></td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressNumAdd" id="expressNumAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="value=value.replace(/[^\\d]/g,\'\')" class="validate[required,custom[integer],maxSize[6]] data-inputtxt"/></td>';
 	str+='<td style="text-align:center;"><input type="text" name="expressPriceList['+index+'].expressPriceAdd" id="expressPriceAdd'+index+'" size="20" value="" style="width:100px;" onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'" class="validate[required,maxSize[100],custom[num6point2]] data-inputtxt"/></td>';
+	}
 	str+='<td><a href="javascript:void(0);" title="删除" class="ico_btn1" onClick="deleteInfo(\''+index+'\');" >删除</a></td>';
 	str+='</tr>';
 	
