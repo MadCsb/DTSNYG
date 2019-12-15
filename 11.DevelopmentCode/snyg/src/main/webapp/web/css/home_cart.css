@@ -129,7 +129,7 @@ a.slds-btn {
 a:hover.slds-btn {
     text-decoration: none;
     color: #fff;
-    background-color: #fd6b63;
+    background-color: #ffbb32;
     border-color: #fd6b63;
 }
 
@@ -183,8 +183,8 @@ a:hover.slds-btn-orange {
 }
 
 a:hover.slds-btn-red {
-    background-color: #fd6b63;
-    border-color: #fd6b63;
+    background-color: #ffbb32;
+    border-color: #ffbb32;
 }
 
 /* 购物车头部内容
@@ -1640,3 +1640,82 @@ table.voucher_list td.explain {
  }
 #laji{ width: 1px; height: 1px; border: 0; padding: 0; position: absolute;  opacity: 0; }
 .points_callback{ margin-top: 10px;}
+
+
+
+.fred{ color:#ffbb32;}
+
+.main{ width:600px; margin:10px auto; background:#FFFFFF; border:1px solid #efefef; padding:5px; border-radius:12px;}
+.ddul{ list-style:none; margin:0; padding:0; width:80%; margin:0 auto;}
+.ddul li{ margin-bottom:10px; padding:5px; font-size:16px; font-weight:bold; color:#585858; text-align:center;}
+.ddul li .bt{ display:inline-block; width:80px; color:#bbb;}
+
+.btndiv{ text-align:center; margin:20px auto; border-top:1px solid #efefef; padding-top:20px;}
+.btncss{ 
+    cursor: pointer;
+    background: #ffbb32;
+    border: 0;
+    line-height: normal;
+    border-radius: 4px;
+    color: #fff;
+    min-width: 220px;
+    height: 46px;
+    vertical-align: middle;
+    font-size: 14px;
+	font-weight:bold;
+	margin:0 10px;
+}
+.btncss:hover{ 
+    background: #ffbb32;
+}
+
+.smbg{ margin:0 auto; width:275px; height:180px; background:url(images/zfbg.gif) no-repeat; }
+.smbg img{ width:160px; height:160px; margin-top:10px; margin-left:57px;}
+
+.sl{ 	
+	position: relative;
+	height: 28px;
+	color: #333;
+	font-family: "微软雅黑";
+	margin: 0;
+	font-size: 14px;
+	border:1px solid #efefef;
+	border-radius:4px;
+	width:100px;
+	overflow:hidden;
+	text-align:left;
+	}
+.btnhui {
+	border: 0;
+	width: 20px;
+	height: 20px;
+	background: url(../images/del.png) no-repeat 4px 2px;
+	display: inline-block;
+	cursor:pointer;
+	margin:0;
+	vertical-align:middle;
+}
+
+.btnadd {
+	border: 0;
+	width:20px;
+	height: 20px;
+	background: url(../images/add.png) no-repeat center;
+	display: inline-block;
+	cursor:pointer;
+	 margin:0;
+	 	vertical-align:middle;
+}
+.input_sl {
+	border: 0;
+	width: 48px;
+	height: 22px;
+	line-height: 22px;
+	color: #00ae60;
+	background: #fff;
+	box-sizing:border-box;
+	text-align: center;
+	overflow:hidden;
+	vertical-align: middle;
+	border-radius:0px;
+} 

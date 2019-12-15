@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+
+<html lang="zh" style="overflow-x: hidden">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
+  <title>三农壹购</title>
+  <meta name="keywords" content="三农壹购">
+  <meta name="description" content="三农壹购">
+
+  <link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/home_header.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/home_login.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="${rc.contextPath}/web/css/font_544447_h1gk5k73j7x5stt9.css">
+
+
+  <link href="${rc.contextPath}/web/css/index.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/home.css" rel="stylesheet" type="text/css">
+
+  <link href="${rc.contextPath}/web/css/home_cart.css" rel="stylesheet" type="text/css">
+
+  <link href="${rc.contextPath}/web/css/front-common.css" rel="stylesheet">
+  <link href="${rc.contextPath}/web/css/sld-site-color.css" rel="stylesheet">
+
+  <link href="${rc.contextPath}/web/css/list.css" rel="stylesheet">
+  <link href="${rc.contextPath}/web/js/base.css" rel="stylesheet">
+  <script type="text/javascript">var _head_over_time = (new Date()).getTime();</script>
+
+  <script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
+
+  <script src="${rc.contextPath}/web/js/jquery.js"></script>
+  <script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
+  <script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
+  <script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
+  <script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
+  <script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script>
+  <link href="${rc.contextPath}/web/js/dialog.css" rel="stylesheet" type="text/css">
+  <script src="${rc.contextPath}/wx/js/snyg.js"></script>
+  <script src="${rc.contextPath}/js/pay.js"></script>
+  <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+  <script src="${rc.contextPath}/js/jquery.qrcode.js"></script>
+  <script src="${rc.contextPath}/js/qrcode.js"></script>
+  <script type="text/javascript">
+    var PRICE_FORMAT = '&yen;%s';
+    $(function(){
+      //首页左侧分类菜单
+      $(".category ul.menu").find("li").each(
+              function() {
+                $(this).hover(
+                        function() {
+                          var cat_id = $(this).attr("cat_id");
+                          var menu = $(this).find("div[cat_menu_id='"+cat_id+"']");
+                          menu.show();
+                          $(this).addClass("hover");
+                          if(menu.attr("hover")>0) return;
+                          //	menu.masonry({itemSelector: 'dl'});
+                          var menu_height = menu.height();
+                          if (menu_height < 480) menu.height(480);
+                          /*					menu_height = menu.height();
+                          var li_top = $(this).position().top;
+                          if ((li_top > 60) && (menu_height >= li_top)) $(menu).css("top",-li_top+50);
+                          if ((li_top > 150) && (menu_height >= li_top)) $(menu).css("top",-li_top+90);
+                          if ((li_top > 240) && (li_top > menu_height)) $(menu).css("top",menu_height-li_top+90);
+                          if (li_top > 300 && (li_top > menu_height)) $(menu).css("top",60-menu_height);
+                          if ((li_top > 40) && (menu_height <= 120)) $(menu).css("top",-5);
+                      $(menu).css("top",40);
+                           */	                   var li_top = $(this).position().top;
+                          $(menu).css("top", -li_top+41);
+                          menu.attr("hover",1);
+                        },
+                        function() {
+                          $(this).removeClass("hover");
+                          var cat_id = $(this).attr("cat_id");
+                          $(this).find("div[cat_menu_id='"+cat_id+"']").hide();
+                        }
+                );
+              }
+      );
+      // 查看全部商品的 鼠标移上去 展开 左侧分类
+      var app = "goods_cat";
+      window.app = app;
+      function hide_category_layer(){
+        if(app!='index') {
+          $(".category-layer").hide();
+        }
+
+      }
+      var _timer;
+      if(!$(".home-category").hasClass('unhover')){
+        $(".home-category").hover(function(){
+          clearInterval(_timer);
+          $(".category-layer").show();
+        },function(){
+          _timer = setInterval(hide_category_layer,500);
+        });
+        $(".category-layer").hover(function(){
+          clearInterval(_timer);
+        },function(){
+          hide_category_layer();
+        });
+      }
+
+      $(".head-user-menu dl").hover(function() {
+                $(this).addClass("hover");
+              },
+              function() {
+                $(this).removeClass("hover");
+              });
+      $('.head-user-menu .my-mall').mouseover(function(){// 最近浏览的商品
+        load_history_information();
+        $(this).unbind('mouseover');
+      });
+      $('.head-user-menu .my-cart').mouseover(function(){// 运行加载购物车
+        load_cart_information();
+        $(this).unbind('mouseover');
+      });
+      $('#button').click(function(){
+        if ($('#keyword').val() == '') {
+          return false;
+        }
+      });
+      $(function(){
+        //search
+        var app = "goods_cat";
+        var mod = "index";
+        if (app == "vendorlist"){
+          getSldNewTab("vendorlist");
+        }else if(app == "supplier"){
+          if (mod == 'goodslist') {
+            getSldNewTab("supplier","goodslist");
+          }else{
+            getSldNewTab("supplier");
+          }
+        }
+        $("#search ul li.otherli").click(function(){
+          var curApp =  $(this).attr('app');
+          var curMod =  $(this).attr('mod');
+
+          $('#search ul').removeClass('hover');
+          $('#search_app').attr("value",$(this).attr("app"));
+          $('#search_mod').attr("value",$(this).attr("mod"));
+          $('#keyword').attr("placeholder",$(this).attr("title"));
+          getSldNewTab(curApp,curMod);
+        });
+        $("#keyword").blur();
+        //根据当前的app，重新组装ul tab里面的数据
+        function getSldNewTab(curApp,curMod=''){
+          if(curApp == 'search'){
+            $('#search ul li').eq(0).attr('app', 'search');
+            $('#search ul li').eq(0).html('商品');
+            $('#search ul li').eq(1).attr('app', 'vendorlist');
+            $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+            $('#search ul li').eq(1).html('店铺');
+          }else if(curApp == 'supplier'){
+            if (curMod == 'goodslist') {
+              $('#search ul li').eq(0).attr('app', 'supplier');
+              $('#search ul li').eq(0).attr('mod', 'goodslist');
+              $('#search ul li').eq(0).html('商品');
+              $('#search ul li').eq(1).attr('app', 'supplier');
+              $('#search ul li').eq(1).attr('mod', '');
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的店铺关键字');
+              $('#search ul li').eq(1).html('店铺');
+            }else{
+              $('#search ul li').eq(1).attr('app', 'supplier');
+              $('#search ul li').eq(1).attr('mod', 'goodslist');
+              $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+              $('#search ul li').eq(1).html('商品');
+              $('#search ul li').eq(0).attr('app', 'supplier');
+              $('#search ul li').eq(0).attr('mod', '');
+              $('#search ul li').eq(0).html('店铺');
+            }
+          }else{
+            $('#search ul li').eq(1).attr('app', 'search');
+            $('#search ul li').eq(1).attr('title', '请输入您要搜索的商品关键字');
+            $('#search ul li').eq(1).html('商品');
+            $('#search ul li').eq(0).attr('app', 'vendorlist');
+            $('#search ul li').eq(0).html('店铺');
+          }
+        }
+
+//        var cook = getCookie('dymall_banner');
+//        if(cook){
+//            $("#top-banner").hide();
+//        } else {
+//            $("#top-banner").slideDown(10);
+//        }
+//        $("#top-banner .close").click(function(){
+//            setCookie('dymall_banner','yes',1);
+//            $("#top-banner").hide();
+//        });
+      });
+    });
+  </script>
+  <style type="text/css">
+    <!--
+    .STYLE1 {
+      color: #FF0000;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    -->
+  </style>
+</head>
+<body>
+<input type="hidden" id="userId" value="${user.userId!''}">
+<div id="price" style="display: none">${price!''}</div>
+
+<style>
+  .sldPcHomeAsdsv{
+    width: 1920px;
+    margin: auto;
+    overflow: hidden;
+    margin-left: -960px;
+    left: 50%;
+    position: relative;
+  }
+  .sldCloseAsdsv{
+    position: absolute;
+    left: 50%;
+    margin-left: 580px;
+    top: 13px;
+    z-index: 2;
+
+  }
+  .sldCloseAsdsv .iconfont{
+    font-size: 21px;
+  }
+  .user,.im_list{
+    position: relative;
+  }
+  .user p,.p90{
+    width: 90px;
+    text-align: center;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    height:36px;
+    line-height:36px;
+    padding-left:5px;
+    border-radius:5px;
+    background:#ffbb32;
+    color: #fff;
+    position: absolute;
+    right:-98px;/*20*/
+    top: 0;
+    transition:0.5s;
+    transition-timing-function:linear;
+  }
+  .user:hover p,.im_list:hover .p90,.ever:hover .p90{
+    right:20px;
+  }
+  .img{
+    position: absolute;
+    left:45px;
+    top:-55px;
+    transition:0.3s;
+    width: 156px;
+    transition-timing-function:linear;
+  }
+  .erma:hover .img{
+    left:-172px;
+    /*transform:rotate(1081deg);*/
+  }
+</style>
+<script>
+  $('.sldCloseAsdsv').click(function () {
+    $('.sldPcHomeAsdsv').fadeOut(500);
+  });
+</script>
+<div id="append_parent"></div>
+<div id="sld_byuTP9yr"></div>
+<div id="sldToolbar" class="jmys-appbar">
+  <div class="jmys-appbar-tabs" id="appBarTabs">
+    <div class="ever">
+      <div class="cart"><a target="_blank" class="right" href="gouwc.html"><i class="iconfont icon-gouwuche"></i></a> <p class="p90">购物车</p></div>
+    </div>
+    <div class="variation">
+      <div class="middle">
+        <div class="user" bbctype="a-barLoginBox">
+          <a target="_blank" class="right" href="">
+            <div class="avatar"><i class="iconfont icon-huiyuan"></i></div>
+          </a>
+          <p class="p90">请登录</p>
+        </div>
+
+
+        <div class="l_qrcode erma"><a class="Right" href="javascript:void(0);"><i class="iconfont icon-saoma"></i>
+          <div class="barSldQrcode">
+            <img src="${rc.contextPath}/web/images/05977763755637882.jpg">
+          </div>
+          <!--                  <code><img src="--><!--"></code>-->
+        </a>
+          <img class="img" onselectstart="return true" src="${rc.contextPath}/web/images/ggh2wm.jpg" alt="" style="position: absolute; left: 45px;">
+        </div>
+      </div>
+
+
+      <div class="gotop"><a href="javascript:void(0);" id="gotop" style="opacity: 1;"><i class="iconfont icon-jiantou"></i></a></div>
+    </div>
+    <div class="content-box" id="content-cart">
+      <div class="top">
+        <h3>我的购物车</h3>
+        <a href="javascript:void(0);" class="close" title="隐藏"></a></div>
+      <div id="rtoolbar_cartlist"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  //返回顶部
+  backTop=function (btnId){
+    var btn=document.getElementById(btnId);
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    window.onscroll=set;
+    btn.onclick=function (){
+      btn.style.opacity="0";
+      window.onscroll=null;
+      this.timer=setInterval(function(){
+        scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        scrollTop-=Math.ceil(scrollTop*0.1);
+        if(scrollTop==0) clearInterval(btn.timer,window.onscroll=set);
+        if (document.documentElement.scrollTop > 0) document.documentElement.scrollTop=scrollTop;
+        if (document.body.scrollTop > 0) document.body.scrollTop=scrollTop;
+      },10);
+    };
+    function set(){
+      scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      btn.style.opacity=scrollTop?'1':"0";
+    }
+  };
+  backTop('gotop');
+
+  //动画显示边条内容区域
+  $(function() {
+    //右侧bar显示二维码事件
+    $('.l_qrcode').hover(function () {
+      $('.l_qrcode .barSldQrcode').animate({'display':'inline-block'},500);
+    },function () {
+      $('.l_qrcode .barSldQrcode').animate({'display':'none'},500);
+    });
+    sldToolbar();
+    $(window).resize(function() {
+      sldToolbar();
+    });
+    function sldToolbar() {
+      if ($(window).width() >= 1240) {
+        $('#appBarTabs >.variation').show();
+      } else {
+        $('#appBarTabs >.variation').hide();
+      }
+    }
+    $('#appBarTabs').hover(
+            function() {
+              $('#appBarTabs >.variation').show();
+            },
+            function() {
+              sldToolbar();
+            }
+    );
+    $(".close").click(function(){
+      $(".content-box").animate({right:'-210px'});
+    });
+
+    $(".quick-menu dl").hover(function() {
+              $(this).addClass("hover");
+            },
+            function() {
+              $(this).removeClass("hover");
+            });
+    $(".links_a").hover(function() {
+              $(this).addClass("hover");
+            },
+            function() {
+              $(this).removeClass("hover");
+            });
+
+    // 右侧bar用户信息
+    $('div[bbctype="a-barUserInfo"]').click(function(){
+      $('div[bbctype="barUserInfo"]').toggle();
+    });
+    // 右侧bar登录
+    $('div[bbctype="a-barLoginBox"]').click(function(){
+      $('div[bbctype="barLoginBox"]').toggle();
+      document.getElementById('codeimage').src='index.php?app=randcode&rand='+ Math.random();
+    });
+    $('a[bbctype="close-barLoginBox"]').click(function(){
+      $('div[bbctype="barLoginBox"]').toggle();
+    });
+  });
+</script>
+
+<#include "../PersonlMenu.html">
+<script type="text/javascript">
+  $(function(){
+
+
+
+    $(".quick-menu dl").hover(function() {
+              $(this).addClass("hover");
+            },
+            function() {
+              $(this).removeClass("hover");
+            });
+    $(".changeSldBox").hover(function() {
+              $(this).addClass("hover");
+            },
+            function() {
+              $(this).removeClass("hover");
+            });
+  });
+
+  //首字母检索
+  $('#jsCityLayerChar a').click(function () {
+    var sldClassName = $(this).attr('class');
+    var sldCharHeight = $('#jsCityLayerChar').height()*1+15;
+    var chartoTop = $(this).offset().top;
+    console.info($(this).offset().top);
+    if(chartoTop>170&&chartoTop<180||(chartoTop>70&&chartoTop<80)){
+      var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1;
+    }else{
+      var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1-20;
+    }
+
+    //获取当前的margin-top值
+    var curheight = ($('#jsCityLayerScrollWarrper').css('margin-top')).replace("px","");
+    $('#jsCityLayerScrollWarrper').animate({'margin-top':height*1+curheight*1},500);
+  });
+
+
+  //右侧固定栏事件
+  var index;
+  $(".p90").hover(function(){
+    $(this).siblings("a").css({"background":"#ffbb32"});
+    console.log($(this).siblings("a"));
+  },function(){
+    $(this).siblings("a").css({"background":""});
+  });
+  $(".right").hover(function(){
+    $(this).css("background","#ffbb32");
+  },function(){
+    $(this).css("background","");
+  });
+  $(".img").hover(function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  },function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  });
+  $(".Right").hover(function(){
+    $(".img").css({"position":"absolute","left":"-172px"});
+  },function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  })
+</script>
+<!-- PublicHeadLayout Begin -->
+<p></p>
+<div class="wrapper" style="overflow: hidden;width:100%">
+  <div style=";margin: auto;margin-top: 15px;overflow:hidden;margin-left: -960px;left: 50%;position: relative">
+
+  </div>
+</div>
+<div class="header-wrap">
+  <header class="public-head-layout wrapper">
+    <h1 class="site-logo"><a href="index.html"><img src="${rc.contextPath}/web/images/logo.jpg" class="pngFix"></a></h1>
+    <div id="search" class="head-search-bar">
+      <ul class="tab">
+        <li title="请输入您要搜索的商品关键字" app="search" class="current">商品</li>
+        <i></i>
+      </ul>
+      <form action="" method="get" class="search-form" onSubmit="return checkSubmit();">
+        <input name="app" id="search_app" value="goodslist" type="hidden">
+        <input name="keyword" id="keyword" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
+        <input type="submit" id="button" value="搜  索" class="input-submit">
+      </form>
+      <div class="keyword">
+        <ul>
+          <li><a href="">土鸡蛋</a></li>
+          <li><a href="">蜂蜜</a></li>
+          <li><a href="">苹果</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="head-user-menu">
+      <dl class="my-cart">
+
+        <dt><a href="gouwc.html"><i class="iconfont icon-gouwuche"></i><span>购物车结算</span></a></dt>
+        <dd>
+          <div class="sub-title">
+            <h4>最新加入的商品</h4>
+          </div>
+          <div class="incart-goods-box">
+            <div class="incart-goods">
+              <dl id="cart_item_1498" data-is_supplier="0">
+                <dt class="goods-name"><a href="">龙泉水蜜桃</a></dt>
+                <dd class="goods-thumb"><a href="" title="龙泉水蜜桃"><img src="${rc.contextPath}/web/images/sp.png"></a></dd>
+                <dd class="goods-sales"></dd><dd class="goods-price"><em>¥78.00×1</em></dd>
+                <dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>
+              </dl>
+            </div>
+            <div class="checkout"> <span class="total-price">共<i>1</i>种商品&nbsp;&nbsp;共计&nbsp;<em>¥78.00</em></span><a href="" class="btn-cart">去购物车</a> </div>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </header>
+</div>
+<!-- PublicHeadLayout End -->
+
+
+
+<div class="breadcrumbs">
+  <div class="container"><a href="">首页</a><span class="sep">&gt;</span><a href="">填写核对购物信息</a></div>
+</div>
+
+<div class="main" id="payDiv" style="display: none">
+  <a name="payA">&nbsp;</a>
+  <ul class="ddul">
+    <li id="orderCode">
+    </li>
+  </ul>
+  <div id="qrCode" class="smbg">
+
+  </div>
+  <div class="btndiv">
+    <input name="button5" type="submit" class="btncss"  value="请使用微信扫码支付" >
+  </div>
+</div>
+
+<div class="slds-receipt-info recive_address">
+  <div class="current_box">
+    <div class="slds-receipt-info-title">
+      <h3>收货人信息</h3>
+      <a href="javascript:void(0)" bbc_type="buy_edit" id="edit_reciver" style="display: none;">[修改]</a></div>
+    <div id="addr_list" class="slds-candidate-items">
+      <ul>
+        <#list consigneeList as cl>
+        <li class="receive_add address_item">
+          <input id="addr_${cl.consigneeId!''}" pcx="${cl.pcx!''}" type="radio" class="radio" name="addr" value="${cl.consigneeId!''}" isDefault="${cl.isDefault!'0'}">
+          <label for="addr_${cl.consigneeId!''}">
+            <span class="true-name">${cl.custName!''}</span>
+            <span class="address">${cl.pcx!''}&nbsp;${cl.recAddress!''}</span>
+            <span class="phone"><i class="icon-mobile-phone"></i>${cl.custPhone!''}</span></label>
+            <a href="javascript:void(0);" style="display: none" class="del">[ 删除 ]</a>
+        </li>
+        </#list>
+
+        <li class="receive_add addr_item">
+          <input id="addr_${newCcnsigneeId!''}" type="radio" name="addr"  value="${newCcnsigneeId!''}" isNew="1">
+          <label for="addr_${newCcnsigneeId!''}">使用新地址</label>
+        </li>
+        <div id="add_addr_box">
+          <div class="slds-form-default">
+            <dl>
+              <dt><i class="required">*</i>收货人姓名：</dt>
+              <dd>
+                <input type="text" class="text w100" maxlength="20" id="custName" value="">
+              </dd>
+            </dl>
+            <dl>
+              <dt><i class="required">*</i>所在地区：</dt>
+              <dd>
+                <div id="region">
+                  <select id="province" class="w110">
+                    <option value="">-请选择-</option>
+                    <option value="1">北京</option><option value="2">天津</option><option value="3">河北省</option><option value="4">山西省</option><option value="5">内蒙古</option><option value="6">辽宁省</option><option value="7">吉林省</option><option value="8">黑龙江省</option><option value="9">上海</option><option value="10">江苏省</option><option value="11">浙江省</option><option value="12">安徽省</option><option value="13">福建省</option><option value="14">江西省</option><option value="15">山东省</option><option value="16">河南省</option><option value="17">湖北省</option><option value="18">湖南省</option><option value="19">广东省</option><option value="20">广西</option><option value="21">海南省</option><option value="22">重庆</option><option value="23">四川省</option><option value="24">贵州省</option><option value="25">云南省</option><option value="26">西藏</option><option value="27">陕西省</option><option value="28">甘肃省</option><option value="29">青海省</option><option value="30">宁夏</option><option value="31">新疆</option><option value="32">台湾省</option><option value="33">香港</option><option value="34">澳门</option><option value="35">海外</option></select>
+                  <input type="hidden" value="" name="city_id" id="city_id">
+                  <input type="hidden" name="area_id" id="area_id" class="area_ids">
+                  <input type="hidden" name="area_info" id="area_info" class="area_names">
+                </div>
+              </dd>
+            </dl>
+            <dl>
+              <dt><i class="required">*</i>详细地址：</dt>
+              <dd>
+                <input type="text" class="text w500" name="address" id="recAddress" maxlength="80" value="">
+                <p class="hint">请填写真实地址，不需要重复填写所在地区</p>
+              </dd>
+            </dl>
+            <dl>
+              <dt> <i class="required">*</i>手机号码：</dt>
+              <dd>
+                <input type="text" class="text w200" id="custPhone" maxlength="15" value="">
+              </dd>
+            </dl>
+         </div>
+        </div>
+      </ul>
+      <div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="slds-receipt-info">
+  <div class="slds-receipt-info-title">
+    <h3>商品清单</h3>
+  </div>
+  <table class="slds-table-style">
+    <thead>
+    <tr>
+      <th class="w20"></th>
+      <th></th>
+      <th>商品</th>
+      <th class="w120">单价(元)</th>
+      <th class="w120">数量</th>
+      <th class="w120">小计</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    </tr>
+    <#list orderListList as oll>
+    <tr priceId="${oll.priceId!''}" price="${oll.sellPrice.price!''}" cartId="${oll.cartId!''}" class="shop-list ">
+      <td class="td-border-left"></td>
+      <td class="w60">
+        <a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank" class="slds-goods-thumb">
+          <img src="${rc.contextPath}/upload/wxpic/${oll.goodsPrice.thumbPic!''}" alt="${oll.commproduct.productName!''}">
+        </a>
+      </td>
+      <td class="tl">
+        <dl class="slds-goods-info">
+          <dt><a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank">${oll.commproduct.productName!''}</a></dt>
+          <dd>${oll.goodsPrice.priceName!''}</dd>
+        </dl>
+      </td>
+      <td class="w120">&yen;<em>${oll.sellPrice.price!''}</em></td>
+      <td class="w60">
+        <div class="sl">
+          <a onclick="changeNum(this,1)"><span class="btnhui"></span></a>
+          <input readonly="readonly" type="text" class="input_sl" value="${oll.num!'1'}">
+          <a onclick="changeNum(this,2)"><span class="btnadd"></span></a>
+        </div>
+      </td>
+      <td>
+
+      </td>
+      <td class="td-border-right"></td>
+    </tr>
+    </#list>
+    <tr>
+      <td class="w10"></td>
+      <td class="tl" colspan="2">买家留言：
+        <input type="text" class="text w340" id="memo" maxlength="150">
+        &nbsp;</td>
+      <td class="tl" colspan="10"><div class="slds-form-default"> </div></td>
+    </tr>
+    <tr>
+      <td class="tr" colspan="20">
+        <div class="slds-store-account">
+          <dl class="freight">
+            <dt>运费：</dt>
+            <dd>￥<em id="totalTransFee">0.00</em></dd>
+          </dl>
+          <dl>
+            <dt>商品金额：</dt>
+            <dd>￥<em id="totalPrice">0.00</em></dd>
+          </dl>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="20">
+        <div class="slds-all-account">订单总金额：￥<em id="totalPay">0.00</em>元</div>
+        <a id="btn_submit" class="slds-btn slds-btn-acidblue fr" onclick="createOrder()">预定</a></td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div id="faq">
+  <div class="wrapper">
+    <ul>
+      <li>
+        <dl class="s2">
+          <dt>购物指南</dt>
+          <dd><i></i><a href="" title="购物流程"> 购物流程 </a></dd>
+          <dd><i></i><a href="" title="商品咨询"> 商品咨询 </a></dd>
+          <dd><i></i><a href="" title="交易条款"> 交易条款 </a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl class="s3">
+          <dt>关于订单</dt>
+          <dd><i></i><a href="" title="订单查询"> 订单查询 </a></dd>
+          <dd><i></i><a href="" title="订单确定"> 订单确定 </a></dd>
+          <dd><i></i><a href="" title="晒单评价"> 晒单评价 </a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl class="s4">
+          <dt>售后服务</dt>
+          <dd><i></i><a href="" title="售后说明"> 售后说明 </a></dd>
+          <dd><i></i><a href="" title="退换货说明"> 退换货说明 </a></dd>
+          <dd><i></i><a href="" title="售后维权"> 售后维权 </a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl class="s6">
+          <dt>关于我们</dt>
+          <dd><i></i><a href="" title="平台简介"> 平台简介 </a></dd>
+          <dd><i></i><a href="" title="联系我们"> 联系我们 </a></dd>
+
+        </dl>
+      </li>
+      <li style="width:33%; text-align:center; border-left:1px solid #39c471;">
+        <dl class="s1">
+          <dt>400-801-3841</dt>
+          <dd><a href="#">周一至周日 8:00-18:00（仅收市话费）</a></dd>
+          <dd><a rel="nofollow" href="" target="_blank" class="btn">人工客服</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="wrapfoot">
+  <div id="footer" class="wrapper">
+    <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
+    <p style="display: none"> </p>
+    <a href=""><img src="${rc.contextPath}/web/images/05987954210414380.png" border="0"></a>
+  </div>
+</div>
+<script type="text/javascript" src="${rc.contextPath}/web/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/web/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/web/js/jquery.mousewheel.js"></script>
+<script src="${rc.contextPath}/web/js/home_index.js" type="text/javascript" charset="utf-8"></script>
+<script src="${rc.contextPath}/web/js/web_home_tpl_common.js" type="text/javascript" charset="utf-8"></script>
+<script src="${rc.contextPath}/web/js/web_home_tpl_nav.js" type="text/javascript" charset="utf-8"></script>
+
+<script language="javascript">
+  $(function(){
+    // Membership card
+    $('[bbctype="mcard"]').membershipCard({type:'shop'});
+  });
+</script>
+<script type="text/javascript">
+  _sld_stats.uid = 0;
+  _sld_stats.gid = 0;
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src='http://www.tnwmall.com/static/js/stats.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+<script>
+  $('#search .tab').hover(function() {
+            $(this).addClass("hover");
+          },
+          function() {
+            $(this).removeClass("hover");
+          });
+  function checkSubmit() {
+    var keyword = $('#keyword').val();
+    keyword = keyword.replace('<','');
+    keyword = keyword.replace('>','');
+    $('#keyword').val(keyword);
+    return true;
+  }
+</script>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".J_box-hd").on("click",function(){
+      $(this).toggleClass("current");
+      var $bd = $(this).siblings(".J_box-bd");
+      var $icon = $(this).find("i");
+
+      if($bd.is(":visible")){
+        $bd.hide();
+      } else {
+        $bd.fadeIn();
+      }
+    });
+  });
+</script>
+
+<script>
+  var dateTimeUtil = new DateTimeUtil(); //计算日期js
+  var pay = null;
+  $(document).ready(function(){
+    $("input[name='addr']").each(function () {
+      if($(this).attr("isDefault") == '1')
+      {
+        $(this).attr('checked', 'true');
+      }
+    });
+    if($("input[name='addr']:checked").val() == null)
+    {
+      $("input[name='addr'][isNew='1']").attr('checked', 'true');
+    }
+    $('input[type=radio][name=addr]').change(function() {
+      calculation();
+    });
+
+    calculation();
+  })
+  //获取服务器快递费用信息
+  function getPriceExpress(priceId,num)
+  {
+    var transFee = null;
+
+    var province = null;
+    var addr = $("input[name='addr']:checked");
+    if($(addr).val() == null)
+    {
+      alert("请选择收获地址");
+      return transFee;
+    }
+    if($(addr).attr("isNew") == '1')
+    {
+      if($("#province").val() == '')
+      {
+        alert("请选择选择省份");
+        return transFee;
+      }
+      province = $("#province").val();
+    }else
+    {
+      province = $(addr).attr("pcx").split(" ")[0];
+    }
+    var queryObj = new Object();
+    queryObj.province = province;
+    queryObj.priceId = priceId;
+    queryObj.num = num;
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webOrder?method=getPriceExpress",
+      data: queryObj,
+      success: function (data) {
+        if(data.resultCode == '0')
+        {
+          transFee = data.resultPojo.expressFee;
+        }else
+        {
+          alert(data.resultMsg);
+        }
+      }
+    });
+    return transFee;
+  }
+
+  //加减数量 type = 1减 ；type = 2加
+  function changeNum(obj,type){
+    var inputText = null;
+    var subButton = null;
+    var addButton = null;
+    var num = null;
+    if(type == 1)
+    {
+      subButton = obj;
+      inputText = $(subButton).next();
+      addButton = $(inputText).next();
+      num = $(inputText).val();
+      num--;
+    }else if(type == 2)
+    {
+      addButton = obj;
+      inputText = $(addButton).prev();
+      subButton = $(inputText).prev();
+      num = $(inputText).val();
+      num++;
+    }
+    if(num < 1) //不算
+    {
+      $(inputText).val("1");
+    }else
+    {
+      $(inputText).val(num);
+    }
+    calculation();
+  }
+
+  //计算金额
+  function calculation() {
+    var totalPrice = 0; //总商品费用
+    var totalTransFee = 0; //总运费
+    var isTransFeeOk = true;
+    $(".shop-list").each(function () {
+      var price = parseFloat($(this).attr("price"));
+      var num = parseInt($(this).find(".input_sl").eq(0).val());
+      var transFee = getPriceExpress($(this).attr("priceId"),num);
+      var trTotalPrice = price*num;
+      totalPrice = totalPrice + trTotalPrice;
+      if(transFee == null)
+      {
+        isTransFeeOk = false;
+        $(this).find("td").eq(-2).html("未知")
+      }else
+      {
+        trTotalPrice = trTotalPrice + parseFloat(transFee);
+        $(this).find("td").eq(-2).html("&yen;<em>" + trTotalPrice+ "</em>");
+        totalTransFee = parseFloat(transFee);
+      }
+    });
+
+    if (!isTransFeeOk)
+    {
+      $("#totalTransFee").html("未知");
+      $("#totalPay").html("未知");
+    }else
+    {
+      var total = (totalPrice + totalTransFee).toFixed(2);
+      totalTransFee = totalTransFee.toFixed(2);
+      $("#totalTransFee").html(totalTransFee);
+      $("#totalPay").html(total);
+    }
+    totalPrice = totalPrice.toFixed(2);
+    $("#totalPrice").html(totalPrice);
+  }
+
+
+  function createOrder() {
+    var addr = $("input[name='addr']:checked");
+    if($(addr).val() == null)
+    {
+      alert("请选择收获地址");
+      return false;
+    }
+    // var newConsignee = null
+    // if($(addr).attr("isNew") == '1')
+    // {
+    //   newConsignee.consigneeId = $(addr).val();
+    //   newConsignee.userId = $("#userId").val();
+    //   newConsignee.custName =
+    //   if($("#province").val() == '')
+    //   {
+    //     alert("请选择选择省份");
+    //     return transFee;
+    //   }
+    //   province = $("#province").val();
+    // }else
+    // {
+    //   province = $(addr).attr("pcx").split(" ")[0];
+    // }
+//    Alert.loading();
+//  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+    var param = new Object();
+    param.consigneeId = $(addr).val();
+    param.userId = $("#userId").val();
+    param.memo = $("#memo").val();
+    var priceHtml = $("#price").html();
+    if(priceHtml != "")
+    {
+      param.price = JSON.parse(priceHtml);
+    }
+
+    var orderListList = new Array();
+    $(".shop-list").each(function () {
+      var orderList = new Object();
+      orderList.priceId = $(this).attr("priceId");
+      orderList.num = $(this).find(".input_sl").eq(0).val();
+      orderList.cartId = $(this).attr("cartId");
+      orderListList.push(orderList);
+    });
+    param.orderListList = orderListList;
+    console.log(param);
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "webOrder?method=createOrders",
+      data: {
+        param:JSON.stringify(param)
+      },
+      success: function (data) {
+        if(data.resultCode == "1") //创建订单失败
+        {
+          alert(data.resultMsg);
+        }else {
+          createOrderSuccess();
+          pay = new Pay();
+          pay.payMethod =pay.PAY_METHOD_WX_PC;
+          var payInfoParam = new Object();
+          payInfoParam.spId = currentSpId;
+          payInfoParam.platformOrders = data.resultPojo[0].orderId;
+          for (var i = 1; i < data.resultPojo.length; i++) {
+            payInfoParam.platformOrders = payInfoParam.platformOrders + ","
+                    + data.resultPojo[i].orderId;
+          }
+          pay.getPayInfo(payInfoParam);
+          // Alert.closedLoading();
+          doPay(data.resultPojo);
+        }
+      }
+    });
+  }
+
+  function doPay(orders)
+  {
+    console.log(pay.payMethod);
+    if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+    {
+      pay.havePayed = function(){
+        toOrderList("0");
+      }
+      pay.checkPayed();
+
+      $("#payDiv").show();
+      var orderCodeHtml = '';
+      for (var i=0;i<orders.length;i++)
+      {
+        orderCodeHtml += '<span class="bt">订单号：</span>'+orders[i].orderCode+'<br>';
+        // var stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,orders[i].createTime);
+        // stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
+        // orderCodeHtml += '<span class="bt" stopTime="'+stopTime+'">1:2:30</span><br>';
+      }
+      $("#orderCode").html(orderCodeHtml);
+      jQuery('#qrCode').qrcode({width: 160,height: 160,correctLevel:0,render: "table",text: pay.toPay()});
+      location.href = "#payA";
+      // $('#qrCode').qrcode({render:"table",width: 160,height: 160,text: url});
+    }else
+    {
+      Alert.show3sMsg(pay.payInfo.resultMsg);
+    }
+  }
+
+  /**
+   * 创建订单成功后执行
+   */
+
+  function createOrderSuccess()
+  {
+    //不能编辑收获地址
+    $("input[name='addr']").attr("disabled","disabled");
+    //不能编辑新收获地址
+    newConsigneeEdit(false);
+    //不能增减数量
+    $(".btnhui").parent().removeAttr("onclick");
+    $(".btnadd").parent().removeAttr("onclick");
+    //不能编辑备注
+    $("#memo").attr("readonly","readonly");
+    //按钮修改为支付
+    $("#btn_submit").html("支付");
+    $("#btn_submit").attr("onclick","doPay()");
+
+  }
+
+  function payRemainTime(){
+    var html = "";
+    //当前时间
+    var now =new Date();
+    // 剩余总秒 一天秒=86400,一时秒=3600
+    var shengyu =parseInt((stopTime.getTime()-now.getTime())/1000);
+    //剩余天
+    var shengyuD=parseInt(shengyu/86400);
+    //剩余时
+    var shengyuH=parseInt((shengyu - shengyuD*86400)/3600);
+    //剩余分
+    var shengyuM=parseInt((shengyu - shengyuD*86400 - shengyuH*3600)/60);
+    //剩余秒
+    var shengyuS=shengyu - shengyuD*86400 - shengyuH*3600 - shengyuM*60;
+    if(shengyuD>0)
+    {
+      html = html + shengyuD+  "天";
+    }
+    if(shengyuD>0 || shengyuH>0)
+    {
+      html = html + shengyuH+  "时";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0)
+    {
+      html = html + shengyuM+  "分";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0 || shengyuS>0)
+    {
+      html = html + shengyuS+  "秒";
+    }
+    if (html == "")
+    {
+      clearInterval(remainPay);
+      $("#toPayTag1Btn").hide();
+      $("#orderTitle").html("已取消订单");
+      $("#orderInfo").html("您的订单已超出支付时间，请重新下单");
+      $("#money1").parent().parent().attr("class","wid1 text_c");
+    }else
+    {
+      $("#orderInfo").html("订单已提交，您还有"+html+"可以付款");
+    }
+  }
+
+  function newConsigneeEdit(canEdit) {
+    if(canEdit)
+    {
+      $("#custName").removeAttr("disabled");
+      $("#province").removeAttr("disabled");
+      $("#recAddress").removeAttr("disabled");
+      $("#custPhone").removeAttr("disabled");
+    }else
+    {
+      $("#custName").attr("disabled","disabled");
+      $("#province").attr("disabled","disabled");
+      $("#recAddress").attr("disabled","disabled");
+      $("#custPhone").attr("disabled","disabled");
+    }
+  }
+
+</script>
+</body></html>

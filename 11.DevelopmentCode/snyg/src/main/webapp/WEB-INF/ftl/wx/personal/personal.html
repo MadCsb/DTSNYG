@@ -7,16 +7,21 @@
       </head>
 <body>
   <input type="hidden" id="userId" value="${user.userId!''}">
-<div class="snyg_headdiv">
-  <span class="ico_ret" style="display: none"><a><img src="c/return.png" ></a></span>
-  <h2>个人中心</h2>
-  <span class="ico_home" style="display: none"><a><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>
-</div>
+<!--<div class="snyg_headdiv">-->
+<!--  <span class="ico_ret" style="display: none"><a><img src="c/return.png" ></a></span>-->
+<!--  <h2>个人中心</h2>-->
+<!--  <span class="ico_home" style="display: none"><a><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>-->
+<!--</div>-->
 
 
 <div class="snyg_grzx">
   <div class="snyg_grzxtx">
+    <#if user.headPic??>
+    <img src="${user.headPic!''}">
+    <#else>
     <img src="${rc.contextPath}/wx/images/tx.jpg">
+  </#if>
+
   </div>
   <p>
     ${(user.userName)!''}

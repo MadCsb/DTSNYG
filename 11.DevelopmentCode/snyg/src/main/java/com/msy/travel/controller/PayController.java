@@ -17,21 +17,8 @@ import com.msy.travel.common.WxPayUtil;
 import com.msy.travel.common.XmlJsonTool;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
-import com.msy.travel.pojo.Article;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.Order;
-import com.msy.travel.pojo.Pubmap;
-import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.ServiceCode;
-import com.msy.travel.pojo.ThirdPayFlow;
-import com.msy.travel.pojo.User;
-import com.msy.travel.service.IArticleService;
-import com.msy.travel.service.IDestspService;
-import com.msy.travel.service.IPubmapService;
-import com.msy.travel.service.IRsPicService;
-import com.msy.travel.service.IServiceCodeService;
-import com.msy.travel.service.OrderService;
-import com.msy.travel.service.ThirdPayFlowService;
+import com.msy.travel.pojo.*;
+import com.msy.travel.service.*;
 import com.msy.travel.wx.utils.MD5Util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -82,6 +69,9 @@ public class PayController extends BaseController {
 	@Resource(name = "orderServiceImpl")
 	private OrderService orderService;
 
+	@Resource(name = "orderListServiceImpl")
+	private OrderListService orderListService;
+
 	@Resource(name = "thirdPayFlowServiceImpl")
 	private ThirdPayFlowService thirdPayFlowService;
 
@@ -123,6 +113,7 @@ public class PayController extends BaseController {
 			String platformOrders = paramObject.getString("platformOrders");
 
 			StringBuffer body = new StringBuffer(); //wx订单名称，最长180
+			String productId = null;
 			String timeExpire = null; //wx订单失效日期
 			double totalFee = 0; //wx 订单金额
 			String[] orderIds = platformOrders.split(",");
@@ -131,6 +122,10 @@ public class PayController extends BaseController {
 				Order order = new Order();
 				order.setOrderId(orderIds[i]);
 				order = orderService.displayOrder(order);
+				OrderList orderList = new OrderList();
+				orderList.setOrderId(order.getOrderId());
+				List<OrderList> orderListList = orderListService.queryOrderListList(orderList);
+				productId = orderListList.get(0).getGoodsPriceId();
 				if ("1".equals(order.getPayTag())) //订单已支付
 				{
 					throw new LogicException("订单已支付，无需再次支付");
@@ -180,7 +175,7 @@ public class PayController extends BaseController {
 			paramMap.put("nonce_str", MD5Util.MD5Encode(String.valueOf(new Random().nextInt(10000)), "UTF-8"));//随机字符串，不长于32位
 			//paramMap.put("sign_type", "MD5"); //签名类型 默认为MD5，支持HMAC-SHA256和MD5。
 			//paramMap.put("body", (body.length()>175?body.substring(0,175):body.toString()));//商品描述
-			paramMap.put("body","test");
+			paramMap.put("body",(body.length()>175?body.substring(0,175):body.toString()));
 			//paramMap.put("detail", null); //商品详情
 			//paramMap.put("attach", null); //附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
 			paramMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
@@ -205,10 +200,10 @@ public class PayController extends BaseController {
 			}else if(payMethod.equals("h5")) //移动端支付(OK)
 			{
 				paramMap.put("trade_type", "MWEB");
-			}else if(payMethod.equals("pc")) //扫描支付(OK)
+			}else if(payMethod.equals(PAY_METHOD_WX_PC)) //扫描支付(OK)
 			{
 				paramMap.put("trade_type", "NATIVE");
-				//paramMap.put("product_id",null); //商品ID
+				paramMap.put("product_id",productId); //商品ID
 			}
 			//paramMap.put("limit_pay", null); //上传此参数no_credit--可限制用户不能使用信用卡支付
 			//paramMap.put("receipt", null); //Y，传入Y时，支付成功消息和支付详情页将出现开票入口。需要在微信支付商户平台或微信公众平台开通电子发票功能，传此字段才可生效
@@ -237,12 +232,12 @@ public class PayController extends BaseController {
 				//支付成功
 				if(paramMap.get("return_code")!=null&&paramMap.get("result_code")!=null
 						&&"SUCCESS".equals(paramMap.get("return_code").toUpperCase())
-						&&"SUCCESS".equals(paramMap.get("result_code").toUpperCase())){
+ 						&&"SUCCESS".equals(paramMap.get("result_code").toUpperCase())){
 
 					//payMethod=wx微信浏览器，公众号直接支付
 					//payMethod=h5移动端html5页面，非微信浏览器打开
 					//payMethod=pc非移动浏览器打开，二维码
-					if(payMethod.equals(PAY_METHOD_WX)) //微信支付，
+         					if(payMethod.equals(PAY_METHOD_WX)) //微信支付，
 					{
 						Map<String,String> signParamMap = new TreeMap<String, String>();
 						signParamMap.put("appId", paramMap.get("appid"));
@@ -260,12 +255,12 @@ public class PayController extends BaseController {
 						payInfo.put("signType", "MD5");
 						payInfo.put("paySign", sign);
 						log.error("支付签名后:"+JSON.toJSONString(payInfo));
-					}else if(payMethod.equals("h5")) //移动端支付
+					}else if(payMethod.equals(PAY_METHOD_WX_H5)) //移动端支付
 					{
 						payInfo.put("mweb_url", paramMap.get("mweb_url"));
-					}else if(payMethod.equals("pc")) //扫描支付
+					}else if(payMethod.equals(PAY_METHOD_WX_PC)) //扫描支付
 					{
-						payInfo.put("qrCodeUrl",paramMap.get("code_url"));
+						payInfo.put("code_url",paramMap.get("code_url"));
 					}
 					thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
 					payInfo.put("flowId",thirdPayFlow.getFlowId());

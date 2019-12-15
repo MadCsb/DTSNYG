@@ -78,15 +78,19 @@ public class UserController extends BaseController {
 
 	/**
 	 * 跳转登陆页面
-	 * 
+	 * @param loginPage
 	 * @param user
 	 * @return
 	 */
 	@RequestMapping(value = "/tologin")
-	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user) {
+	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("login");
+			if ("web".equals(loginPage))
+			{
+				view = new ModelAndView("web/personal/login");
+			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);
@@ -101,7 +105,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
 
@@ -110,26 +114,46 @@ public class UserController extends BaseController {
 
 			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) != null) {
 				view = new ModelAndView("main");
+				if ("web".equals(loginPage))
+				{
+					view = new ModelAndView("redirect:/webPersonal.do?method=personal");
+				}
 				return view;
 			}
 
 			if (null == user.getSecurityCode() || request.getSession().getAttribute("rand") == null) {
 				view = new ModelAndView("login");
-				view.addObject("errorMsg", "");
+				if ("web".equals(loginPage))
+				{
+					view = new ModelAndView("web/personal/login");
+				}
+				view.addObject("errorMsg", "请输入验证码");
 
 			} else if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
 				view = new ModelAndView("login");
+				if ("web".equals(loginPage))
+				{
+					view = new ModelAndView("web/personal/login");
+				}
 				view.addObject("errorMsg", "验证码错误");
 
 			} else {
 
 				view = new ModelAndView("main");
+				if ("web".equals(loginPage))
+				{
+					view = new ModelAndView("redirect:/webPersonal.do?method=personal");
+				}
 				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
 				Subject subject = SecurityUtils.getSubject();
 				try {
 					subject.login(token);
 				} catch (Exception e) {
 					view = new ModelAndView("login");
+					if ("web".equals(loginPage))
+					{
+						view = new ModelAndView("web/personal/login");
+					}
 					view.addObject("errorMsg", e.getMessage());
 				}
 			}
@@ -166,8 +190,12 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/logout")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String loginPage) {
 		ModelAndView view = new ModelAndView("redirect:/tologin");
+		if ("web".equals(loginPage))
+		{
+			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
+		}
 		request.getSession().removeAttribute(ResourceCommon.LOGIN_USER);
 		request.getSession().invalidate();
 		return view;

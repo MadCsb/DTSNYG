@@ -52,7 +52,7 @@
 .offset20{margin-left:1210px}@font-face{font-family:'iconfont';src:url("/i/font/iconfont.eot");src:url("/i/font/iconfont.eot?#iefix") format("embedded-opentype")}@font-face{font-family:'iconfont';font-weight:normal}
 .iconfont{font-family:"iconfont" !important;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale}
 .btn-disabled{background:#e0e0e0 !important;border-color:#e0e0e0 !important;color:#b0b0b0 !important;cursor:default !important}
-.btn-small{width:118px;height:28px;font-size:12px;line-height:28px}
+.btn-small{width:118px;font-size:12px;line-height:28px}
 .btn-large{width:178px;height:48px;line-height:48px}
 .btn-biglarge{width:298px;height:52px;line-height:52px;font-size:16px}
 .btn-block{display:block;width:100%;padding-left:0;padding-right:0}input.btn,button.btn{width:160px;height:40px}input.btn-small,button.btn-small{width:120px;height:30px}input.btn-large,button.btn-large{width:180px;height:50px}input.btn-biglarge,button.btn-biglarge{width:300px;height:54px}

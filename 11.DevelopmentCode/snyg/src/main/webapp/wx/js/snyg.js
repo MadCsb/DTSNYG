@@ -73,6 +73,18 @@ function toArticle(articleId){
 function toSellPrice(priceId){
   wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
 }
+/**
+ * 跳转web销售详情
+ */
+function toWebSellPrice(priceId){
+  wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
+}
+/**
+ * 跳转web销售详情
+ */
+function toWebSellPrice(priceId){
+  wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
+}
 
 /**
  * 跳转订单详情

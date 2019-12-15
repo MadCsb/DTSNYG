@@ -1,4 +1,4 @@
-.fl-banner{background:#f5f5f5  50% 0 no-repeat;height:170px}
+.fl-banner{background:#f5f5f5 url("../images/spbanner.png") 50% 0 no-repeat;height:170px}
 
 .category-index{margin-bottom:100px}
 .category-list{position:relative;margin-top:-1px;background-color:#fff}

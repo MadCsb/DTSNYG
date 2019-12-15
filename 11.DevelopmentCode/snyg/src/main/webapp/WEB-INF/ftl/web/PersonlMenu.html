@@ -1,0 +1,63 @@
+<div class="common-layout-top w">
+    <div class="topbar wrapper">
+        <div class="user-entry">
+            <#if Session["LOGIN_USER"]?exists>
+            您好
+            <span><a href="">${Session.LOGIN_USER.userName!''}</a></span>
+            ，欢迎来到
+            <a href="webIndex?method=webIndex" title="首页" alt="首页"><span>三农壹购</span></a>
+            <span>[<a href="logout?loginPage=web">退出</a>]</span>
+            <#else>
+            <span><a href="logout?loginPage=web">请登录</a></span>
+            <span><a href="">免费注册</a></span>
+            </#if>
+        </div>
+
+        <div class="quick-menu">
+            <dl class="down_weixin">
+                <dt><em class="ico_shop"></em><a href="javascript:void(0)">微信关注</a><i></i></dt>
+                <dd>
+                    <div class="qrcode">
+                        <img src="${rc.contextPath}/web/images/ggh2wm.jpg">
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt><a href="user.html">我的订单</a><i></i></dt>
+                <dd>
+                    <ul>
+                        <li><a href="">待付款订单</a></li>
+                        <li><a href="">待确认收货</a></li>
+                        <li><a href="">待评价交易</a></li>
+                    </ul>
+                </dd>
+            </dl>
+            <dl>
+                <dt>客户服务<i></i></dt>
+                <dd>
+                    <ul>
+                        <li><a href="bangzhu.html">帮助中心</a></li>
+                        <li><a href="shouhoufuwu.html">售后服务</a></li>
+                        <li><a href="kefuzx.html">客服中心</a></li>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $(".quick-menu dl").hover(function() {
+                $(this).addClass("hover");
+            },
+            function() {
+                $(this).removeClass("hover");
+            });
+        $(".changeSldBox").hover(function() {
+                $(this).addClass("hover");
+            },
+            function() {
+                $(this).removeClass("hover");
+            });
+    });
+</script>

@@ -31,7 +31,6 @@ $(function() {
 			$(this).hover(
 				function(e) {
 				    var cat_id = $(this).attr("cat_id");
-				    alert(cat_id);
 					var menu = $(this).find(".sub-class");
 
 					menu.show();

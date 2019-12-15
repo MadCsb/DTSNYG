@@ -91,11 +91,19 @@ Pay.prototype.getPayInfo = function(param)
  */
 Pay.prototype.toPay = function()
 {
-  this.payMethod = this.PAY_METHOD_WX;
   var payInfoObj = this.payInfo;
     //payMethod=wx微信浏览器，公众号直接支付
     if(this.payMethod == this.PAY_METHOD_WX)
     {
+      console.log(1111111111111111111);
+      if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+          document.addEventListener('WeixinJSBridgeReady', this.toPay, false);
+        }else if (document.attachEvent){
+          document.attachEvent('WeixinJSBridgeReady', this.toPay);
+          document.attachEvent('onWeixinJSBridgeReady', this.toPay);
+        }
+      }
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
                 "appId":payInfoObj.appId.toString(), //"wx2421b1c4370ec43b",     //公众号名称，由商户传入
@@ -117,9 +125,9 @@ Pay.prototype.toPay = function()
     }else if(this.payMethod == this.PAY_METHOD_WX_H5)    //payMethod=h5移动端html5页面，非微信浏览器打开
     {
         window.location.href = payInfo.mweb_url; //返回点击链接
-    }else if(this.payMethod == this.PAY_METHOD_PC) //payMethod=pc非移动浏览器打开，二维码
+    }else if(this.payMethod == this.PAY_METHOD_WX_PC) //payMethod=pc非移动浏览器打开，二维码
     {
-    	return payInfo.qrCodeUrl; //返回微信二维码地址
+    	return this.payInfo.code_url; //返回微信二维码地址
     }
 }
 

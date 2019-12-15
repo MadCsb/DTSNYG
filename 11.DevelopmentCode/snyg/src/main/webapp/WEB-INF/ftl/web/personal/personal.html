@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
+    <title>三农壹购</title>
+    <meta name="keywords" content="三农壹购">
+    <meta name="description" content="三农壹购">
+
+    <link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
+    <link href="${rc.contextPath}/web/css/member.css" rel="stylesheet" type="text/css">
+    <link href="${rc.contextPath}/web/css/buyer.css" rel="stylesheet" type="text/css">
+    <link href="${rc.contextPath}/web/css/iconfont.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
+
+    <script src="${rc.contextPath}/web/js/jquery.js"></script>
+    <script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
+    <script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
+    <script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
+    <script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
+    <script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script>
+    <link href="${rc.contextPath}/web/js/dialog.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="${rc.contextPath}/js/artDialog.js?skin=idialog"></script>
+
+</head>
+<body>
+<#include "../PersonlMenu.html">
+<!-- PublicHeadLayout Begin -->
+<div class="bbuyer_head bbc_bg">
+    <div class="wrap bbc_bg">
+        <div class="bbuyer_head_fl">
+            <div class="bbuyer_logo">
+                <a href="webIndex?method=webIndex">
+                    <img src="${rc.contextPath}/web/images/logo.png">
+                </a>
+            </div>
+            <div class="bbuyer_others">
+                <p class="mine_shopmall">我的商城</p>
+                <p class="back_mall_index"><a href="webIndex?method=webIndex">返回商城首页</a></p>
+            </div>
+            <div class="bbuyer_head_nav">
+                <ul>
+                    <li><a href="webPersonal?method=personal">个人中心首页</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 购物车 -->
+        <div class="bbuyer_cart">
+            <div class="bbc_buyer_icon">
+                <i class="ci_left iconfont icon-zaiqigoumai bbc_color rel_top2"></i>
+                <a href="">我的购物车</a>
+                <i class="ci_right iconfont icon-iconjiantouyou"></i>
+                <i class="ci-count bbc_bg" id="cart_num">2</i>
+            </div>
+        </div>
+        <form method="get" class="search-form" name="form_search" id="form_search" action="">
+            <div class="bbuyer_head_fr">
+                <input name="app" id="search_app" value="goodslist" type="hidden">
+                <input type="text" class="bbuyer_inp_ser" name="keyword" placeholder="请输入商品名字" id="site_keywords">
+                <input type="submit" style="display: none;">
+
+                <a class="bbuyer_search" id="site_search">搜索</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="Colr">
+    <div class="wrapper ">
+        <div class="Div_2 clearfix">
+            <div class="left  ">
+                <div class="_img">
+                    <#if user.headPic??>
+                        <img onload="javascript:DrawImage(this,108,108);" width="100" height="100" src="${user.headPic!''}">
+                        <#else>
+                        <img onload="javascript:DrawImage(this,108,108);" width="100" height="100" src="${rc.contextPath}/wx/images/tx.jpg">
+                    </#if>
+                </div>
+                <div class="font">
+                    <table>
+                        <tbody>
+                        <tr><td colspan="2" class="name">${Session.LOGIN_USER.userName!''}</td></tr>
+                        <tr><td class="fontColor">会员级别:</td><td><span class="jmys-grade-mini bbc_bg  pad">V0</span></td></tr>
+                        <tr><td class="fontColor">账号安全:</td>
+                            <td class="tiao"><span title=""><i class="bbc_bg" style="width: 50%;"></i></span><a>中</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="right  ">
+                <div class="_left">
+                    <ul>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待付款.html"><img src="images/ico_dai1.png"></a></div>
+                            <p class="_p">待付款
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待发货.html"><img src="images/ico_dai2.png"></a></div>
+                            <p class="_p">待发货
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待收货.html"><img src="images/ico_dai3.png"></a></div>
+                            <p class="_p">待收货
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待评价.html"><img src="images/ico_dai4.png"></a></div>
+                            <p class="_p">待评价
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="Div3 clearfix">
+            <div class="left_1   visible-lg">
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">交易中心</a></li>
+
+                    <li><a href="待付款.html" class="_Color" style="">等待付款订单</a></li>
+                    <li><a href="确认收货订单.html" class="_Color" style="">确认收货订单</a></li>
+                    <li><a href="交易评价.html" class="_Color" style="">交易评价</a></li>
+                </ul>
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">客户服务</a></li>
+                    <li><a href="" class="_Color" style="">退款及退货</a></li>
+                    <li><a href="lxwm.html" class="_Color" style="">平台客服</a></li>
+                </ul>
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">会员信息</a></li>
+                    <li><a href="会员信息.html" class="_Color" style="">会员信息</a></li>
+                    <li><a href="密码修改.html" class="_Color" style="">密码修改</a></li>
+                    <li><a href="收货地址.html" class="_Color" style="">收货地址</a></li>
+                </ul>
+
+            </div>
+            <div class="aright">
+                <iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src="webPersonal?method=index"></iframe>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    //IFRAME自适应大小
+    function reinitIframe(){
+        var iframe = document.getElementById("mainContent");
+        try{
+            var bHeight = iframe.contentWindow.document.body == null?0:iframe.contentWindow.document.body.scrollHeight;
+            var dHeight = iframe.contentWindow.document.documentElement==null?0:iframe.contentWindow.document.documentElement.scrollHeight;
+            var height = Math.max(bHeight, dHeight);
+            var s=document.body.clientHeight;
+            iframe.height =s-155+"px";
+        }catch (ex){}
+    }
+    reinitIframe();
+    window.setInterval("reinitIframe()", 200);
+
+
+    $(".set").hover(function(){
+        $(this).find(".sub-menu").css("display","block");
+        $(this).find("i").css("transform","rotate(-180deg)");
+
+    },function(){
+        $(this).find(".sub-menu").css("display","none");
+        $(this).find("i").css("transform","rotate(1deg)");
+    })
+
+    //首字母检索
+    $('#jsCityLayerChar a').click(function () {
+        var sldClassName = $(this).attr('class');
+        var sldCharHeight = $('#jsCityLayerChar').height()*1+15;
+        var chartoTop = $(this).offset().top;
+        if(chartoTop>170&&chartoTop<180||(chartoTop>70&&chartoTop<80)){
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1;
+        }else{
+            var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1-20;
+        }
+        //获取当前的margin-top值
+        var curheight = ($('#jsCityLayerScrollWarrper').css('margin-top')).replace("px","");
+        $('#jsCityLayerScrollWarrper').animate({'margin-top':height*1+curheight*1},500);
+    });
+
+
+    //右侧固定栏事件
+    var index;
+    $(".p90").hover(function(){
+        $(this).siblings("a").css({"background":"#ffbb32"});
+        console.log($(this).siblings("a"));
+    },function(){
+        $(this).siblings("a").css({"background":"#00ae60"});
+    });
+    $(".right").hover(function(){
+        $(this).css("background","#ffbb32");
+    },function(){
+        $(this).css("background","#00ae60");
+    });
+    $(".img").hover(function(){
+        $(".img").css({"position":"absolute","left":"45px"});
+    },function(){
+        $(".img").css({"position":"absolute","left":"45px"});
+    });
+    $(".Right").hover(function(){
+        $(".img").css({"position":"absolute","left":"-172px"});
+    },function(){
+        $(".img").css({"position":"absolute","left":"45px"});
+    })
+    //商品滚动
+    function doMove1(obj,attr,speed,target,callBack){
+        if(obj.timer) return;
+        var ww=obj.css(attr);
+        var num = parseFloat(ww);
+        speed = num > target ? -Math.abs(speed) : Math.abs(speed);
+        obj.timer = setInterval(function (){
+            num += speed;
+            if( speed > 0 && num >= target || speed < 0 && num <= target  ){
+                num = target;
+                clearInterval(obj.timer);
+                obj.timer = null;
+                var mm=num+"px";
+                // obj.style[attr] = num + "px";
+                obj.css(attr,mm);
+                (typeof callBack === "function") && callBack();
+
+            }else{
+                var mm=num+"px";
+                // obj.css(attr) = num + "px";
+                obj.css(attr,mm)
+            }
+        },30)
+    }
+    var m=0;
+    $(".btn_left").bind("click",function(){
+        var W=$(this).parent().find("div").width();
+        var goodsUl=$(this).parent().find(".goodsU");
+        var ali=goodsUl.find("li");
+        var rightA=$(this).parent().find(".btn_right");
+        m=$(this).attr("data-numb");
+        if(m<=0){
+            m=0;
+            return;
+        }
+        m--;
+        $(this).attr("data-numb",m);
+        rightA.attr("data-num",m);
+        doMove1(goodsUl,"left",30, -m*W);
+
+    })
+    $(".btn_right").bind("click",function(){
+        var W=$(this).parent().find("div").width();
+        var goodsUl=$(this).parent().find(".goodsU");
+        var ali=goodsUl.find("li");
+        var n=goodsUl.find("li").width();
+        var l=goodsUl.find("li").css("padding-left");
+        l = l.replace("px","");
+
+        goodsUl.css("width",(n+l*2)*ali.length);
+        var ulW=goodsUl.width();
+        var nums=Math.ceil(ulW/W);
+        var leftA=$(this).parent().find(".btn_left");
+        m=$(this).attr("data-num");
+        if(m>=(nums-1)){
+            return;
+        }
+        m++;
+        $(this).attr("data-num",m);
+        leftA.attr("data-numb",m);
+        doMove1(goodsUl,"left",30,-m*W);
+    })
+</script>
+
+<div id="faq">
+    <div class="wrapper">
+        <ul>
+            <li>
+                <dl class="s2">
+                    <dt>购物指南</dt>
+                    <dd><i></i><a href="" title="购物流程"> 购物流程 </a></dd>
+                    <dd><i></i><a href="" title="商品咨询"> 商品咨询 </a></dd>
+                    <dd><i></i><a href="" title="交易条款"> 交易条款 </a></dd>
+                </dl>
+            </li>
+            <li>
+                <dl class="s3">
+                    <dt>关于订单</dt>
+                    <dd><i></i><a href="" title="订单查询"> 订单查询 </a></dd>
+                    <dd><i></i><a href="" title="订单确定"> 订单确定 </a></dd>
+                    <dd><i></i><a href="" title="晒单评价"> 晒单评价 </a></dd>
+                </dl>
+            </li>
+            <li>
+                <dl class="s4">
+                    <dt>售后服务</dt>
+                    <dd><i></i><a href="" title="售后说明"> 售后说明 </a></dd>
+                    <dd><i></i><a href="" title="退换货说明"> 退换货说明 </a></dd>
+                    <dd><i></i><a href="" title="售后维权"> 售后维权 </a></dd>
+                </dl>
+            </li>
+            <li>
+                <dl class="s6">
+                    <dt>关于我们</dt>
+                    <dd><i></i><a href="" title="平台简介"> 平台简介 </a></dd>
+                    <dd><i></i><a href="" title="联系我们"> 联系我们 </a></dd>
+
+                </dl>
+            </li>
+            <li style="width:33%; text-align:center; border-left:1px solid #39c471;">
+                <dl class="s1">
+                    <dt>400-801-3841</dt>
+                    <dd><a href="#">周一至周日 8:00-18:00（仅收市话费）</a></dd>
+                    <dd><a rel="nofollow" href="" target="_blank" class="btn">人工客服</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="wrapfoot">
+    <div id="footer" class="wrapper">
+        <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
+        <p style="display: none"> </p>
+        <a href=""><img src="images/05987954210414380.png" border="0"></a>
+    </div>
+</div>
+
+</head>

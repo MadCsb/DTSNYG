@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script src="${rc.contextPath}/web/js/jquery.js"></script>
+</head>
+<body>
+<input type="button" onclick="submitBtn()" value="进入预定订单">
+<form action="webOrder?method=toCreateOrder" method="post" id="tco">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+</form>
+<script>
+  function submitBtn() {
+    var prepareOrderJson = new Object();
+    var orderListList = new Array();
+    var orderList1 = new Object();
+    orderList1.priceId = '9122d6a839284c44864c87e2691b92b9'; //销售id
+    orderList1.num = '1'; //数量
+    orderList1.cartId = ""; //购物车id
+    //price_1_refPatchCode
+    orderListList.push(orderList1);
+    prepareOrderJson.orderListList = orderListList;
+    $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+    $("#tco").submit();
+  }
+</script>
+
+</body>
+</html>

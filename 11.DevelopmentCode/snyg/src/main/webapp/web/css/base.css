@@ -1465,14 +1465,14 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
     filter: alpha(opacity=90);
 }
 
-.wrapfoot{	background:#00ae60;}
+.wrapfoot{	background:rgb(64, 63, 77);}
 #faq {
     width: 100%;
-    border-bottom: solid 1px #39c471;
+    border-bottom: solid 1px rgb(64, 63, 77);
     overflow: hidden;
     margin: auto;
 	padding-top:20px;
-	background:#00ae60;
+	background:rgb(64, 63, 77);
 }
 
 #faq ul {

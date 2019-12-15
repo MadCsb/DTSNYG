@@ -876,7 +876,7 @@
 
 .sldh-sortbar-array ul {
     font-size: 0;
-    *word-spacing: -1px /*IE6ï¿½ï¿½7*/;
+    *word-spacing: -1px /*IE6¡¢7*/;
     vertical-align: middle;
     display: inline-block;
     *display: inline /*IE6,7*/;

@@ -38,14 +38,16 @@ flex-grow: 1;}
 .layoutzc{ width:300px; height:400px; margin:30px auto 0 auto;padding: 20px 50px; background:#FFFFFF;}
 .layoutzc h3{ font-size:20px;}
 
-.labelbox{display:block;margin-bottom:14px;border:1px solid #e0e0e0}
+.labelbox{display:block;margin-bottom:10px;border:1px solid #e0e0e0}
 
-.labelboxn{display: inline-block;margin-bottom:14px;border:0; color:#999999; }
+.labelboxn{display: inline-block;margin-bottom:10px;border:0; color:#999999; }
 .labelboxn a{ text-decoration:none; color:#333;}
 .labelboxn input{ vertical-align:middle; margin-right:10px;}
 
 
-.labelbox input{height:22px;line-height:22px;padding:13px 16px 13px 14px;display:block; color:#4a4a4a; border:0; background:transparent;}
+.labelbox input{height:22px;line-height:22px;padding:10px 16px 10px 14px;display:block; color:#4a4a4a; border:0; background:transparent; width:80%;}
+
+
 .btnadpt {
     background-color: #ff6700;
     width: 100%;
