@@ -75,23 +75,22 @@ public class WebShopcartController extends BaseController {
 	@RequestMapping(params = "method=getShopCartListWeb")
 	public void getShopCartListWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
 		try {
-			// if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER)
-			// == null) {
-			// response.getWriter().print("");
-			// } else {
-			shopcart = new Shopcart();
-			// shopcart.setUserId(getLoginUser(request).getUserId());
-			shopcart.setDelFlag("0");
-			shopcart.setState("1");
-			EntityPage en = new EntityPage();
-			en.setSortOrder("DESC");
-			en.setSortField("t.F_UPDATETIME");
-			shopcart.setEntityPage(en);
-			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
+				response.getWriter().print("");
+			} else {
+				shopcart = new Shopcart();
+				shopcart.setUserId(getLoginUser(request).getUserId());
+				shopcart.setDelFlag("0");
+				shopcart.setState("1");
+				EntityPage en = new EntityPage();
+				en.setSortOrder("DESC");
+				en.setSortField("t.F_UPDATETIME");
+				shopcart.setEntityPage(en);
+				List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
 
-			JSONArray jsonArray = JSONArray.fromObject(shopCartList);
-			response.getWriter().print(jsonArray.toString());
-			// }
+				JSONArray jsonArray = JSONArray.fromObject(shopCartList);
+				response.getWriter().print(jsonArray.toString());
+			}
 		} catch (Exception e) {
 			log.error(e, e);
 		}

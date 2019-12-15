@@ -101,7 +101,7 @@ function getArticle(type){
 			var str = "";
 			for(var i=0;i<data.length;i++){
 				if(i<3){
-					str +='<dd><i></i><a href="javascript:void(0)" title="'+data[i].title+'"> '+data[i].title+' </a></dd>';	
+					str +='<dd><i></i><a href="webArticle?method=toArticleList&type='+type+'&articleId='+data[i].articleId+'" title="'+data[i].title+'"> '+data[i].title+' </a></dd>';	
 				}
 			}
 			$("#articleList"+type).append(str);
