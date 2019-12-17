@@ -1,5 +1,6 @@
 package com.msy.travel.controller;
 
+import com.msy.travel.pojo.Destsp;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +98,97 @@ public class UserController extends BaseController {
 		}
 		return view;
 	}
+
+
+	/**
+	 * 跳转登陆页面
+	 * @return
+	 */
+	@RequestMapping(value = "/toNewUser")
+	public ModelAndView toNewUser(HttpServletRequest request) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("web/personal/zhuce");
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 用户登陆
+	 *
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/newUser")
+	public ModelAndView newUser(HttpServletRequest request, HttpServletResponse response, User user) {
+		ModelAndView view = null;
+		try {
+
+			if (user.getUserLoginName() == null || user.getUserLoginName().trim().equals("")) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "请输入用户名");
+				view.addObject("user", user);
+			} else if (user.getUserPwd() == null || user.getUserPwd().trim().equals("")) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "请输入密码");
+				view.addObject("user", user);
+			} else if (user.getUserNewPwd() == null || user.getUserNewPwd().trim().equals("")) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "请输入确认密码");
+				view.addObject("user", user);
+			} else if (!user.getUserPwd().trim().equals(user.getUserNewPwd().trim())) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "两次输入密码不一致!");
+				view.addObject("user", user);
+			}else	if (null == user.getSecurityCode()
+					|| user.getSecurityCode().equals("")
+					|| request.getSession().getAttribute("rand") == null) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "请输入验证码");
+				view.addObject("user",user);
+			} else if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
+				view = new ModelAndView("web/personal/zhuce");
+				view.addObject("errorMsg", "验证码错误");
+				view.addObject("user",user);
+			} else {
+				User userTmp = new User();
+				userTmp.setUserLoginName(user.getUserLoginName().trim());
+				List<User> userList = userService.queryUserList(userTmp);
+				if(userList.size()!=0)
+				{
+					view = new ModelAndView("web/personal/zhuce");
+					view.addObject("errorMsg", "登录名已存在，请修改后重试!");
+					view.addObject("user", user);
+				}else
+				{
+					String time = DateTimeUtil.getDateTime19();
+					User userDb = new User();
+					userDb.setUserId(PrimaryKeyUtil.generateKey());
+					userDb.setUserLoginName(user.getUserLoginName().trim());
+					userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+					userDb.setUserPwd(MD5.encode(user.getUserPwd().trim()));
+					userDb.setUserRegDate(time);
+					userDb.setUserState("1");
+					userDb.setUserLocked("0");
+					userDb.setUserRoleType(null);
+					userDb.setAccId(Destsp.currentSpId);
+					userService.createUser(userDb);
+					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
+					Subject subject = SecurityUtils.getSubject();
+					subject.login(token);
+					view = new ModelAndView("main");
+				}
+			}
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			log.error(e, e);
+		}
+		return view;
+	}
+
 
 	/**
 	 * 用户登陆
@@ -299,7 +391,6 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
-
 	}
 
 	/**

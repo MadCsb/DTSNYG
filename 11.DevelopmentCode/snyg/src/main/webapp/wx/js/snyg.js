@@ -12,6 +12,13 @@ var currentSpId = "da14b98e-cb26-4169-9b58-babe98b98047";
 function toIndex(){
   window.location.href = "wx?method=wxIndex&spId="+currentSpId;
 }
+/**
+ * 跳转首页
+ * searchObject
+ */
+function toWebIndex(){
+  window.location.href = "webIndex?method=webIndex";
+}
 
 /**
  * 跳转分页

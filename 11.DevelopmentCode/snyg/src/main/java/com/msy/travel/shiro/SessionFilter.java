@@ -28,7 +28,11 @@ public class SessionFilter extends AccessControlFilter {
 			return Boolean.TRUE;
 		}
 		//web 端无需登录controller
-		if (url.indexOf("/webIndex") != -1 ) {
+		if (url.indexOf("/webIndex") != -1
+				|| url.indexOf("/toNewUser") != -1
+				|| url.indexOf("/newUser") != -1
+
+				) {
 			return Boolean.TRUE;
 		}
 
