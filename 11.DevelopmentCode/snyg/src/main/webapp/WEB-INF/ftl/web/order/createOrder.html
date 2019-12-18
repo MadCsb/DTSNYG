@@ -560,12 +560,15 @@
               <dt><i class="required">*</i>所在地区：</dt>
               <dd>
                 <div id="region">
-                  <select id="province" class="w110">
-                    <option value="">-请选择-</option>
-                    <option value="1">北京</option><option value="2">天津</option><option value="3">河北省</option><option value="4">山西省</option><option value="5">内蒙古</option><option value="6">辽宁省</option><option value="7">吉林省</option><option value="8">黑龙江省</option><option value="9">上海</option><option value="10">江苏省</option><option value="11">浙江省</option><option value="12">安徽省</option><option value="13">福建省</option><option value="14">江西省</option><option value="15">山东省</option><option value="16">河南省</option><option value="17">湖北省</option><option value="18">湖南省</option><option value="19">广东省</option><option value="20">广西</option><option value="21">海南省</option><option value="22">重庆</option><option value="23">四川省</option><option value="24">贵州省</option><option value="25">云南省</option><option value="26">西藏</option><option value="27">陕西省</option><option value="28">甘肃省</option><option value="29">青海省</option><option value="30">宁夏</option><option value="31">新疆</option><option value="32">台湾省</option><option value="33">香港</option><option value="34">澳门</option><option value="35">海外</option></select>
-                  <input type="hidden" value="" name="city_id" id="city_id">
-                  <input type="hidden" name="area_id" id="area_id" class="area_ids">
-                  <input type="hidden" name="area_info" id="area_info" class="area_names">
+                  <select id="province" style="display: none" class="w110">
+
+                  </select>
+                  <select id="city" style="display: none"  class="w110">
+
+                    </select>
+                  <select id="xian" style="display: none" class="w110">
+
+                  </select>
                 </div>
               </dd>
             </dl>
@@ -795,26 +798,75 @@
       calculation();
     });
 
+    var cityObj = new  Object();
+    cityObj.cityLevel = "1";
+    var cityList = getCityList(cityObj);
     calculation();
   })
+  
+  function changeProvince(cityType) {
+    var cityObj = null;
+    var queryObj = new Object();
+    if(cityType == 'province')
+    {
+      queryObj.cityLevel = "1";
+      cityObj
+    }else if (cityType == 'city')
+    {
+      queryObj.pcityId = $("#province").val();
+    }else if (cityType == 'xian')
+    {
+      queryObj.pcityId = $("#city").val();
+    }
+    var cityList = null;
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "city?method=getCityJson",
+      data: queryObj,
+      success: function (data) {
+        cityList = data;
+      }
+    });
+    if(cityType == 'province')
+    {
+      cityObj = $("#province");
+      if (cityList.length == 0)
+      {
+        $("#province").hide();
+        $("#city").hide();
+        $("#xian").hide();
+      }
+    }else if (cityType == 'city')
+    {
+      cityObj = $("#province");
+      if (cityList.length == 0)
+      {
+        $("#city").hide();
+        $("#xian").hide();
+      }
+    }else if (cityType == 'xian')
+    {
+      cityObj = $("#province");
+      if (cityList.length == 0)
+      {
+        $("#xian").hide();
+      }
+    }
+
+  }
   //获取服务器快递费用信息
   function getPriceExpress(priceId,num)
   {
     var transFee = null;
-
     var province = null;
     var addr = $("input[name='addr']:checked");
-    if($(addr).val() == null)
-    {
-      alert("请选择收获地址");
-      return transFee;
-    }
     if($(addr).attr("isNew") == '1')
     {
       if($("#province").val() == '')
       {
-        alert("请选择选择省份");
-        return transFee;
+        return null;
       }
       province = $("#province").val();
     }else
@@ -843,6 +895,24 @@
     });
     return transFee;
   }
+
+  //获取服务器城市 pcityId cityLevel
+  function getCityList(cityObj)
+  {
+    var cityList = null;
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "city?method=getCityJson",
+      data: cityObj,
+      success: function (data) {
+        cityList = data;
+      }
+    });
+    return cityList;
+  }
+
 
   //加减数量 type = 1减 ；type = 2加
   function changeNum(obj,type){
@@ -883,9 +953,10 @@
     $(".shop-list").each(function () {
       var price = parseFloat($(this).attr("price"));
       var num = parseInt($(this).find(".input_sl").eq(0).val());
-      var transFee = getPriceExpress($(this).attr("priceId"),num);
+
       var trTotalPrice = price*num;
-      totalPrice = totalPrice + trTotalPrice;
+
+      var transFee = getPriceExpress($(this).attr("priceId"),num);
       if(transFee == null)
       {
         isTransFeeOk = false;
@@ -896,21 +967,22 @@
         $(this).find("td").eq(-2).html("&yen;<em>" + trTotalPrice+ "</em>");
         totalTransFee = parseFloat(transFee);
       }
+      totalPrice = totalPrice + trTotalPrice;
     });
-
+    $("#totalPrice").html(totalPrice.toFixed(2));
     if (!isTransFeeOk)
     {
       $("#totalTransFee").html("未知");
       $("#totalPay").html("未知");
+      return false;
     }else
     {
       var total = (totalPrice + totalTransFee).toFixed(2);
       totalTransFee = totalTransFee.toFixed(2);
       $("#totalTransFee").html(totalTransFee);
       $("#totalPay").html(total);
+      return true;
     }
-    totalPrice = totalPrice.toFixed(2);
-    $("#totalPrice").html(totalPrice);
   }
 
 

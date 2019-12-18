@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -179,7 +180,7 @@ public class UserController extends BaseController {
 					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
-					view = new ModelAndView("main");
+					WebUtils.issueRedirect(request, response, "/webPersonal?method=personal");
 				}
 			}
 		} catch (Exception e) {

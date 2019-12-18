@@ -83,7 +83,13 @@
       return false;
 		}
 		$("#zhuceform").submit();
-  }	
+  }
+	//点击更换验证码
+	function replaceCode()
+	{
+		d = new Date().getTime();
+		document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
+	};
 </script>
 </div>
 </body>

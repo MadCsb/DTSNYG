@@ -95,28 +95,28 @@
                     <ul>
                         <li>
                             <div class="Divradius">
-                                <a href="待付款.html"><img src="images/ico_dai1.png"></a></div>
+                                <a href="待付款.html"><img src="${rc.contextPath}/web/images/ico_dai1.png"></a></div>
                             <p class="_p">待付款
                                 <strong>0</strong>
                             </p>
                         </li>
                         <li>
                             <div class="Divradius">
-                                <a href="待发货.html"><img src="images/ico_dai2.png"></a></div>
+                                <a href="待发货.html"><img src="${rc.contextPath}/web/images/ico_dai2.png"></a></div>
                             <p class="_p">待发货
                                 <strong>0</strong>
                             </p>
                         </li>
                         <li>
                             <div class="Divradius">
-                                <a href="待收货.html"><img src="images/ico_dai3.png"></a></div>
+                                <a href="待收货.html"><img src="${rc.contextPath}/web/images/ico_dai3.png"></a></div>
                             <p class="_p">待收货
                                 <strong>0</strong>
                             </p>
                         </li>
                         <li>
                             <div class="Divradius">
-                                <a href="待评价.html"><img src="images/ico_dai4.png"></a></div>
+                                <a href="待评价.html"><img src="${rc.contextPath}/web/images/ico_dai4.png"></a></div>
                             <p class="_p">待评价
                                 <strong>0</strong>
                             </p>
@@ -169,7 +169,10 @@
             var dHeight = iframe.contentWindow.document.documentElement==null?0:iframe.contentWindow.document.documentElement.scrollHeight;
             var height = Math.max(bHeight, dHeight);
             var s=document.body.clientHeight;
-            iframe.height =s-155+"px";
+            console.log(s);
+            var height = Math.min(height, s-400);
+            console.log(height);
+            iframe.height =height+"px";
         }catch (ex){}
     }
     reinitIframe();
@@ -337,7 +340,7 @@
     <div id="footer" class="wrapper">
         <p>京ICP备15003715号   增值电信业务经营许可证： 京-20170270  公安局备：51170202000227</p>
         <p style="display: none"> </p>
-        <a href=""><img src="images/05987954210414380.png" border="0"></a>
+        <a href=""><img src="${rc.contextPath}/web/images/05987954210414380.png" border="0"></a>
     </div>
 </div>
 

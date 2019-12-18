@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
@@ -228,27 +229,14 @@ public class CityController extends BaseController {
 	 */
 	@RequestMapping(params = "method=getCityJson")
 	public void getCityJson(City city, HttpServletRequest request, HttpServletResponse response) {
-		PrintWriter pw = null;
 		try {
 
 			List<City> cityList = cityService.queryCityList(city);
-
-			response.setContentType("text/html");
+			response.setContentType("text/json");
 			response.setCharacterEncoding("UTF-8");
-
-			pw = response.getWriter();
-			JSONObject json = new JSONObject();
-			json.put("cityList", cityList);
-			pw.write(json.toString());
-			pw.flush();
-			pw.close();
-
+			response.getWriter().write(JSON.toJSONString(cityList));
 		} catch (Exception e) {
-			if (pw != null) {
-				pw.close();
-			}
 			log.error(e, e);
 		}
-		return;
 	}
 }
