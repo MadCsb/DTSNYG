@@ -1,5 +1,6 @@
 package com.msy.travel.controller;
 
+import com.msy.travel.common.LogicException;
 import com.msy.travel.pojo.Destsp;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -201,59 +202,51 @@ public class UserController extends BaseController {
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
-
-			// redisUtil.set("test", "redies");
-			// System.out.println(redisUtil.get("test"));
-
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) != null) {
+			if ("web".equals(loginPage))
+			{
+				view = new ModelAndView("redirect:/webPersonal.do?method=personal");
+			}else
+			{
 				view = new ModelAndView("main");
-				if ("web".equals(loginPage))
-				{
-					view = new ModelAndView("redirect:/webPersonal.do?method=personal");
-				}
+			}
+			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) != null) {
 				return view;
 			}
 
 			if (null == user.getSecurityCode() || request.getSession().getAttribute("rand") == null) {
-				view = new ModelAndView("login");
-				if ("web".equals(loginPage))
-				{
-					view = new ModelAndView("web/personal/login");
-				}
-				view.addObject("errorMsg", "请输入验证码");
-
-			} else if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
-				view = new ModelAndView("login");
-				if ("web".equals(loginPage))
-				{
-					view = new ModelAndView("web/personal/login");
-				}
-				view.addObject("errorMsg", "验证码错误");
-
-			} else {
-
-				view = new ModelAndView("main");
-				if ("web".equals(loginPage))
-				{
-					view = new ModelAndView("redirect:/webPersonal.do?method=personal");
-				}
-				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
-				Subject subject = SecurityUtils.getSubject();
-				try {
-					subject.login(token);
-				} catch (Exception e) {
-					view = new ModelAndView("login");
-					if ("web".equals(loginPage))
-					{
-						view = new ModelAndView("web/personal/login");
-					}
-					view.addObject("errorMsg", e.getMessage());
-				}
+				throw new LogicException("请输入验证码");
+			}
+			if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
+				throw new LogicException("验证码错误");
 			}
 
-		} catch (Exception e) {
-			view = new ModelAndView("error");
-			log.error(e, e);
+			UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
+			Subject subject = SecurityUtils.getSubject();
+			try {
+				subject.login(token);
+			} catch (Exception e) {
+				throw new LogicException(e.getMessage());
+			}
+		}catch (LogicException le)
+		{
+			if ("web".equals(loginPage))
+			{
+				view = new ModelAndView("web/personal/login");
+			}else
+			{
+				view = new ModelAndView("login");
+			}
+			view.addObject("errorMsg",le.getMessage());
+		}catch (Exception e)
+		{
+			if ("web".equals(loginPage))
+			{
+				view = new ModelAndView("web/personal/login");
+			}else
+			{
+				view = new ModelAndView("login");
+			}
+			view.addObject("errorMsg","系统异常");
 		}
 		return view;
 	}

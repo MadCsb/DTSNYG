@@ -560,10 +560,10 @@
               <dt><i class="required">*</i>所在地区：</dt>
               <dd>
                 <div id="region">
-                  <select id="province" style="display: none" class="w110">
+                  <select id="province" onchange="changeProvince('city')" style="display: none" class="w110">
 
                   </select>
-                  <select id="city" style="display: none"  class="w110">
+                  <select id="city" onchange="changeProvince('xian')" style="display: none"  class="w110">
 
                     </select>
                   <select id="xian" style="display: none" class="w110">
@@ -798,19 +798,16 @@
       calculation();
     });
 
-    var cityObj = new  Object();
-    cityObj.cityLevel = "1";
-    var cityList = getCityList(cityObj);
+    changeProvince("province");
     calculation();
   })
   
   function changeProvince(cityType) {
-    var cityObj = null;
+    var cityObj = $("#"+cityType);
     var queryObj = new Object();
     if(cityType == 'province')
     {
       queryObj.cityLevel = "1";
-      cityObj
     }else if (cityType == 'city')
     {
       queryObj.pcityId = $("#province").val();
@@ -829,32 +826,25 @@
         cityList = data;
       }
     });
-    if(cityType == 'province')
+    $(cityObj).html("");
+    for (var i=0;i<cityList.length;i++)
     {
-      cityObj = $("#province");
-      if (cityList.length == 0)
-      {
-        $("#province").hide();
-        $("#city").hide();
-        $("#xian").hide();
-      }
-    }else if (cityType == 'city')
+      $(cityObj).append('<option value="'+cityList[i].cityId+'">'+cityList[i].cityName+'</option>');
+    }
+    if(cityList.length == 0)
     {
-      cityObj = $("#province");
-      if (cityList.length == 0)
-      {
-        $("#city").hide();
-        $("#xian").hide();
-      }
-    }else if (cityType == 'xian')
+      $(cityObj).hide();
+    }else
     {
-      cityObj = $("#province");
-      if (cityList.length == 0)
+      $(cityObj).show();
+      if(cityType == 'province')
       {
-        $("#xian").hide();
+        changeProvince("city");
+      }else if (cityType == 'city')
+      {
+        changeProvince("xian");
       }
     }
-
   }
   //获取服务器快递费用信息
   function getPriceExpress(priceId,num)
@@ -993,25 +983,47 @@
       alert("请选择收获地址");
       return false;
     }
-    // var newConsignee = null
-    // if($(addr).attr("isNew") == '1')
-    // {
-    //   newConsignee.consigneeId = $(addr).val();
-    //   newConsignee.userId = $("#userId").val();
-    //   newConsignee.custName =
-    //   if($("#province").val() == '')
-    //   {
-    //     alert("请选择选择省份");
-    //     return transFee;
-    //   }
-    //   province = $("#province").val();
-    // }else
-    // {
-    //   province = $(addr).attr("pcx").split(" ")[0];
-    // }
-//    Alert.loading();
+     var newConsignee = null
+     if($(addr).attr("isNew") == '1')
+     {
+       newConsignee = new Object();
+       newConsignee.consigneeId = $(addr).val();
+       newConsignee.userId = $("#userId").val();
+       newConsignee.custName = $("#custName").val();
+       if(newConsignee.custName == null || newConsignee.custName == '')
+       {
+         alert("请填写收货人姓名");
+         return false;
+       }
+       var pcx = $("#province").find("option:selected").text() + " ";
+       if($("#city").is(":visible"))
+       {
+         pcx = pcx + $("#city").find("option:selected").text() + " ";
+       }
+       if($("#xian").is(":visible"))
+       {
+         pcx = pcx + $("#xian").find("option:selected").text() + " ";
+       }
+       newConsignee.pcx = pcx;
+       newConsignee.recAddress = $("#recAddress").val();
+       if(newConsignee.recAddress == null || newConsignee.recAddress == '')
+       {
+         alert("请填写详细地址");
+         return false;
+       }
+       newConsignee.custPhone = $("#custPhone").val();
+       if(newConsignee.custPhone == null || newConsignee.custPhone == '')
+       {
+         alert("请填写手机号码");
+         return false;
+       }
+     }
 //  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
     var param = new Object();
+    if(newConsignee != null)
+    {
+      param.newConsignee = newConsignee;
+    }
     param.consigneeId = $(addr).val();
     param.userId = $("#userId").val();
     param.memo = $("#memo").val();
@@ -1064,11 +1076,10 @@
 
   function doPay(orders)
   {
-    console.log(pay.payMethod);
     if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
     {
       pay.havePayed = function(){
-        toOrderList("0");
+        toWebPersonal('1-2',null);
       }
       pay.checkPayed();
 

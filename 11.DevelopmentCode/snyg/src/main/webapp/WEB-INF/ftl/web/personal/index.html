@@ -1,36 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
-	<link href="${rc.contextPath}/web/css/member.css" rel="stylesheet" type="text/css">
-	<link href="${rc.contextPath}/web/css/buyer.css" rel="stylesheet" type="text/css">
-	<link href="${rc.contextPath}/web/css/iconfont.css" rel="stylesheet" type="text/css">
-
-	<script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
-
-	<script src="${rc.contextPath}/web/js/jquery.js"></script>
-	<script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
-	<script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
-	<script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
-	<script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
-	<script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script>
-	<link href="${rc.contextPath}/web/js/dialog.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="${rc.contextPath}/js/artDialog.js?skin=idialog"></script>
+	<#include "WEB_PERSONAL_INC_HEAD.html"/>
 </head>
 <body>
+<#include "PersonlTop.html"/>
+
 <div class="buyer_center_list">
 	<div class="my_orders clearfix">
 		<p class="my_orders_tit clears">
-			<span>我的订单</span>
-			<a href="" target="_blank">查看全部订单</a>
+			<span>我的订单</span><a href="" target="_blank">查看全部订单</a>
 		</p>
 		<!-- 有内容显示 -->
 		<table>
 			<tbody>
 			<tr>
-				<td class="my_orders_goods"><a href="" target="_blank">
-					<img src="${rc.contextPath}/web/images/sp.png" width="50" height="50"></a>
-				</td>
+				<td class="my_orders_goods"><a href="" target="_blank"><img src="images/sp.png" width="50" height="50"></a></td>
 				<td class="place_holder">自然足记</td>
 				<td class="orders_goods_pri"><p>¥78.00</p><p>在线付款</p></td>
 				<td class="place_time"><p>2019-10-19 21:34:00</p></td>
@@ -39,21 +24,21 @@
 			</tr>
 			</tbody>
 		</table>
-
-		<!-- 没有内容显示 -->
 		<div class="no_content_play vertical_top1 vertical_top01">
 			<i class="iconfont icon-dingdan"></i><span>您买的东西太少了,这里都空空的,快去挑合适的商品吧！</span>
 		</div>
 	</div>
 	<div class="shop_cart_list clearfix">
-		<p class="my_orders_tit "><span>购物车</span><a href="" target="_blank">查看所有商品</a></p>
+		<p class="my_orders_tit ">
+			<span>购物车</span>
+			<a href="" target="_blank">查看所有商品</a>
+		</p>
 		<!-- 有内容显示 -->
 		<div class="shop_cart_list_div">
 			<ul class="shop_cart_list_ul ">
 				<li>
 					<div class="clearfix">
-
-						<img src="${rc.contextPath}/web/images/sp.png" height="50" width="50">
+						<img src="images/sp.png" height="50" width="50">
 						<a href="" target="_blank">龙泉水蜜桃</a>
 					</div>
 					<p class="clears cart_look"><a class="bbc_btns" href="" target="_blank">查看</a></p>
@@ -62,5 +47,7 @@
 		</div>
 	</div>
 </div>
+
+<#include "PersonlButton.html"/>
 </body>
 </html>

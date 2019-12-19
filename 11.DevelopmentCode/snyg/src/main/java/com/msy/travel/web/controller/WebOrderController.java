@@ -166,7 +166,7 @@ public class WebOrderController extends BaseController {
 	/**
 	 * ajax 创建订单
 	 * param
-	 * {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+	 * {newConsignee:新收货地址,consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
 	 */
 	@RequestMapping(params = "method=createOrders")
 	public void createOrders(String param,HttpServletRequest request,HttpServletResponse response) {
@@ -174,6 +174,30 @@ public class WebOrderController extends BaseController {
 		try {
 
 			JSONObject paramObject = JSON.parseObject(URLDecoder.decode(param, "UTF-8"));
+			if (paramObject.containsKey("newConsignee"))
+			{
+				JSONObject newConsigneeObj = paramObject.getJSONObject("newConsignee");
+				Consignee consignee = new Consignee();
+				consignee.setConsigneeId(newConsigneeObj.getString("consigneeId"));
+				consignee.setConsigneeId(newConsigneeObj.getString("consigneeId"));
+				consignee.setUserId(newConsigneeObj.getString("userId"));
+				consignee.setCustName(newConsigneeObj.getString("custName"));
+				consignee.setCustPhone(newConsigneeObj.getString("custPhone"));
+				consignee.setPcx(newConsigneeObj.getString("pcx"));
+				consignee.setRecAddress(newConsigneeObj.getString("recAddress"));
+				consignee.setIsDefault("0");
+				Consignee consigneeDb = new Consignee();
+				consigneeDb.setConsigneeId(consignee.getConsigneeId());
+				consigneeDb = consigneeService.displayConsignee(consigneeDb);
+				if(consigneeDb == null)
+				{
+					consigneeService.createConsignee(consignee);
+				}else
+				{
+					consigneeService.updateConsignee(consignee);
+				}
+				paramObject.remove("newConsignee");
+			}
 			result = orderService.validateCreateOrder(paramObject);
 
 		}catch (LogicException e1)
@@ -213,11 +237,10 @@ public class WebOrderController extends BaseController {
 	public ModelAndView toOrderList(String orderListType,String searchKey,HttpServletRequest request) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("/wx/order/orderList");
+			view = new ModelAndView("/web/order/orderList");
 			view.addObject("orderListType",orderListType);
 			view.addObject("searchKey",searchKey);
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view.addObject("user",getLoginUser(request));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -546,10 +569,9 @@ public class WebOrderController extends BaseController {
 	/**
 	 * ajax 获取订单列表
 	 */
-	@RequestMapping(params = "method=wxAjaxOrderList")
-	public void wxAjaxOrderList(Order order,int pageNum,int pageSize,HttpServletRequest request,HttpServletResponse response) {
-		//验证微信用户
-		List<Order> orderList = new ArrayList<Order>();
+	@RequestMapping(params = "method=ajaxOrderList")
+	public void ajaxOrderList(Order order,int pageNum,int pageSize,HttpServletRequest request,HttpServletResponse response) {
+		JSONObject result = new JSONObject();
 		try {
 			if(order.getEntityPage()==null){
 				order.setEntityPage(new EntityPage());
@@ -559,9 +581,11 @@ public class WebOrderController extends BaseController {
 			order.getEntityPage().setCurrentPage(pageNum);
 			order.getEntityPage().setRowsPerPage(pageSize);
 			PageHelper.startPage(super.getPageNum(order.getEntityPage()), super.getPageSize(order.getEntityPage()));
-			orderList =
+			List<Order> orderList =
 					orderService.queryOrderList(order);
 			PageInfo<Order> pageInfo = new PageInfo<Order>(orderList);
+			//result.put("orderList",orderList);
+			result.put("pageInfo",pageInfo);
 		}catch (Exception e)
 		{
 			log.error(e);
@@ -569,7 +593,8 @@ public class WebOrderController extends BaseController {
 		try {
 			response.setContentType("text/json;charset=utf-8");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(JSON.toJSONString(orderList));
+			log.error(result.toJSONString());
+			response.getWriter().write(result.toJSONString());
 		}catch (Exception e)
 		{
 			log.error(e);

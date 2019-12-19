@@ -1,0 +1,152 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
+<title>三农壹购</title>
+<meta name="keywords" content="三农壹购">
+<meta name="description" content="三农壹购">
+
+<link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
+<link href="${rc.contextPath}/web/css/member.css" rel="stylesheet" type="text/css">
+<link href="${rc.contextPath}/web/css/buyer.css" rel="stylesheet" type="text/css">
+<link href="${rc.contextPath}/web/css/iconfont.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
+
+<script src="${rc.contextPath}/web/js/jquery.js"></script>
+<script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
+<script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
+<script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
+<script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
+<script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script><link href="js/dialog.css" rel="stylesheet" type="text/css">
+
+<script src="${rc.contextPath}/wx/js/snyg.js"></script>
+
+<script type="text/javascript">
+  $(function(){
+    $(".quick-menu dl").hover(function() {
+          $(this).addClass("hover");
+        },
+        function() {
+          $(this).removeClass("hover");
+        });
+    $(".changeSldBox").hover(function() {
+          $(this).addClass("hover");
+        },
+        function() {
+          $(this).removeClass("hover");
+        });
+  });
+
+  //首字母检索
+  $('#jsCityLayerChar a').click(function () {
+    var sldClassName = $(this).attr('class');
+    var sldCharHeight = $('#jsCityLayerChar').height()*1+15;
+    var chartoTop = $(this).offset().top;
+    console.info($(this).offset().top);
+    if(chartoTop>170&&chartoTop<180||(chartoTop>70&&chartoTop<80)){
+      var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1;
+    }else{
+      var height = $(this).offset().top*1-$('#'+sldClassName).offset().top*1+sldCharHeight*1-20;
+    }
+
+    //获取当前的margin-top值
+    var curheight = ($('#jsCityLayerScrollWarrper').css('margin-top')).replace("px","");
+    $('#jsCityLayerScrollWarrper').animate({'margin-top':height*1+curheight*1},500);
+  });
+
+
+  //右侧固定栏事件
+  var index;
+  $(".p90").hover(function(){
+    $(this).siblings("a").css({"background":"#ffbb32"});
+    console.log($(this).siblings("a"));
+  },function(){
+    $(this).siblings("a").css({"background":"#00ae60"});
+  });
+  $(".right").hover(function(){
+    $(this).css("background","#ffbb32");
+  },function(){
+    $(this).css("background","#00ae60");
+  });
+  $(".img").hover(function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  },function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  });
+  $(".Right").hover(function(){
+    $(".img").css({"position":"absolute","left":"-172px"});
+  },function(){
+    $(".img").css({"position":"absolute","left":"45px"});
+  })
+
+  $(".set").hover(function(){
+    $(this).find(".sub-menu").css("display","block");
+    $(this).find("i").css("transform","rotate(-180deg)");
+
+  },function(){
+    $(this).find(".sub-menu").css("display","none");
+    $(this).find("i").css("transform","rotate(1deg)");
+  })
+
+  //商品滚动
+  function doMove1(obj,attr,speed,target,callBack){
+    if(obj.timer) return;
+    var ww=obj.css(attr);
+    var num = parseFloat(ww);
+    speed = num > target ? -Math.abs(speed) : Math.abs(speed);
+    obj.timer = setInterval(function (){
+      num += speed;
+      if( speed > 0 && num >= target || speed < 0 && num <= target  ){
+        num = target;
+        clearInterval(obj.timer);
+        obj.timer = null;
+        var mm=num+"px";
+        // obj.style[attr] = num + "px";
+        obj.css(attr,mm);
+        (typeof callBack === "function") && callBack();
+
+      }else{
+        var mm=num+"px";
+        // obj.css(attr) = num + "px";
+        obj.css(attr,mm)
+      }
+    },30)
+  }
+  var m=0;
+  $(".btn_left").bind("click",function(){
+    var W=$(this).parent().find("div").width();
+    var goodsUl=$(this).parent().find(".goodsU");
+    var ali=goodsUl.find("li");
+    var rightA=$(this).parent().find(".btn_right");
+    m=$(this).attr("data-numb");
+    if(m<=0){
+      m=0;
+      return;
+    }
+    m--;
+    $(this).attr("data-numb",m);
+    rightA.attr("data-num",m);
+    doMove1(goodsUl,"left",30, -m*W);
+
+  })
+  $(".btn_right").bind("click",function(){
+    var W=$(this).parent().find("div").width();
+    var goodsUl=$(this).parent().find(".goodsU");
+    var ali=goodsUl.find("li");
+    var n=goodsUl.find("li").width();
+    var l=goodsUl.find("li").css("padding-left");
+    l = l.replace("px","");
+
+    goodsUl.css("width",(n+l*2)*ali.length);
+    var ulW=goodsUl.width();
+    var nums=Math.ceil(ulW/W);
+    var leftA=$(this).parent().find(".btn_left");
+    m=$(this).attr("data-num");
+    if(m>=(nums-1)){
+      return;
+    }
+    m++;
+    $(this).attr("data-num",m);
+    leftA.attr("data-numb",m);
+    doMove1(goodsUl,"left",30,-m*W);
+  })
+</script>

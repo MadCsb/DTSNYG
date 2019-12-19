@@ -1,5 +1,6 @@
 package com.msy.travel.web.controller;
 
+import com.alibaba.dubbo.common.URL;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -44,14 +45,22 @@ public class WebPersonalController extends BaseController {
 	/**
 	 * 个人中心
 	 *
+	 * menuId 菜单ID
+	 * url 直接跳转URL
 	 * @return
 	 */
 	@RequestMapping(params = "method=personal")
-	public ModelAndView personal(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView personal(HttpServletRequest request, HttpServletResponse response,String menuId,String url) {
 		ModelAndView view = null;
 		try {
+			if (url != null && !url.trim().equals(""))
+			{
+				url = URL.decode(url);
+			}
 			view = new ModelAndView("web/personal/personal");
 			view.addObject("user",getLoginUser(request));
+			view.addObject("url",url);
+			view.addObject("menuId",menuId);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);

@@ -1,63 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <#include "/WX_INC_HEAD.html">
-    <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
-    <style>
-      #navbar.navbar_fixed {
-        position:fixed;
-        top:0px;
-        width:100%;
-        background: #fafafa;
-        height:1rem;
-        z-index:99;
-        min-height:110px;
-      }
-      #navbar.navbar_absolute {
-        position: relative;
-        width:100%;
-        background: #fafafa;
-        height:1rem;
-        z-index:99;
-        min-height:110px;
 
-      }
-    </style>
-    </head>
-<body onLoad="javascript:window_onload();">
-<!--header 开始-->
-<div class="snyg_headdiv">
-  <span class="ico_ret"><a onclick="javascript:history.back(-1);"><img src="${rc.contextPath}/wx/images/return.png" ></a></span>
-  <h2>全部订单</h2>
-  <span class="ico_home"><a onclick="toPersonal();"><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>
-</div>
-<!--header 结束-->
-<div id="navbar" class="navbar_absolute">
-  <div class="snyg_topserch">
-    <form id="fm-1" action="wxorder?method=toOrderList" method="POST">
-      <a><input id="searchKey" name="searchKey" type="search" class="snyg_top_inputsech" placeholder="请输入检索关键字" value="${searchKey!''}"/></a>
-    </form>
+  <script src="js/jquery.js"></script>
+  <script src="js/common.js" charset="utf-8"></script>
+  <script src="js/jquery.ui.js"></script>
+  <script src="js/jquery.validation.min.js"></script>
+  <script src="js/jquery.masonry.js"></script>
+  <script src="js/dialog.js" id="dialog_js" charset="utf-8"></script><link href="js/dialog.css" rel="stylesheet" type="text/css">
+
+  <link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/member.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/buyer.css" rel="stylesheet" type="text/css">
+  <link href="${rc.contextPath}/web/css/iconfont.css" rel="stylesheet" type="text/css">
+
+  <script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
+
+  <script src="${rc.contextPath}/web/js/jquery.js"></script>
+  <script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
+  <script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
+  <script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
+  <script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
+  <script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script>
+
+  <script src="${rc.contextPath}/web/js/jquery.page.js"></script>
+  <script type="text/javascript" src="${rc.contextPath}/plugin/DatePicker/WdatePicker.js"></script>
+  <script src="${rc.contextPath}/wx/js/snyg.js"></script>
+  <script src="${rc.contextPath}/wx/js/WxPerson.js"></script>
+</head>
+<body>
+<div class="order_content">
+  <div class="order_content_title clearfix ordernav">
+      <input type="hidden" id="searchKey" value="" />
+
+      <p class="order_types order_types_part01">
+        <a onclick="changeOrderListType('0')">全部</a>
+        <a onclick="changeOrderListType('1')">待支付</a>
+        <a onclick="changeOrderListType('2')">待发货</a>
+        <a onclick="changeOrderListType('3')">待收货</a>
+        <a onclick="changeOrderListType('4')">退换货</a>
+      </p>
+      <p class="order_time">
+        <span>下单时间</span>
+        <input type="text" autocomplete="off" placeholder="开始时间" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="createTimeS" id="createTimeS" value="" class="text w70 hasDatepicker" readonly="readonly">
+        <label class="add-on">
+          <i class="iconfont icon-rili"></i>
+        </label>
+        <em style="margin-top: 3px;">&nbsp;– &nbsp;</em>
+        <input type="text" placeholder="结束时间" autocomplete="off" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="createTimeE" id="createTimeE" value="" class="text w70 hasDatepicker" readonly="readonly">
+        <label class="add-on">
+          <i class="iconfont icon-rili"></i>
+        </label>
+      </p>
+
+      <p class="ser_p" style="margin-left: 10px; width:300px;">
+        <input type="text" name="orderCodeLike" id="orderCodeLike" value="" placeholder="订单号">
+        <a class="button btn_search_goods" onclick="search()" style="padding-left: 2px;"><i class="iconfont icon-icosearch icon_size18" style="margin-right:-2px; "></i>搜索</a>
+      </p>
   </div>
 
-  <nav class="snyg_dd_nav">
-    <a onclick="changeOrderListType('0')"><span>全部</span></a>
-    <a onclick="changeOrderListType('1')"><span>待支付</span></a>
-    <a onclick="changeOrderListType('2')"><span>待发货</span></a>
-    <a onclick="changeOrderListType('3')"><span>待收货</span></a>
-    <a onclick="changeOrderListType('4')"><span>退换货</span></a>
-  </nav>
-</div>
-<div class="snyg_contentb" >
-  <ul class="ddlist">
+  <table>
+    <tbody class="tbpad">
+    <tr class="order_tit">
+      <th class="order_goods">商品</th>
+      <th class="widt1">单价</th>
+      <th class="widt5">数量</th>
+      <th class="widt4">活动类型</th>
+      <th class="widt5">订单金额</th>
+      <th class="widt6">交易状态</th>
+      <th class="widt4">交易操作</th>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+      <th class="tr_margin" style="height:16px;background:#fff;" colspan="8"></th>
+    </tr>
+    </tbody>
 
-  </ul>
-</div>
-<div class="clear"></div>
-<div class="snyg_footer"></div>
-<div align="center"><span class="addMore">加载更多</span></div>
-<div class="snyg_footer"></div>
-<!--<#include "/wx/WX_FOOTER.html">-->
+    <tbody class="tboy">
+    </tbody>
 
+    <tbody>
+    <tr>
+      <th class="tr_margin" style="height:16px;background:#fff;" colspan="8"></th>
+    </tr>
+    </tbody>
+
+
+    <tfoot>
+    <tr>
+      <td colspan="19">
+        <div class="pagination">
+        </div>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+
+</div>
 <input type="hidden" id="userId" value="${(user.userId)!''}">
 <input type="hidden" id="orderListType" value="${orderListType!''}">
 <script>
@@ -66,45 +106,30 @@
   var pageEntity = new Object(); //查询 分页对象
   pageEntity.pageNum = null;
   pageEntity.pageSize = 10; //每次查询十条订单
-  var loading = false; //是否加载中/加载完成
 
   $(function () {
-    loading = false;
     var orderListType = $("#orderListType").val();
-    $("#orderListType").val(""); //清空，防止缓存
-    if(orderListType == "")
+    if($("#orderListType").val() == "")
     {
-      orderListType = "0";
+      $("#orderListType").val("0");
     }
     changeOrderListType(orderListType);
-    $(window).scroll(function(){
-      if(!loading && pageEntity.pageNum != null) {
-
-        var scrollTop = $(this).scrollTop();
-        var scrollHeight = $(document).height();
-        var windowHeight = $(this).height();
-        if( scrollTop + windowHeight < scrollHeight-10) { //如果拉倒最底部
-          loading = true;
-          pageEntity.pageNum = pageEntity.pageNum + 1;
-          queryOrderList();
-        }
-      }
-    })
   })
+
+  function search()
+  {
+    changeOrderListType($("#orderListType").val());
+  }
 
   //修改orderListType,查询订单列表
   function changeOrderListType(orderListType)
   {
-    pageEntity.pageNum = null;
-    if(orderListType == $("#orderListType").val())//如果已经选中,不处理
-    {
-      return false;
-    }
+    pageEntity.pageNum = 1;
     //修改选中样式
-    $(".snyg_dd_nav").find("span").each(function (index) {
+    $(".order_types_part01").find("a").each(function (index) {
       if(index == parseInt(orderListType)) //选中
       {
-        $(this).attr("class","spanon");
+        $(this).attr("class","currect");
       }else //没选中
       {
         $(this).removeAttr("class");
@@ -114,6 +139,10 @@
     //修改当前选中的订单类型
     $("#orderListType").val(orderListType);
     searchObject.searchKey = $("#searchKey").val();
+    searchObject.createTimeS = $("#createTimeS").val();
+    searchObject.createTimeE = $("#createTimeE").val();
+    searchObject.orderCodeLike = $("#orderCodeLike").val();
+
     if (orderListType == '0') // 全部订单
     {
       searchObject.payTag = "";
@@ -145,73 +174,42 @@
       searchObject.status = ""
       searchObject.haveBack = "1";
     }
-    loading = true;
-    pageEntity.pageNum = 1; //第1页开始查询
     queryOrderList();
-  }
-  //进入商品详情-anniu
-  function toOrderDetail(orderId)
-  {
-    window.location.href = "wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+$("#spId").val();
   }
   //查询订单列表，填充
   function queryOrderList()
   {
-    $('.addMore').text('正在加载...');
+    $(".tboy").html(""); //清空
+    var result = ajaxOrderList(false,searchObject,pageEntity); //同步加载
 
-    if (pageEntity.pageNum == 1) //如果0开始，表示从新开始
+    var pageInfo = result.pageInfo;
+    var orderList = pageInfo.list;
+
+    for(var i=0;i<orderList.length;i++)
     {
-      $(".ddlist").html("");
+      var liHtml = '<tr class="tr_title" orderId="'+orderList[i].orderId+'">'
+                  + '<th colspan="8" class="order_mess">'
+                  + '<p class="order_mess_one">'
+                  + '<time>下单时间：'+orderList[i].createTime+'</time>'
+                  + '<span>订单号：<strong>'+orderList[i].orderCode+'</strong></span>'
+                  + '</p>'
+                  + '<div class="order_promotion_type"><span></span><span></span></div>'
+                  + '</th>'
+                  + '</tr>'
+                  + '<tr detailOrderId="'+orderList[i].orderId+'"></tr>';
+      $(".tboy").append(liHtml);
+      ajaxOrderDetail(true,orderList[i].orderId,orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
     }
-    var orderList = new WxPerson().orderList(false,searchObject,pageEntity); //同步加载
-    if (orderList != null)
-    {
-      for(var i=0;i<orderList.length;i++)
-      {
-        var orderShowType = getOrderShowType(orderList[i]);
-
-        var liHtml = '<li orderId="'+orderList[i].orderId+'">'
-                    + '<a onclick="toOrder(\'' +orderList[i].orderId+ '\')"><div>订单编号：'+orderList[i].orderCode;
-        ////"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
-        if(orderShowType == "-")
-        {
-          liHtml += '<span class="ddzt1">已退款</span></div></a>'
-        }else if(orderShowType == "--")
-        {
-          liHtml += '<span class="ddzt1">退款中</span></div></a>'
-        }else if(orderShowType == "0-0")
-        {
-          liHtml += '<span class="ddzt1">待支付</span></div></a>'
-        }else if(orderShowType == "0-12")
-        {
-          liHtml += '<span class="ddzt1">已取消</span></div></a>'
-        }else if(orderShowType == "1-0")
-        {
-          liHtml += '<span class="ddzt1">待发货</span></div></a>'
-        }else if(orderShowType == "1-1")
-        {
-          liHtml += '<span class="ddzt1">待收货</span></div></a>'
-        }else if(orderShowType == "1-2")
-        {
-          liHtml += '<span class="ddzt1">已收货</span></div></a>'
-        }else if(orderShowType == "1-5")
-        {
-          liHtml += '<span class="ddzt1">订单关闭</span></div></a>'
-        }
-        liHtml += '</li>';
-        $(".ddlist").append(liHtml);
-        new WxPerson().orderDetail(true,orderList[i].orderId,orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+    var pageCount = pageInfo.pages;
+    var current = pageInfo.pageNum;
+    $(".pagination").createPage({
+      pageCount:pageCount,
+      current:current,
+      backFn:function(p){
+        pageEntity.pageNum = p;
+        queryOrderList();
       }
-    }
-    if(orderList==null || orderList.length<pageEntity.pageSize)
-    {
-      loading = true;
-      $('.addMore').text('已全部加载完毕');
-    }else
-    {
-      loading = false;
-      $('.addMore').text('加载更多');
-    }
+    });
   }
 
   //获取订单分类
@@ -258,9 +256,10 @@
   {
     var orderListList = orderDetail.orderListList;
     var order = orderDetail.order;
-
-    var li = $("li[orderId='" + order.orderId + "']");
     var orderShowType = getOrderShowType(order);
+    var detailHtml = '<tr>' +
+        '<td colspan="4" class="td_rborder">' +
+        '<table><tbody>';
     for(var j=0;j<orderListList.length;j++)
     {
       //退订单，不显示
@@ -268,64 +267,90 @@
       {
         continue;
       }
-      var liHtml =
-          '<div class="ddinfo">'
-          + '<div class="iconleft">'
-          + '<div class="icon">'
-          + '<a onclick="toSellPrice(\''+orderListList[j].priceId+'\')">';
-      if(orderListList[j].goodsPrice.thumbPic != null && orderListList[j].goodsPrice.thumbPic != '')
-      {
-        liHtml = liHtml + '<img src="${rc.contextPath}/upload/wxpic/'+ orderListList[j].goodsPrice.thumbPic+'" />'
-      }else
-      {
-        liHtml = liHtml + '<img class="myimg" src="${rc.contextPath}/images/no-tu.png"/>'
-      }
-
+      detailHtml = detailHtml +
+          '<tr class="tr_con shop-list">' +
+          '<td class="order_goods">' +
+          '<img src="${rc.contextPath}/upload/wxpic/'+ orderListList[j].goodsPrice.thumbPic+'">' +
+          '<a target="_blank" href="">'+orderListList[j].productName+'</a>' +
+          '<em class="td_sale bbc_btns small_details">'+ orderListList[j].childName +'</em>' +
+          '</td>' +
+          '<td class="td_color widt1">'+ orderListList[j].price +'</td>' +
+          '<td class="td_color widt2"><div class="cart-spec"><a class="spec-title" title=""><i class="iconfont icon-cuowu" style="position:relative;font-size: 12px;">' +
+          '</i>'+ orderListList[j].num +'</a>' +
+          '</div></td>' +
+          '<td class="td_color widt4">';
       if(orderListList[j].sellPrice.priceType == '0')
       {
-        liHtml = liHtml+ ''
+        detailHtml = detailHtml+ '普通'
       }else if(orderListList[j].sellPrice.priceType == '1')
       {
-        liHtml = liHtml+ '<i class="tgspbq">团</i>'
+        detailHtml = detailHtml+ '团购商品'
       }else if(orderListList[j].sellPrice.priceType == '2')
       {
-        liHtml = liHtml+ '<i class="tgspbq">秒</i>'
+        detailHtml = detailHtml+ '秒杀商品'
       }
-
-      liHtml = liHtml+ '</a></div></div>'
-          + '<div class="info">'
-          + '<a onclick="toSellPrice(\''+orderListList[j].priceId+'\')">'
-          + '<h4>'+orderListList[j].productName+'</h4>'
-          + '</a>'
-          + '<p class="txt"><span class="f4">规格 '+ orderListList[j].childName +'</span></p>'
-          + '<p class="txt"><span class="f4">数量 '+ orderListList[j].num +'</span></p>'
-          + '<p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;'+ orderListList[j].money +'</span></p></div>'
-          + '</div>'
+      detailHtml = detailHtml + '</td></tr>';
     }
-    liHtml = liHtml + '<div class="ddzf">'
-        + '<p class="txt1">'
-        + '<span class="f4">'+order.createTime+'</span>';
+    detailHtml = detailHtml + '</tbody></table>' +
+        '</td>' +
+        '<td class="td_rborder widt5">' +
+        '<span>订单总额：<strong>'+order.money+'</strong></span>' +
+        '<br>运费'+order.transFee+'<br><span class="td_sale bbc_btns"></span>' +
+        '</td>' +
+        '<td class="td_rborder">' +
+        '<p class="getit "></p>' +
+        '<p><span style="color:#36C">'
+    if(orderShowType == "-")
+    {
+      detailHtml += '已退款'
+    }else if(orderShowType == "--")
+    {
+      detailHtml += '退款中'
+    }else if(orderShowType == "0-0")
+    {
+      detailHtml += '待支付'
+    }else if(orderShowType == "0-12")
+    {
+      detailHtml += '已取消'
+    }else if(orderShowType == "1-0")
+    {
+      detailHtml += '待发货'
+    }else if(orderShowType == "1-1")
+    {
+      detailHtml += '待收货'
+    }else if(orderShowType == "1-2")
+    {
+      detailHtml += '已收货'
+    }else if(orderShowType == "1-5")
+    {
+      detailHtml += '订单关闭'
+    }
+    detailHtml = detailHtml+'</span><br></p>' +
+        '<p><a href="">订单详情</a></p>' +
+        '</td>' +
+        '<td class="td_rborder">';
+
     //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
     if(orderShowType == "-")
     {
-      liHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')"><span class="s_btn fr">查退款</span></a>'
+      detailHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查退款</a>'
     }else if(orderShowType == "--")
     {
-      liHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')"><span class="s_btn fr">查退款</span></a>'
+      detailHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查退款</a>'
     }else if(orderShowType == "0-0")
     {
-      liHtml += '<a onclick="toOrder(\''+order.orderId+'\')"><span class="s_btn fr">去支付</span></a>'
+      detailHtml += '<a onclick="toOrder(\''+order.orderId+'\')" style="color:#F30;" class="to_views">去支付</a>'
     }else if(orderShowType == "0-12") //已取消
     {
     }else if(orderShowType == "1-0") //待发货
     {
-      liHtml += '<a onclick="alertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')"><span class="s_btn fr">提醒</span></a>';
+      detailHtml += '<a onclick="alertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')" style="color:#F30;" class="to_views">提醒</a>';
     }else if(orderShowType == "1-1")
     {
-      liHtml += '<a onclick="toOrderExpress(\''+order.orderId+'\')"><span class="s_btn fr">查物流</span></a>';
+      detailHtml += '<a onclick="toOrderExpress(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查物流</a>';
     }else if(orderShowType == "1-2")
     {
-      liHtml += '<a onclick="toOrderBack(\''+order.orderId+'\')" style="display: none;"><span class="s_btn fr">申请退货</span></a>';
+      detailHtml += '<a onclick="toOrderBack(\''+order.orderId+'\')" style="display: none;" style="color:#F30;" class="to_views">申请退货</a>';
     }else if(orderShowType == "1-3")
     {
 
@@ -333,23 +358,9 @@
     {
 
     }
-    liHtml += '</p></div>';
-    $(li).append(liHtml);
-  }
-
-
-  function window_onload() {
-    window.addEventListener("scroll",navbar_reset_top,false);
-  }
-  var navbar_top=100;
-  function navbar_reset_top() {
-    var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
-    if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
-      document.getElementById("navbar").className="navbar_fixed";
-    }
-    else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
-      document.getElementById("navbar").className="navbar_absolute";
-    }
+    detailHtml = detailHtml + '</td>';
+    console.log(detailHtml);
+    $("[detailOrderId='"+order.orderId+"']").html(detailHtml);
   }
 </script>
 

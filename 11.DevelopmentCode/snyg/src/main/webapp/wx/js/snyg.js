@@ -21,6 +21,13 @@ function toWebIndex(){
 }
 
 /**
+ * 跳转web我的/商城首页
+ */
+function toWebPersonal(){
+  window.location.href = "webPersonal.do?method=personal";
+}
+
+/**
  * 跳转分页
  * searchObject
  */
@@ -58,7 +65,6 @@ function toOrderList(orderListType){
   }
   wxAuthorizeBase("wxorder.do?method=toOrderList&orderListType="+orderListType);
 }
-
 
 /**
  * 跳转我的收货地址
@@ -117,9 +123,77 @@ function toOrderBack(orderId){
 function toOrderBackDetail(orderId){
   window.location.href = "wxorder?method=toOrderBackDetail&orderId="+orderId;
 }
+
 /**
  * 跳转提醒发货
  */
 function alertMsg(msg){
   Alert.show3sMsg(msg);
 }
+
+/**
+ * 获取微信用户的订单
+ * sync true 异步, false 同步
+ * searchObject
+ * searchObject.searchKey搜索关键字
+ * searchObject.userId 用户id
+ * searchObject.payTag支付状态
+ * searchObject.beforePayStatus支付前状态
+ * searchObject.status支付后订单状态
+ * searchObject.haveBack是否有退订
+ * pageEntity
+ * pageEntity.pageNum 查询分页数
+ * pageEntity.pageSize 查询每页数量
+ */
+function ajaxOrderList(sync,searchObject,pageEntity)
+{
+  var orderList = null;
+  $.ajax({
+    type: "POST",
+    async: sync,
+    dataType: "json",
+    url: "webOrder?method=ajaxOrderList",
+    data: {
+      d:new Date().getTime(),
+      userId:searchObject.userId,
+      searchKey: searchObject.searchKey,
+      payTag: searchObject.payTag,
+      beforePayStatus: searchObject.beforePayStatus,
+      status: searchObject.status,
+      haveBack: searchObject.haveBack,
+      pageNum: pageEntity.pageNum,
+      pageSize: pageEntity.pageSize
+    },
+    success: function (data) {
+      orderList = data;
+    }
+  });
+  return orderList;
+}
+
+/**
+ * 获取微信用户的订单详情
+ * sync true 异步, false 同步
+ * orderId 订单id
+ * func 获取订单详情后，执行的方法，如果未定义，则返回订单详情
+ */
+function ajaxOrderDetail(sync,orderId,func)
+{
+  var orderDetail = null;
+  $.ajax({
+    type: "POST",
+    async: sync,
+    dataType: "json",
+    url: "wxorder?method=wxAjaxOrderDetail",
+    data: {
+      d:new Date().getTime(),
+      orderId:orderId
+    },
+    success: function (data) {
+      orderDetail = data;
+      func(orderDetail);
+    }
+  });
+  return orderDetail;
+}
+

@@ -1,0 +1,121 @@
+<#include "../PersonlMenu.html"/>
+<div class="bbuyer_head bbc_bg">
+    <div class="wrap bbc_bg">
+        <div class="bbuyer_head_fl">
+            <div class="bbuyer_logo">
+                <a onclick="toWebIndex()">
+                    <img src="${rc.contextPath}/web/images/logo.png">
+                </a>
+            </div>
+            <div class="bbuyer_others">
+                <p class="mine_shopmall">我的商城</p>
+                <p class="back_mall_index"><a onclick="toWebPersonal()">返回商城首页</a></p>
+            </div>
+            <div class="bbuyer_head_nav">
+                <ul>
+                    <li><a onclick="toWebPersonal()">个人中心首页</a></li>
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+          $(".set").hover(function(){
+            $(this).find(".sub-menu").css("display","block");
+            $(this).find("i").css("transform","rotate(-180deg)");
+
+          },function(){
+            $(this).find(".sub-menu").css("display","none");
+            $(this).find("i").css("transform","rotate(1deg)");
+          })
+        </script>
+        <!-- 购物车 -->
+        <div class="bbuyer_cart">
+            <div class="bbc_buyer_icon">
+                <i class="ci_left iconfont icon-zaiqigoumai bbc_color rel_top2"></i>
+                <a href="">我的购物车</a>
+                <i class="ci_right iconfont icon-iconjiantouyou"></i>
+                <i class="ci-count bbc_bg" id="cart_num">2</i>
+            </div>
+        </div>
+        <form method="get" class="search-form" name="form_search" id="form_search" action="">
+            <div class="bbuyer_head_fr">
+                <input name="app" id="search_app" value="goodslist" type="hidden">
+                <input type="text" class="bbuyer_inp_ser" name="keyword" placeholder="请输入商品名字" id="site_keywords">
+                <input type="submit" style="display: none;">
+                <a class="bbuyer_search" id="site_search">搜索</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="Colr">
+    <div class="wrapper ">
+        <div class="Div_2 clearfix">
+            <div class="left  ">
+                <div class="_img">
+                    <img src="images/avatar_645.png" onload="javascript:DrawImage(this,108,108);" alt="小梅" width="100" height="100">
+                </div>
+                <div class="font">
+                    <table>
+                        <tbody>
+                        <tr><td colspan="2" class="name">小梅</td></tr>
+                        <tr><td class="fontColor">会员级别:</td><td><span class="jmys-grade-mini bbc_bg  pad">V0</span></td></tr>
+                        <tr><td class="fontColor">账号安全:</td>
+                            <td class="tiao"><span title=""><i class="bbc_bg" style="width: 50%;"></i></span><a>中</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="right  ">
+                <div class="_left">
+                    <ul>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待付款.html"><img src="images/ico_dai1.png"></a></div>
+                            <p class="_p">待付款
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待发货.html"><img src="images/ico_dai2.png"></a></div>
+                            <p class="_p">待发货
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                        <li>
+                            <div class="Divradius">
+                                <a href="待收货.html"><img src="images/ico_dai3.png"></a></div>
+                            <p class="_p">待收货
+                                <strong>0</strong>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="Div3 clearfix">
+
+            <div class="left_1   visible-lg">
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">交易中心</a></li>
+
+                    <li><a href="" class="_Color" style="">等待付款订单</a></li>
+                    <li><a href="" class="_Color" style="">确认收货订单</a></li>
+                </ul>
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">客户服务</a></li>
+                    <li><a href="" class="_Color" style="">退款及退货</a></li>
+                    <li><a href="" class="_Color" style="">平台客服</a></li>
+                </ul>
+                <ul class="jiaoyizhognxin">
+                    <li><a class="_font">会员信息</a></li>
+                    <li><a href="" class="_Color" style="">会员信息</a></li>
+                    <li><a href="" class="_Color" style="">密码修改</a></li>
+                    <li><a href="" class="_Color" style="">收货地址</a></li>
+                </ul>
+            </div>
+            <div class="aright">
+
+

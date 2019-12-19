@@ -1,32 +1,10 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
-    <title>三农壹购</title>
-    <meta name="keywords" content="三农壹购">
-    <meta name="description" content="三农壹购">
-
-    <link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
-    <link href="${rc.contextPath}/web/css/member.css" rel="stylesheet" type="text/css">
-    <link href="${rc.contextPath}/web/css/buyer.css" rel="stylesheet" type="text/css">
-    <link href="${rc.contextPath}/web/css/iconfont.css" rel="stylesheet" type="text/css">
-
-    <script type="text/javascript" async="" defer="" src="${rc.contextPath}/web/js/stats.js"></script>
-
-    <script src="${rc.contextPath}/web/js/jquery.js"></script>
-    <script src="${rc.contextPath}/web/js/common.js" charset="utf-8"></script>
-    <script src="${rc.contextPath}/web/js/jquery.ui.js"></script>
-    <script src="${rc.contextPath}/web/js/jquery.validation.min.js"></script>
-    <script src="${rc.contextPath}/web/js/jquery.masonry.js"></script>
-    <script src="${rc.contextPath}/web/js/dialog.js" id="dialog_js" charset="utf-8"></script>
-    <link href="${rc.contextPath}/web/js/dialog.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="${rc.contextPath}/js/artDialog.js?skin=idialog"></script>
-
+    <#include "WEB_PERSONAL_INC_HEAD.html">
 </head>
 <body>
-<#include "../PersonlMenu.html">
+<#include "../PersonlMenu.html"/>
 <!-- PublicHeadLayout Begin -->
 <div class="bbuyer_head bbc_bg">
     <div class="wrap bbc_bg">
@@ -130,27 +108,24 @@
             <div class="left_1   visible-lg">
                 <ul class="jiaoyizhognxin">
                     <li><a class="_font">交易中心</a></li>
-
-                    <li><a href="待付款.html" class="_Color" style="">等待付款订单</a></li>
-                    <li><a href="确认收货订单.html" class="_Color" style="">确认收货订单</a></li>
-                    <li><a href="交易评价.html" class="_Color" style="">交易评价</a></li>
+                    <li menuId="1-1" url="webOrder?method=toOrderList&orderListType=1"><a class="_Color" style="">等待付款订单</a></li>
+                    <li menuId="1-2" url="webOrder?method=toOrderList&orderListType=2"><a class="_Color" style="">等待发货订单</a></li>
+                    <li menuId="1-3" url="webOrder?method=toOrderList&orderListType=3"><a class="_Color" style="">等待收货订单</a></li>
                 </ul>
                 <ul class="jiaoyizhognxin">
                     <li><a class="_font">客户服务</a></li>
-                    <li><a href="" class="_Color" style="">退款及退货</a></li>
-                    <li><a href="lxwm.html" class="_Color" style="">平台客服</a></li>
+                    <li menuId="2-1" url=""><a class="_Color" style="">退款及退货</a></li>
+                    <li menuId="2-2" url=""><a class="_Color" style="">平台客服</a></li>
                 </ul>
                 <ul class="jiaoyizhognxin">
                     <li><a class="_font">会员信息</a></li>
-                    <li><a href="会员信息.html" class="_Color" style="">会员信息</a></li>
-                    <li><a href="密码修改.html" class="_Color" style="">密码修改</a></li>
-                    <li><a href="收货地址.html" class="_Color" style="">收货地址</a></li>
+                    <li menuId="3-1" url=""><a class="_Color" style="">会员信息</a></li>
+                    <li menuId="3-2" url=""><a class="_Color" style="">密码修改</a></li>
+                    <li menuId="3-3" url=""><a class="_Color" style="">收货地址</a></li>
                 </ul>
-
             </div>
             <div class="aright">
-                <iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src="webPersonal?method=index"></iframe>
-
+                <iframe id="mainContent" name="mainContent"  width="100%" height="100%" scrolling="no" frameborder="0" onload="this.height=100" src=""></iframe>
             </div>
         </div>
     </div>
@@ -343,5 +318,28 @@
         <a href=""><img src="${rc.contextPath}/web/images/05987954210414380.png" border="0"></a>
     </div>
 </div>
+<script>
+    $(function () {
+      var menuId = $("#menuId").val();
+      var url = $("#url").val();
+      if(menuId != null && menuId != '')
+      {
+        url = $("li[menuId='"+menuId+"']").attr("url");
+      }else if(url != null && url != '')
+      {
 
+      }else
+      {
+        url = "webPersonal?method=index";
+      }
+      alert(url);
+      resetIframeUrl(url);
+    })
+
+    function resetIframeUrl(url)
+    {
+      $("#mainContent").attr("src",url);
+    }
+</script>
+</body>
 </head>
