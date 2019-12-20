@@ -181,7 +181,7 @@ public class UserController extends BaseController {
 					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
-					WebUtils.issueRedirect(request, response, "/webPersonal?method=personal");
+					WebUtils.issueRedirect(request, response, "/webPersonal?method=index");
 				}
 			}
 		} catch (Exception e) {
@@ -204,7 +204,7 @@ public class UserController extends BaseController {
 		try {
 			if ("web".equals(loginPage))
 			{
-				view = new ModelAndView("redirect:/webPersonal.do?method=personal");
+				view = new ModelAndView("redirect:/webPersonal.do?method=index");
 			}else
 			{
 				view = new ModelAndView("main");

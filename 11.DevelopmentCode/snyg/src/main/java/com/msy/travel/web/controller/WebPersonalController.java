@@ -42,32 +42,10 @@ public class WebPersonalController extends BaseController {
 	@Resource(name = "shopcartServiceImpl")
 	private ShopcartService shopcartService;
 
-	/**
-	 * 个人中心
-	 *
-	 * menuId 菜单ID
-	 * url 直接跳转URL
-	 * @return
-	 */
-	@RequestMapping(params = "method=personal")
-	public ModelAndView personal(HttpServletRequest request, HttpServletResponse response,String menuId,String url) {
-		ModelAndView view = null;
-		try {
-			if (url != null && !url.trim().equals(""))
-			{
-				url = URL.decode(url);
-			}
-			view = new ModelAndView("web/personal/personal");
-			view.addObject("user",getLoginUser(request));
-			view.addObject("url",url);
-			view.addObject("menuId",menuId);
-		} catch (Exception e) {
-			view = new ModelAndView("error");
-			log.error(e, e);
-		}
-		return view;
+	private void setCommonPersonalObject(ModelAndView view,HttpServletRequest request, HttpServletResponse response)
+	{
+		view.addObject("user",getLoginUser(request));
 	}
-
 	/**
 	 * 个人中心
 	 *
@@ -98,11 +76,61 @@ public class WebPersonalController extends BaseController {
 			view = new ModelAndView("web/personal/index");
 			view.addObject("orderList",orderList);
 			view.addObject("shopcartList",shopcartList);
+			setCommonPersonalObject(view,request,response);
+
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);
 		}
 		return view;
 	}
+
+
+
+	/**
+	 * 进入个人订单列表
+	 * userId 用户Id
+	 * orderListType = 0 全部订单
+	 * orderListType = 1 待支付
+	 * orderListType = 2 待发货
+	 * orderListType = 3 待收货
+	 * orderListType = 4 退换货
+	 * @return
+	 */
+	@RequestMapping(params = "method=toOrderList")
+	public ModelAndView toOrderList(String orderListType,HttpServletRequest request,HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("/web/personal/orderList");
+			view.addObject("orderListType",orderListType);
+			setCommonPersonalObject(view,request,response);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	///**
+	// * 去订单详情
+	// */
+	//@RequestMapping(params = "method=toOrderDetail")
+	//public ModelAndView toOrderDetail(String orderId,HttpServletRequest request)
+	//{
+	//	ModelAndView view = null;
+	//	try {
+	//		view = new ModelAndView("wx/order/orderDetail");
+	//		view.addObject("orderId",orderId);
+	//		view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
+	//		ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
+	//		wxSetViewObjects(view, request,serviceCode,userService);
+	//	}catch (Exception e) {
+	//		view = new ModelAndView("error");
+	//		view.addObject("e", getExceptionInfo(e));
+	//		log.error(e, e);
+	//	}
+	//	return view;
+	//}
 
 }

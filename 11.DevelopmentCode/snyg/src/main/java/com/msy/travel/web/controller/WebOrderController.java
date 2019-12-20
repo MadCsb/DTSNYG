@@ -222,54 +222,6 @@ public class WebOrderController extends BaseController {
 		}
 	}
 
-
-	/**
-	 * 进入个人订单列表
-	 * userId 用户Id
-	 * orderListType = 0 全部订单
-	 * orderListType = 1 待支付
-	 * orderListType = 2 待发货
-	 * orderListType = 3 待收货
-	 * orderListType = 4 退换货
-	 * @return
-	 */
-	@RequestMapping(params = "method=toOrderList")
-	public ModelAndView toOrderList(String orderListType,String searchKey,HttpServletRequest request) {
-		ModelAndView view = null;
-		try {
-			view = new ModelAndView("/web/order/orderList");
-			view.addObject("orderListType",orderListType);
-			view.addObject("searchKey",searchKey);
-			view.addObject("user",getLoginUser(request));
-		} catch (Exception e) {
-			view = new ModelAndView("error");
-			view.addObject("e", getExceptionInfo(e));
-			log.error(e, e);
-		}
-		return view;
-	}
-
-	/**
-	 * 去订单详情
-	 */
-	@RequestMapping(params = "method=toOrderDetail")
-	public ModelAndView toOrderDetail(String orderId,HttpServletRequest request)
-	{
-		ModelAndView view = null;
-		try {
-			view = new ModelAndView("wx/order/orderDetail");
-			view.addObject("orderId",orderId);
-			view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
-		}catch (Exception e) {
-			view = new ModelAndView("error");
-			view.addObject("e", getExceptionInfo(e));
-			log.error(e, e);
-		}
-		return view;
-	}
-
 	/**
 	 * 确定快递已收货
 	 */

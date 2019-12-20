@@ -196,6 +196,11 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	private OrderCustomer orderCustomer;
 
+	/**
+	 * 缩略图文件名称 db_column: F_THUMBPIC
+	 */
+	private String thumbPic;
+
 
 	//搜索类型
 
@@ -657,6 +662,14 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setRecAddress(String recAddress) {
 		this.recAddress = recAddress;
+	}
+
+	public String getThumbPic() {
+		return thumbPic;
+	}
+
+	public void setThumbPic(String thumbPic) {
+		this.thumbPic = thumbPic;
 	}
 }
 
