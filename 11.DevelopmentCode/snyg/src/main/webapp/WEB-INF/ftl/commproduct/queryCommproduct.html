@@ -63,8 +63,8 @@
 						</#if>
 	               	</select>
 				</td>
-	          
-	          <td>是否上架：</td><td colspan="6">
+	          <td>是否上架：</td>
+	          <td>
 	          	<select  name="state" id="state" class="data-searchtxt-select">
 	          		<option value="">请选择</option>
 	          		<#if commproduct.state??>
@@ -84,7 +84,27 @@
 	          		</#if>
 				</select>
 	          </td>
-	
+			  <td>是否推荐：</td>
+	          <td colspan="4">
+	          	<select  name="isSortNum" id="isSortNum" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<#if commproduct.isSortNum??>
+	          			<#if commproduct.isSortNum=='0'>
+			         		<option value="0" selected="selected">否</option>
+			         		<option value="1">是</option>
+			         	<#elseif commproduct.isSortNum=='1'>
+			         		<option value="0">否</option>
+			         		<option value="1" selected="selected">是</option>
+		          		<#else>
+			         		<option value="0">否</option>
+			         		<option value="1">是</option>
+		          		</#if>
+	          		<#else>
+		         		<option value="0">否</option>
+		         		<option value="1">是</option>
+	          		</#if>
+				</select>
+	          </td>
 	        </tr>
 	      </table>
 	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>

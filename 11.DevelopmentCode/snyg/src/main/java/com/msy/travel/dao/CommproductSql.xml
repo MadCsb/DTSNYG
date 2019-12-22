@@ -32,7 +32,8 @@
 			F_RECOMMEND ,
 			F_TYPE ,
 			F_SUBTYPE,
-			F_PRODUCTCODE
+			F_PRODUCTCODE,
+			F_SORTNUM
 		) VALUES (
 			#{productId} ,
 			#{spId} ,
@@ -57,7 +58,8 @@
 			#{recommend} ,
 			#{type} ,
 			#{subType},
-			#{productCode}
+			#{productCode},
+			#{sortNum}
 		)
 	</insert>
 
@@ -89,7 +91,8 @@
 			F_RECOMMEND ,
 			F_TYPE ,
 			F_SUBTYPE,
-			F_PRODUCTCODE
+			F_PRODUCTCODE,
+			F_SORTNUM
 		) VALUES (
 			#{productId} ,
 			#{spId} ,
@@ -114,7 +117,8 @@
 			#{recommend}  ,
 			#{type} ,
 			#{subType},
-			#{productCode}
+			#{productCode},
+			#{sortNum}
 		)
 	</insert>
 
@@ -140,7 +144,8 @@
 			F_DELFLAG = #{delFlag} ,
 			F_RECOMMEND = #{recommend} ,
 			F_TYPE = #{type},
-			F_SUBTYPE = #{subType}
+			F_SUBTYPE = #{subType},
+			F_SORTNUM = #{sortNum}
 		<where>
 			F_PRODUCTID = #{productId} 
 			
@@ -192,7 +197,8 @@
 			t.F_RECOMMEND as recommend ,
 			t.F_TYPE as type ,
 			t.F_SUBTYPE as subType,
-			t.F_PRODUCTCODE as productCode
+			t.F_PRODUCTCODE as productCode,
+			t.F_SORTNUM as sortNum
 		FROM
 			t_sm_commproduct t
 		<where>
@@ -227,7 +233,8 @@
 			t.F_TYPE as type ,
 			t.F_SUBTYPE as subType,
 			t.F_PRODUCTCODE as productCode,
-			p.F_TYPENAME as typeName
+			p.F_TYPENAME as typeName,
+			t.F_SORTNUM as sortNum
 		FROM
 		t_sm_commproduct t
 		LEFT JOIN t_sm_pdctype p on t.F_TYPE = p.F_PDCTYPEID
@@ -255,6 +262,14 @@
 		    </if>
 		    <if test="state !=null and state !=''">
 		    	and t.F_STATE = #{state}
+		    </if>
+		    <if test="isSortNum !=null and isSortNum !=''">
+		    	<if test='isSortNum ="1"'>
+			    	and t.F_SORTNUM is null
+			    </if>
+			    <if test='isSortNum ="0"'>
+			    	and t.F_SORTNUM is not null
+			    </if>
 		    </if>
 		</where>
 		<if test="entityPage != null">
@@ -377,6 +392,14 @@
 		    </if>
 		    <if test="state !=null and state !=''">
 		    	and t.F_STATE = #{state}
+		    </if>
+		    <if test="isSortNum !=null and isSortNum !=''">
+		    	<if test='isSortNum =="1"'>
+			    	and t.F_SORTNUM is not null
+			    </if>
+			    <if test='isSortNum =="0"'>
+			    	and t.F_SORTNUM is null
+			    </if>
 		    </if>
 		</where>
 		<if test="entityPage != null">

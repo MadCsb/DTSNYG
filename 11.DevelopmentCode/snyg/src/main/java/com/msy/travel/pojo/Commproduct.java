@@ -145,6 +145,29 @@ public class Commproduct extends BaseEntity implements java.io.Serializable {
 
 	private String typeUrl;
 
+	/**
+	 * F_SORTNUM
+	 */
+	private String sortNum;
+
+	private String isSortNum;
+
+	public String getIsSortNum() {
+		return isSortNum;
+	}
+
+	public void setIsSortNum(String isSortNum) {
+		this.isSortNum = isSortNum;
+	}
+
+	public String getSortNum() {
+		return sortNum;
+	}
+
+	public void setSortNum(String sortNum) {
+		this.sortNum = sortNum;
+	}
+
 	public String getTypeUrl() {
 		return typeUrl;
 	}

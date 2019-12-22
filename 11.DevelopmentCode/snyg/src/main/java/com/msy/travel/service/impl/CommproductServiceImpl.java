@@ -156,6 +156,10 @@ public class CommproductServiceImpl implements CommproductService {
 		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
 			commproduct.setSaleNum(null);
 		}
+
+		if (commproduct.getSortNum() == null || "".equals(commproduct.getSortNum())) {
+			commproduct.setSortNum(null);
+		}
 		commproduct.setState("0");
 
 		commproductDao.insertCommproduct(commproduct);
@@ -193,6 +197,10 @@ public class CommproductServiceImpl implements CommproductService {
 
 		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
 			commproduct.setSaleNum(null);
+		}
+
+		if (commproduct.getSortNum() == null || "".equals(commproduct.getSortNum())) {
+			commproduct.setSortNum(null);
 		}
 		commproduct.setState("0");
 		commproductDao.updateCommproduct(commproduct);

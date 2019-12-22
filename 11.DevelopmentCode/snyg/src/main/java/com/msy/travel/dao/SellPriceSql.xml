@@ -221,6 +221,14 @@
 		    <if test="venId !=null and venId !=''">
 		    	and p.F_VENID = #{venId}
 		    </if>
+		    <if test="isSortNum !=null and isSortNum !=''">
+		    	<if test='isSortNum =="1"'>
+			    	and p.F_SORTNUM is null
+			    </if>
+			    <if test='isSortNum =="0"'>
+			    	and p.F_SORTNUM is not null
+			    </if>
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

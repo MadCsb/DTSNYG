@@ -1,1 +1,3 @@
 alter table t_sm_expressprice add F_ISSEND varchar(1) COMMENT '发货类型 0:发货 1:不发货';
+
+alter table t_sm_commproduct add F_SORTNUM decimal(6,0) COMMENT '推荐排序号码';

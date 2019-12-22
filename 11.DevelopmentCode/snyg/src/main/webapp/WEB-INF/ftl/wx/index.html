@@ -95,9 +95,9 @@
 var currentPage = 1;
 $(function(){
 	changeBottomClass('1');
-	getDataList('2','4','','','1');
-	getDataList('1','3','','','1');
-	getDataList('0','20','DESC','s.F_UPDATETIME',currentPage);
+	getDataList('2','4','','','1','');
+	getDataList('1','3','','','1','');
+	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
 
   setCarousel();
   
@@ -201,7 +201,8 @@ function changePriceType(priceType){
 	//rowsPerPage 每页显示数量
 	//sortOrder,sortField 排序
 	//cPage 页数
-	function getDataList(priceType,rowsPerPage,sortOrder,sortField,cPage){
+	function getDataList(priceType,rowsPerPage,sortOrder,sortField,cPage,isSortNum){
+
 		var priceStartDate = "";
 		var priceEndDate  = "";
 		if(priceType=="2"){
@@ -225,7 +226,8 @@ function changePriceType(priceType){
 			'entityPage.sortOrder': sortOrder,
 			'entityPage.sortField': sortField,
 			'priceStartDate':priceStartDate,
-			'priceEndDate':priceEndDate
+			'priceEndDate':priceEndDate,
+			'isSortNum':isSortNum
 		},function(data){
 			if(data.length==0){
 				$('.addMore').hide();
@@ -275,7 +277,7 @@ function changePriceType(priceType){
 			}
 			currentPage++;
 			if(isHaveArray.length<20){
-				getDataList('0','20','DESC','s.F_UPDATETIME',currentPage);
+				getDataList('0','20','DESC','p.F_SORTNUM',currentPage,'0');
 			}
 		}
 	}
@@ -320,7 +322,7 @@ function changePriceType(priceType){
 	//秒杀 切换
 	function changePriceType2(tab,obj){
 		currentTab = tab;
-		getDataList('2','4','','','1');
+		getDataList('2','4','','','1','');
 		$(".msbtn_on").removeClass("msbtn_on").addClass("msbtn");
 		$("#priceTypeChange"+tab).removeClass("msbtn").addClass("msbtn_on");
 	}

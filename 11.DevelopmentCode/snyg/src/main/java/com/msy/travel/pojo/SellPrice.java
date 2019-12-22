@@ -114,6 +114,16 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 
 	private String saleNum;
 
+	private String isSortNum;
+
+	public String getIsSortNum() {
+		return isSortNum;
+	}
+
+	public void setIsSortNum(String isSortNum) {
+		this.isSortNum = isSortNum;
+	}
+
 	public String getSaleNum() {
 		return saleNum;
 	}

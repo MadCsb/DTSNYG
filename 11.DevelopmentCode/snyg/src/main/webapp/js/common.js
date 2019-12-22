@@ -1077,63 +1077,61 @@ function openPdcDetailCom(pdcType, pdcId) {
  * 超过四个查询条件的，展开和隐藏功能
  */
 function showHideQuery() {
+	
+	// 如果数量超过4个，显示点击展开更多
+	if ($(".data-requry table tr td").length > 8) {
+	 $(".getMore").css({
+	   display: "block"
+	 });
+	 // 给展开更多空出位子
+	 $(".data-requry").css({
+	   "padding-bottom": "40px"
+	 })
+	}
+	// 将所有的td存入数组中
+	var tdArr = $(".data-requry table tr td");
 
-// 如果数量超过4个，显示点击展开更多
-  if ($(".data-requry table tr td").length > 8) {
-    $(".getMore").css({
-      display: "block"
-    });
-    // 给展开更多空出位子
-    $(".data-requry").css({
-      "padding-bottom": "40px"
-    })
-  }
-// 将所有的td存入数组中
-  var tdArr = $(".data-requry table tr td");
+	// 判断是4的几倍
+	var num = Math.floor(tdArr.length / 8) + 1;
+	console.log(tdArr);
+	// 清空tr中所有的数组
+	$(".data-requry table tr").html("");
 
-// 判断是4的几倍
-  var num = Math.floor(tdArr.length / 8) + 1;
-  console.log(tdArr);
+	// 循环 ， 一开始只能展示四个
+	for (var i = 0; i < 8; i++) {
+	 $(".data-requry table tr").append(tdArr[i])
+	}
 
-//清空表格
-//$(".data-requry table").html("");
-  for (var i = 0; i < num; i++) {
-    // 一重循环追加tr
-    $(".data-requry table").append("<tr></tr>");
-    // 二重循环追加td
-    for (var j = 0; j < 8; j++) {
-      $(".data-requry table tr").eq(i).append(tdArr[(i * 8 + j)])
-    }
-  }
-
-// 隐藏所有tr
-  $('.data-requry table tr').each(function(i){
-    $(this).css('display','none');//遍历tr
-  });
-
-// 一开始只能展示四个
-  $(".data-requry table tr").eq(0).css('display','');
-
-// 点击查看更多展示所有
-  var flag = "more" // 定义一个展开的标识
-  $(".getMore").on("click", function () {
-    if (flag == "more") {
-      //展示所有
-      $('.data-requry table tr').each(function(i){
-        $(this).css('display','');//遍历tr
-      });
-      flag = "less" // 改变标识为less，表示收起
-      $(".getMore").text("点击收起 ▲")  // 改变展开盒子中的字
-    } else {
-      // 隐藏tr中所有td
-      $('.data-requry table tr').each(function(i){
-        $(this).css('display','none');//遍历tr
-      });
-      // 一开始只能展示四个
-      $(".data-requry table tr").eq(0).css('display','');
-      flag = "more" // 改变标识为more，表示展开
-      $(".getMore").text("展开更多 ▼")
-    }
+	// 点击查看更多展示所有
+	var flag = "more" // 定义一个展开的标识
+	$(".getMore").on("click", function () {
+	 if (flag == "more") {
+	   //  清空表格
+	   $(".data-requry table").html("")
+	   for (var i = 0; i < num; i++) {
+	     // 一重循环追加tr
+	     $(".data-requry table").append("<tr></tr>");
+	     // 二重循环追加td
+	     for (var j = 0; j < 8; j++) {
+	       $(".data-requry table tr").eq(i).append(tdArr[(i * 8 + j)])
+	     }
+	   }
+	   flag = "less" // 改变标识为less，表示收起
+	   $(".getMore").text("点击收起 ▲")  // 改变展开盒子中的字
+	   
+	   $("#openFlag").val("1");
+	 } else {
+	   //  清空表格
+	   $(".data-requry table").html("")
+	   $(".data-requry table").append("<tr></tr>");
+	   for (var i = 0; i < 8; i++) {
+	     $(".data-requry table tr").append(tdArr[i])
+	   }
+	   flag = "more" // 改变标识为more，表示展开
+	   $(".getMore").text("展开更多 ▼");
+	   
+	   $("#openFlag").val("0");
+	 }
 	})
 }
 
