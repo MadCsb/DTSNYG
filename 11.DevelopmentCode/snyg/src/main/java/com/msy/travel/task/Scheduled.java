@@ -36,7 +36,7 @@ public class Scheduled {
 	/**
 	 * 每分钟 ，自动关闭超时未支付订单，不需要异步
 	 */
-	// @org.springframework.scheduling.annotation.Scheduled(cron="0 * * * * ? ")
+	 @org.springframework.scheduling.annotation.Scheduled(cron="0 * * * * ? ")
 	public void closeNotPayOrder() {
 		List<Order> orderList = null;
 		try {
