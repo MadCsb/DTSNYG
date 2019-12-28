@@ -518,9 +518,7 @@
     <li id="orderCode">
     </li>
   </ul>
-  <div id="qrCode" class="smbg" align="center">
-
-  </div>
+  <div id="qrCode" class="smbg" align="center"></div>
   <div class="btndiv">
     <input name="button5" type="submit" class="btncss"  value="请使用微信扫码支付" >
   </div>
@@ -1042,7 +1040,6 @@
       orderListList.push(orderList);
     });
     param.orderListList = orderListList;
-    console.log(param);
     $.ajax({
       type: "POST",
       async: false,
@@ -1056,7 +1053,7 @@
         {
           alert(data.resultMsg);
         }else {
-          createOrderSuccess();
+          createOrderSuccess(data.resultPojo);
           pay = new Pay();
           pay.payMethod =pay.PAY_METHOD_WX_PC;
           var payInfoParam = new Object();
@@ -1068,13 +1065,13 @@
           }
           pay.getPayInfo(payInfoParam);
           // Alert.closedLoading();
-          doPay(data.resultPojo);
+          doPay();
         }
       }
     });
   }
 
-  function doPay(orders)
+  function doPay()
   {
     if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
     {
@@ -1082,18 +1079,10 @@
         window.location.href="webPersonal?method=toOrderList&orderListType=2";
       }
       pay.checkPayed();
-
-      $("#payDiv").show();
-      var orderCodeHtml = '';
-      for (var i=0;i<orders.length;i++)
+      if ($("#qrCode").html().trim() == "")
       {
-        orderCodeHtml += '<span class="bt">订单号：</span>'+orders[i].orderCode+'<br>';
-        // var stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,orders[i].createTime);
-        // stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
-        // orderCodeHtml += '<span class="bt" stopTime="'+stopTime+'">1:2:30</span><br>';
+        jQuery('#qrCode').qrcode({width: 160,height: 160,correctLevel:0,render: "table",text: pay.toPay()});
       }
-      $("#orderCode").html(orderCodeHtml);
-      jQuery('#qrCode').qrcode({width: 160,height: 160,correctLevel:0,render: "table",text: pay.toPay()});
       location.href = "#payA";
       // $('#qrCode').qrcode({render:"table",width: 160,height: 160,text: url});
     }else
@@ -1106,7 +1095,7 @@
    * 创建订单成功后执行
    */
 
-  function createOrderSuccess()
+  function createOrderSuccess(orders)
   {
     //不能编辑收获地址
     $("input[name='addr']").attr("disabled","disabled");
@@ -1121,6 +1110,16 @@
     $("#btn_submit").html("支付");
     $("#btn_submit").attr("onclick","doPay()");
 
+    $("#payDiv").show();
+    var orderCodeHtml = '';
+    for (var i=0;i<orders.length;i++)
+    {
+      orderCodeHtml += '<span class="bt">订单号：</span>'+orders[i].orderCode+'<br>';
+      // var stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,orders[i].createTime);
+      // stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
+      // orderCodeHtml += '<span class="bt" stopTime="'+stopTime+'">1:2:30</span><br>';
+    }
+    $("#orderCode").html(orderCodeHtml);
   }
 
   function payRemainTime(){
@@ -1171,12 +1170,16 @@
     {
       $("#custName").removeAttr("disabled");
       $("#province").removeAttr("disabled");
+      $("#city").removeAttr("disabled");
+      $("#xian").removeAttr("disabled");
       $("#recAddress").removeAttr("disabled");
       $("#custPhone").removeAttr("disabled");
     }else
     {
       $("#custName").attr("disabled","disabled");
       $("#province").attr("disabled","disabled");
+      $("#city").attr("disabled","disabled");
+      $("#xian").attr("disabled","disabled");
       $("#recAddress").attr("disabled","disabled");
       $("#custPhone").attr("disabled","disabled");
     }
