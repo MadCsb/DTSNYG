@@ -1,3 +1,19 @@
 alter table t_sm_expressprice add F_ISSEND varchar(1) COMMENT '发货类型 0:发货 1:不发货';
 
 alter table t_sm_commproduct add F_SORTNUM decimal(6,0) COMMENT '推荐排序号码';
+
+
+
+INSERT INTO `t_pub_carousel` VALUES ('0e756e94446d4108ba6a46edfbcf1fdb', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页商品分类图', null, '2019-12-07 15:21:15', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 15:21:15', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('16347781135446788b6a05fb6f7b05c1', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站商品列表页顶部广告', null, '2019-12-08 17:20:59', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-08 17:20:59', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('2d11a05ae43d433e8507ec59521bcbfe', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页团购商品图', null, '2019-12-07 15:18:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 15:18:35', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('380ce94b95fc43d88a2ea1f2d16ef6b8', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页轮播图', null, '2019-12-07 12:52:59', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 12:52:59', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('71a68c40b8684ae9a1add679f0e1414f', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页横图1', null, '2019-12-07 13:56:12', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 13:56:12', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('78eea7de4de543939f0e705aeb322c51', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页地方特色图', null, '2019-12-07 15:20:17', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 15:20:17', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+
+INSERT INTO `t_pub_carousel` VALUES ('a46a33224f464cf583cd6a84e744a7a8', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页横图3', null, '2019-12-07 13:58:01', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 13:58:01', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+
+INSERT INTO `t_pub_carousel` VALUES ('c4c750748af74629a444e1df8fa1afd6', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站分类列表广告管理', null, '2019-12-08 18:28:40', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-08 18:28:40', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('cc9154b62b0f4289a4a2ed052c2e35e2', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页横图4', null, '2019-12-07 13:58:27', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 13:58:27', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+INSERT INTO `t_pub_carousel` VALUES ('d253d3ff78124c6dafd2973d71013576', 'da14b98e-cb26-4169-9b58-babe98b98047', '网站首页横图2', null, '2019-12-07 13:57:04', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '2019-12-07 13:57:04', 'd8c4b2be-d62d-4078-94e9-9d22c65d3fd1', '运营商管理员', '0', null);
+

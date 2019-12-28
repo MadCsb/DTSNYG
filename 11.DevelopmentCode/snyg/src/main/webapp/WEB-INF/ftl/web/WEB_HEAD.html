@@ -99,12 +99,12 @@
     </div>
     <div class="all-category fl" id="nav" style="width:990px !important">
       <ul>
-           <li class="fl"><a style="padding:0 15px" href="webIndex?method=webIndex" class="selec">网站首页</a></li>
-           <li class="fl"><a style="padding:0 15px" href="webSellPrice?method=querySellPriceListForPriceType&priceType=2">秒杀专区</a></li>
-           <li class="fl"><a style="padding:0 15px" href="webSellPrice?method=querySellPriceListForPriceType&priceType=1">团购中心</a></li>
-           <li class="fl"><a style="padding:0 15px" href="webPdcType?method=toQueryPdcTypeListWeb&level=1">商品分类</a></li>
-           <li class="fl"><a style="padding:0 15px" href="webArticle?method=toArticleList&type=5">售后服务</a></li>
-           <li class="fl"><a style="padding:0 15px" href="webArticle?method=toArticleList&type=6">关于我们</a></li>                                                                             
+           <li class="fl"><a id="bannerMenu1" style="padding:0 15px" href="webIndex?method=webIndex" class="bannerClass">网站首页</a></li>
+           <li class="fl"><a id="bannerMenu2" style="padding:0 15px" href="webSellPrice?method=querySellPriceListForPriceType&priceType=2" class="bannerClass">秒杀专区</a></li>
+           <li class="fl"><a id="bannerMenu3" style="padding:0 15px" href="webSellPrice?method=querySellPriceListForPriceType&priceType=1" class="bannerClass">团购中心</a></li>
+           <li class="fl"><a id="bannerMenu4" style="padding:0 15px" href="webPdcType?method=toQueryPdcTypeListWeb&level=1"  class="bannerClass">商品分类</a></li>
+           <li class="fl"><a id="bannerMenu5" style="padding:0 15px" href="webArticle?method=toArticleList&type=5" class="bannerClass">售后服务</a></li>
+           <li class="fl"><a id="bannerMenu6" style="padding:0 15px" href="webArticle?method=toArticleList&type=6" class="bannerClass">关于我们</a></li>                                                                             
       </ul>
       <div class="wrap-line" style="left: 0px; width: 94px;">
         <span style="left: 15px;"></span>
@@ -287,6 +287,8 @@ $(function(){
 </script>
 
 <style>
+	.bannerClass:hover{background:#069153; color:#fff;}
+	
     .user{
         position: relative;
     }
@@ -415,5 +417,10 @@ $(function() {
         $(".img").css({"position":"absolute","left":"45px"});
     })
 
+    
+    function checkBanner(bannerId){
+    	$(".bannerClass").removeClass("selec");
+    	$("#bannerMenu"+bannerId).addClass("selec");
+    }
 </script>
 </body></html>

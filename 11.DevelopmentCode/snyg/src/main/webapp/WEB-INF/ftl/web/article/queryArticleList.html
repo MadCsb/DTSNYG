@@ -5,6 +5,7 @@
 <link href="${rc.contextPath}/web/css/list.css" rel="stylesheet">
 </head>
 <body>
+<input type="hidden" id="articleType" value="${article.type!''}"/>
 <div class="breadcrumbs">
     <div class="container"><a href="webIndex?method=webIndex">首页</a><span class="sep">&gt;</span>
     <#if artTypeList?? &&(artTypeList?size>0)>
@@ -97,6 +98,7 @@ function changeArticle(obj){
 		$("#context"+checkArticleId).show();
 	}
 }
+checkBanner($("#articleType").val());
 </script>
 <#include "../WEB_FOOTER.html"> 
 </body>
