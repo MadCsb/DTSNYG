@@ -1,21 +1,13 @@
 package com.msy.travel.web.controller;
 
 import com.alibaba.dubbo.common.URL;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.msy.travel.common.BaseController;
-import com.msy.travel.common.EntityPage;
-import com.msy.travel.common.MD5;
-import com.msy.travel.common.ResourceCommon;
+import com.msy.travel.common.*;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.*;
-import com.msy.travel.service.CommproductService;
-import com.msy.travel.service.GoodsPriceService;
-import com.msy.travel.service.IArticleService;
-import com.msy.travel.service.OrderCustomerService;
-import com.msy.travel.service.OrderListService;
-import com.msy.travel.service.OrderService;
-import com.msy.travel.service.ShopcartService;
+import com.msy.travel.service.*;
 import net.sf.json.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +17,8 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -61,6 +55,9 @@ public class WebPersonalController extends BaseController {
 
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
+
+	@Resource(name = "userServiceImpl")
+	private IUserService userService;
 
 	private void setCommonPersonalObject(ModelAndView view,HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
@@ -214,4 +211,77 @@ public class WebPersonalController extends BaseController {
 		return view;
 	}
 
+	/**
+	 * 进入个人信息
+	 * pageType 0 会员信息
+	 * 			1 修改密码
+	 * 			2 更换头像
+	 */
+	@RequestMapping(params = "method=toUserInfo")
+	public ModelAndView toUserInfo(String pageType,HttpServletRequest request,HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("/web/personal/userInfo");
+			view.addObject("pageType",pageType);
+			setCommonPersonalObject(view,request,response);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 进入个人信息
+	 * pageType 0 会员信息
+	 * 			1 修改密码
+	 * 			2 更换头像
+	 */
+	@RequestMapping(params = "method=setUserInfo")
+	public void setUserInfo(User user, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "head", required = false) MultipartFile multipartFile) {
+		Result result = new Result();
+		try {
+			result.setResultCode("0");
+			User userDb = new User();
+			userDb.setUserId(getLoginUser(request).getUserId());
+			if (user.getUserNewPwd() !=null && !user.getUserNewPwd().trim().equals(""))
+			{
+				if (!MD5.encode(user.getUserPwd()).equals(getLoginUser(request).getUserPwd()))
+				{
+					throw new LogicException("用户密码错误");
+				}
+				userDb.setUserPwd(MD5.encode(user.getUserNewPwd()));
+				userService.updateUserPWD(userDb);
+			}else
+			{
+				// 上传缩略图
+				String thumbPic = UploadFileCom.uploadFileByFolder(multipartFile, request, Consts.WX_PIC_FOLDER_NAME, configParameter.getUploadPicUrl());
+				userDb.setHeadPic(thumbPic);
+				userDb.setUserName(user.getUserName());
+				userDb.setUserMobile(user.getUserMobile());
+				userDb.setUserEmail(user.getUserEmail());
+				userDb.setSex(user.getSex());
+				userDb.setUserAddr(user.getUserAddr());
+				userService.updateUser(userDb);
+			}
+
+			userDb = userService.displayUser(userDb);
+			request.getSession().setAttribute(ResourceCommon.LOGIN_USER,userDb);
+			result.setResultCode("0");
+		}catch (LogicException le)
+		{
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("系统异常!");
+		}finally {
+			try {
+				response.getWriter().write(JSON.toJSONString(result));
+			}catch (Exception e) {
+				log.error(e,e);
+			}
+		}
+	}
 }

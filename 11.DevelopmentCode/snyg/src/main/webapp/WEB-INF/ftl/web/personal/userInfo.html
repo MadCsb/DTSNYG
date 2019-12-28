@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "WEB_PERSONAL_INC_HEAD.html"/>
+	<script type="text/javascript" src="${rc.contextPath}/plugin/DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/web/js/jquery.page.js"></script>
+</head>
+<body>
+<script>
+	$(function () {
+		changePageType($("#pageType").val());
+	})
+	function changePageType(pageType) {
+		$("#pageType").val(pageType);
+		$(".pngFix").find("li").each(function(index){
+			if(index==parseInt(pageType))
+			{
+				$(this).attr("class","active");
+				$("#pageDiv"+index).show();
+			}else
+			{
+				$(this).attr("class","normal");
+				$("#pageDiv"+index).hide();
+			}
+		})
+
+		$("#pic").on("change",function(e){
+			//获取图片的路径，并显示出来
+			var file = this.files[0];
+			var url = null ;
+			if (window.createObjectURL!=undefined) { // basic
+				url = window.createObjectURL(file) ;
+			} else if (window.URL!=undefined) { // mozilla(firefox)
+				url = window.URL.createObjectURL(file) ;
+			} else if (window.webkitURL!=undefined) { // webkit or chrome
+				url = window.webkitURL.createObjectURL(file) ;
+			}
+			if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
+				parent.layer.alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+				return false;
+			}
+
+
+			$("#headShowImg").attr("src",url);
+			//获取上传图片包
+			var formdata = new FormData()// FormData对象，来发送二进制文件。
+			formdata.append("head",file);// 将文件追加到 formdata对象中
+			$.ajax({
+				url:'webPersonal?method=setUserInfo',//上传接口
+				type:'POST',
+				dataType: "json",
+				data:formdata,
+				processData: false,//必须false才会避开jQuery对 formdata 的默认处理， XMLHttpRequest会对 formdata 进行正确的处理
+				contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+				success:function(data){
+					console.log(data);
+					if (data.resultCode == '0')
+					{
+						parent.layer.alert("修改成功",function () {
+							window.location.href="webPersonal?method=toUserInfo&pageType="+ $("#pageType").val();
+						});
+					}else
+					{
+						toWebAlertMsg(data.resultMsg);
+					}
+				},
+				error: function (res) {
+					console.log("发生错误")
+				}
+			})
+		})
+	}
+	function changeHeadFile() {
+		var file = $("#pic").files[0];
+		var url = null ;
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		$("#headShowImg").attr("src",url);
+	}
+	function beforeSubmit() {
+		var submitUser = new Object();
+		if("0" == $("#pageType").val())
+		{
+			submitUser.userName = $("#userName").val();
+			submitUser.userMobile = $("#userMobile").val();
+			submitUser.userEmail = $("#userEmail").val();
+			submitUser.sex = $('input:radio[name=sex]:checked').val();
+			submitUser.userAddr = $("#userAddr").val();
+		}else if("1" == $("#pageType").val())
+		{
+			if ($("#userPwd").val() == "")
+			{
+				parent.layer.alert("请输入用户密码");
+				return false;
+			}
+
+			if ($("#userNewPwd").val() == "")
+			{
+				parent.layer.alert("请输入新密码");
+				return false;
+			}
+
+			if ($("#userNewPwdTry").val() == "")
+			{
+				parent.layer.alert("请输入确认密码");
+				return false;
+			}
+
+			if ($("#userNewPwd").val() != $("#userNewPwdTry").val())
+			{
+				parent.layer.alert("确认密码与新密码不一致");
+				return false;
+			}
+			submitUser.userPwd = $("#userPwd").val();
+			submitUser.userNewPwd = $("#userNewPwd").val();
+		}else if("2" == $("#pageType").val())
+		{
+			var submitUser = new FormData()// FormData对象，来发送二进制文件。
+			submitUser.append("file",$("#pic").files[0]);// 将文件追加到 formdata对象中
+			$.ajax({
+				type: "POST",
+				async: false,
+				dataType: "json",
+				url: "webPersonal?method=setUserInfo",
+				data: submitUser,
+				processData: false,//必须false才会避开jQuery对 formdata 的默认处理， XMLHttpRequest会对 formdata 进行正确的处理
+				contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+				success: function (data) {
+					if (data.resultCode == '0')
+					{
+						parent.layer.alert("修改成功",function () {
+							window.location.href="webPersonal?method=toUserInfo&pageType="+ $("#pageType").val();
+						});
+					}else
+					{
+						toWebAlertMsg(data.resultMsg);
+					}
+				}
+			});
+			return false;
+		}
+		console.log(submitUser);
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			url: "webPersonal?method=setUserInfo",
+			data: submitUser,
+			success: function (data) {
+				if (data.resultCode == '0')
+				{
+					parent.layer.alert("修改成功",function () {
+						window.location.href="webPersonal?method=toUserInfo&pageType="+ $("#pageType").val();
+					});
+				}else
+				{
+					toWebAlertMsg(data.resultMsg);
+				}
+			}
+		});
+	}
+</script>
+<#include "PersonalTop.html"/>
+<input type="hidden" id="pageType" value="${pageType}">
+<input type="hidden" id="userId" value="${user.userId!''}">
+
+<div class="memberprofile">
+	<div class="tabmenu">
+		<ul class="tab pngFix">
+			<li class="active"><a onclick="changePageType('0')">基本信息</a></li>
+			<li class="normal"><a onclick="changePageType('1')">修改密码</a></li>
+			<li class="normal"><a onclick="changePageType('2')">更换头像</a></li>
+		</ul>
+	</div>
+
+	<div class="sldu-form-style sldm-default-form" id="pageDiv0">
+		<dl>
+			<dt>用户名称：</dt>
+			<dd>
+				<span class="w340">
+					<input type="text" class="text" maxlength="30" id="userName" value="${user.userName!''}">
+				</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>手机号码：  </dt>
+			<dd>
+				<span class="w340">
+					<input type="text" class="text" maxlength="15" id="userMobile" value="${user.userMobile!''}">
+				</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>电子邮件：</dt>
+			<dd>
+				<span class="w340">
+					<input type="text" class="text" maxlength="50" id="userEmail" value="${user.userEmail!''}">
+				</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>性别：</dt>
+			<dd>
+				<span class="w340">
+					<label><input type="radio" name="sex" value="2" checked>女</label>
+					&nbsp;&nbsp;
+					<label><input type="radio" name="sex" value="1" <#if user.sex?? && user.sex == '1'>checked</#if>>男</label>
+				</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="required">联系地址：</dt>
+			<dd>
+				<span class="w340">
+					<input type="text" class="text" maxlength="100" id="userAddr" value="${user.userAddr!''}">
+				</span>
+			</dd>
+		</dl>
+
+		<dl class="bottom">
+			<dt>&nbsp;</dt>
+			<dd>
+				<input type="button" class="submit" onclick="beforeSubmit()" value="保存修改">
+			</dd>
+		</dl>
+	</div>
+
+	<div class="sldu-form-style sldm-default-form" id="pageDiv1">
+		<dl>
+			<dt>您的密码：  </dt>
+			<dd>
+				<span class="w340">
+        			<input type="text" class="text" maxlength="11" id="userPwd" value="">
+            	</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>新密码：</dt>
+			<dd><span class="w340"><input type="text" class="text" id="userNewPwd" value=""></span></dd>
+		</dl>
+		<dl>
+			<dt>确认密码：</dt>
+			<dd><span class="w340"><input type="text" class="text" maxlength="20" id="userNewPwdTry" value=""></span></dd>
+		</dl>
+		<dl class="bottom">
+			<dt>&nbsp;</dt>
+			<dd>
+				<input type="button" onclick="beforeSubmit()" class="submit slds-btn-orange" value="保存修改">
+			</dd>
+		</dl>
+	</div>
+
+	<div class="sldu-form-style sldm-default-form" id="pageDiv2">
+			<div class="sldu-form-style">
+				<dl>
+					<dt>头像预览：</dt>
+					<dd>
+						<div class="member-avatar-thumb">
+							<#if user.headPic??>
+								<img src="${rc.contextPath}/upload/wxpic/${user.headPic!''}" id="headShowImg" width="100" height="100">
+								<#else>
+								<img src="${rc.contextPath}/wx/images/tx.jpg" id="headShowImg" width="100" height="100">
+							</#if>
+						</div>
+						<p class="hint mt5">完善个人信息资料，上传头像图片有助于您结识更多的朋友。<br>
+							<span style="color:orange;">头像默认尺寸为120x120像素，请根据系统操作提示进行裁剪并生效。</span>
+						</p>
+					</dd>
+				</dl>
+				<dl>
+					<dt>更换头像：</dt>
+					<dd>
+						<div class="upload-btn">
+							<a href="javascript:void(0);">
+								<span>
+            						<input type="file" id="pic" multiple=""class="file" size="1" hidefocus="true" maxlength="0">
+            					</span>
+							</a>
+						</div>
+					</dd>
+				</dl>
+			</div>
+		</form>
+	</div>
+
+</div>
+<#include "PersonalButton.html"/>
+<script>
+
+</script>
+</body>
+</html>

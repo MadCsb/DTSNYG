@@ -78,29 +78,30 @@
 	<update id="updateUser" parameterType="User">
 		UPDATE
 		t_pub_user
-		SET
-		F_USER_NAME = #{userName,jdbcType=VARCHAR} ,
-		F_USER_DESC = #{userDesc,jdbcType=VARCHAR} ,
-		F_USER_TEL = #{userTel,jdbcType=VARCHAR} ,
-		F_USER_MOBILE = #{userMobile,jdbcType=VARCHAR} ,
-		F_USER_EMAIL = #{userEmail,jdbcType=VARCHAR} ,
-		F_USER_ADDR = #{userAddr,jdbcType=VARCHAR} ,
-		F_USER_STATE = #{userState,jdbcType=VARCHAR} ,
-		F_USER_IP = #{userIp,jdbcType=VARCHAR} ,
-		F_USER_LOCKED = #{userLocked,jdbcType=VARCHAR} ,
-		F_USER_LOCKTIME = #{userLockTime,jdbcType=VARCHAR} ,
-		F_USER_ROLETYPE = #{userRoleType,jdbcType=VARCHAR} ,
-		F_ACCID = #{accId,jdbcType=VARCHAR} ,
-		F_UNIT_ID = #{unitId,jdbcType=VARCHAR} ,
-		F_STOREID = #{storeId,jdbcType=VARCHAR} ,
-		F_WXSERVICEID = #{wxServiceId,jdbcType=VARCHAR},
-		F_TYPE = #{type,jdbcType=VARCHAR},
-		F_COUNTRY = #{country,jdbcType=VARCHAR},
-		F_CITY= #{city,jdbcType=VARCHAR} ,
-		F_PROVINCE = #{province,jdbcType=VARCHAR},
-		F_SEX = #{sex,jdbcType=VARCHAR} ,
-		F_UPDATETIME = #{updateTime,jdbcType=VARCHAR} ,
-		F_HEADPIC = #{headPic,jdbcType=VARCHAR} 
+		<set>
+			<if test="userName !=null">F_USER_NAME  = #{userName} ,</if>
+			<if test="userDesc !=null">F_USER_DESC  = #{userDesc} ,</if>
+			<if test="userTel !=null">F_USER_TEL  = #{userTel} ,</if>
+			<if test="userMobile !=null">F_USER_MOBILE  = #{userMobile} ,</if>
+			<if test="userEmail !=null">F_USER_EMAIL  = #{userEmail} ,</if>
+			<if test="userAddr !=null">F_USER_ADDR  = #{userAddr} ,</if>
+			<if test="userState !=null">F_USER_STATE  = #{userState} ,</if>
+			<if test="userIp !=null">F_USER_IP  = #{userIp} ,</if>
+			<if test="userLocked !=null">F_USER_LOCKED  = #{userLocked} ,</if>
+			<if test="userLockTime !=null">F_USER_LOCKTIME  = #{userLockTime} ,</if>
+			<if test="userRoleType !=null">F_USER_ROLETYPE  = #{userRoleType} ,</if>
+			<if test="accId !=null">F_ACCID  = #{accId} ,</if>
+			<if test="unitId !=null">F_UNIT_ID  = #{unitId} ,</if>
+			<if test="storeId !=null">F_STOREID  = #{storeId} ,</if>
+			<if test="wxServiceId !=null">F_WXSERVICEID  = #{wxServiceId} ,</if>
+			<if test="type !=null">F_TYPE  = #{type} ,</if>
+			<if test="country !=null">F_COUNTRY  = #{country} ,</if>
+			<if test="city !=null">F_CITY  = #{city} ,</if>
+			<if test="province !=null">F_PROVINCE  = #{province} ,</if>
+			<if test="sex !=null">F_SEX  = #{sex} ,</if>
+			<if test="updateTime !=null">F_UPDATETIME  = #{updateTime} ,</if>
+			<if test="headPic !=null">F_HEADPIC  = #{headPic} ,</if>
+		</set>
 		WHERE
 		F_USER_ID = #{userId}
 	</update>
@@ -237,6 +238,7 @@
 		u.F_CITY as city,
 		u.F_PROVINCE as province,
 		u.F_SEX as sex,
+		u.F_HEADPIC as headPic,
 		u.F_UPDATETIME as updateTime
 		FROM
 		t_pub_user u
@@ -342,6 +344,7 @@
 		u.F_CITY as city,
 		u.F_PROVINCE as province,
 		u.F_SEX as sex,
+		u.F_HEADPIC as headPic,
 		u.F_UPDATETIME as updateTime
 		FROM
 		t_pub_user u
