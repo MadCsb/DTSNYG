@@ -76,6 +76,7 @@ public class WebArticleController extends BaseController {
 			if (article.getType() != null && !"".equals(article.getType())) {
 				String articleId = article.getArticleId();
 				article.setArticleId("");
+				article.setIsShowApp("0");
 				List<Article> articleList = articleService.queryArticleList(article);
 
 				List<Pubmap> artTypeList = this.pubmapService.getPubmapListByType("ARTTYPE");
