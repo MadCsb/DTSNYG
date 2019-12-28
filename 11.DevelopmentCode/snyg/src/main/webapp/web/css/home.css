@@ -95,8 +95,8 @@
 .swiper-container-flip .swiper-slide-shadow-bottom,.swiper-container-flip .swiper-slide-shadow-left,.swiper-container-flip .swiper-slide-shadow-right,.swiper-container-flip .swiper-slide-shadow-top{z-index:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .swiper-container-coverflow .swiper-wrapper{-ms-perspective:1200px}
 
-.btn{display:inline-block;width:158px;height:38px;padding:0;margin:0;border:1px solid #b0b0b0;font-size:14px;line-height:38px;text-align:center;color:#b0b0b0;cursor:pointer;-webkit-transition:all .4s;transition:all .4s}
-.btn:hover{text-decoration:none;color:#b0b0b0}
+.btn{font-family: "Microsoft Yahei", "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; display: inline-block; padding: 0 20px; height: 30px; line-height: 30px; color: #fff; min-width: 120px; cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; box-sizing: border-box; vertical-align: middle; -webkit-appearance: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline:0; text-decoration: none; background-image: none; background-color: #ffbb32; border: 0px solid #ffbb32; border-radius:2px;}
+.btn:hover{background-color: #ffbb00; }
 .btn:focus{outline:0}
 .btn:active{-webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,.18);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
 .btn[disabled]{border-style:dashed!important;border-color:#e0e0e0;background-color:#fff!important}

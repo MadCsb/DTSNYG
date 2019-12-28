@@ -459,8 +459,8 @@ ul.upload-control li .inputstyle {width: 55px; height: 55px; cursor: pointer; fo
 
 /*提交按钮*/
 /*按钮样式*/
-.btn{font-family: "Microsoft Yahei", "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; display: inline-block; padding: 0 10px; height: 32px; line-height: 30px; color: #666; min-width: 80px; cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; box-sizing: border-box; vertical-align: middle; -webkit-appearance: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline:0; text-decoration: none; background-image: none; background-color: #ffbb32; border: 1px solid #ffbb32; border-radius:2px;}
-.btn:hover{ color:#fff}
+.btn{font-family: "Microsoft Yahei", "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; display: inline-block; padding: 0 20px; height: 30px; line-height: 30px; color: #fff; min-width: 120px; cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; box-sizing: border-box; vertical-align: middle; -webkit-appearance: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline:0; text-decoration: none; background-image: none; background-color: #ffbb32; border: 0px solid #ffbb32; border-radius:2px;}
+.btn:hover{background-color: #ffbb00; }
 a.btn-primary, .btn-primary { background-color: #df3434; color: #fff; border-color: #df3434;}
 a.btn-larger,.btn-larger{min-width: 120px;font-size: 16px;border-radius: 4px;height: 46px;line-height: 44px;padding: 0 20px;}
 a.btn-primary:hover,.btn-primary:hover{color:#fff;background-color:#ee3f36;border-color:#ee3f36}
