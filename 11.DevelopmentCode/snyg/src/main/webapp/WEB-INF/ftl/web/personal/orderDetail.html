@@ -98,8 +98,8 @@
 		<tr>
 			<td class="w10"></td>
 			<td class="tl" colspan="2">买家留言：
-				<input type="text" class="text w340" readonly="readonly" id="memo" value="${order.memo!''}" maxlength="150">
-				&nbsp;</td>
+				${order.memo!''}
+			</td>
 			<td class="tl" colspan="10"><div class="slds-form-default"> </div></td>
 		</tr>
 		<tr>
@@ -122,8 +122,8 @@
 			<td colspan="20">
 				<div class="slds-all-account">订单总金额：￥<em id="totalPay">${order.money!''}</em>元</div>
 
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toPay('${order.orderId}');" id="toPayTag1Btn">去支付</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="alertMsg('已提醒尽快发货，如有疑问，请致电400-8013841')" id="toTxBtn">提醒发货</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebPayOrder('${order.orderId}');" id="toPayTag1Btn">去支付</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebAlertMsg('已提醒尽快发货，如有疑问，请致电400-8013841')" id="toTxBtn">提醒发货</a>
 				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="queryOrderExpress" onclick="toOrderExpress('${order.orderId}');">查物流</a>
 				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toStatus2Btn" onclick="closeOrderExpress('${order.orderId}');">确认收货</a>
 				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="orderBackDetail" onclick="toWebOrderBackDetail('${order.orderId}')">查退款</a>

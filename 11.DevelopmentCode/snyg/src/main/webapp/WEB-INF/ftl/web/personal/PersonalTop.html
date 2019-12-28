@@ -10,7 +10,7 @@
             <div class="bbuyer_others">
                 <p class="mine_shopmall">我的商城</p>
                 <p class="back_mall_index">
-                    <a onclick="toWebPersonalIndex()">返回商城首页</a></p>
+                    <a onclick="toWebIndex()">返回商城首页</a></p>
             </div>
             <div class="bbuyer_head_nav">
                 <ul>
@@ -32,17 +32,15 @@
         <div class="bbuyer_cart">
             <div class="bbc_buyer_icon">
                 <i class="ci_left iconfont icon-zaiqigoumai bbc_color rel_top2"></i>
-                <a href="">我的购物车</a>
+                <a href="webShopcart?method=toQueryShopCartWeb">我的购物车</a>
                 <i class="ci_right iconfont icon-iconjiantouyou"></i>
-                <i class="ci-count bbc_bg" id="cart_num">2</i>
+                <i class="ci-count bbc_bg" id="cart_num">${shopcartSize}</i>
             </div>
         </div>
-        <form method="get" class="search-form" name="form_search" id="form_search" action="">
+        <form action="webSellPrice?method=querySellPriceListForWebList" method="post" class="search-form">
             <div class="bbuyer_head_fr">
-                <input name="app" id="search_app" value="goodslist" type="hidden">
-                <input type="text" class="bbuyer_inp_ser" name="keyword" placeholder="请输入商品名字" id="site_keywords">
-                <input type="submit" style="display: none;">
-                <a class="bbuyer_search" id="site_search">搜索</a>
+                <input type="text" class="bbuyer_inp_ser" name="productName" placeholder="请输入商品名字" id="productName">
+                <input type="submit" class="bbuyer_search" value="搜索">
             </div>
         </form>
     </div>
@@ -78,21 +76,21 @@
                             <div class="Divradius">
                                 <a href="webPersonal?method=toOrderList&orderListType=1"><img src="${rc.contextPath}/web/images/ico_dai1.png"></a></div>
                                 <p class="_p">待付款
-                                <strong>0</strong>
+                                <strong>${unPayCount}</strong>
                             </p>
                         </li>
                         <li>
                             <div class="Divradius">
                                 <a href="webPersonal?method=toOrderList&orderListType=2"><img src="${rc.contextPath}/web/images/ico_dai2.png"></a></div>
                                 <p class="_p">待发货
-                                <strong>0</strong>
+                                <strong>${unSendGood}</strong>
                             </p>
                         </li>
                         <li>
                             <div class="Divradius">
                                 <a href="webPersonal?method=toOrderList&orderListType=3"><img src="${rc.contextPath}/web/images/ico_dai3.png"></a></div>
                             <p class="_p">待收货
-                                <strong>0</strong>
+                                <strong>${unReceiveGood}</strong>
                             </p>
                         </li>
                     </ul>
@@ -108,7 +106,7 @@
                     <li><a href="webPersonal?method=toOrderList&orderListType=1" class="_Color" style="">等待付款订单</a></li>
                     <li><a href="webPersonal?method=toOrderList&orderListType=3" class="_Color" style="">确认收货订单</a></li>
                 </ul>
-                <ul class="jiaoyizhognxin">
+                <ul class="jiaoyizhognxin" style="display: none;">
                     <li><a class="_font">客户服务</a></li>
                     <li><a href="" class="_Color" style="">退款及退货</a></li>
                     <li><a href="" class="_Color" style="">平台客服</a></li>

@@ -32,7 +32,7 @@
 		</p>
 		<p class="ser_p" style="margin-left: 10px; width:300px;">
 			<input type="text" id="orderCodeLike" value="" placeholder="订单号">
-			<a class="button btn_search_goods" onclick="search()" style="padding-left: 2px;"><i class="iconfont icon-icosearch icon_size18" style="margin-right:-2px; "></i>搜索</a>
+			<a class="button btn_search_goods" onclick="orderSearch()" style="padding-left: 2px;"><i class="iconfont icon-icosearch icon_size18" style="margin-right:-2px; "></i>搜索</a>
 		</p>
 	</div>
 
@@ -163,8 +163,9 @@
     changeOrderListType(orderListType);
   })
 
-  function search()
+  function orderSearch()
   {
+  	alert($("#orderListType").val());
     changeOrderListType($("#orderListType").val());
   }
 
@@ -223,7 +224,15 @@
   {
     searchObject.searchKey = $("#searchKey").val();
     searchObject.createTimeS = $("#createTimeS").val();
+    if(searchObject.createTimeS != '')
+	{
+		searchObject.createTimeS = searchObject.createTimeS + " 00:00:00";
+	}
     searchObject.createTimeE = $("#createTimeE").val();
+    if(searchObject.createTimeE != '')
+	{
+	 searchObject.createTimeE = searchObject.createTimeE + " 23:59:59";
+	}
     searchObject.orderCodeLike = $("#orderCodeLike").val();
     $(".tboy").html(""); //清空
     var result = ajaxOrderList(false,searchObject,pageEntity); //同步加载
@@ -388,12 +397,12 @@
       detailHtml += '<a onclick="toOrderBackDetail(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查退款</a>'
     }else if(orderShowType == "0-0")
     {
-      detailHtml += '<a onclick="toOrder(\''+order.orderId+'\')" style="color:#F30;" class="to_views">去支付</a>'
+      detailHtml += '<a onclick="toWebPayOrder(\''+order.orderId+'\')" style="color:#F30;" class="to_views">去支付</a>'
     }else if(orderShowType == "0-12") //已取消
     {
     }else if(orderShowType == "1-0") //待发货
     {
-      detailHtml += '<a onclick="alertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')" style="color:#F30;" class="to_views">提醒</a>';
+      detailHtml += '<a onclick="toWebAlertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')" style="color:#F30;" class="to_views">提醒</a>';
     }else if(orderShowType == "1-1")
     {
       detailHtml += '<a onclick="toOrderExpress(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查物流</a>';

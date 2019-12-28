@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+	<script src="${rc.contextPath}/js/pay.js"></script>
+	<script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+	<script src="${rc.contextPath}/js/jquery.qrcode.js"></script>
+	<script src="${rc.contextPath}/js/qrcode.js"></script>
+	<script src="${rc.contextPath}/wx/js/snyg.js"></script>
+	<style>
+		.datalist td table{margin: 0 auto;}
+	</style>
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+			<input type="hidden" id="orderId" value="${order.orderId!''}">
+			<input type="hidden" id="wxpayValidateTime" value="${wxpayValidateTime!'0'}">
+
+			<!--编辑区-->
+			<table class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr class="cs">
+					<td width="25%" class="tdright"><b>订单编号：</b></td>
+					<td width="75%">
+						${order.orderCode!''}
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b>剩余支付时间：</b></td>
+					<td id="orderInfo">
+
+					</td>
+				</tr>
+				<tr class="cs">
+					<td colspan="2">
+						<div id="qrCode">
+
+						</div>
+					</td>
+				</tr>
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div align="center">
+				<input name="button4" type="button" onClick="closeDialog()" class="cbtn2" id="button4" value="取消">
+			</div>
+	</div>
+</body>
+<script type="text/javascript">
+  var pay = null;
+  var stopTime = null; //订单支付截止时间
+  var remainPay = null; //订单支付截止定时器
+  var dateTimeUtil = new DateTimeUtil(); //计算日期js
+
+	$(function () {
+		if("${order.beforePayStatus}" == "0" && "${order.payTag}" == "0")
+		{
+      if($("#wxpayValidateTime").val() != '')
+      {
+        stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,"${order.createTime!''}");
+        stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
+        remainPay = window.setInterval(payRemainTime,500);
+      }
+		  //可以支付流程
+      pay = new Pay();
+      pay.payMethod =pay.PAY_METHOD_WX_PC;
+      var payInfoParam = new Object();
+      payInfoParam.spId = currentSpId;
+      payInfoParam.platformOrders = $("#orderId").val();
+      pay.getPayInfo(payInfoParam);
+      if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+      {
+        pay.havePayed = function(){
+          closeDialog();
+        }
+        pay.checkPayed();
+        $('#qrCode').qrcode({width: 128,
+					height: 128,correctLevel:0,
+					render: "table",
+					text: pay.toPay()});
+      }else {
+        parent.layer.alert(pay.payInfo.resultMsg, function () {
+          closeDialog();
+        });
+      }
+		}else if("${order.payTag}" == "1")
+    {
+      //已支付
+      parent.layer.alert("订单已支付",function () {
+        closeDialog();
+      });
+    }
+		else if("${order.beforePayStatus}" == "1" || "${order.beforePayStatus}" == "2")
+    {
+      //时间过期
+      parent.layer.alert("订单已超过支付时间",function () {
+        closeDialog();
+      });
+    }
+  });
+
+	function closeDialog()
+	{
+    parent.layer.closeAll();
+	}
+
+  //支付倒计时
+  function payRemainTime(){
+    var html = "";
+    //当前时间
+    var now =new Date();
+    // 剩余总秒 一天秒=86400,一时秒=3600
+    var shengyu =parseInt((stopTime.getTime()-now.getTime())/1000);
+    //剩余天
+    var shengyuD=parseInt(shengyu/86400);
+    //剩余时
+    var shengyuH=parseInt((shengyu - shengyuD*86400)/3600);
+    //剩余分
+    var shengyuM=parseInt((shengyu - shengyuD*86400 - shengyuH*3600)/60);
+    //剩余秒
+    var shengyuS=shengyu - shengyuD*86400 - shengyuH*3600 - shengyuM*60;
+    if(shengyuD>0)
+    {
+      html = html + shengyuD+  "天";
+    }
+    if(shengyuD>0 || shengyuH>0)
+    {
+      html = html + shengyuH+  "时";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0)
+    {
+      html = html + shengyuM+  "分";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0 || shengyuS>0)
+    {
+      html = html + shengyuS+  "秒";
+    }
+    if (html == "")
+    {
+      clearInterval(remainPay);
+      //时间过期
+      parent.layer.alert("订单已超过支付时间",function () {
+        closeDialog();
+      });
+    }else
+    {
+      $("#orderInfo").html("您还有"+html+"可以付款");
+    }
+  }
+
+</script>
+</html>

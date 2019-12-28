@@ -132,6 +132,9 @@ function ajaxOrderList(sync,searchObject,pageEntity)
       userId:searchObject.userId,
       searchKey: searchObject.searchKey,
       payTag: searchObject.payTag,
+      createTimeS:searchObject.createTimeS,
+      createTimeE:searchObject.createTimeE,
+      orderCodeLike:searchObject.orderCodeLike,
       beforePayStatus: searchObject.beforePayStatus,
       status: searchObject.status,
       backNumS: searchObject.backNumS,
@@ -171,6 +174,16 @@ function ajaxOrderDetail(sync,orderId,func)
   return orderDetail;
 }
 //////////////////////////////////////////////////////////////////////
+
+
+/**
+ * web首页
+ * searchObject
+ */
+function toWebIndex(){
+  window.location.href = "webIndex?method=webIndex";
+}
+
 /**
  * web个人中心首页
  * searchObject
@@ -180,17 +193,11 @@ function toWebPersonalIndex(){
 }
 
 /**
- * 跳转web我的/商城首页
- */
-function toWebPersonal(){
-  window.location.href = "webPersonal.do?method=index";
-}
-
-/**
  * 跳转web销售详情
  */
 function toWebSellPrice(priceId){
-  wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
+  window.location.href = "webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+
 }
 
 
@@ -206,4 +213,29 @@ function toWebOrderDetail(orderId){
  */
 function toWebOrderBackDetail(orderId){
   // window.location.href = "wxorder?method=toOrderBackDetail&orderId="+orderId;
+}
+
+/**
+ * 弹出微信支付
+ * @param orderId
+ */
+function toWebPayOrder(orderId) {
+  var url = 'webOrder?method=toPayOrder&orderId='+orderId;
+  layer.open({
+    type : 2,
+    title : '支付订单',
+    area : [ '500px', '550px'],
+    fix : true,
+    content :url,
+    end: function(){
+      window.location.reload();
+    }
+  });
+}
+
+/**
+ * web弹出提示信息
+ */
+function toWebAlertMsg(msg) {
+  parent.layer.alert(msg);
 }

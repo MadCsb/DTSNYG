@@ -43,7 +43,9 @@
 
                 <label class="labelbox">
                     <input type="text" name="securityCode" maxlength="4" class="validate[required] text w80" placeholder="输入验证码" id="securityCode" value="" style="color: rgb(187, 187, 187); width:80px; display:inline-block;">
-                    <span style="float:right; margin-top:6px; margin-right:6px;"><img  src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()" ></span>
+                    <span style="float:right; margin-top:10px; margin-right:10px;">
+                        <img  src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()" >
+                    </span>
                 </label>
                 <#if errorMsg??>
                     <p style="color:orange">${errorMsg!''}</p>
@@ -52,7 +54,7 @@
 
                 <div class="n_links_area" id="custom_display_64">
                     <a class="outer-link" href="toNewUser">立即注册</a><span>|</span>
-                    <a class="outer-link" href="wjmm.html">忘记密码</a>
+                    <a class="outer-link" href="wjmm.html" style="display: none;">忘记密码</a>
                 </div>
                 <!-- 其他登录方式 s -->
                 <div style="display: none;" class="other_login_type">
@@ -83,6 +85,7 @@
 </body>
 <script type="text/javascript">
     $( function() {
+        replaceCode();
         $("#syslogin").validationEngine({
             validationEventTrigger : "blur"
         });

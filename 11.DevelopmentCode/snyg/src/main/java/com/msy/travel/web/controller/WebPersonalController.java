@@ -62,9 +62,42 @@ public class WebPersonalController extends BaseController {
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
 
-	private void setCommonPersonalObject(ModelAndView view,HttpServletRequest request, HttpServletResponse response)
+	private void setCommonPersonalObject(ModelAndView view,HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		view.addObject("user",getLoginUser(request));
+		Order order = new Order();
+		order.setUserId(getLoginUser(request).getUserId());
+		order.setPayTag("0");
+		order.setBeforePayStatus("0");
+		order.setStatus(null);
+		order.setBackNumS(null);
+		List<Order> orderList = orderService.queryOrderList(order);
+		int unPayCount = orderList.size();
+
+		order.setPayTag("1");
+		order.setBeforePayStatus(null);
+		order.setStatus("0");
+		order.setBackNumS(null);
+		orderList =  orderService.queryOrderList(order);
+		int unSendGood = orderList.size();
+
+		order.setPayTag("1");
+		order.setBeforePayStatus(null);
+		order.setStatus("1");
+		order.setBackNumS(null);
+		orderList =  orderService.queryOrderList(order);
+		int unReceiveGood = orderList.size();
+		view.addObject("unPayCount",unPayCount);
+		view.addObject("unSendGood",unSendGood);
+		view.addObject("unReceiveGood",unReceiveGood);
+
+		Shopcart shopcart = new Shopcart();
+		shopcart.setUserId(getLoginUser(request).getUserId());
+		shopcart.setDelFlag("0");
+		shopcart.setState("1");
+		List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+		view.addObject("shopcartSize",shopCartList.size());
+
 	}
 	/**
 	 * 个人中心

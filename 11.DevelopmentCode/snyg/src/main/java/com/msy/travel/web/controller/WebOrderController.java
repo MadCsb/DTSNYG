@@ -675,4 +675,24 @@ public class WebOrderController extends BaseController {
 
 		}
 	}
+	/**
+	 * 确定快递已收货
+	 */
+	@RequestMapping(params = "method=toPayOrder")
+	public ModelAndView closeOrderExpress(String orderId,HttpServletRequest request,HttpServletResponse response)
+	{
+		ModelAndView view = null;
+		try {
+			Order order = new Order();
+			order.setOrderId(orderId);
+			order = orderService.displayOrder(order);
+			view = new ModelAndView("/web/order/payOrder");
+			view.addObject("order",order);
+			view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
+		}catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+		}
+		return view;
+	}
 }

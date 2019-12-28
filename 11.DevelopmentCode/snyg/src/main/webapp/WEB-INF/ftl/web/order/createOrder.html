@@ -518,7 +518,7 @@
     <li id="orderCode">
     </li>
   </ul>
-  <div id="qrCode" class="smbg">
+  <div id="qrCode" class="smbg" align="center">
 
   </div>
   <div class="btndiv">
@@ -1079,7 +1079,7 @@
     if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
     {
       pay.havePayed = function(){
-        toWebPersonal('1-2',null);
+        window.location.href="webPersonal?method=toOrderList&orderListType=2";
       }
       pay.checkPayed();
 

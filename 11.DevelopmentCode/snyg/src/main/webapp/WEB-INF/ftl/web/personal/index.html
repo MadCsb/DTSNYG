@@ -23,18 +23,12 @@
 	<div class="shop_cart_list clearfix">
 		<p class="my_orders_tit ">
 			<span>购物车</span>
-			<a href="" target="_blank">查看所有商品</a>
+			<a href="webShopcart?method=toQueryShopCartWeb">查看所有商品</a>
 		</p>
 		<!-- 有内容显示 -->
 		<div class="shop_cart_list_div">
 			<ul class="shop_cart_list_ul ">
-				<li>
-					<div class="clearfix">
-						<img src="images/sp.png" height="50" width="50">
-						<a href="" target="_blank">龙泉水蜜桃</a>
-					</div>
-					<p class="clears cart_look"><a class="bbc_btns" href="" target="_blank">查看</a></p>
-				</li>
+
 			</ul>
 		</div>
 	</div>
@@ -43,22 +37,22 @@
 <script>
 	$(function () {
     showOrder();
+    getShopCartList();
   })
   function showOrder()
 	{
     var searchObject = new Object(); //查询对象
     searchObject.userId = "${user.userId!''}";
-//    searchObject.payTag = "0";
-//    searchObject.beforePayStatus = "0";
-//    searchObject.status = ""
-//    searchObject.backNumS = "";
+    searchObject.payTag = "0";
+    searchObject.beforePayStatus = "0";
+    searchObject.status = ""
+    searchObject.backNumS = "";
     var pageEntity = new Object(); //查询 分页对象
     pageEntity.pageNum = 1;
     pageEntity.pageSize = 3; //查询三条订单
     var result = ajaxOrderList(false,searchObject,pageEntity); //同步加载
     var pageInfo = result.pageInfo;
     var orderList = pageInfo.list;
-    console.log(orderList);
     $("#orderList").html('');
     if (orderList.length == 0)
 		{
@@ -70,7 +64,7 @@
 			{
 			  var orderHtml = '<tr>' +
 						'<td class="my_orders_goods">' +
-						'<a href="" target="_blank"><img src="${rc.contextPath}/upload/wxpic/'+ orderList[i].thumbPic+'" width="50" height="50"></a>' +
+						'<a><img src="${rc.contextPath}/upload/wxpic/'+ orderList[i].thumbPic+'" width="50" height="50"></a>' +
 						'</td>' +
 						'<td class="place_holder">'+orderList[i].productName+'</td>' +
 						'<td class="orders_goods_pri"><p>¥'+orderList[i].money+'</p><p>在线付款</p></td>' +
@@ -85,6 +79,22 @@
 			}
     }
 	}
+  function getShopCartList(){
+    $.post("webShopcart?method=getShopCartListWeb",{},
+				function(data){
+					for (var i=0;i<data.length;i++)
+					{
+						var html = '<li>' +
+								'<div class="clearfix">' +
+								'<img src="${rc.contextPath}/upload/wxpic/'+ data[i].thumbPic+'" height="50" width="50">' +
+								'<a onclick="toWebSellPrice(\''+data[i].priceId+'\')">'+ data[i].productName + ' ' + data[i].priceName +'</a>' +
+								'</div>' +
+								'<p class="clears cart_look"><a class="bbc_btns" href="webShopcart?method=toQueryShopCartWeb">查看</a></p>' +
+								'</li>';
+						$(".shop_cart_list_ul").append(html);
+					}
+    },'json');
+  }
 </script>
 </body>
 </html>
