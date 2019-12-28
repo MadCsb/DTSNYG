@@ -157,7 +157,9 @@
         </div>
     </div>
 </div>
-
+<form action="webOrder?method=toCreateOrder" method="post" id="toCreateOrder">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+</form>
 <script type="text/javascript">
 $(function(){
 	getSellPriceList();
@@ -275,7 +277,7 @@ function addShopCart(showType){
     }
     
     function submitOrder(){
-		var prepareOrderJson = new Object();
+		  var prepareOrderJson = new Object();
 		  var orderListList = new Array();
 		  var orderList1 = new Object();
 		  orderList1.priceId =checkPriceId; //销售id

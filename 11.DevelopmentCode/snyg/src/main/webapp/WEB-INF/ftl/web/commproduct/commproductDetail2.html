@@ -214,7 +214,7 @@
                       	<div style="position: relative;">
                       		<p class="buy_box">
 	                      		<a id="shopCartA" class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a>
-	                      		<a id="buyA" class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
+	                      		<a id="buyA"  onclick="addShopCart('2')" class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
                       		</p>
                       	</div>
                   </div>
@@ -259,7 +259,9 @@
         </div>
     </div>
 </div>
-
+<form action="webOrder?method=toCreateOrder" method="post" id="toCreateOrder">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+</form>
 <script type="text/javascript">
 $(function(){
 	getSellPriceList();
@@ -509,6 +511,38 @@ function addShopCart(showType){
     	$(".cloudzoom").attr("src",picUrl);
     }
     
+    
+    function addShopCart(showType){
+    	if(showType == "1"){
+    		$.post("webShopcart?method=toAddOrUpdateShopCart",{
+    			priceId:checkPriceId,
+    			num:$("#quantity").val()
+    		},function(data){
+    			if(data=="success"){
+    				alert("加入购物车成功");
+    			}else{
+    				alert("没有登录");
+    			}
+    		});
+    	}else{
+    		submitOrder();
+    	}
+    }
+    
+    
+    function submitOrder(){
+		  var prepareOrderJson = new Object();
+		  var orderListList = new Array();
+		  var orderList1 = new Object();
+		  orderList1.priceId =checkPriceId; //销售id
+		  orderList1.num = $("#quantity").val(); //数量
+		  orderList1.cartId = ""; //购物车id
+		  //price_1_refPatchCode
+		  orderListList.push(orderList1);
+		  prepareOrderJson.orderListList = orderListList;
+		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+		  $("#toCreateOrder").submit();
+	}
 </script>
 <#include "../WEB_FOOTER.html"> 
 </body>
