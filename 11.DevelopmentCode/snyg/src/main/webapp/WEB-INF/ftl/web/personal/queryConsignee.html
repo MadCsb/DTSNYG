@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "WEB_PERSONAL_INC_HEAD.html"/>
+</head>
+<body>
+<#include "PersonalTop.html"/>
+<div class="addressindex">
+	<div class="tabmenu">
+		<div class="tabmenu">
+			<ul class="tab pngFix">
+				<li class="active">地址列表</li>
+				<p class="ptkf bbc_btns ">
+					<a style="color:#fff;" onclick="addConsigneeList()" href="javascript:void(0)" class="sldu-btn3" title="新增地址">新增地址</a>
+				</p>
+			</ul>
+		</div>
+	</div>
+	<table class="sldu-table-style">
+		<thead>
+		<tr>
+			<th class="w10"></th>
+			<th class="w80">收货人</th>
+			<th class="w200">所在地区</th>
+			<th class="w200">街道地址</th>
+			<th class="w120">电话/手机</th>
+			<th class="w100"></th>
+			<th class="w110">操作</th>
+		</tr>
+		</thead>
+		<tbody id="consigneeShow">
+
+		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="20">&nbsp;</td>
+		</tr>
+		</tfoot>
+	</table>
+</div>
+<#include "PersonalButton.html"/>
+<script>
+$(function () {
+	getConsigneeList();
+})
+  function getConsigneeList(){
+	  $.ajax({
+		  type: "POST",
+		  async: false,
+		  dataType: "json",
+		  url: "webPersonal?method=ajaxConsigneeList",
+		  data: {},
+		  success: function (data) {
+		  	for(var i=0;i<data.length;i++)
+			{
+				var html = '<tr class="bd-line">' +
+						'<td></td>' +
+						'<td class="w80">'+data[i].custName+'</td>' +
+						'<td class="w200">'+data[i].pcx+'</td>' +
+						'<td class="w200">'+data[i].recAddress+'</td>' +
+						'<td class="w120"><span class="tel">'+data[i].custPhone+'</span></td>' +
+						'<td class="w100"></td>' +
+						'<td class="sldm-table-handle w110">' +
+						'<span class="edit"><a onclick="updateConsignee(\''+data[i].consigneeId+'\')">编辑</a></span>' +
+						'<span class="del"><a onclick="deleteConsignee(\''+data[i].consigneeId+'\')">删除</a></span>' +
+						'</td></tr>';
+				$("#consigneeShow").append(html);
+			}
+		  }
+	  });
+  }
+  function addConsigneeList() {
+	  var url = 'webPersonal?method=toAddConsignee';
+	  layer.open({
+		  type : 2,
+		  title : '新增收货地址',
+		  area : [ '830px', '400px'],
+		  fix : true,
+		  content :url,
+		  end: function(){
+			  window.location.reload();
+		  }
+	  });
+  }
+function updateConsignee(consigneeId) {
+	var url = 'webPersonal?method=toUpdateConsignee&consigneeId='+consigneeId;
+	layer.open({
+		type : 2,
+		title : '编辑收货地址',
+		area : [ '830px', '400px'],
+		fix : true,
+		content :url,
+		end: function(){
+			window.location.reload();
+		}
+	});
+}
+
+function deleteConsignee(consigneeId) {
+	var index = parent.layer.confirm('确认删除该收货地址吗?', function() {
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			url: "webPersonal?method=deleteConsignee",
+			data: {
+				consigneeId:consigneeId
+			},
+			success: function (data) {
+				if (data.resultCode == "0")
+				{
+					parent.layer.closeAll();
+					window.location.reload();
+				}else
+				{
+					layer.alert(data.resultMsg,function () {
+						parent.layer.closeAll();
+						window.location.reload();
+					});
+				}
+			}
+		});
+	});
+
+}
+</script>
+</body>
+</html>

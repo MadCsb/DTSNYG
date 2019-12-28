@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<#include "/INC_HEAD.html">
+</head>
+<body>
+<div class="waybill-title">
+	<span>新增收货地址</span>
+</div>
+	<form method="post" id="addConsignee">
+		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tbody id="list">
+			<col style="width:20%"></col>
+			<col style="width:30%"></col>
+			<col style="width:20%"></col>
+			<col style="width:30%"></col>
+			<tr class="">
+				<td width="20%" class="tdright"><b><font class="f2">*</font>收货人姓名：</b></td>
+				<td width="30%">
+					<input name="custName" type="text" class="validate[required,maxSize[50]] data-inputtxt" id="custName">
+				</td>
+				<td width="20%" class="tdright"><b><font class="f2">*</font>是否默认：</b></td>
+				<td width="30%">
+					<input type="radio" name="isDefault" value="0" id="isDefault0" checked><label for="isDefault0">否</label>
+					<input type="radio" name="isDefault" value="1" id="isDefault1"><label for="isDefault1">是</label>
+				</td>
+			</tr>
+			<tr class="">
+				<td width="20%" class="tdright"><b><font class="f2">*</font>所在地区：</b></td>
+				<td width="30%" colspan="3">
+					<select id="province" onchange="changeProvince('city')" style="display: none" class="data-searchtxt-select w200">
+					</select>
+					<select id="city" onchange="changeProvince('xian')" style="display: none"  class="data-searchtxt-select w200">
+					</select>
+					<select id="xian" style="display: none" class="data-searchtxt-select w200">
+					</select>
+				</td>
+
+			</tr>
+			<tr class="">
+				<td width="20%" class="tdright"><b><font class="f2">*</font>街道地址：</b></td>
+				<td width="30%">
+					<input name="recAddress" type="text" class="validate[required,maxSize[200]] data-inputtxt"
+						   id="recAddress">
+					<br>
+				</td>
+				<td width="20%" class="tdright"><b><font class="f2">*</font>手机号码：</b></td>
+				<td width="30%">
+					<input name="custPhone" type="text" class="validate[required,maxSize[50],custom[mobile]] data-inputtxt"
+						   id="custPhone">
+				</td>
+
+			</tr>
+
+			</tbody>
+		</table>
+	<div class="footerbtn">
+		<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+		<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
+	</div>
+	
+	
+	
+</body>
+<script type="text/javascript">
+
+
+// 保存前
+function beforeSubmit(){
+	if ($("#addConsignee").validationEngine('validate')) {
+		var consigneeObj = new Object();
+		consigneeObj.userId = "${user.userId}";
+		consigneeObj.custName = $("#custName").val();
+		consigneeObj.custPhone = $("#custPhone").val();
+		var pcx = $("#province").find("option:selected").text() + " ";
+		if($("#city").is(":visible"))
+		{
+			pcx = pcx + $("#city").find("option:selected").text() + " ";
+		}
+		if($("#xian").is(":visible"))
+		{
+			pcx = pcx + $("#xian").find("option:selected").text() + " ";
+		}
+		consigneeObj.pcx = pcx;
+		consigneeObj.recAddress = $("#recAddress").val();
+		consigneeObj.isDefault = $("input[name='isDefault']:checked").val();
+
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			url: "webPersonal?method=addConsignee",
+			data: consigneeObj,
+			success: function (data) {
+				if (data.resultCode == "0")
+				{
+					parent.layer.closeAll();
+				}else
+				{
+					layer.alert(data.resultMsg,function () {
+						parent.layer.closeAll();
+					});
+				}
+			}
+		});
+	}
+}
+
+	// 页面初始化
+$(function(){
+	// 加载验证框架
+	$("#addConsignee").validationEngine();
+	changeProvince("province");
+});
+function changeProvince(cityType) {
+	var cityObj = $("#"+cityType);
+	var queryObj = new Object();
+	if(cityType == 'province')
+	{
+		queryObj.cityLevel = "1";
+	}else if (cityType == 'city')
+	{
+		queryObj.pcityId = $("#province").val();
+	}else if (cityType == 'xian')
+	{
+		queryObj.pcityId = $("#city").val();
+	}
+	var cityList = null;
+	$.ajax({
+		type: "POST",
+		async: false,
+		dataType: "json",
+		url: "city?method=getCityJson",
+		data: queryObj,
+		success: function (data) {
+			cityList = data;
+		}
+	});
+	$(cityObj).html("");
+	for (var i=0;i<cityList.length;i++)
+	{
+		$(cityObj).append('<option value="'+cityList[i].cityId+'">'+cityList[i].cityName+'</option>');
+	}
+	if(cityList.length == 0)
+	{
+		$(cityObj).hide();
+	}else
+	{
+		$(cityObj).show();
+		if(cityType == 'province')
+		{
+			changeProvince("city");
+		}else if (cityType == 'city')
+		{
+			changeProvince("xian");
+		}
+	}
+}
+
+</script>
+</html>

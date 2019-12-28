@@ -47,6 +47,9 @@ public class WebPersonalController extends BaseController {
 	@Resource(name = "orderCustomerServiceImpl")
 	private OrderCustomerService orderCustomerService;
 
+	@Resource(name = "consigneeServiceImpl")
+	private ConsigneeService consigneeService;
+
 	@Resource(name = "goodsPriceServiceImpl")
 	private GoodsPriceService goodsPriceService;
 
@@ -209,6 +212,173 @@ public class WebPersonalController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * 跳转到新增
+	 */
+	@RequestMapping(params = "method=toQueryConsignee")
+	public ModelAndView toQueryConsignee(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("web/personal/queryConsignee");
+			setCommonPersonalObject(view,request,response);
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 获取收货地址列表json
+	 *
+	 * @author wzd
+	 * @date 2019年10月15日 下午4:04:10
+	 * @param consignee
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=ajaxConsigneeList")
+	public void ajaxConsigneeList(Consignee consignee, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			consignee.setUserId(getLoginUser(request).getUserId());
+			List<Consignee> consigneeList = consigneeService.queryConsigneeList(consignee);
+			response.getWriter().print(JSON.toJSONString(consigneeList));
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+
+	/**
+	 * 跳转到新增
+	 */
+	@RequestMapping(params = "method=toAddConsignee")
+	public ModelAndView toAddConsignee(Consignee consignee, HttpServletRequest request, HttpServletResponse response, String userId, String isChoose) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("web/personal/addConsignee");
+			view.addObject("user",getLoginUser(request));
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 新建收货人信息
+	 *
+	 * @author wzd
+	 * @date 2019年10月18日 下午1:27:07
+	 * @param consignee
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=addConsignee")
+	public void addConsignee(Consignee consignee, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			consigneeService.createConsigneeWx(consignee);
+			result.setResultCode("0");
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("系统异常!");
+		}finally {
+			try {
+				response.getWriter().write(JSON.toJSONString(result));
+			}catch (Exception e)
+			{
+				log.error(e,e);
+			}
+		}
+	}
+
+	/**
+	 * 删除收货地址
+	 *
+	 * @author wzd
+	 * @date 2019年10月20日 下午3:12:54
+	 * @param consignee
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=deleteConsignee")
+	public void deleteConsignee(Consignee consignee, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			if (consignee.getConsigneeId() == null || consignee.getConsigneeId().trim().equals(""))
+			{
+				result.setResultCode("1");
+				result.setResultMsg("请选择收获地址");
+			}else
+			{
+				consigneeService.deleteConsignee(consignee);
+				result.setResultCode("0");
+			}
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("系统异常!");
+		}finally {
+			try {
+				response.getWriter().write(JSON.toJSONString(result));
+			}catch (Exception e)
+			{
+				log.error(e,e);
+			}
+		}
+	}
+
+	/**
+	 * 修改收货人信息
+	 *
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toUpdateConsignee")
+	public ModelAndView toUpdateConsignee(Consignee consignee, HttpServletRequest request, HttpServletResponse response, String userId) {
+		ModelAndView view = null;
+		try {
+			consignee = consigneeService.displayConsignee(consignee);
+			view = new ModelAndView("web/personal/updateConsignee");
+			view.addObject("consignee", consignee);
+			view.addObject("user",getLoginUser(request));
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 修改收货人信息
+	 *
+	 * @author wzd
+	 * @date 2019年10月18日 下午1:27:07
+	 * @param consignee
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=updateConsignee")
+	public void updateConsignee(Consignee consignee, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			consigneeService.updateConsignee(consignee);
+			result.setResultCode("0");
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("系统异常!");
+		}finally {
+			try {
+				response.getWriter().write(JSON.toJSONString(result));
+			}catch (Exception e)
+			{
+				log.error(e,e);
+			}
+		}
 	}
 
 	/**
