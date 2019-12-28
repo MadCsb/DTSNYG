@@ -247,7 +247,7 @@ function changePriceType(priceType){
 				var str = "";
 				var isHave = false;
 				for(var j = 0;j<isHaveArray.length;j++){
-					if(isHaveArray[j]==data[i].productCode){
+					if(isHaveArray[j]==data[i].productId){
 						isHave = true;
 					}
 				}
@@ -268,16 +268,15 @@ function changePriceType(priceType){
 			        str+='</a>';  
 			        str+='</li>';
 			        
-			        
 			        if(isHaveArray.length<20){
 						$("#dataList0").append(str);
+				        isHaveArray.push(data[i].productId);
 			        }
-			        isHaveArray.push(data[i].productCode);
 				}
 			}
 			currentPage++;
 			if(isHaveArray.length<20){
-				getDataList('0','20','DESC','p.F_SORTNUM',currentPage,'0');
+				getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
 			}
 		}
 	}

@@ -4,6 +4,7 @@
 <#include "../WEB_HEAD.html"> 
 <link href="${rc.contextPath}/web/css/spfl.css" rel="stylesheet">
 <link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
+<script src="${rc.contextPath}/webFile/js/jquery.page.js"></script>
 </head>
 <body>
 
@@ -81,17 +82,8 @@
  		</div>
  	</div>
  	
-<#if sellPricelist?? && (sellPricelist?size>0)> 
-	<div style="width:1215px;margin-left:65px;">
-	<#include "/pagination2.html">
-	</div> 
-<#else>
-	<div id='ListIsNullMsg' style="font-size:17px;color:red">
-		<script type="text/javascript">
-			showListIsNullMsg();
-		</script>
+	<div class="pagination">
 	</div>
-</#if>
 </div>
 </form>
 <script type="text/javascript">
@@ -99,6 +91,17 @@
 $(function(){
 	setCarousel();
 	$("#productNameHead").val($("#productName").val());
+	
+	var pageCount = pageInfo.pages;
+    var current = pageInfo.pageNum;
+    $(".pagination").createPage({
+      pageCount:pageCount,
+      current:current,
+      backFn:function(p){
+    	  document.getElementById("entityPage.currentPage").value=p;
+          document.forms[0].submit();
+      }
+    });
 })
 //广告轮播图管理
 function setCarousel()

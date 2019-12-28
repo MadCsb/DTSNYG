@@ -110,7 +110,7 @@
                       	<div style="position: relative;">
                       		<p class="buy_box">
 	                      		<a class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a>
-	                      		<a class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
+	                      		<a onclick="addShopCart('2')"  href="javascript:void(0)" class="tuan_go buy_now  bbc_color bbc_border">立即购买</a>
                       		</p>
                       	</div>
                   </div>
@@ -272,6 +272,19 @@ function addShopCart(showType){
     	$(".cloudzoom").attr("src",picUrl);
     }
     
+    function submitOrder(){
+		var prepareOrderJson = new Object();
+		  var orderListList = new Array();
+		  var orderList1 = new Object();
+		  orderList1.priceId =checkPriceId; //销售id
+		  orderList1.num = $("#quantity").val(); //数量
+		  orderList1.cartId = ""; //购物车id
+		  //price_1_refPatchCode
+		  orderListList.push(orderList1);
+		  prepareOrderJson.orderListList = orderListList;
+		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+		  $("#toCreateOrder").submit();
+	}
 </script>
 <#include "../WEB_FOOTER.html"> 
 </body>

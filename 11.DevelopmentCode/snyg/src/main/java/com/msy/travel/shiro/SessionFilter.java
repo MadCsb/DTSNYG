@@ -27,15 +27,11 @@ public class SessionFilter extends AccessControlFilter {
 				|| url.indexOf("/wxAfterPay") != -1 || url.indexOf("/api") != -1 || url.indexOf("/loginApi") != -1 || url.indexOf("/wx") != -1 || url.indexOf("/pay") != -1) {
 			return Boolean.TRUE;
 		}
-		//web 端无需登录controller
-		if (url.indexOf("/webIndex") != -1
-				|| url.indexOf("/toNewUser") != -1
-				|| url.indexOf("/newUser") != -1
-
-				) {
+		// web 端无需登录controller
+		if (url.indexOf("/webIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/webArticle") != -1 || url.indexOf("/webCommproduct") != -1
+				|| url.indexOf("/webPdcType") != -1 || url.indexOf("/webPrice1Ref") != -1 || url.indexOf("/webSellPrice") != -1) {
 			return Boolean.TRUE;
 		}
-
 
 		Subject subject = getSubject(request, response);
 		Session session = subject.getSession(false);
@@ -57,11 +53,9 @@ public class SessionFilter extends AccessControlFilter {
 		// 先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
-		if (url.indexOf("/web") != -1)
-		{
+		if (url.indexOf("/web") != -1) {
 			WebUtils.issueRedirect(request, response, "/tologin?loginPage=web");
-		}else
-		{
+		} else {
 			WebUtils.issueRedirect(request, response, "/tologin");
 		}
 		// 再重定向
