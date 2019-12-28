@@ -3,6 +3,7 @@
 <head>
 	<#include "WEB_PERSONAL_INC_HEAD.html"/>
 	<script type="text/javascript" src="${rc.contextPath}/plugin/DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/web/js/jquery.page.js"></script>
 </head>
 <body>
 <#include "PersonalTop.html"/>
@@ -134,14 +135,7 @@
 		<tr>
 			<td colspan="19">
 				<div class="pagination">
-				<ul>
-					<li><span>首页</span></li>
-					<li><span>上一页</span></li>
-					<li><span class="currentpage">1</span></li>
-					<li><span>下一页</span></li>
-					<li><span>末页</span></li>
-				</ul>
-			</div>
+				</div>
 			</td>
 		</tr>
 		</tfoot>
@@ -196,31 +190,31 @@
       searchObject.payTag = "";
       searchObject.beforePayStatus = "";
       searchObject.status = ""
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '1') // 待支付
     {
       searchObject.payTag = "0";
       searchObject.beforePayStatus = "0";
       searchObject.status = ""
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '2') // 待发货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = "0";
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '3') // 待收货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = "1"
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '4') // 退换货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = ""
-      searchObject.haveBack = "1";
+      searchObject.backNumS = "1";
     }
     queryOrderList();
   }
@@ -239,7 +233,7 @@
 
     for(var i=0;i<orderList.length;i++)
     {
-      var liHtml = '<tr class="tr_title" orderId="'+orderList[i].orderId+'">'
+      var liHtml = '<tr class="tr_title">'
           + '<th colspan="8" class="order_mess">'
           + '<p class="order_mess_one">'
           + '<time>下单时间：'+orderList[i].createTime+'</time>'
@@ -247,7 +241,8 @@
           + '</p>'
           + '<div class="order_promotion_type"><span></span><span></span></div>'
           + '</th>'
-          + '</tr>';
+          + '</tr>'
+					+	'<tr detailOrderId="'+orderList[i].orderId+'"></tr>';
       $(".tboy").append(liHtml);
     }
     for(var i=0;i<orderList.length;i++)
@@ -313,9 +308,7 @@
     var order = orderDetail.order;
     var orderShowType = getOrderShowType(order);
 
-
-		var detailHtml = '<tr>'+
-        '<td colspan="4" class="td_rborder">' +
+    var detailHtml =  '<td colspan="4" class="td_rborder">' +
         '<table><tbody>';
     for(var j=0;j<orderListList.length;j++)
     {
@@ -414,8 +407,7 @@
     {
 
     }
-    detailHtml = detailHtml + '</td></tr>';
-    console.log(detailHtml);
+    detailHtml = detailHtml + '</td>';
     $("[detailOrderId='"+order.orderId+"']").html(detailHtml);
   }
 </script>

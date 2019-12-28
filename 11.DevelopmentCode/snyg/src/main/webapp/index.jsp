@@ -8,7 +8,7 @@
   </body>
   
   <script type="text/javascript">
-  	// location.href="webIndex?method=webIndex";
-    location.href="http://www.3nong1gou.com/web/index.html";
+  	 location.href="webIndex?method=webIndex";
+//    location.href="http://www.3nong1gou.com/web/index.html";
   </script>
 </html>

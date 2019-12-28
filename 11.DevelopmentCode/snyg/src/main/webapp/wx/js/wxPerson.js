@@ -14,7 +14,7 @@ function WxPerson(){
  * searchObject.payTag支付状态
  * searchObject.beforePayStatus支付前状态
  * searchObject.status支付后订单状态
- * searchObject.haveBack是否有退订
+ * searchObject.backNumS是否有退订
  * pageEntity
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
@@ -34,7 +34,7 @@ WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
       payTag: searchObject.payTag,
       beforePayStatus: searchObject.beforePayStatus,
       status: searchObject.status,
-      haveBack: searchObject.haveBack,
+      backNumS: searchObject.backNumS,
       pageNum: pageEntity.pageNum,
       pageSize: pageEntity.pageSize
     },

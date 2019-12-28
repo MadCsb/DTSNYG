@@ -11,9 +11,9 @@
         obj.empty();
         //上一页
         if(args.current > 1){
-          obj.append('<a prevPage="prevPage"><  PREVIOUS</a>');
+          obj.append('<a prevPage="prevPage"><  上一页</a>');
         }else{
-          obj.append('<a prevPage=""><  PREVIOUS</a>');
+          obj.append('<a prevPage=""><  上一页</a>');
         }
         if(args.current != 1 && args.current >= 4 && args.pageCount != 4){ 
           obj.append('<a page="1">'+1+'</a>');
@@ -41,12 +41,12 @@
           obj.append('...');
         } 
         if(args.current != args.pageCount && args.current < args.pageCount -2 && args.pageCount != 4){ 
-          obj.append('<a '+ args.pageCount +'>'+args.pageCount+'</a>');
+          obj.append('<a page="'+ args.pageCount +'">'+args.pageCount+'</a>');
         }
         if(args.current < args.pageCount){ 
-          obj.append('<a nextPage="nextPage">NEXT  ></a>');
+          obj.append('<a nextPage="nextPage">下一页  ></a>');
         }else{
-          obj.append('<a nextPage="">NEXT  ></a>');
+          obj.append('<a nextPage="">下一页  ></a>');
         } 
       })(); 
     },
@@ -63,7 +63,7 @@
         obj.on("click","a[prevPage]",function(){
           if($(this).attr('prevPage') == 'prevPage')
           {
-            var current = parseInt(obj.children("span.current").text());
+            var current = parseInt(obj.children("a.current").text());
             ms.fillHtml(obj,{"current":current-1,"pageCount":args.pageCount});
             if(typeof(args.backFn)=="function"){
               args.backFn(current-1);
@@ -74,7 +74,7 @@
         obj.on("click","a[nextPage]",function(){
           if($(this).attr('nextPage') == 'nextPage')
           {
-            var current = parseInt(obj.children("span.current").text());
+            var current = parseInt(obj.children("a.current").text());
             ms.fillHtml(obj,{"current":current+1,"pageCount":args.pageCount});
             if(typeof(args.backFn)=="function"){
               args.backFn(current+1);

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "WEB_PERSONAL_INC_HEAD.html"/>
+	<link href="${rc.contextPath}/web/css/home_cart.css" rel="stylesheet" type="text/css">
+	<script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/plugin/DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+<#include "PersonalTop.html"/>
+<input type="hidden" id="wxpayValidateTime" value="${wxpayValidateTime!'0'}">
+<div class="main">
+	<ul class="ddul">
+		<li id="orderInfo">
+		</li>
+	</ul>
+</div>
+<div class="slds-receipt-info recive_address">
+	<div class="current_box">
+		<div class="slds-receipt-info-title">
+			<h3>订单信息</h3>
+		</div>
+		<div id="addr_list" class="slds-candidate-items">
+			<ul>
+				<li class="receive_add address_item">
+					<label for="consigneeIdRadio">
+						<span class="true-name">订单编号：${order.orderCode!''}</span>
+				</li>
+			</ul>
+			<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+		</div>
+	</div>
+</div>
+
+<div class="slds-receipt-info recive_address">
+	<div class="current_box">
+		<div class="slds-receipt-info-title">
+			<h3>收货人信息</h3>
+		</div>
+		<div id="addr_list" class="slds-candidate-items">
+			<ul>
+					<li class="receive_add address_item">
+						<input type="radio" class="radio" name="addr" id="consigneeIdRadio" checked>
+						<label for="consigneeIdRadio">
+							<span class="true-name">${orderCustomer.custName!''}</span>
+							<span class="address">${orderCustomer.recAddress!''}</span>
+							<span class="phone"><i class="icon-mobile-phone"></i>${orderCustomer.custPhone!''}</span></label>
+					</li>
+			</ul>
+			<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+		</div>
+	</div>
+</div>
+
+<div class="slds-receipt-info">
+	<div class="slds-receipt-info-title">
+		<h3>商品清单</h3>
+	</div>
+	<table class="slds-table-style">
+		<thead>
+		<tr>
+			<th class="w20"></th>
+			<th></th>
+			<th>商品</th>
+			<th class="w120">单价(元)</th>
+			<th class="w120">数量</th>
+			<th class="w120">小计</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+		</tr>
+		<#list orderListList as oll>
+			<tr class="shop-list ">
+				<td class="td-border-left"></td>
+				<td class="w60">
+					<a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank" class="slds-goods-thumb">
+						<img src="${rc.contextPath}/upload/wxpic/${oll.goodsPrice.thumbPic!''}" alt="${oll.productName!''}">
+					</a>
+				</td>
+				<td class="tl">
+					<dl class="slds-goods-info">
+						<dt><a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank">${oll.productName!''}</a></dt>
+						<dd>${oll.childName!''}</dd>
+					</dl>
+				</td>
+				<td class="w120">&yen;<em>${oll.price!''}</em></td>
+				<td class="w60">
+					${oll.num}
+				</td>
+				<td>
+					￥<em>${oll.money!''}</em>
+				</td>
+				<td class="td-border-right"></td>
+			</tr>
+		</#list>
+		<tr>
+			<td class="w10"></td>
+			<td class="tl" colspan="2">买家留言：
+				<input type="text" class="text w340" readonly="readonly" id="memo" value="${order.memo!''}" maxlength="150">
+				&nbsp;</td>
+			<td class="tl" colspan="10"><div class="slds-form-default"> </div></td>
+		</tr>
+		<tr>
+			<td class="tr" colspan="20">
+				<div class="slds-store-account">
+					<dl class="freight">
+						<dt>运费：</dt>
+						<dd>￥<em id="totalTransFee">${order.transFee!''}</em></dd>
+					</dl>
+					<dl>
+						<dt>商品金额：</dt>
+						<dd>￥<em id="totalPrice">${order.productPrice!''}</em></dd>
+					</dl>
+				</div>
+			</td>
+		</tr>
+		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="20">
+				<div class="slds-all-account">订单总金额：￥<em id="totalPay">${order.money!''}</em>元</div>
+
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toPay('${order.orderId}');" id="toPayTag1Btn">去支付</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="alertMsg('已提醒尽快发货，如有疑问，请致电400-8013841')" id="toTxBtn">提醒发货</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="queryOrderExpress" onclick="toOrderExpress('${order.orderId}');">查物流</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toStatus2Btn" onclick="closeOrderExpress('${order.orderId}');">确认收货</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="orderBackDetail" onclick="toWebOrderBackDetail('${order.orderId}')">查退款</a>
+				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toBackBtn" onclick="toOrderBack('${order.orderId}')">申请退款</a>
+
+			</td>
+		</tr>
+		</tfoot>
+	</table>
+</div>
+<script>
+  var stopTime = null; //订单支付截止时间
+  var dateTimeUtil = new DateTimeUtil(); //计算日期js
+	$(function () {
+    orderShow();
+  })
+	function orderShow() {
+		var order = new Object();
+    order.backNum = "${order.backNum!'0'}";
+    order.backTimes = "${order.backTimes!'0'}";
+    order.payTag = "${order.payTag!''}";
+    order.beforePayStatus = "${order.beforePayStatus!''}";
+    order.status = "${order.status!''}";
+		order.createTime = "${order.createTime!''}";
+    var orderShowType = getOrderShowType(order);
+    if (orderShowType == "-") //已退订
+    {
+      $("#orderInfo").html("您的订单已退款，点击【查退款】查看详情");
+      $("#orderBackDetail").show();
+    }else if (orderShowType == "--") //退款中
+    {
+      $("#orderInfo").html("您的订单已申请退订，点击【查退款】查看详情");
+      $("#orderBackDetail").show();
+    }else if (orderShowType == "0-0") //未支付未关闭
+    {
+      if($("#wxpayValidateTime").val() != '')
+      {
+        $("#toPayTag1Btn").show();
+
+        stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,order.createTime);
+        stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
+        remainPay = window.setInterval(payRemainTime,500);
+      }
+    }else if (orderShowType == "0-12") //未支付已关闭
+    {
+      $("#orderInfo").html("您的订单已超出支付时间，请重新下单");
+    }
+    else if (orderShowType == "1-0") //已支付待确认
+    {
+      $("#toTxBtn").show();
+      $("#orderTitle").html("待发货订单");
+      $("#orderInfo").html("正在备货中，请您耐心等候");
+    }
+    else if (orderShowType == "1-1") //已支付已发货
+    {
+      $("#toStatus2Btn").show();
+      $("#queryOrderExpress").show();
+      $("#orderInfo").html("快递正在配送中，请您耐心等候");
+    }
+    else if (orderShowType == "1-2") //已支付已收货
+    {
+      //暂时注销，不需要退货申请
+//        $("#toBackBtn").show();
+      $("#orderInfo").html("您的订单已收货");
+    }
+    else if (orderShowType == "1-5") //订单已关闭
+    {
+      $("#orderInfo").html("您的订单已收货!");
+    }
+
+  }
+  //获取订单分类
+  //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
+  function getOrderShowType(order)
+  {
+    var orderShowType = null;
+    if (order.backNum != null && order.backNum != '0') //"-"已退订
+    {
+      orderShowType="-";
+    }else if (order.backTimes != null && order.backTimes != '0') //退订中
+    {
+      orderShowType="--";
+    }else
+    {
+      if(order.payTag == "0" && order.beforePayStatus == "0") //"0-0"未支付未关闭
+      {
+        orderShowType = "0-0";
+      }else if(order.payTag == "0" && (order.beforePayStatus == "1" || order.beforePayStatus == "2")) //"0-12".未支付已关闭
+      {
+        orderShowType = "0-12";
+      }else if(order.payTag == "1" && order.status == "0") //"1-0"已支付待确认
+      {
+        orderShowType = "1-0";
+      }else if(order.payTag == "1" && order.status == "1") //"1-1"已支付已发货
+      {
+        orderShowType = "1-1";
+      }
+      else if(order.payTag == "1" && order.status == "2") //"1-2"已支付已收货
+      {
+        orderShowType = "1-2";
+      }else if(order.payTag == "1" && order.status == "3") //"1-3" 确认拒绝
+      {
+        orderShowType = "1-3";
+      }else if(order.payTag == "1" && order.status == "5") //"1-5"订单已关闭
+      {
+        orderShowType = "1-5";
+      }
+    }
+    return orderShowType;
+  }
+
+  //支付倒计时
+  function payRemainTime(){
+    var html = "";
+    //当前时间
+    var now =new Date();
+    // 剩余总秒 一天秒=86400,一时秒=3600
+    var shengyu =parseInt((stopTime.getTime()-now.getTime())/1000);
+    //剩余天
+    var shengyuD=parseInt(shengyu/86400);
+    //剩余时
+    var shengyuH=parseInt((shengyu - shengyuD*86400)/3600);
+    //剩余分
+    var shengyuM=parseInt((shengyu - shengyuD*86400 - shengyuH*3600)/60);
+    //剩余秒
+    var shengyuS=shengyu - shengyuD*86400 - shengyuH*3600 - shengyuM*60;
+    if(shengyuD>0)
+    {
+      html = html + shengyuD+  "天";
+    }
+    if(shengyuD>0 || shengyuH>0)
+    {
+      html = html + shengyuH+  "时";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0)
+    {
+      html = html + shengyuM+  "分";
+    }
+    if(shengyuD>0 || shengyuH>0 || shengyuM>0 || shengyuS>0)
+    {
+      html = html + shengyuS+  "秒";
+    }
+    if (html == "")
+    {
+      clearInterval(remainPay);
+      $("#toPayTag1Btn").hide();
+      $("#orderInfo").html("您的订单已超出支付时间，请重新下单");
+    }else
+    {
+      $("#orderInfo").html("订单已提交，您还有"+html+"可以付款");
+    }
+  }
+</script>
+<#include "PersonalButton.html"/>
+<script>
+
+</script>
+</body>
+</html>

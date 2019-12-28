@@ -671,5 +671,6 @@ public class Order extends BaseEntity implements java.io.Serializable
 	public void setThumbPic(String thumbPic) {
 		this.thumbPic = thumbPic;
 	}
+
 }
 

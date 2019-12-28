@@ -14,14 +14,6 @@
 		<!-- 有内容显示 -->
 		<table>
 			<tbody id="orderList">
-			<tr>
-				<td class="my_orders_goods"><a href="" target="_blank"><img src="images/sp.png" width="50" height="50"></a></td>
-				<td class="place_holder">自然足记</td>
-				<td class="orders_goods_pri"><p>¥78.00</p><p>在线付款</p></td>
-				<td class="place_time"><p>2019-10-19 21:34:00</p></td>
-				<td class="order_pay_status"><p class="wait_pay bbc_color"><span style="color:#36C">待付款</span></p><p><a href="" class="pay_order_det" target="_blank">订单详情</a></p></td>
-				<td><a href="">查看</a></td>
-			</tr>
 			</tbody>
 		</table>
 		<div class="no_content_play vertical_top1 vertical_top01" style="display: none" id="noOrder">
@@ -59,7 +51,7 @@
 //    searchObject.payTag = "0";
 //    searchObject.beforePayStatus = "0";
 //    searchObject.status = ""
-//    searchObject.haveBack = "";
+//    searchObject.backNumS = "";
     var pageEntity = new Object(); //查询 分页对象
     pageEntity.pageNum = 1;
     pageEntity.pageSize = 3; //查询三条订单
@@ -85,9 +77,9 @@
 						'<td class="place_time"><p>'+orderList[i].createTime+'</p></td>' +
 						'<td class="order_pay_status">' +
 						'<p class="wait_pay bbc_color"><span style="color:#36C">待付款</span></p>' +
-						'<p><a href="" class="pay_order_det" target="_blank">订单详情</a></p>' +
+						'<p><a onclick="toWebOrderDetail(\''+orderList[i].orderId+'\')" class="pay_order_det" target="_blank">订单详情</a></p>' +
 						'</td>' +
-						'<td><a href="">查看</a></td>' +
+						'<td><a onclick="toWebOrderDetail(\''+orderList[i].orderId+'\')" >查看</a></td>' +
 						'</tr>';
 			  $("#orderList").append(orderHtml);
 			}

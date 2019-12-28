@@ -119,31 +119,31 @@
       searchObject.payTag = "";
       searchObject.beforePayStatus = "";
       searchObject.status = ""
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '1') // 待支付
     {
       searchObject.payTag = "0";
       searchObject.beforePayStatus = "0";
       searchObject.status = ""
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '2') // 待发货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = "0";
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '3') // 待收货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = "1"
-      searchObject.haveBack = "";
+      searchObject.backNumS = "";
     }else if (orderListType == '4') // 退换货
     {
       searchObject.payTag = "1";
       searchObject.beforePayStatus = "";
       searchObject.status = ""
-      searchObject.haveBack = "1";
+      searchObject.backNumS = "1";
     }
     loading = true;
     pageEntity.pageNum = 1; //第1页开始查询

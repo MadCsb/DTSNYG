@@ -7,8 +7,13 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.ResourceCommon;
+import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.*;
+import com.msy.travel.service.CommproductService;
+import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IArticleService;
+import com.msy.travel.service.OrderCustomerService;
+import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.OrderService;
 import com.msy.travel.service.ShopcartService;
 import net.sf.json.JSONArray;
@@ -41,6 +46,21 @@ public class WebPersonalController extends BaseController {
 
 	@Resource(name = "shopcartServiceImpl")
 	private ShopcartService shopcartService;
+
+	@Resource(name = "configParameter")
+	private ConfigParameter configParameter;
+
+	@Resource(name = "orderCustomerServiceImpl")
+	private OrderCustomerService orderCustomerService;
+
+	@Resource(name = "goodsPriceServiceImpl")
+	private GoodsPriceService goodsPriceService;
+
+	@Resource(name = "commproductServiceImpl")
+	private CommproductService commproductService;
+
+	@Resource(name = "orderListServiceImpl")
+	private OrderListService orderListService;
 
 	private void setCommonPersonalObject(ModelAndView view,HttpServletRequest request, HttpServletResponse response)
 	{
@@ -112,25 +132,53 @@ public class WebPersonalController extends BaseController {
 		return view;
 	}
 
-	///**
-	// * 去订单详情
-	// */
-	//@RequestMapping(params = "method=toOrderDetail")
-	//public ModelAndView toOrderDetail(String orderId,HttpServletRequest request)
-	//{
-	//	ModelAndView view = null;
-	//	try {
-	//		view = new ModelAndView("wx/order/orderDetail");
-	//		view.addObject("orderId",orderId);
-	//		view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
-	//		ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-	//		wxSetViewObjects(view, request,serviceCode,userService);
-	//	}catch (Exception e) {
-	//		view = new ModelAndView("error");
-	//		view.addObject("e", getExceptionInfo(e));
-	//		log.error(e, e);
-	//	}
-	//	return view;
-	//}
+	/**
+	 * 去订单详情
+	 */
+	@RequestMapping(params = "method=toOrderDetail")
+	public ModelAndView toOrderDetail(String orderId,HttpServletRequest request,HttpServletResponse response)
+	{
+		ModelAndView view = null;
+		try {
+			Order order = new Order();
+			order.setOrderId(orderId);
+			order = orderService.displayOrder(order);
+
+			OrderCustomer orderCustomer = new OrderCustomer();
+			orderCustomer.setOrderId(order.getOrderId());
+			orderCustomer = orderCustomerService.displayOrderCustomer(orderCustomer);
+
+			OrderList orderList = new OrderList();
+			orderList.setOrderId(orderId);
+			orderList.setDelFlag("0");
+			List<OrderList> orderListList = orderListService.queryOrderListList(orderList);
+			for (OrderList ol : orderListList)
+			{
+
+				GoodsPrice goodsPrice = new GoodsPrice();//规格
+				goodsPrice.setGoodsPriceId(ol.getGoodsPriceId());
+				goodsPrice = goodsPriceService.displayGoodsPrice(goodsPrice);
+				ol.setGoodsPrice(goodsPrice);
+
+				Commproduct commproduct = new Commproduct();
+				commproduct.setProductId(goodsPrice.getProductId());
+				commproduct = commproductService.displayCommproduct(commproduct);
+				ol.setCommproduct(commproduct);
+			}
+
+			view = new ModelAndView("/web/personal/orderDetail");
+			view.addObject("order",order);
+			view.addObject("orderCustomer",orderCustomer);
+			view.addObject("orderListList",orderListList);
+			view.addObject("orderId",orderId);
+			view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
+			setCommonPersonalObject(view,request,response);
+		}catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
 
 }

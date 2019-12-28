@@ -114,7 +114,7 @@ function alertMsg(msg){
  * searchObject.payTag支付状态
  * searchObject.beforePayStatus支付前状态
  * searchObject.status支付后订单状态
- * searchObject.haveBack是否有退订
+ * searchObject.backNumS是否有退订
  * pageEntity
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
@@ -134,7 +134,7 @@ function ajaxOrderList(sync,searchObject,pageEntity)
       payTag: searchObject.payTag,
       beforePayStatus: searchObject.beforePayStatus,
       status: searchObject.status,
-      haveBack: searchObject.haveBack,
+      backNumS: searchObject.backNumS,
       pageNum: pageEntity.pageNum,
       pageSize: pageEntity.pageSize
     },
@@ -197,6 +197,13 @@ function toWebSellPrice(priceId){
 /**
  * 跳转web销售详情
  */
-function toWebSellPrice(priceId){
-  wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
+function toWebOrderDetail(orderId){
+  window.location.href = "webPersonal?method=toOrderDetail&orderId="+orderId;
+}
+
+/**
+ * 跳转订单退货详情
+ */
+function toWebOrderBackDetail(orderId){
+  // window.location.href = "wxorder?method=toOrderBackDetail&orderId="+orderId;
 }
