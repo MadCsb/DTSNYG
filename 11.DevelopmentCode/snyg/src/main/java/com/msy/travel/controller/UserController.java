@@ -1,7 +1,8 @@
 package com.msy.travel.controller;
 
 import com.msy.travel.common.LogicException;
-import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.*;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.msy.travel.service.*;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.logging.Log;
@@ -36,16 +38,6 @@ import com.msy.travel.common.MD5;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.RedisUtil;
 import com.msy.travel.common.ResourceCommon;
-import com.msy.travel.pojo.Menu;
-import com.msy.travel.pojo.Role;
-import com.msy.travel.pojo.User;
-import com.msy.travel.pojo.UserGroup;
-import com.msy.travel.service.IMenuButtonService;
-import com.msy.travel.service.IMenuService;
-import com.msy.travel.service.IPubUserLogService;
-import com.msy.travel.service.IRoleService;
-import com.msy.travel.service.IUserGroupService;
-import com.msy.travel.service.IUserService;
 import com.msy.travel.task.Scheduled;
 
 @Controller
@@ -57,6 +49,9 @@ public class UserController extends BaseController {
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
+
+	@Resource(name = "articleServiceImpl")
+	private IArticleService articleService;
 
 	@Resource(name = "menuServiceImpl")
 	private IMenuService menuService;
