@@ -21,10 +21,10 @@ input[type="text"], input[type="password"], input.text, input.password {
     background-color: #FFF;
     vertical-align: middle;
     display: inline-block;
-    height: 20px;
-    padding: 5px;
-    border: solid 1px #E6E9EE;
-    outline: 0 none;
+    height: 26px;
+    padding: 4px;
+    border: solid 1px #CCC;
+
 }
 
 input[type="text"]:focus, input.text:focus, textarea:focus {
@@ -54,7 +54,7 @@ textarea, .textarea {
 select {
     color: #777;
     background-color: #FFF;
-    vertical-align: top;
+    vertical-align: middle;
     display: inline-block;
     height: 26px;
     padding: 4px;
@@ -537,8 +537,8 @@ a#next_submit:hover {
 }
 
 .slds-table-style .slds-goods-thumb img {
-    max-width: 80px;
-    max-height: 80px;
+    width: 80px;
+    height: 80px;
     margin-top: expression(40-this.height/2);
     *margin-top: expression(20-this.height/2) /*IE6,7*/;
 }
