@@ -28,7 +28,8 @@ public class SessionFilter extends AccessControlFilter {
 			return Boolean.TRUE;
 		}
 		// web 端无需登录controller
-		if (url.indexOf("/webIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/webArticle") != -1 || url.indexOf("/webCommproduct") != -1
+		if (url.indexOf("/webIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/toArticleContext") != -1
+				|| url.indexOf("/newUser") != -1 || url.indexOf("/webArticle") != -1 || url.indexOf("/webCommproduct") != -1
 				|| url.indexOf("/webPdcType") != -1 || url.indexOf("/webPrice1Ref") != -1 || url.indexOf("/webSellPrice") != -1) {
 			return Boolean.TRUE;
 		}

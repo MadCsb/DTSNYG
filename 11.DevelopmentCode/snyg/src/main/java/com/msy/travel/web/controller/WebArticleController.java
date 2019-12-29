@@ -96,4 +96,20 @@ public class WebArticleController extends BaseController {
 		}
 		return view;
 	}
+	/**
+	 * 跳转到详情弹窗
+	 */
+	@RequestMapping(params = "method=toArticleContext")
+	public ModelAndView toArticleContext(Article article, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("web/article/articleDetail");
+			article = articleService.displayArticle(article);
+			view.addObject("article",article);
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+		return view;
+	}
+
 }
