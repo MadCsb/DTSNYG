@@ -11,7 +11,7 @@
 .sldu-table-style .norecord p{margin-top: 10px;}
 .bd-line td {border-top: dotted 1px #e1e1e1;}
 
-.text{ min-width:200px;}
+.text{ min-width:146px;}
 
 /*iconfont*/
 .clears{clear: both;overflow: hidden;}
@@ -1777,7 +1777,7 @@
     width: 322px;
     float: right;
     height: 305px;
-	margin-left:18px;
+	border-left:18px solid #f5f6fa;
 }
 
 .my_orders {

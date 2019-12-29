@@ -22,7 +22,7 @@ input[type="text"], input[type="password"], input.text, input.password {
     vertical-align: middle;
     display: inline-block;
     height: 26px;
-    padding: 4px;
+    padding: 2px 4px;
     border: solid 1px #CCC;
 
 }
@@ -113,7 +113,7 @@ a.slds-btn {
     text-align: center;
     display: inline-block;
     height: 26px;
-    padding: 10px 33px;
+    padding: 15px 33px;
     cursor: pointer;
     border-radius: 0px;
     font-weight: 700;
@@ -497,7 +497,7 @@ a:hover.slds-btn-red {
 }
 
 .slds-table-style a {
-    color: #666;
+    color: #fff;
 }
 
 .slds-table-style a:hover {
