@@ -446,7 +446,7 @@ function getSellPriceAccess(){
     	if(data!=null && data.length>0){
     		var str = "";
     		for(var i=0;i<data.length;i++){
-    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
+    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\')"><a href="javascript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
     		}
     		$("#sellPriceAccessList").html(str);
     	}
@@ -548,8 +548,8 @@ function checkGoodsPrice(priceId,obj){
 			if(data[i].headPic==""){
 				str+='<div class="divleft"><i class="usertx"><img src="web/images/tx.jpg"></i>'+data[i].userName+'</div>';
 			}else{
-				str+='<div class="divleft"><i class="usertx"><img src="'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
-			}
+				str+='<div class="divleft"><i class="usertx"><img src="${rc.contextPath}/upload/wxpic/'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
+			}    
 			str+='<div class="divcen">还差'+data[i].num+'人成团<p class="f4 fz12" id=refTime'+data[i].refPatchCode+'></p></div>';
 			str+='<div class="divright"><a href="javascript:void(0)" onclick="addShopCart(\''+data[i].refPatchCode+'\')"><span class="s_btn">去参团</span></a></div>';
 			str+='<div style="clear:both;"></div>';
@@ -619,8 +619,8 @@ function checkGoodsPrice(priceId,obj){
 		  
 		  var price = new Object();
 		  price.priceType="1";
-		  price.refPatchCode=refPatchCode;
-		  if(refPatchCode==""){
+		  price.refPatchCode=refPatchCodeCurrent;
+		  if(refPatchCodeCurrent==""){
 			  price.isBegin = "1";  
 		  }else{
 			  price.isBegin = "0";  

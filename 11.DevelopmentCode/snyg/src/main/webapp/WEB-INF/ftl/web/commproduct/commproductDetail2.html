@@ -425,7 +425,7 @@ function getSellPriceAccess(){
     	if(data!=null && data.length>0){
     		var str = "";
     		for(var i=0;i<data.length;i++){
-    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
+    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\')"><a href="javascript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
     		}
     		$("#sellPriceAccessList").html(str);
     	}

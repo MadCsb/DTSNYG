@@ -97,7 +97,7 @@
         	<thead>
         		<tr>
 	       			<th class="w50">
-	       				<label><input type="checkbox" value="1" id="selectAll"> 全选</label>
+	       				<label><input type="checkbox" value="1" id="selectAll" onclick="checkAllCart(this)"> 全选</label>
 	       			</th>
                 	<th></th>
 	                <th>商品</th>
@@ -121,7 +121,7 @@
     </form>
 </div>
 </div>
-<form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
+<form action="webOrder?method=toCreateOrder" method="post" id="toCreateOrder">
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
 </form>
 <script type="text/javascript">
@@ -244,6 +244,14 @@ function toOrder() {
 	  $("#toCreateOrder").submit();	
 	}
 }
+
+$("#selectAll").click(function(){
+ 	  if(this.checked){
+	  $("input[name='checkCart']").attr("checked","checked");
+}else{
+	  $("input[name='checkCart']").attr("checked",null);
+}
+ }); 
     
 </script>
 <#include "../WEB_FOOTER.html"> 

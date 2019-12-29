@@ -11,6 +11,8 @@
 .sldu-table-style .norecord p{margin-top: 10px;}
 .bd-line td {border-top: dotted 1px #e1e1e1;}
 
+.text{ min-width:200px;}
+
 /*iconfont*/
 .clears{clear: both;overflow: hidden;}
 .icon_size18 {
@@ -3872,7 +3874,8 @@ input.submit {
 .aright {
     float: left;
     width: 90%;
-    position: relative
+    position: relative;
+	background:#fff;
 }
 
 .order_content {
