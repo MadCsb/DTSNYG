@@ -60,6 +60,7 @@ public class WebPdcTypeController extends BaseController {
 					PdcType subType = new PdcType();
 					subType.setPpdcTypeId(pdcTypeList.get(i).getPdcTypeId());
 					subType.setLevel("2");
+					subType.setDelFlag("0");
 					List<PdcType> subTypeList = pdcTypeService.queryPdcTypeList(subType);
 					pdcTypeList.get(i).setPdcTypeList(subTypeList);
 				}
