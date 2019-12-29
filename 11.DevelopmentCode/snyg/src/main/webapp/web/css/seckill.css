@@ -42,7 +42,7 @@
 .seckill .seckill-con ul li .pro-con .btn{margin-top:19px;font-size:14px}
 .seckill .seckill-con ul li .pro-con .btn-disabled{background:#f2f2f2 !important;border-color:#f2f2f2 !important}
 .seckill .seckill-con ul li .pro-con .btn-primary{background:#ffbb32 !important;border-color:#ffbb32 !important}
-.seckill .notic{padding-bottom:35px;font-size:14px; line-height:32px;color:rgba(0,0,0,0.27);margin-top:100px}
+.seckill .notic{padding-bottom:35px;font-size:14px; line-height:32px;color:rgba(0,0,0,0.27);margin-top:100px; background:#fff; padding:20px; box-sizing:border-box;}
 .seckill-empty{background:#fff;line-height:200px;text-align:center;font-size:30px;color:#b0b0b0}
 .modal-remind{text-align:center;width:500px;margin-left:-250px;margin-top:-113px}
 .modal-remind h3{font-size:26px}@-webkit-keyframes opacity01{0%{opacity:0;filter:alpha(opacity=0)\9}100%{opacity:1;filter:alpha(opacity=100)\9}}@keyframes opacity01{0%{opacity:0;filter:alpha(opacity=0)\9}100%{opacity:1;filter:alpha(opacity=100)\9}}

@@ -863,7 +863,7 @@
     position: relative;
     z-index: 2; }
 	
-.xm-plain-box .box-slhd{position:relative;height:50px;-webkit-font-smoothing:antialiased; width:100%; background:#FFFFFF; margin-bottom:10px; padding-top:10px; }	
+.xm-plain-box .box-slhd{position:relative;height:50px;-webkit-font-smoothing:antialiased; width:98.8%; background:#FFFFFF; margin-bottom:10px; padding-top:10px;margin-left: -4px; }	
 .sldh-sortbar-array {
     font: 12px/36px "microsoft yahei";
     color: #777;
