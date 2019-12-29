@@ -1684,6 +1684,7 @@ table.voucher_list td.explain {
 	width:100px;
 	overflow:hidden;
 	text-align:left;
+	padding-top:2px;
 	}
 .btnhui {
 	border: 0;

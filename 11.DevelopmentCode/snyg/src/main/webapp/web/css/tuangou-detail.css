@@ -1982,6 +1982,7 @@ a.sld_sell_goods_name:hover{
 }
 .goods_ranking ul li p{
     margin-top: 10px;
+	text-align:center;
 }
 .goods_ranking ul li:hover .sld_sell_goods_name{
     display: inline-block;

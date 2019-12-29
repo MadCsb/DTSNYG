@@ -45,7 +45,7 @@ flex-grow: 1;}
 .labelboxn input{ vertical-align:middle; margin-right:10px;}
 
 
-.labelbox input{height:22px;line-height:22px;padding:10px 16px 10px 14px;display:block; color:#4a4a4a; border:0; background:transparent; width:100%; box-sizing:border-box;}
+.labelbox input{height:32px;line-height:32px;padding:10px 16px 10px 14px;display:block; color:#4a4a4a; border:0; background:transparent; width:100%; box-sizing:border-box;}
 
 
 .btnadpt {

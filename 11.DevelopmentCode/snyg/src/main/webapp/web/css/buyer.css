@@ -282,12 +282,11 @@
 
 .Div_2 .left ._img {
     float: left;
-    border-radius: 50%;
     overflow: hidden;
     position: relative;
     top: 0px;
     left: 18px;
-    height: 108px;
+    height: 80px;
 }
 
 .Div_2 .left .font {
@@ -706,7 +705,7 @@
     margin-left: 10px;
     float: left;
     color: #777;
-    background: #f6f7fb;
+    background: #ff9900;
 }
 
 .order_content table {
@@ -2836,7 +2835,7 @@ input.password {
     vertical-align: top;
     display: inline-block;
     height: 20px;
-    padding: 4px;
+    padding: 2px 4px;
     border: solid 1px #e1e1e1;
     outline: 0 none;
     line-height: 20px;
