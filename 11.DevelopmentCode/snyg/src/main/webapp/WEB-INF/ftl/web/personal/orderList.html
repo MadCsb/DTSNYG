@@ -100,7 +100,6 @@
 
   function orderSearch()
   {
-  	alert($("#orderListType").val());
     changeOrderListType($("#orderListType").val());
   }
 
@@ -340,7 +339,7 @@
       detailHtml += '<a onclick="toWebAlertMsg(\'已提醒尽快发货，如有疑问，请致电400-8013841\')" style="color:#F30;" class="to_views">提醒</a>';
     }else if(orderShowType == "1-1")
     {
-      detailHtml += '<a onclick="toOrderExpress(\''+order.orderId+'\')" style="color:#F30;" class="to_views">查物流</a>';
+      detailHtml += '<a target="_blank" href="wxorder?method=toOrderExpress&orderId='+order.orderId+'" style="color:#F30;" class="to_views">查物流</a>';
     }else if(orderShowType == "1-2")
     {
       detailHtml += '<a onclick="toOrderBack(\''+order.orderId+'\')" style="display: none;" style="color:#F30;" class="to_views">申请退货</a>';
