@@ -213,7 +213,7 @@
                       		<p class="buy_box">
                       			<!-- 
 	                      		<a id="shopCartA" class="tuan_join_cart bbc_btns" onclick="addShopCart('1')" href="javascript:void(0)">加入购物车</a> -->
-	                      		<a id="buyA"  onclick="addShopCart('2')" class="tuan_join_cart bbc_btns">立即购买</a>
+	                      		<a id="buyA"  onclick="addShopCart('')" class="tuan_join_cart bbc_btns">立即购买</a>
                       		</p>
                       	</div>
                   </div>
@@ -499,23 +499,6 @@ function checkGoodsPrice(priceId,obj){
 	checkPriceId = priceId;
 }
 
-function addShopCart(showType){
-	if(showType == "1"){
-		$.post("webShopcart?method=toAddOrUpdateShopCart",{
-			priceId:checkPriceId,
-			num:$("#quantity").val()
-		},function(data){
-			if(data=="success"){
-				alert("加入购物车成功");
-				getShopCartList();
-			}else{
-				alert("没有登录");
-			}
-		});
-	}else{
-		submitOrder();
-	}
-}
 
     //分享功能点击事件
     $('.sharegoods').hover(function(){
@@ -568,7 +551,7 @@ function addShopCart(showType){
 				str+='<div class="divleft"><i class="usertx"><img src="'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
 			}
 			str+='<div class="divcen">还差'+data[i].num+'人成团<p class="f4 fz12" id=refTime'+data[i].refPatchCode+'></p></div>';
-			str+='<div class="divright"><a href="javascript:void(0)"><span class="s_btn">去参团</span></a></div>';
+			str+='<div class="divright"><a href="javascript:void(0)" onclick="addShopCart(\''+data[i].refPatchCode+'\')"><span class="s_btn">去参团</span></a></div>';
 			str+='<div style="clear:both;"></div>';
 			str+='</li>';
 			
@@ -623,18 +606,30 @@ function addShopCart(showType){
 	    }, 1000);
 	} 
 	
-	function addShopCart(showType){
-		var prepareOrderJson = new Object();
-	    var orderListList = new Array();
-	    var orderList1 = new Object();
-	    orderList1.priceId =checkPriceId; //销售id
-	    orderList1.num = $("#quantity").val(); //数量
-	    orderList1.cartId = ""; //购物车id
-	    //price_1_refPatchCode
-	    orderListList.push(orderList1);
-	    prepareOrderJson.orderListList = orderListList;
-	    $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
-	    $("#toCreateOrder").submit();
+	function addShopCart(refPatchCodeCurrent){
+	    var prepareOrderJson = new Object();
+		  var orderListList = new Array();
+		  var orderList1 = new Object();
+		  orderList1.priceId =checkPriceId; //销售id
+		  orderList1.num = $("#num").val(); //数量
+		  orderList1.cartId = ""; //购物车id
+		  //price_1_refPatchCode
+		  orderListList.push(orderList1);
+		  prepareOrderJson.orderListList = orderListList;
+		  
+		  var price = new Object();
+		  price.priceType="1";
+		  price.refPatchCode=refPatchCode;
+		  if(refPatchCode==""){
+			  price.isBegin = "1";  
+		  }else{
+			  price.isBegin = "0";  
+		  }
+		  
+		  prepareOrderJson.price = price;
+		  
+		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+		  $("#toCreateOrder").submit();
 	}
 </script>
 <#include "../WEB_FOOTER.html"> 
