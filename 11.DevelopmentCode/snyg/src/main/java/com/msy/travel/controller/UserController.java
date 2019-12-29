@@ -172,6 +172,9 @@ public class UserController extends BaseController {
 					userDb.setUserLocked("0");
 					userDb.setUserRoleType(null);
 					userDb.setAccId(Destsp.currentSpId);
+					userDb.setUnitId(Destsp.currentSpId);
+					userDb.setType("1");
+					userDb.setUpdateTime(DateTimeUtil.getDateTime19());
 					userService.createUser(userDb);
 					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
 					Subject subject = SecurityUtils.getSubject();
