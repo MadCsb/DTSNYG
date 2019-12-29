@@ -460,6 +460,12 @@
 			<if test="updateTimeEnd != null and updateTimeEnd != ''">
 				and u.F_UPDATETIME &lt;= concat(#{updateTimeEnd},' 23:59:59')
 			</if>
+			<if test="userMobile !=null and userMobile !='' ">
+				and u.F_USER_MOBILE like concat('%',#{userMobile},'%') 
+			</if>
+			<if test="userEmail !=null and userEmail !='' ">
+				and u.F_USER_EMAIL like concat('%',#{userEmail},'%') 
+			</if>
 		</where>
 		<if test="entityPage!=null">
 			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
