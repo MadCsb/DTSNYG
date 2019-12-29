@@ -143,7 +143,7 @@
 		    	and t.F_LEVEL = #{level}
 		    </if>
 		    <if test="ppdcTypeId !=null and ppdcTypeId !=''">
-		    	and t.F_PPDCTYPEID = #{ppdcTypeId}
+		    	and t.F_PPDCTYPEID = #{ppdcTypeId} 
 		    </if>
 		    <if test="spId !=null and spId !=''">
 		    	and t.F_SPID = #{spId}

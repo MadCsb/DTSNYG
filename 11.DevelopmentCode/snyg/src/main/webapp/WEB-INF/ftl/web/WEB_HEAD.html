@@ -73,7 +73,7 @@ function getDataStr1(data,level){
 		str+='<dl class="cat">';
 		str+='<dt class="cat-name">';
 		str+='<span class="ico"><img src="${rc.contextPath}/web/images/icofl.png"></span>';
-		str+='<a href="splb.html" title="'+data[i].typeName+'">'+data[i].typeName+'</a>';
+		str+='<a href="javascript:void(0)" title="'+data[i].typeName+'">'+data[i].typeName+'</a>';
 		str+='</dt>';
 		str+='<dd>';
 		if(data[i].pdcTypeList!=null && data[i].pdcTypeList.length>0){
@@ -94,7 +94,7 @@ function getDataStr1(data,level){
 		if(data[i].pdcTypeList!=null && data[i].pdcTypeList.length>0){
 			for(var j =0;j<data[i].pdcTypeList.length;j++){
 				var subPdcType = data[i].pdcTypeList[j];
-				str+='<a href="javascript:void(0)" title="'+subPdcType.typeName+'"><img src="${rc.contextPath}/upload/wxpic/'+subPdcType.picUrl+'">'+subPdcType.typeName+'</a>';
+				str+='<a href="webSellPrice?method=querySellPriceListForWebList&subType='+data[i].pdcTypeId+'" title="'+subPdcType.typeName+'"><img src="${rc.contextPath}/upload/wxpic/'+subPdcType.picUrl+'">'+subPdcType.typeName+'</a>';
 				
 			}
 		}
