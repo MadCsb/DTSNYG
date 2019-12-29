@@ -5,134 +5,138 @@
 	<link href="${rc.contextPath}/web/css/home_cart.css" rel="stylesheet" type="text/css">
 	<script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/plugin/DatePicker/WdatePicker.js"></script>
+
 </head>
 <body>
-<#include "PersonalTop.html"/>
-<input type="hidden" id="wxpayValidateTime" value="${wxpayValidateTime!'0'}">
-<div class="main">
-	<ul class="ddul">
-		<li id="orderInfo">
-		</li>
-	</ul>
-</div>
-<div class="slds-receipt-info recive_address">
-	<div class="current_box">
-		<div class="slds-receipt-info-title">
-			<h3>订单信息</h3>
-		</div>
-		<div id="addr_list" class="slds-candidate-items">
-			<ul>
-				<li class="receive_add address_item">
-					<label for="consigneeIdRadio">
-						<span class="true-name">订单编号：${order.orderCode!''}</span>
-				</li>
-			</ul>
-			<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
-		</div>
-	</div>
-</div>
 
-<div class="slds-receipt-info recive_address">
-	<div class="current_box">
-		<div class="slds-receipt-info-title">
-			<h3>收货人信息</h3>
-		</div>
-		<div id="addr_list" class="slds-candidate-items">
-			<ul>
+	<#include "PersonalTop.html"/>
+	<input type="hidden" id="wxpayValidateTime" value="${wxpayValidateTime!'0'}">
+<div style="background:#fff; padding:10px;box-sizing:border-box;">
+	<div class="main">
+		<ul class="ddul">
+			<li id="orderInfo">
+			</li>
+		</ul>
+	</div>
+	<div class="slds-receipt-info recive_address">
+		<div class="current_box">
+			<div class="slds-receipt-info-title">
+				<h3>订单信息</h3>
+			</div>
+			<div id="addr_list" class="slds-candidate-items">
+				<ul>
 					<li class="receive_add address_item">
-						<input type="radio" class="radio" name="addr" id="consigneeIdRadio" checked>
 						<label for="consigneeIdRadio">
-							<span class="true-name">${orderCustomer.custName!''}</span>
-							<span class="address">${orderCustomer.recAddress!''}</span>
-							<span class="phone"><i class="icon-mobile-phone"></i>${orderCustomer.custPhone!''}</span></label>
+							<span class="true-name">订单编号：${order.orderCode!''}</span>
 					</li>
-			</ul>
-			<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+				</ul>
+				<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+			</div>
 		</div>
 	</div>
-</div>
 
-<div class="slds-receipt-info">
-	<div class="slds-receipt-info-title">
-		<h3>商品清单</h3>
+	<div class="slds-receipt-info recive_address">
+		<div class="current_box">
+			<div class="slds-receipt-info-title">
+				<h3>收货人信息</h3>
+			</div>
+			<div id="addr_list" class="slds-candidate-items">
+				<ul>
+						<li class="receive_add address_item">
+							<input type="radio" class="radio" name="addr" id="consigneeIdRadio" checked>
+							<label for="consigneeIdRadio">
+								<span class="true-name">${orderCustomer.custName!''}</span>
+								<span class="address">${orderCustomer.recAddress!''}</span>
+								<span class="phone"><i class="icon-mobile-phone"></i>${orderCustomer.custPhone!''}</span></label>
+						</li>
+				</ul>
+				<div class="hr16" style="display: none;"><a id="hide_addr_list" class="slds-btn slds-btn-orange" href="javascript:void(0);">保存收货人信息</a></div>
+			</div>
+		</div>
 	</div>
-	<table class="slds-table-style">
-		<thead>
-		<tr>
-			<th class="w20"></th>
-			<th></th>
-			<th>商品</th>
-			<th class="w120">单价(元)</th>
-			<th class="w120">数量</th>
-			<th class="w120">小计</th>
-			<th></th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-		</tr>
-		<#list orderListList as oll>
-			<tr class="shop-list ">
-				<td class="td-border-left"></td>
-				<td class="w60">
-					<a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank" class="slds-goods-thumb">
-						<img src="${rc.contextPath}/upload/wxpic/${oll.goodsPrice.thumbPic!''}" alt="${oll.productName!''}">
-					</a>
-				</td>
-				<td class="tl">
-					<dl class="slds-goods-info">
-						<dt><a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank">${oll.productName!''}</a></dt>
-						<dd>${oll.childName!''}</dd>
-					</dl>
-				</td>
-				<td class="w120">&yen;<em>${oll.price!''}</em></td>
-				<td class="w60">
-					${oll.num}
-				</td>
-				<td>
-					￥<em>${oll.money!''}</em>
-				</td>
-				<td class="td-border-right"></td>
+
+	<div class="slds-receipt-info">
+		<div class="slds-receipt-info-title">
+			<h3>商品清单</h3>
+		</div>
+		<table class="slds-table-style">
+			<thead>
+			<tr>
+				<th class="w20"></th>
+				<th></th>
+				<th>商品</th>
+				<th class="w120">单价(元)</th>
+				<th class="w120">数量</th>
+				<th class="w120">小计</th>
+				<th></th>
 			</tr>
-		</#list>
-		<tr>
-			<td class="w10"></td>
-			<td class="tl" colspan="2">买家留言：
-				${order.memo!''}
-			</td>
-			<td class="tl" colspan="10"><div class="slds-form-default"> </div></td>
-		</tr>
-		<tr>
-			<td class="tr" colspan="20">
-				<div class="slds-store-account">
-					<dl class="freight">
-						<dt>运费：</dt>
-						<dd>￥<em id="totalTransFee">${order.transFee!''}</em></dd>
-					</dl>
-					<dl>
-						<dt>商品金额：</dt>
-						<dd>￥<em id="totalPrice">${order.productPrice!''}</em></dd>
-					</dl>
-				</div>
-			</td>
-		</tr>
-		</tbody>
-		<tfoot>
-		<tr>
-			<td colspan="20">
-				<div class="slds-all-account">订单总金额：￥<em id="totalPay">${order.money!''}</em>元</div>
+			</thead>
+			<tbody>
+			<tr>
+			</tr>
+			<#list orderListList as oll>
+				<tr class="shop-list ">
+					<td class="td-border-left"></td>
+					<td class="w60">
+						<a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank" class="slds-goods-thumb">
+							<img src="${rc.contextPath}/upload/wxpic/${oll.goodsPrice.thumbPic!''}" alt="${oll.productName!''}">
+						</a>
+					</td>
+					<td class="tl">
+						<dl class="slds-goods-info">
+							<dt><a onclick="toWebSellPrice('${oll.priceId!''}')" target="_blank">${oll.productName!''}</a></dt>
+							<dd>${oll.childName!''}</dd>
+						</dl>
+					</td>
+					<td class="w120">&yen;<em>${oll.price!''}</em></td>
+					<td class="w60">
+						${oll.num}
+					</td>
+					<td>
+						￥<em>${oll.money!''}</em>
+					</td>
+					<td class="td-border-right"></td>
+				</tr>
+			</#list>
+			<tr>
+				<td class="w10"></td>
+				<td class="tl" colspan="2">买家留言：
+					${order.memo!''}
+				</td>
+				<td class="tl" colspan="10"><div class="slds-form-default"> </div></td>
+			</tr>
+			<tr>
+				<td class="tr" colspan="20">
+					<div class="slds-store-account">
+						<dl class="freight">
+							<dt>运费：</dt>
+							<dd>￥<em id="totalTransFee">${order.transFee!''}</em></dd>
+						</dl>
+						<dl>
+							<dt>商品金额：</dt>
+							<dd>￥<em id="totalPrice">${order.productPrice!''}</em></dd>
+						</dl>
+					</div>
+				</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="20">
+					<div class="slds-all-account">订单总金额：￥<em id="totalPay">${order.money!''}</em>元</div>
 
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebPayOrder('${order.orderId}');" id="toPayTag1Btn">去支付</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebAlertMsg('已提醒尽快发货，如有疑问，请致电400-8013841')" id="toTxBtn">提醒发货</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="queryOrderExpress" onclick="toOrderExpress('${order.orderId}');">查物流</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toStatus2Btn" onclick="closeOrderExpress('${order.orderId}');">确认收货</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="orderBackDetail" onclick="toWebOrderBackDetail('${order.orderId}')">查退款</a>
-				<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toBackBtn" onclick="toOrderBack('${order.orderId}')">申请退款</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebPayOrder('${order.orderId}');" id="toPayTag1Btn">去支付</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" onclick="toWebAlertMsg('已提醒尽快发货，如有疑问，请致电400-8013841')" id="toTxBtn">提醒发货</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="queryOrderExpress" onclick="toOrderExpress('${order.orderId}');">查物流</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toStatus2Btn" onclick="closeOrderExpress('${order.orderId}');">确认收货</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="orderBackDetail" onclick="toWebOrderBackDetail('${order.orderId}')">查退款</a>
+					<a style="display: none" class="slds-btn slds-btn-acidblue fr" id="toBackBtn" onclick="toOrderBack('${order.orderId}')">申请退款</a>
 
-			</td>
-		</tr>
-		</tfoot>
-	</table>
+				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
 </div>
 <script>
   var stopTime = null; //订单支付截止时间
@@ -278,8 +282,5 @@
   }
 </script>
 <#include "PersonalButton.html"/>
-<script>
-
-</script>
 </body>
 </html>

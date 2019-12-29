@@ -264,7 +264,7 @@
           '<tr class="tr_con shop-list">' +
           '<td class="order_goods">' +
           '<img src="${rc.contextPath}/upload/wxpic/'+ orderListList[j].goodsPrice.thumbPic+'">' +
-          '<a target="_blank" href="">'+orderListList[j].productName+'</a>' +
+          '<a onclick="toWebSellPrice(\''+ orderListList[j].sellPrice.priceId+'\')">'+orderListList[j].productName+'</a>' +
           '<em class="td_sale bbc_btns small_details">'+ orderListList[j].childName +'</em>' +
           '</td>' +
           '<td class="td_color widt1">'+ orderListList[j].price +'</td>' +
@@ -319,7 +319,7 @@
       detailHtml += '订单关闭'
     }
     detailHtml = detailHtml+'</span><br></p>' +
-        '<p><a href="">订单详情</a></p>' +
+        '<p><a onclick="toWebOrderDetail(\''+order.orderId+'\')">订单详情</a></p>' +
         '</td>' +
         '<td class="td_rborder">';
     //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭
