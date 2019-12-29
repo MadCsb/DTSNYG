@@ -9,85 +9,14 @@
 <body>
 <div id="append_parent"></div>
 <div id="sld_byuTP9yr"></div>
-<div id="sldToolbar" class="jmys-appbar">
 
-  <div class="jmys-appbar-tabs" id="appBarTabs">
-    <div class="ever">
-            <div class="cart"><a target="_blank" class="right" href="gouwc.html"><i class="iconfont icon-gouwuche"></i></a> <p class="p90">购物车</p></div>
-    </div>
-    <div class="variation">
-      <div class="middle">
-        <div class="user" bbctype="a-barLoginBox">
-	        <a target="_blank" class="right" href="login.html">
-	          <div class="avatar"><i class="iconfont icon-huiyuan"></i></div>
-	        </a>
-	        <p class="p90">请登录</p>
-		</div>
-		<div class="l_qrcode erma">
-			<a class="Right" href="javascript:void(0);"><i class="iconfont icon-saoma"></i>
-				<div class="barSldQrcode">
-					<img src="${rc.contextPath}/web/images/05977763755637882.jpg">
-				</div>
-			</a>
-			<img class="img" onselectstart="return true" src="web/images/ggh2wm.jpg" alt="" style="position: absolute; left: 45px;">
-		</div>
-      </div>
-      <div class="gotop"><a href="javascript:void(0);" id="gotop" style="opacity: 1;"><i class="iconfont icon-jiantou"></i></a></div>
-    </div>
-    <div class="content-box" id="content-cart">
-    	<div class="top">
-    		<h3>我的购物车</h3>
-    		<a href="javascript:void(0);" class="close" title="隐藏"></a>
-    	</div>
-      	<div id="rtoolbar_cartlist"></div>
-    </div>
-  </div>
-</div>
 <#include "PersonlMenu.html"> 
 
 <div class="wrapper" style="overflow: hidden;width:100%">
 	<div style=";margin: auto;margin-top: 15px;overflow:hidden;margin-left: -960px;left: 50%;position: relative"></div>
 </div>
 
-<div class="header-wrap">
-	<header class="public-head-layout wrapper">
-    <h1 class="site-logo"><a href="webIndex?method=webIndex"><img src="${rc.contextPath}/web/images/logo.jpg" class="pngFix"></a></h1>
-    <div id="search" class="head-search-bar">
-    	<ul class="tab">
-    		<li title="请输入您要搜索的商品关键字" app="search" class="current">商品</li><i></i>
-        </ul>
-        <form id="search-form" action="webSellPrice?method=querySellPriceListForWebList" method="post" class="search-form" onSubmit="return checkSubmit();">
-	        <input name="productName" id="productNameHead" type="text" class="input-text" value="" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search">
-	        <input type="submit" id="button" value="搜  索" class="input-submit" onclick="searchProduction()">
-	    </form>
-	    <!-- 
-	    <div class="keyword">
-	    	<ul>
-              <li><a href="">土鸡蛋</a></li>
-              <li><a href="">蜂蜜</a></li>
-              <li><a href="">苹果</a></li>
-            </ul>
-      	</div>
-      	 -->
-    </div>
-    <div class="head-user-menu">
-      <dl class="my-cart">
-      	<dt><a href="gouwc.html"><i class="iconfont icon-gouwuche"></i><span>购物车结算</span></a></dt>
-		<dd>
-			<div class="sub-title">
-            	<h4>最新加入的商品</h4>
-          	</div>
-          	<div class="incart-goods-box">
-            	<div class="incart-goods" id="shopCartListDiv">
-             	</div>
-             	<div class="checkout"><span class="total-price">共<i id="numAll">0</i>种商品&nbsp;&nbsp;共计&nbsp;<em id="moneyAll">¥0.00</em></span><a href="webShopcart?method=toQueryShopCartWeb" class="btn-cart">去购物车</a> </div>
-        	</div>
-        </dd>
-      </dl>
-    </div>
-  </header>
-
-</div>
+<#include "WEB_HEADFORM.html"> 
 
 
 <div class="category-box" style="border-bottom: 2px solid #00ae60">
@@ -121,7 +50,6 @@
 <script>
 $(function(){
 	getPdcTypeData('1','');
-	getShopCartList();
 });
 
 
@@ -193,55 +121,6 @@ function checkGoodsPriceParent(i){
 }
 
 
-function getShopCartList(){
-	$.post("webShopcart?method=getShopCartListWeb",{
-		
-	},function(data){
-		if(data!=null && data!="" && data.length>0){
-			$("#shopCartListDiv").html(getShopCartStr(data));	
-		}else{
-			$("#shopCartListDiv").html("");
-		}		
-	},'json')
-}
-function getShopCartStr(data){
-	var str = "";
-	var priceAll = 0.00;
-	
-	for(var i =0;i<data.length;i++){
-		
-		
-		str+='<dl id="cart_item_1498" data-is_supplier="0" onclick="productDetail(\''+data[i].priceId+'\')">';
-		str+='<dt class="goods-name"><a href="">'+data[i].productName+'</a></dt>';
-		str+='<dd class="goods-thumb"><a href="" title="'+data[i].productName+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></a></dd>';
-		str+='<dd class="goods-sales"></dd><dd class="goods-price"><em>¥'+data[i].price+'×'+data[i].num+'</em></dd>';
-		str+='<dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>';
-		str+='</dl>';
-		
-		var num = parseFloat(data[i].num);
-		var price = parseFloat(data[i].price);
-		var p = num * price;
-		priceAll+=p;
-	}
-	
-	$("#moneyAll").html("&yen;"+priceAll.toFixed(2));
-	$("#numAll").html(data.length);
-	
-	return str;
-}
-
-function searchProduction(){
-	$("#search-form").submit();
-}
-
-function checkSubmit() {
-    var keyword = $('#productNameHead').val();
-    keyword = keyword.replace('<','');
-    keyword = keyword.replace('>','');
-    $('#productNameHead').val(keyword);
-    return true;
-}
-
 </script>
 <script type="text/javascript">
 
@@ -273,15 +152,6 @@ $(function(){
   	}
 
 
-	$(".head-user-menu dl").hover(function() {
-		$(this).addClass("hover");
-	},function() {
-		$(this).removeClass("hover");
-	});
-
-	$('.head-user-menu .my-cart').mouseover(function(){// 运行加载购物车
-		$(this).unbind('mouseover');
-	});
 });
 
 </script>
@@ -331,96 +201,5 @@ $(function(){
 
 
 
-<script type="text/javascript">
 
-//返回顶部
-backTop=function (btnId){
-	var btn=document.getElementById(btnId);
-	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-	window.onscroll=set;
-	btn.onclick=function (){
-		btn.style.opacity="0";
-		window.onscroll=null;
-		this.timer=setInterval(function(){
-		    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-			scrollTop-=Math.ceil(scrollTop*0.1);
-			if(scrollTop==0) clearInterval(btn.timer,window.onscroll=set);
-			if (document.documentElement.scrollTop > 0) document.documentElement.scrollTop=scrollTop;
-			if (document.body.scrollTop > 0) document.body.scrollTop=scrollTop;
-		},10);
-	};
-	function set(){
-	    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-	    btn.style.opacity=scrollTop?'1':"0";
-	}
-};
-
-backTop('gotop');
-
-//动画显示边条内容区域
-$(function() {
-    //右侧bar显示二维码事件
-    $('.l_qrcode').hover(function () {
-        $('.l_qrcode .barSldQrcode').animate({'display':'inline-block'},500);
-    },function () {
-        $('.l_qrcode .barSldQrcode').animate({'display':'none'},500);
-    });
-    sldToolbar();
-    $(window).resize(function() {
-        sldToolbar();
-    });
-
-    function sldToolbar() {
-        if ($(window).width() >= 1240) {
-            $('#appBarTabs >.variation').show();
-        } else {
-            $('#appBarTabs >.variation').hide();
-        }
-    }
-
-    $('#appBarTabs').hover(
-        function() {
-            $('#appBarTabs >.variation').show();
-        },function() {
-            sldToolbar();
-        }
-    );
-
-	$(".close").click(function(){
-		$(".content-box").animate({right:'-210px'});
-    });
-});
-
-    //右侧固定栏事件
-	var index;
-    $(".p90").hover(function(){
-        $(this).siblings("a").css({"background":"#ffbb32"});
-    },function(){
-        $(this).siblings("a").css({"background":"#00ae60"});
-    });
-
-  	$(".right").hover(function(){
-	    $(this).css("background","#ffbb32");
-	},function(){
-	    $(this).css("background","#00ae60");
-	});
-
-  	$(".img").hover(function(){
-      $(".img").css({"position":"absolute","left":"45px"});
-  	},function(){
-      $(".img").css({"position":"absolute","left":"45px"});
-  	});
-
-    $(".Right").hover(function(){
-        $(".img").css({"position":"absolute","left":"-172px"});
-    },function(){
-        $(".img").css({"position":"absolute","left":"45px"});
-    })
-
-    
-    function checkBanner(bannerId){
-    	$(".bannerClass").removeClass("selec");
-    	$("#bannerMenu"+bannerId).addClass("selec");
-    }
-</script>
 </body></html>

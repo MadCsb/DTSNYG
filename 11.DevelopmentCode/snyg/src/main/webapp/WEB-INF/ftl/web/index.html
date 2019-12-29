@@ -25,7 +25,7 @@
 <div class="home-flashsale xm-plain-box">
 	<div class="box-hd">
 		<h2 class="title">限时秒杀</h2>
-		<div class="more"><a href="miaosha.html"  class="more-link">查看全部<i class="iconfont"></i></a></div>
+		<div class="more"><a href="webSellPrice?method=querySellPriceListForPriceType&priceType=2"  class="more-link">查看全部<i class="iconfont"></i></a></div>
 	</div>
 	<div class="box-bd clearfix">
 		<div class="row">
@@ -55,7 +55,7 @@
 <div class="home-brick-box home-brick-row-2-box xm-plain-box">
 	<div class="box-hd">
 	    <h2 class="title">团购商品</h2>
-	    <div class="more"><a href="tuangou.html"  class="more-link">查看全部<i class="iconfont"></i></a></div>	
+	    <div class="more"><a href="webSellPrice?method=querySellPriceListForPriceType&priceType=1"  class="more-link">查看全部<i class="iconfont"></i></a></div>	
 	</div>
 <!-- 团购商品图 -->
 	<div class="box-bd clearfix">
@@ -450,7 +450,7 @@ function getDataStrForMiao(data){
 	        str+='<li class="swiper-slide rainbow-item-'+index+'" style="width: 234px; margin-right: 14px;" onclick="productDetail(\''+data[i].priceId+'\')">';
 	        str+='<a href="javascript:void(0)" >';
 	        str+='<div class="content">';
-	        str+='<div class="thumb"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" width="160" height="160"></div>';
+	        str+='<div class="thumb"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '" width="160" height="160"></div>';
 	        str+='<h3 class="title">' + data[i].productName + '</h3>';
 	        str+='<p class="desc">' + data[i].priceName + '</p>';
 	        str+='<p class="price"><span>' + data[i].price + '</span>元&nbsp;&nbsp;<del>' + data[i].oldPrice + '元</del></p>';
@@ -551,6 +551,8 @@ function getPdcTypeDataList(level,ppdcTypeId,limit){
 	},'json');
 }
 
+
+var pdcTypeIdCurrent = "";
 function getDataStrSubPdcType(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){
@@ -558,6 +560,7 @@ function getDataStrSubPdcType(data){
 				str+='<a href="javascript:void(0)" onclick="checkPdcType(\''+data[i].ppdcTypeId+'\',\''+data[i].pdcTypeId+'\',this)"><li class="tab-active checkPdcTypeClass">'+data[i].typeName+'</li></a>';
 				//本地特色
 				getDataList('0','8','DESC','s.F_UPDATETIME','1',data[i].ppdcTypeId,data[i].pdcTypeId);
+				pdcTypeIdCurrent = data[i].pdcTypeId;
 			}else{
 				str+='<a href="javascript:void(0)" onclick="checkPdcType(\''+data[i].ppdcTypeId+'\',\''+data[i].pdcTypeId+'\',this)"><li class="checkPdcTypeClass">'+data[i].typeName+'</li></a>';
 			}
@@ -570,6 +573,7 @@ function checkPdcType(ppdcTypeId,pdcTypeId,obj){
 	$(".checkPdcTypeClass").removeClass("tab-active");
 	$(obj).children(0).addClass("tab-active");
 	$("#subTypePdcList").html("");
+	pdcTypeIdCurrent = pdcTypeId;
 	getDataList('0','8','DESC','s.F_UPDATETIME','1',ppdcTypeId,pdcTypeId);
 }
 function getDataStrForSubType(data){
@@ -580,15 +584,15 @@ function getDataStrForSubType(data){
             	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
             	str+='<li class="brick-item brick-item-s">';
             	str+='<a href="javascript:void(0)">';
-            	str+='<div class="figure figure-img"><img alt="' + data[i].productName + '" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loading" width="80" height="80"></div>';
+            	str+='<div class="figure figure-img"><img alt="' + data[i].productName + '" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '" lazy="loading" width="80" height="80"></div>';
             	str+='<h3 class="title">' + data[i].productName + '</h3>';
             	str+='<p class="price"><span class="num">' + data[i].price + '</span>元</p>';
             	str+='</a>';
             	str+='</li>';
             	str+='</div>';
-			
+            	
             	str+='<li class="brick-item brick-item-s">';
-            	str+='<a href="splb.html">';
+            	str+='<a href="webSellPrice?method=querySellPriceListForWebList&subType='+pdcTypeIdCurrent+'">';
             	str+='<div class="figure figure-more"></div>';
             	str+='<div class="more">浏览更多<small>热门</small></div>';
             	str+='</a>';
@@ -597,7 +601,7 @@ function getDataStrForSubType(data){
             	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
                 str+='<li class="brick-item brick-item-m brick-item-m-2">';
                 str+='<a href="javascript:void(0)">';
-                str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loaded" width="160" height="160"></div>';
+                str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '" lazy="loaded" width="160" height="160"></div>';
                 str+='<h3 class="title">' + data[i].productName + '</h3>';
                 str+='<p class="desc">' + data[i].priceName + '</p>';
                 str+='<p class="price"><span class="num">' + data[i].price + '</span>元<span>起</span></p>';
@@ -638,7 +642,7 @@ function getDataStr0(data){
 	            	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
 	            	str+='<li class="brick-item brick-item-s">';
 	            	str+='<a href="javascript:void(0)">';
-	            	str+='<div class="figure figure-img"><img alt="' + data[i].productName + '" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loading" width="80" height="80"></div>';
+	            	str+='<div class="figure figure-img"><img alt="' + data[i].productName + '" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '" lazy="loading" width="80" height="80"></div>';
 	            	str+='<h3 class="title">' + data[i].productName + '</h3>';
 	            	str+='<p class="price"><span class="num">' + data[i].price + '</span>元</p>';
 	            	str+='</a>';
@@ -646,7 +650,7 @@ function getDataStr0(data){
 	            	str+='</div>';
 				
 	            	str+='<li class="brick-item brick-item-s">';
-	            	str+='<a href="splb.html">';
+	            	str+='<a href="webSellPrice?method=querySellPriceListForWebList">';
 	            	str+='<div class="figure figure-more"></div>';
 	            	str+='<div class="more">浏览更多<small>热门</small></div>';
 	            	str+='</a>';
@@ -655,7 +659,7 @@ function getDataStr0(data){
 	            	str+='<div onclick="productDetail(\''+data[i].priceId+'\')">';
 	                str+='<li class="brick-item brick-item-m brick-item-m-2">';
 	                str+='<a href="javascript:void(0)">';
-	                str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" lazy="loaded" width="160" height="160"></div>';
+	                str+='<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '" lazy="loaded" width="160" height="160"></div>';
 	                str+='<h3 class="title">' + data[i].productName + '</h3>';
 	                str+='<p class="desc">' + data[i].priceName + '</p>';
 	                str+='<p class="price"><span class="num">' + data[i].price + '</span>元<span>起</span></p>';
