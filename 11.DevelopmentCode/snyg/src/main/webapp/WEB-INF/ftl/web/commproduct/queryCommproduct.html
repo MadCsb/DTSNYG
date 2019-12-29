@@ -3,8 +3,9 @@
 <head>
 <#include "../WEB_HEAD.html"> 
 <link href="${rc.contextPath}/web/css/spfl.css" rel="stylesheet">
-<link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
-<script src="${rc.contextPath}/webFile/js/jquery.page.js"></script>
+<link href="${rc.contextPath}/web/css/pageNew.css" rel="stylesheet">
+<script src="${rc.contextPath}/web/js/jquery.pageNew.js"></script>
+
 </head>
 <body>
 
@@ -58,13 +59,13 @@
     		<div class="box-bd">
     			<div class="row">
     				<div class="span20">
-                		<div>
-                   			<ul class="brick-list clearfix" style="width:1230px;">
+                		<div style="height:auto;">
+                   			<ul class="brick-list clearfix" style="width:1230px;height:auto;">
                    				<#if sellPricelist?? && (sellPricelist?size>0)> 
                    				<#list sellPricelist as li>
                   				<li class="brick-item brick-item-m brick-item-m-2" style="width:231px" onclick="productDetail('${li.priceId}')"/>
                                		<a href="javascript:void(0)">
-                               			<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}" lazy="loaded" width="160" height="160"></div>
+                               			<div class="figure figure-img"><img alt="" src="${rc.contextPath}/upload/wxpic/${li.goodsThumbPic!''}" lazy="loaded" width="160" height="160"></div>
                                			<h3 class="title">${li.productName!''}</h3>
                                			<p class="desc">${li.priceName!''}</p>
                                			<p class="price"><span class="num">${li.price!''}</span>元<span>起</span>
@@ -81,28 +82,34 @@
      		</div>
  		</div>
  	</div>
- 	
-	<div class="pagination">
-	</div>
+ 	<#if sellPricelist?? && (sellPricelist?size>0)> 
+		<div class="page-div">
+			<div class="manu">
+		
+			</div>
+		</div>   
+	<#else>
+		<span style="color: #FF0000">啊哦，没有找到商品哦~</span>
+	</#if>
 </div>
+	
 </form>
 <script type="text/javascript">
 
 $(function(){
 	setCarousel();
 	$("#productNameHead").val($("#productName").val());
-	
-	var pageCount = pageInfo.pages;
-    var current = pageInfo.pageNum;
-    $(".pagination").createPage({
+
+	var pageCount = ${pageInfo.pages};
+    var current = ${pageInfo.pageNum};
+    $(".manu").createPage({
       pageCount:pageCount,
       current:current,
       backFn:function(p){
-    	  document.getElementById("entityPage.currentPage").value=p;
-          document.forms[0].submit();
+        document.getElementById("entityPage.currentPage").value=p;
+        document.forms[1].submit();
       }
     });
-    
 })
 //广告轮播图管理
 function setCarousel()
@@ -140,6 +147,7 @@ function changeSortField(sortField){
 
 
 </script>
+<div style="clear:both;"></div>
 <#include "../WEB_FOOTER.html"> 
 </body>
 </html>

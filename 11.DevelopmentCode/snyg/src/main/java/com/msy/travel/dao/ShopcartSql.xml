@@ -121,7 +121,8 @@
 			c.F_PRODUCTNAME as productName,
 		    g.F_PRICENAME as priceName,
 		    s.F_PRICE as price,
-			c.F_THUMBPIC as thumbPic
+			c.F_THUMBPIC as thumbPic,
+			s.F_THUMBPIC as goodsThumbPic
 		FROM
 		t_sm_shopcart t
 		left join t_sm_sellprice s on t.F_PRICEID = s.F_priceid

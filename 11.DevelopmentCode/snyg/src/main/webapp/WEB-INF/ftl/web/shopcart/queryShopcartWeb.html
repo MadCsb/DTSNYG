@@ -173,7 +173,7 @@ function getShopCartStr(data){
 		
 		
 		str+='<tr class="shop-list "><td class="td-border-left"><input type="checkbox" name="checkCart" onclick="checkCartList()" value="'+data[i].cartId+'" id="cartRadio'+data[i].cartId+'" ></td>';
-		str+='<td class="w100"><a href="javascript:void" target="_blank" onclick="productDetail(\''+data[i].priceId+'\')" class="slds-goods-thumb"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="'+data[i].productName+'"></a>';
+		str+='<td class="w100"><a href="javascript:void" target="_blank" onclick="productDetail(\''+data[i].priceId+'\')" class="slds-goods-thumb"><img src="${rc.contextPath}/upload/wxpic/'+data[i].goodsThumbPic+'" alt="'+data[i].productName+'"></a>';
 		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
 		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
 		str+='</td>';

@@ -1,0 +1,47 @@
+
+/*分页层css*/
+.page-div {
+	margin:15px  auto 50px auto;
+	width:1000px;
+}
+.page-div input{ margin:0 5px;}
+.page-div select{ margin:0 10px;}
+.manu {
+	padding: 0px;
+	margin: 0 auto;
+	text-align: center;
+}
+.manu a{
+	text-decoration:none;
+	color:#7A838F;
+	margin:0 15px;
+}
+.manu a:hover {
+	color:#f26424;
+}
+.manu A:active {
+	color:#f26424;
+}
+.manu .current {
+	color:#f26424;
+	font-weight:bold;
+}
+.manu .disabled {
+	PADDING: 2px 5px;
+	MARGIN: 2px;
+	COLOR: #CCC;
+}
+.record{
+	color:#7A838F;
+	width:200px;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+}
+.recordpage{
+	color:#7A838F;
+	width:450px;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+}

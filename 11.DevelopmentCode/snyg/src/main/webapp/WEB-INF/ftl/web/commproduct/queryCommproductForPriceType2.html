@@ -3,7 +3,8 @@
 <head>
 <#include "../WEB_HEAD.html"> 
 <link href="${rc.contextPath}/web/css/seckill.css" rel="stylesheet">
-<link href="${rc.contextPath}/css/qyt-main.css" rel="stylesheet" />
+<link href="${rc.contextPath}/web/css/pageNew.css" rel="stylesheet">
+<script src="${rc.contextPath}/web/js/jquery.pageNew.js"></script>
 </head>
 <body>
 <div class="seckill ">
@@ -39,7 +40,7 @@
                     <li data-seckilltype="goods" onclick="productDetail('${li.priceId!''}')"> 
                         <a href="javascript:void(0);" class="item-box" > 
                             <span class="img-con"> 
-                                <img class="done" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}"> 
+                                <img class="done" src="${rc.contextPath}/upload/wxpic/${li.goodsThumbPic!''}"> 
                             </span> 
                             <span class="pro-con">  
                                 <span class="name" title="">${li.productName!''}</span> 
@@ -56,15 +57,13 @@
          </div> 
     </div>
      <#if sellPricelist?? && (sellPricelist?size>0)> 
-		<div style="width:1215px;margin-left:65px;">
-		<#include "/pagination2.html">
-		</div> 
+		<div class="page-div">
+			<div class="manu">
+		
+			</div>
+		</div>   
 	<#else>
-		<div id='ListIsNullMsg' style="font-size:17px;color:red">
-			<script type="text/javascript">
-				showListIsNullMsg();
-			</script>
-		</div>
+		<span style="color: #FF0000">啊哦，没有找到商品哦~</span>
 	</#if>
    </form> 
     <div class="container notic">
@@ -81,6 +80,17 @@ var currentTab = $("#currentTab").val();
 $(function(){
 	$("#currentTab"+currentTab).addClass("active");
 	checkActiveDate();
+	
+	var pageCount = ${pageInfo.pages};
+    var current = ${pageInfo.pageNum};
+    $(".manu").createPage({
+      pageCount:pageCount,
+      current:current,
+      backFn:function(p){
+        document.getElementById("entityPage.currentPage").value=p;
+        document.forms[1].submit();
+      }
+    });
 })
 function checkActiveDate(){
 	var priceStartDate = $("#priceStartDate").val();

@@ -410,7 +410,7 @@ function getSellPriceHot(){
     		var str = "";
     		for(var i=0;i<data.length;i++){
     			str+='<li class="clearfix" onclick="productDetail(\''+data[i].priceId+'\')">';
-    			str+='<a href="javascript:void(0)" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"></span></a>';
+    			str+='<a href="javascript:void(0)" class="selling_goods_img"><span class="hot_sale_pic_span"><img class="hot_sale_pic_span_img" src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"></span></a>';
     			str+='<p><a class="sld_sell_goods_name" href="javascript:void(0)">' + data[i].productName + '</a>';
     			str+='<span class="bbc_color sld_goods_sell_price">￥' + data[i].price + '</span><span class="sld_goods_detail_desc">热销' + data[i].saleNum + '件</span></p>';
     			str+='</li>';
@@ -427,7 +427,7 @@ function getSellPriceAccess(){
     	if(data!=null && data.length>0){
     		var str = "";
     		for(var i=0;i<data.length;i++){
-    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
+    			str+='<li title="' + data[i].productName + '" onclick="productDetail(\''+data[i].priceId+'\'")><a href="javacript:void(0)"><img src="${rc.contextPath}/upload/wxpic/' + data[i].goodsThumbPic + '"><h5 class=" sld_goods_view_name">¥' + data[i].price + '</h5></a></li>';
     		}
     		$("#sellPriceAccessList").html(str);
     	}

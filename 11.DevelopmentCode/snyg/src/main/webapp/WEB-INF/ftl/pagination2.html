@@ -3,12 +3,6 @@
 <div class="page-div"  >
 		<input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total!''}" />
 <div class="recordpage">共&nbsp;${pageInfo.total}&nbsp;条记录&nbsp;&nbsp;当前&nbsp;${pageInfo.pageNum}/${pageInfo.pages}&nbsp;页&nbsp;&nbsp;
-每页显示<select name="entityPage.rowsPerPage" id="entityPage.rowsPerPage" style="width:50px; height:30px; line-height:30px;" onchange="getSelectPage(${pageInfo.pageNum})" >
-              	<option value="5"  ${(pageInfo.pageSize==5)?string('selected=\"selected\"','')}>5</option>
-              	<option value="10" ${(pageInfo.pageSize==10)?string('selected=\"selected\"','')}>10</option>
-              	<option value="20" ${(pageInfo.pageSize==20)?string('selected=\"selected\"','')}>20</option>
-              	</select>
-				条
 </div>
 
 <div class="manu">

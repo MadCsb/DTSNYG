@@ -58,6 +58,16 @@ public class Shopcart extends BaseEntity implements java.io.Serializable {
 
 	private String state;
 
+	private String goodsThumbPic;
+
+	public String getGoodsThumbPic() {
+		return goodsThumbPic;
+	}
+
+	public void setGoodsThumbPic(String goodsThumbPic) {
+		this.goodsThumbPic = goodsThumbPic;
+	}
+
 	public String getState() {
 		return state;
 	}
