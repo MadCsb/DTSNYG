@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="waybill-title">
-	<span>新增收货地址</span>
+	<span>&nbsp;</span>
 </div>
 	<form method="post" id="addConsignee">
 		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -56,7 +56,7 @@
 			</tbody>
 		</table>
 	<div class="footerbtn">
-		<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+		<input name="button4" type="button" onClick="closeDia()" class="cbtn2" id="button4" value="取消">
 		<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
 	</div>
 	
@@ -105,6 +105,11 @@ function beforeSubmit(){
 			}
 		});
 	}
+}
+
+function closeDia()
+{
+	parent.layer.closeAll();
 }
 
 	// 页面初始化
