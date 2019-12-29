@@ -979,9 +979,9 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/relogin")
-	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response,String loginPage) {
 		ModelAndView view = new ModelAndView("relogin");
-
+		view.addObject("loginPage",loginPage);
 		return view;
 	}
 

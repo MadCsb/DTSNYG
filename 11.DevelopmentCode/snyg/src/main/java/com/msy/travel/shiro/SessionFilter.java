@@ -54,9 +54,9 @@ public class SessionFilter extends AccessControlFilter {
 		Subject subject = getSubject(request, response);
 		subject.logout();
 		if (url.indexOf("/web") != -1) {
-			WebUtils.issueRedirect(request, response, "/tologin?loginPage=web");
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=web");
 		} else {
-			WebUtils.issueRedirect(request, response, "/tologin");
+			WebUtils.issueRedirect(request, response, "/relogin");
 		}
 		// 再重定向
 
