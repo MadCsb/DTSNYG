@@ -791,6 +791,10 @@
          alert("请填写手机号码");
          return false;
        }
+       if(!( /^((1[0-9]{10})|([0-9]{3}1[0-9]{10}))?$/.test(newConsignee.custPhone))){
+         alert("手机号码有误，请重填");
+         return false;
+       }
      }
 //  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
     var param = new Object();

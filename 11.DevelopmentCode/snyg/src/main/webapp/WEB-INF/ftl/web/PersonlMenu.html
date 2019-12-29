@@ -3,12 +3,12 @@
         <div class="user-entry">
             <#if Session["LOGIN_USER"]?exists>
             您好
-            <span><a href="">${Session.LOGIN_USER.userName!''}</a></span>
+            <span><a onclick="toWebPersonalIndex()">${Session.LOGIN_USER.userName!''}</a></span>
             ，欢迎来到
             <a href="webIndex?method=webIndex" title="首页" alt="首页"><span>三农壹购</span></a>
             <span>[<a href="logout?loginPage=web">退出</a>]</span>
             <#else>
-            <span><a href="logout?loginPage=web">请登录</a></span>
+            <span><a href="tologin?loginPage=web">请登录</a></span>
             <span><a href="toNewUser">免费注册</a></span>
             </#if>
         </div>
