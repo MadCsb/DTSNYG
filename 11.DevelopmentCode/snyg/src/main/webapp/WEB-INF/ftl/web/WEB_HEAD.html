@@ -94,7 +94,7 @@ function getDataStr1(data,level){
 		if(data[i].pdcTypeList!=null && data[i].pdcTypeList.length>0){
 			for(var j =0;j<data[i].pdcTypeList.length;j++){
 				var subPdcType = data[i].pdcTypeList[j];
-				str+='<a href="webSellPrice?method=querySellPriceListForWebList&subType='+data[i].pdcTypeId+'" title="'+subPdcType.typeName+'"><img src="${rc.contextPath}/upload/wxpic/'+subPdcType.picUrl+'">'+subPdcType.typeName+'</a>';
+				str+='<a href="webSellPrice?method=querySellPriceListForWebList&subType='+subPdcType.pdcTypeId+'" title="'+subPdcType.typeName+'"><img src="${rc.contextPath}/upload/wxpic/'+subPdcType.picUrl+'">'+subPdcType.typeName+'</a>';
 				
 			}
 		}
