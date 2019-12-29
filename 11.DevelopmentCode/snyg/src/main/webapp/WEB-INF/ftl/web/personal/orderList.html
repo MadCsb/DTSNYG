@@ -55,74 +55,6 @@
 		</tbody>
 
 		<tbody class="tboy">
-		<!-- 下单时间，订单号，店铺名称    -->
-
-
-		<tr>
-			<td colspan="4" class="td_rborder">
-				<table>
-					<tbody>
-					<tr class="tr_con shop-list">
-						<td class="order_goods">
-							<img src="images/sp.png">
-							<a target="_blank" href="">龙泉水蜜桃</a>
-							<em class="td_sale bbc_btns small_details">50KG</em>
-						</td>
-						<td class="td_color widt1">78.00</td>
-						<td class="td_color widt2">
-							<div class="cart-spec">
-								<a class="spec-title" title="">
-									<i class="iconfont icon-cuowu" style="position:relative;font-size: 12px;"></i> 1 件
-								</a>
-							</div>
-						</td>
-						<td class="td_color widt4">
-							秒杀商品
-						</td>
-					</tr>
-					<tr class="tr_con shop-list">
-						<td class="order_goods">
-							<img src="images/sp.png">
-							<a target="_blank" href="">龙泉水蜜桃</a>
-							<em class="td_sale bbc_btns small_details">50KG</em>
-						</td>
-						<td class="td_color widt1">78.00</td>
-						<td class="td_color widt2">
-							<div class="cart-spec">
-								<a class="spec-title" title="">
-									<i class="iconfont icon-cuowu" style="position:relative;font-size: 12px;"></i> 1 件
-								</a>
-							</div>
-						</td>
-						<td class="td_color widt4">
-							秒杀商品
-						</td>
-					</tr>
-					</tbody>
-				</table>
-			</td>
-
-			<td class="td_rborder widt5">
-				<span>
-					订单总额：<strong>¥78.00</strong>
-				</span>
-				<br>（免运费）  <br>
-				<span class="td_sale bbc_btns"></span>
-			</td>
-			<td class="td_rborder">
-				<p class="getit "></p>
-				<p><span style="color:#36C">待付款</span><br></p>
-				<p>
-					<a href="">订单详情</a>
-				</p>
-			</td>
-			<td class="td_rborder">
-				<a href="javascript:void(0)" style="color:#F30;" bbc_type="dialog" dialog_width="480" dialog_title="取消订单" dialog_id="buyer_order_cancel_order" uri="" id="order2413_action_cancel" class="to_views">取消订单</a>
-				<p>
-					<a target="_blank" href="" class="to_views ">订单支付</a>
-				</p>
-			</td>
-		</tr>
 		</tbody>
 
 		<tbody>
@@ -135,6 +67,9 @@
 		<tr>
 			<td colspan="19">
 				<div class="pagination">
+					<ul id="fenye">
+
+					</ul>
 				</div>
 			</td>
 		</tr>
@@ -261,7 +196,7 @@
 
     var pageCount = pageInfo.pages;
     var current = pageInfo.pageNum;
-    $(".pagination").createPage({
+    $("#fenye").createPage({
       pageCount:pageCount,
       current:current,
       backFn:function(p){

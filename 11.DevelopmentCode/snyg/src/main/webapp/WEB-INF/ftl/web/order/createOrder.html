@@ -1081,7 +1081,7 @@
       pay.checkPayed();
       if ($("#qrCode").html().trim() == "")
       {
-        jQuery('#qrCode').qrcode({width: 160,height: 160,correctLevel:0,render: "table",text: pay.toPay()});
+        jQuery('#qrCode').qrcode({width: 140,height: 140,correctLevel:0,render: "table",text: pay.toPay()});
       }
       location.href = "#payA";
       // $('#qrCode').qrcode({render:"table",width: 160,height: 160,text: url});
