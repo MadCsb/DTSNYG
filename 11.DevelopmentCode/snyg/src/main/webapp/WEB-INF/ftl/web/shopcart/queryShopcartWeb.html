@@ -113,7 +113,7 @@
             		<td colspan="20">
 	                    <div class="slds-all-account">商品总价（不含运费）<em id="priceAll">0.00</em>元
 	                    </div>
-                    	<a id="next_submit" href="javascript:void(0)" class="slds-btn slds-btn-acidblue fr">去结算</a>
+                    	<a id="next_submit" href="javascript:void(0)" onclick="toOrder()" class="slds-btn slds-btn-acidblue fr">去结算</a>
                     </td>
                </tr>
             </tfoot>
@@ -121,7 +121,9 @@
     </form>
 </div>
 </div>
-
+<form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
+  <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+</form>
 <script type="text/javascript">
 $(function(){
 	getShopCartList()
@@ -138,35 +140,7 @@ function getShopCartList(){
 
 function getShopCartStr(data){
 	var str = "";
-	for(var i =0;i<data.length;i++){
-	/*	str+='<li class="lics" id="shopCartLi'+data[i].cartId+'">';
-		str+='<div class="iconleft">';
-		str+='<div class="leftdivf">';
-		str+='<label>';
-		str+='<input name="checkCart" onclick="checkCartList()" type="checkbox" id="adviceRadio'+data[i].cartId+'" value="'+data[i].cartId+'" hidden/>';
-		str+='<label for="adviceRadio'+data[i].cartId+'" class="check"></label>';
-		str+='</label>';
-		str+='</div>';
-            
-		str+='<div class="icon" >';
-		str+='<a href="javascript:void(0)" title="商品详情">';
-		str+='<img title="" src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'" alt="" /></a>';                   
-		str+='</div>';         
-		str+='</div>';
-		str+='<div class="info">';
-		str+='<a href="javascript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\')"  title="商品详情"><h4>'+data[i].productName+'</h4></a>';  
-		//str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span></p>';
-		str+='<p class="txt1"><span class="f4">'+data[i].priceName+'</span><span class="fr del_btn1" style="top:24px;" onclick="delShopCart(\''+data[i].cartId+'\')"></span></p>';
-		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
-		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
-		str+='<p class="txt"><span class="f2">&yen;'+data[i].price+'</span></p>';
-		str+='<div class="sl">';
-		str+='<button class="btnhui"  onclick="changeNum(\'1\',\''+data[i].cartId+'\')"></button>';
-		str+='<input name="" readonly id="num'+data[i].cartId+'" type="text" class="input_sl" value="'+data[i].num+'">';
-		str+='<button class="btnadd"  onclick="changeNum(\'2\',\''+data[i].cartId+'\')"></button></div>';
-		str+='</div>';
-		str+='</li>';*/
-		
+	for(var i =0;i<data.length;i++){	
 		
 		str+='<tr class="shop-list "><td class="td-border-left"><input type="checkbox" name="checkCart" onclick="checkCartList()" value="'+data[i].cartId+'" id="cartRadio'+data[i].cartId+'" ></td>';
 		str+='<td class="w100"><a href="javascript:void" target="_blank" onclick="productDetail(\''+data[i].priceId+'\')" class="slds-goods-thumb"><img src="${rc.contextPath}/upload/wxpic/'+data[i].goodsThumbPic+'" alt="'+data[i].productName+'"></a>';
@@ -246,6 +220,29 @@ function changeCartNum(cartId,num){
 	},function(data){
 		
 	})
+}
+
+
+function toOrder() {
+	if($("input[name='checkCart']:checked").length>0){
+		var prepareOrderJson = new Object();
+		prepareOrderJson.consigneeId = ""; //收货地址，可为空
+		var orderListList = new Array();
+		$("input[name='checkCart']:checked").each(function(i){
+			var cartId = $(this).val();
+			var num = parseFloat($("#num"+cartId).val());
+			var priceId = $("#priceId"+cartId).val();
+		
+			var orderList1 = new Object();
+			orderList1.priceId =priceId; //销售id
+		    orderList1.num = num; //数量
+		    orderList1.cartId = cartId; //购物车id
+		    orderListList.push(orderList1);
+		});
+	  prepareOrderJson.orderListList = orderListList;
+	  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+	  $("#toCreateOrder").submit();	
+	}
 }
     
 </script>
