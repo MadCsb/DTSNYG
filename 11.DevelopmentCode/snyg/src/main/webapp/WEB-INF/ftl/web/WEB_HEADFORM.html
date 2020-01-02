@@ -87,6 +87,8 @@ function getShopCartList(){
 			$("#shopCartListDiv").html(getShopCartStr(data));	
 		}else{
 			$("#shopCartListDiv").html("");
+			$("#numAll").html("0");
+			$("#moneyAll").html("&yen;0.00");
 		}		
 	},'json')
 }
@@ -97,11 +99,11 @@ function getShopCartStr(data){
 	for(var i =0;i<data.length;i++){
 		
 		
-		str+='<dl id="cart_item_1498" data-is_supplier="0" onclick="productDetail(\''+data[i].priceId+'\')">';
+		str+='<dl id="cart_item_'+data[i].cartId+'" data-is_supplier="0" onclick="productDetail(\''+data[i].priceId+'\')">';
 		str+='<dt class="goods-name"><a href="">'+data[i].productName+'</a></dt>';
 		str+='<dd class="goods-thumb"><a href="" title="'+data[i].productName+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></a></dd>';
 		str+='<dd class="goods-sales"></dd><dd class="goods-price"><em>¥'+data[i].price+'×'+data[i].num+'</em></dd>';
-		str+='<dd class="handle"><em><a href="javascript:void(0);" onClick="drop_topcart_item(406,1498,0);">删除</a></em></dd>';
+		str+='<dd class="handle"><em><a href="javascript:void(0);"  onclick="delShopCartTop(\''+data[i].cartId+'\')">删除</a></em></dd>';
 		str+='</dl>';
 		
 		var num = parseFloat(data[i].num);
@@ -114,6 +116,14 @@ function getShopCartStr(data){
 	$("#numAll").html(data.length);
 	
 	return str;
+}
+function delShopCartTop(cartId){
+	event.cancelBubble=true;
+	$.post("webShopcart.do?method=deleteShopCartWeb", {
+		cartId:cartId
+	}, function (data) {
+		getShopCartList();
+	})
 }
 
 function searchProduction(){
