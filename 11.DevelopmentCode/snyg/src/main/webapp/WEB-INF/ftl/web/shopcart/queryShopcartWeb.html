@@ -126,23 +126,23 @@
 </form>
 <script type="text/javascript">
 $(function(){
-	getShopCartList()
+	getShopCartListSub()
 })
-function getShopCartList(){
+function getShopCartListSub(){
 	$.post("webShopcart?method=getShopCartListWeb",{
 	},function(data){
 		if(data!=null && data.length>0){
-			$("#cartList").html(getShopCartStr(data));	
+			$("#cartList").html(getShopCartStrSub(data));	
 		}else{
 		}		
 	},'json')
 }
 
-function getShopCartStr(data){
+function getShopCartStrSub(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){	
 		
-		str+='<tr class="shop-list "><td class="td-border-left"><input type="checkbox" name="checkCart" onclick="checkCartList()" value="'+data[i].cartId+'" id="cartRadio'+data[i].cartId+'" ></td>';
+		str+='<tr class="shop-list " id="shopCartLi'+data[i].cartId+'"><td class="td-border-left"><input type="checkbox" name="checkCart" onclick="checkCartList()" value="'+data[i].cartId+'" id="cartRadio'+data[i].cartId+'" ></td>';
 		str+='<td class="w100"><a href="javascript:void" target="_blank" onclick="productDetail(\''+data[i].priceId+'\')" class="slds-goods-thumb"><img src="${rc.contextPath}/upload/wxpic/'+data[i].goodsThumbPic+'" alt="'+data[i].productName+'"></a>';
 		str+='<input type="hidden" id="price'+data[i].cartId+'" value="'+data[i].price+'"/>';
 		str+='<input type="hidden" id="priceId'+data[i].cartId+'" value="'+data[i].priceId+'"/>';
@@ -161,7 +161,7 @@ function getShopCartStr(data){
 		str+='<a href="JavaScript:void(0);"  title="增加商品件数" onclick="changeNum(\'2\',\''+data[i].cartId+'\')" class="add-substract-key tip">+</a>';
 		str+='</td>';
 		str+='<td class="w80 td-border-right">';
-		str+='<a class="del_cart_good" style="text-align:center;" href="javascript:void(0)"  onclick="delShopCart(\''+data[i].cartId+'\')">删除</a>';
+		str+='<a class="del_cart_good" style="text-align:center;color:#555" href="javascript:void(0)"  onclick="delShopCart(\''+data[i].cartId+'\')">删除</a>';
 		str+='</td>';
 		str+='</tr>';
 	}
@@ -172,7 +172,17 @@ function getShopCartStr(data){
 var delCartId = "";
 function delShopCart(cartId){
 	delCartId = cartId;
-	parent.layer.alert("1");
+	layer.confirm('确认从购物车删除该商品吗?', function() {
+		$.post("webShopcart.do?method=deleteShopCartWeb", {
+			cartId:delCartId
+		}, function (data) {
+			$("#shopCartLi" + delCartId).remove();
+			checkCartList();
+			parent.layer.closeAll();
+		})
+	}, function() {
+		parent.layer.closeAll();
+	});
 }
 
 function delInfoClear(){
