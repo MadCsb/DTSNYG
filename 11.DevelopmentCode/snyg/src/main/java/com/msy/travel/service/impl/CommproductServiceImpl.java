@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CommproductDao;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Company;
@@ -153,13 +154,10 @@ public class CommproductServiceImpl implements CommproductService {
 		commproduct.setUpdaterUid(user.getUserId());
 		commproduct.setUpdateTime(DateTimeUtil.getDateTime19());
 
-		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
-			commproduct.setSaleNum(null);
-		}
+		commproduct.setSaleNum(WTConvert.emptyToNull(commproduct.getSaleNum()));
+		commproduct.setSortNum(WTConvert.emptyToNull(commproduct.getSortNum()));
+		commproduct.setReferencePrice(WTConvert.emptyToNull(commproduct.getReferencePrice()));
 
-		if (commproduct.getSortNum() == null || "".equals(commproduct.getSortNum())) {
-			commproduct.setSortNum(null);
-		}
 		commproduct.setState("0");
 
 		commproductDao.insertCommproduct(commproduct);
@@ -195,13 +193,9 @@ public class CommproductServiceImpl implements CommproductService {
 		commproduct.setUpdaterUid(user.getUserId());
 		commproduct.setUpdateTime(DateTimeUtil.getDateTime19());
 
-		if (commproduct.getSaleNum() == null || "".equals(commproduct.getSaleNum())) {
-			commproduct.setSaleNum(null);
-		}
-
-		if (commproduct.getSortNum() == null || "".equals(commproduct.getSortNum())) {
-			commproduct.setSortNum(null);
-		}
+		commproduct.setSaleNum(WTConvert.emptyToNull(commproduct.getSaleNum()));
+		commproduct.setSortNum(WTConvert.emptyToNull(commproduct.getSortNum()));
+		commproduct.setReferencePrice(WTConvert.emptyToNull(commproduct.getReferencePrice()));
 		commproduct.setState("0");
 		commproductDao.updateCommproduct(commproduct);
 		rsPicService.saveRsPic(picIds, commproduct.getProductId());

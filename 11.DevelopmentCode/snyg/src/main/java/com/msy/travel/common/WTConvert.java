@@ -327,4 +327,13 @@ public final class WTConvert {
 		}
 		return sign;
 	}
+
+	public static String emptyToNull(String str) {
+
+		if ("".equals(str)) {
+			return null;
+		}
+
+		return str;
+	}
 }

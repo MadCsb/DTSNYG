@@ -23,7 +23,6 @@ import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
@@ -118,13 +117,6 @@ public class WxCommproductController extends BaseController {
 				view = new ModelAndView("wx/commproduct/commproductDetail1");
 			} else if ("2".equals(commproduct.getPriceType())) {
 				view = new ModelAndView("wx/commproduct/commproductDetail2");
-
-				SellPrice sellPrice = new SellPrice();
-				sellPrice.setGoodsPriceId(commproduct.getGoodsPriceId());
-				sellPrice.setPriceType("0");
-				sellPrice = sellPriceService.displaySellPrice(sellPrice);
-
-				view.addObject("price", sellPrice.getPrice());
 			}
 
 			// view.addObject("user", new User());

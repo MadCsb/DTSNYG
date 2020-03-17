@@ -152,6 +152,19 @@ public class Commproduct extends BaseEntity implements java.io.Serializable {
 
 	private String isSortNum;
 
+	/**
+	 * F_REFERENCEPRICE 参考价格
+	 */
+	private String referencePrice;
+
+	public String getReferencePrice() {
+		return referencePrice;
+	}
+
+	public void setReferencePrice(String referencePrice) {
+		this.referencePrice = referencePrice;
+	}
+
 	public String getIsSortNum() {
 		return isSortNum;
 	}

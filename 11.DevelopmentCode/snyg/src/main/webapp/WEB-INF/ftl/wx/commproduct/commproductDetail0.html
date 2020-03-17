@@ -54,7 +54,7 @@
     <div class="cpbtdiv">
          <p>${commproduct.productName!''}</p>
          <div class="ztwz" id="goodsPriceNameCheck">${commproduct.subject!''}</div>
-		 <div class="jgwz">&yen;${commproduct.price!''}</div>
+		 <div class="jgwz">&yen;${commproduct.price!''} <span class="f4" style="text-decoration:line-through; font-size:13px;"><#if commproduct.referencePrice?? && commproduct.referencePrice!=''>原价:&yen;${commproduct.referencePrice!''}</#if></span></div>
          <div class="zswz"><span id="kuaidi"></span><span style="float: right;display:none;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
 </div>

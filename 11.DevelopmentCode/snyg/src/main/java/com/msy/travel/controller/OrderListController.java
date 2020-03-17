@@ -195,8 +195,6 @@ public class OrderListController extends BaseController {
 			if (orderList.getEntityPage() == null) {
 				orderList.setEntityPage(new EntityPage());
 			}
-			// 设置分页
-			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
 			List<OrderList> exportlist = orderListService.queryOrderListList(orderList);
 
 			PoiWriteExcel<OrderList> pwe = new PoiWriteExcel<OrderList>();
@@ -355,9 +353,6 @@ public class OrderListController extends BaseController {
 				orderList.setBillType("month");
 			}
 
-			// 设置分页
-			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
-
 			OrderList orderListSum = orderListService.queryOrderListBillSum(orderList);
 			orderListSum.setPayDateTime("合计");
 
@@ -407,9 +402,6 @@ public class OrderListController extends BaseController {
 			String tempName = "账单明细-" + DateTimeUtil.getDateTime14() + ".xls";
 			path = path + File.separator + tempName;
 			orderList.setPayTag("1");
-
-			// 设置分页
-			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
 
 			List<OrderList> exportlist = orderListService.queryOrderListDetailList(orderList);
 			if (exportlist != null && exportlist.size() > 0) {
