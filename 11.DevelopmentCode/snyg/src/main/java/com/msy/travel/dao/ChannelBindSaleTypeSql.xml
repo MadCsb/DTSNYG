@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.ChannelBindSaleTypeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertChannelBindSaleType" parameterType="channelBindSaleType">
+		INSERT INTO 
+			t_sm_channelbindsaletype  
+		(
+			F_SALETYPEID ,
+			F_CHANNELID 
+		) VALUES (
+			#{saleTypeId} ,
+			#{channelId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeChannelBindSaleType" parameterType="channelBindSaleType">
+		REPLACE INTO 
+			t_sm_channelbindsaletype 
+		(
+			F_SALETYPEID ,
+			F_CHANNELID 
+		) VALUES (
+			#{saleTypeId} ,
+			#{channelId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateChannelBindSaleType" parameterType="channelBindSaleType">
+		UPDATE
+			t_sm_channelbindsaletype 
+		SET
+			F_CHANNELID = #{channelId} 
+		<where>
+			F_SALETYPEID = #{saleTypeId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteChannelBindSaleType" parameterType="channelBindSaleType">
+		DELETE FROM
+			t_sm_channelbindsaletype 
+		<where>
+			F_SALETYPEID = #{saleTypeId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchChannelBindSaleType" parameterType="channelBindSaleType">
+		DELETE FROM 
+			t_sm_channelbindsaletype 
+		<where>
+			F_SALETYPEID in
+			<foreach collection="channelBindSaleTypeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryChannelBindSaleType" parameterType="String" resultType="channelBindSaleType">
+		SELECT
+			t.F_SALETYPEID as saleTypeId ,
+			t.F_CHANNELID as channelId 
+		FROM
+			t_sm_channelbindsaletype t
+		<where>
+			t.F_SALETYPEID = #{saleTypeId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryChannelBindSaleTypeList" parameterType="channelBindSaleType" resultType="channelBindSaleType">
+		SELECT
+			t.F_SALETYPEID as saleTypeId ,
+			t.F_CHANNELID as channelId 
+		FROM
+		t_sm_channelbindsaletype t
+		<where>
+			<if test="saleTypeId!=null and saleTypeId!=''">
+		    	t.F_SALETYPEID = #{saleTypeId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

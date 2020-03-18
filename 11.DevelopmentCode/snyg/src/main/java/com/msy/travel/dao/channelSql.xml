@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.channelDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertchannel" parameterType="channel">
+		INSERT INTO 
+			t_sm_channel  
+		(
+			F_CHANNELID ,
+			F_SPID ,
+			F_VENID ,
+			F_CHANNELNAME ,
+			F_STATUS ,
+			F_CHANNELKEY ,
+			F_CHANNELDESC 
+		) VALUES (
+			#{channelId} ,
+			#{spId} ,
+			#{venId} ,
+			#{channelName} ,
+			#{status} ,
+			#{channelKey} ,
+			#{channelDesc} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergechannel" parameterType="channel">
+		REPLACE INTO 
+			t_sm_channel 
+		(
+			F_CHANNELID ,
+			F_SPID ,
+			F_VENID ,
+			F_CHANNELNAME ,
+			F_STATUS ,
+			F_CHANNELKEY ,
+			F_CHANNELDESC 
+		) VALUES (
+			#{channelId} ,
+			#{spId} ,
+			#{venId} ,
+			#{channelName} ,
+			#{status} ,
+			#{channelKey} ,
+			#{channelDesc} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updatechannel" parameterType="channel">
+		UPDATE
+			t_sm_channel 
+		SET
+			F_SPID = #{spId} ,
+			F_VENID = #{venId} ,
+			F_CHANNELNAME = #{channelName} ,
+			F_STATUS = #{status} ,
+			F_CHANNELKEY = #{channelKey} ,
+			F_CHANNELDESC = #{channelDesc} 
+		<where>
+			F_CHANNELID = #{channelId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletechannel" parameterType="channel">
+		DELETE FROM
+			t_sm_channel 
+		<where>
+			F_CHANNELID = #{channelId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchchannel" parameterType="channel">
+		DELETE FROM 
+			t_sm_channel 
+		<where>
+			F_CHANNELID in
+			<foreach collection="channelIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="querychannel" parameterType="String" resultType="channel">
+		SELECT
+			t.F_CHANNELID as channelId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_CHANNELNAME as channelName ,
+			t.F_STATUS as status ,
+			t.F_CHANNELKEY as channelKey ,
+			t.F_CHANNELDESC as channelDesc 
+		FROM
+			t_sm_channel t
+		<where>
+			t.F_CHANNELID = #{channelId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="querychannelList" parameterType="channel" resultType="channel">
+		SELECT
+			t.F_CHANNELID as channelId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_CHANNELNAME as channelName ,
+			t.F_STATUS as status ,
+			t.F_CHANNELKEY as channelKey ,
+			t.F_CHANNELDESC as channelDesc 
+		FROM
+		t_sm_channel t
+		<where>
+			<if test="channelId!=null and channelId!=''">
+		    	t.F_CHANNELID = #{channelId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

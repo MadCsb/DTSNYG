@@ -1,0 +1,76 @@
+drop table if exists t_sm_saletype;
+
+/*==============================================================*/
+/* Table: t_sm_saletype                                         */
+/*==============================================================*/
+create table t_sm_saletype
+(
+   F_SALETYPEID         varchar(50) not null comment '活动类型ID',
+   F_SPID               varchar(50) comment '运营商编号',
+   F_VENID              varchar(50) comment '供应商编号',
+   F_SALETYPENAME       varchar(50) comment '活动名称',
+   F_STATUS             varchar(1) comment '渠道状态 0:禁用,1:启用',
+   F_SALETYPEKEY        varchar(50) comment '活动标识',
+   F_CHANNELDESC        varchar(500) comment '渠道描述'
+);
+
+alter table t_sm_saletype comment '活动类型表';
+
+alter table t_sm_saletype
+add primary key (F_SALETYPEID);
+
+
+drop table if exists t_sm_channel;
+
+/*==============================================================*/
+/* Table: t_sm_channel                                          */
+/*==============================================================*/
+create table t_sm_channel
+(
+   F_CHANNELID          varchar(50) not null comment '渠道ID',
+   F_SPID               varchar(50) comment '运营商编号：前端下单时根据产品关联出来',
+   F_VENID              varchar(50) comment '供应商编号',
+   F_CHANNELNAME        varchar(50) comment '渠道名称',
+   F_STATUS             varchar(1) comment '渠道状态 0:禁用,1:启用',
+   F_CHANNELKEY         varchar(50) comment '渠道标识',
+   F_CHANNELDESC        varchar(500) comment '渠道描述'
+);
+
+alter table t_sm_channel comment '渠道表';
+
+alter table t_sm_channel
+add primary key (F_CHANNELID);
+
+drop table if exists t_sm_channelbindsaletype;
+
+/*==============================================================*/
+/* Table: t_sm_channelbindsaletype                              */
+/*==============================================================*/
+create table t_sm_channelbindsaletype
+(
+   F_SALETYPEID         varchar(50) not null comment '活动类型ID',
+   F_CHANNELID          varchar(50) not null comment '渠道ID'
+);
+
+alter table t_sm_channelbindsaletype comment '渠道活动绑定表';
+
+alter table t_sm_channelbindsaletype
+add primary key (F_SALETYPEID);
+
+drop table if exists t_sm_userbindchannel;
+
+/*==============================================================*/
+/* Table: t_sm_userbindchannel                                  */
+/*==============================================================*/
+create table t_sm_userbindchannel
+(
+   F_CHANNELID          varchar(50) not null comment '渠道ID',
+   F_USERID             varchar(50)
+);
+
+alter table t_sm_userbindchannel comment '用户渠道绑定表';
+
+alter table t_sm_userbindchannel
+add primary key (F_CHANNELID);
+
+

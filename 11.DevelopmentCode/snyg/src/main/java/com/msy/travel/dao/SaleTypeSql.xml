@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.SaleTypeDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertSaleType" parameterType="saleType">
+		INSERT INTO 
+			t_sm_saletype  
+		(
+			F_SALETYPEID ,
+			F_SPID ,
+			F_VENID ,
+			F_SALETYPENAME ,
+			F_STATUS ,
+			F_SALETYPEKEY ,
+			F_SALETYPEDESC 
+		) VALUES (
+			#{saleTypeId} ,
+			#{spId} ,
+			#{venId} ,
+			#{saleTypeName} ,
+			#{status} ,
+			#{saleTypeKey} ,
+			#{saleTypeDesc} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeSaleType" parameterType="saleType">
+		REPLACE INTO 
+			t_sm_saletype 
+		(
+			F_SALETYPEID ,
+			F_SPID ,
+			F_VENID ,
+			F_SALETYPENAME ,
+			F_STATUS ,
+			F_SALETYPEKEY ,
+			F_SALETYPEDESC 
+		) VALUES (
+			#{saleTypeId} ,
+			#{spId} ,
+			#{venId} ,
+			#{saleTypeName} ,
+			#{status} ,
+			#{saleTypeKey} ,
+			#{saleTypeDesc} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateSaleType" parameterType="saleType">
+		UPDATE
+			t_sm_saletype 
+		SET
+			F_SPID = #{spId} ,
+			F_VENID = #{venId} ,
+			F_SALETYPENAME = #{saleTypeName} ,
+			F_STATUS = #{status} ,
+			F_SALETYPEKEY = #{saleTypeKey} ,
+			F_SALETYPEDESC = #{saleTypeDesc} 
+		<where>
+			F_SALETYPEID = #{saleTypeId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteSaleType" parameterType="saleType">
+		DELETE FROM
+			t_sm_saletype 
+		<where>
+			F_SALETYPEID = #{saleTypeId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchSaleType" parameterType="saleType">
+		DELETE FROM 
+			t_sm_saletype 
+		<where>
+			F_SALETYPEID in
+			<foreach collection="saleTypeIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="querySaleType" parameterType="String" resultType="saleType">
+		SELECT
+			t.F_SALETYPEID as saleTypeId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_SALETYPENAME as saleTypeName ,
+			t.F_STATUS as status ,
+			t.F_SALETYPEKEY as saleTypeKey ,
+			t.F_SALETYPEDESC as saleTypeDesc 
+		FROM
+			t_sm_saletype t
+		<where>
+			t.F_SALETYPEID = #{saleTypeId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="querySaleTypeList" parameterType="saleType" resultType="saleType">
+		SELECT
+			t.F_SALETYPEID as saleTypeId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_SALETYPENAME as saleTypeName ,
+			t.F_STATUS as status ,
+			t.F_SALETYPEKEY as saleTypeKey ,
+			t.F_SALETYPEDESC as saleTypeDesc 
+		FROM
+		t_sm_saletype t
+		<where>
+			<if test="saleTypeId!=null and saleTypeId!=''">
+		    	t.F_SALETYPEID = #{saleTypeId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	
