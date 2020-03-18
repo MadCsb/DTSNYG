@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -20,6 +22,12 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 public class PoiWriteExcel<T> extends ExportSupport<T> {
 
@@ -130,59 +138,46 @@ public class PoiWriteExcel<T> extends ExportSupport<T> {
 
 						Object value = getMethod.invoke(t, new Object[] {});
 
-						String formatType=this.getFormatTypeHead(headers[i]);
-						
+						String formatType = this.getFormatTypeHead(headers[i]);
+
 						String textValue = null;
 
 						// 数据类型处理
 						if (value != null) {
-							textValue=value.toString();
-						}
-						else
-						{
+							textValue = value.toString();
+						} else {
 							textValue = "";
 						}
 
-						HSSFCellStyle contextstyle =workbook.createCellStyle();
+						HSSFCellStyle contextstyle = workbook.createCellStyle();
 
 						HSSFCell contentCell = row.createCell(j);
 						HSSFDataFormat df = workbook.createDataFormat(); // 此处设置数据格式
-						
-						if(!"".equals(textValue))
-						{
-							if ("0".equals(formatType)) 
-							{
-								contextstyle.setDataFormat(df.getBuiltinFormat("#,#0"));//数据格式只显示整数
+
+						if (!"".equals(textValue)) {
+							if ("0".equals(formatType)) {
+								contextstyle.setDataFormat(df.getBuiltinFormat("#,#0"));// 数据格式只显示整数
 								contentCell.setCellStyle(contextstyle);
 								contentCell.setCellValue(Double.parseDouble(textValue));
-							} 
-							else if("1".equals(formatType)) 
-							{
-								contextstyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));//保留两位小数点
+							} else if ("1".equals(formatType)) {
+								contextstyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));// 保留两位小数点
 								contentCell.setCellStyle(contextstyle);
 								contentCell.setCellValue(Double.parseDouble(textValue));
-							}
-							else if("2".equals(formatType)) 
-							{
-								contextstyle.setDataFormat(df.getFormat("¥#,##0.00"));//金额保留两位小数点
-								textValue=textValue.replace(",", "");
-								
-								if(textValue.contains("¥"))
-								{
-									textValue=textValue.substring(1,textValue.length());
+							} else if ("2".equals(formatType)) {
+								contextstyle.setDataFormat(df.getFormat("¥#,##0.00"));// 金额保留两位小数点
+								textValue = textValue.replace(",", "");
+
+								if (textValue.contains("¥")) {
+									textValue = textValue.substring(1, textValue.length());
 								}
-								
+
 								contentCell.setCellStyle(contextstyle);
 								contentCell.setCellValue(Double.parseDouble(textValue));
-							}
-							else
-							{
+							} else {
 								contentCell.setCellStyle(contextstyle);
 								contentCell.setCellValue(textValue);
 							}
-						}
-						else
-						{
+						} else {
 							contentCell.setCellStyle(contextstyle);
 							contentCell.setCellValue(textValue);
 						}
@@ -286,12 +281,12 @@ public class PoiWriteExcel<T> extends ExportSupport<T> {
 		if (head.indexOf(":") < 0) {
 			return head;
 		}
-		
-		String [] arryType=head.split(":");
-		
+
+		String[] arryType = head.split(":");
+
 		return arryType[1];
 	}
-	
+
 	/**
 	 * 
 	 *
@@ -302,45 +297,140 @@ public class PoiWriteExcel<T> extends ExportSupport<T> {
 	 * @return String 返回类型 0整数 1保留两位小数 2人民币开头保留两位小数 3字符型
 	 * @throws
 	 */
-	private String getFormatTypeHead(String head) 
-	{
-		String formatType="";
-		
+	private String getFormatTypeHead(String head) {
+		String formatType = "";
+
 		if (head.indexOf(":") < 0) {
-			formatType= "3";
+			formatType = "3";
 		}
-		
-		String [] arryType=head.split(":");
-		
-		if(arryType.length==3)
-		{
-			if("0".equals(arryType[2]))
-			{
-				formatType="0";
+
+		String[] arryType = head.split(":");
+
+		if (arryType.length == 3) {
+			if ("0".equals(arryType[2])) {
+				formatType = "0";
+			} else if ("1".equals(arryType[2])) {
+				formatType = "1";
+			} else if ("2".equals(arryType[2])) {
+				formatType = "2";
+			} else {
+				formatType = "3";
 			}
-			else if("1".equals(arryType[2]))
-			{
-				formatType="1";
-			}
-			else if("2".equals(arryType[2]))
-			{
-				formatType="2";
-			}
-			else
-			{
-				formatType="3";
-			}
+		} else {
+			formatType = "3";
 		}
-		else
-		{
-			formatType="3";
-		}
-		
+
 		return formatType;
 	}
 
 	public static void main(String[] args) {
 
+	}
+
+	/**
+	 * 大数据量导出
+	 *
+	 * @param filepath
+	 *            文件完整路径
+	 * @param headers
+	 *            第一行标题数组
+	 * @param maps
+	 *            数据集合
+	 * @param sheetname
+	 *            sheet标题
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public Boolean exportForSXSSFWorkBook(String filepath, String[] headers, List<Map<String, Object>> maps, String sheetname) throws FileNotFoundException {
+
+		// log.info("导出大数据excel：[" + filepath + "][" + maps.size() + "]--开始");
+
+		OutputStream out = new FileOutputStream(filepath);
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		Sheet sheet = workbook.createSheet(sheetname);
+
+		Row row = sheet.createRow(0);
+		String headTitle;
+		for (int i = 0; i < headers.length; i++) {
+			headTitle = getTitleFormHead(headers[i]);
+			Cell cell = row.createCell(i);
+			HSSFRichTextString text = new HSSFRichTextString(headTitle);
+			cell.setCellValue(text);
+		}
+		String paramName;
+		String textValue;
+		for (int i = 0; i < maps.size(); i++) {
+			row = sheet.createRow(i + 1);
+			for (int j = 0; j < headers.length; j++) {
+				String formatType = getFormatTypeHead(headers[j]);
+				paramName = getFieldNameFormHead(headers[j]);
+				Object obj = maps.get(i).get(paramName);
+				if (obj != null) {
+					textValue = obj.toString();
+				} else {
+					textValue = "";
+				}
+				CellStyle contextstyle = workbook.createCellStyle();
+				Cell contentCell = row.createCell(j);
+				DataFormat df = workbook.createDataFormat(); // 此处设置数据格式
+				contentCell.setCellValue(textValue);
+				if (!"".equals(textValue)) {
+					if ("0".equals(formatType)) {
+						contextstyle.setDataFormat(df.getFormat("#,#0"));// 数据格式只显示整数
+						contentCell.setCellStyle(contextstyle);
+						try {
+							contentCell.setCellValue(Double.parseDouble(textValue));
+						} catch (Exception e) {
+							contentCell.setCellValue(Double.parseDouble("0"));
+						}
+					} else if ("1".equals(formatType)) {
+						contextstyle.setDataFormat(df.getFormat("#,##0.00"));// 保留两位小数点
+						contentCell.setCellStyle(contextstyle);
+						try {
+							contentCell.setCellValue(Double.parseDouble(textValue));
+						} catch (Exception e) {
+							contentCell.setCellValue(Double.parseDouble("0"));
+						}
+					} else if ("2".equals(formatType)) {
+						contextstyle.setDataFormat(df.getFormat("#,##0.00"));// 金额保留两位小数点
+						textValue = textValue.replace(",", "");
+
+						if (textValue.contains("¥")) {
+							textValue = textValue.substring(1, textValue.length());
+						}
+
+						contentCell.setCellStyle(contextstyle);
+						try {
+							contentCell.setCellValue(Double.parseDouble(textValue));
+						} catch (Exception e) {
+							contentCell.setCellValue(Double.parseDouble("0"));
+						}
+
+					} else {
+						contentCell.setCellStyle(contextstyle);
+						contentCell.setCellValue(textValue);
+					}
+				} else {
+					contentCell.setCellStyle(contextstyle);
+					contentCell.setCellValue(textValue);
+				}
+			}
+		}
+		try {
+			workbook.write(out);
+			// log.info("导出大数据excel：[" + filepath + "][" + maps.size() +
+			// "]--结束");
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 }

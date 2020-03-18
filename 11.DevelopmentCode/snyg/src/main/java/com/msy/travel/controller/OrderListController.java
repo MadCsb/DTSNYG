@@ -3,7 +3,9 @@ package com.msy.travel.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -197,20 +199,34 @@ public class OrderListController extends BaseController {
 			}
 			List<OrderList> exportlist = orderListService.queryOrderListList(orderList);
 
+			List<Map<String, Object>> maps = new ArrayList<>();
+			for (OrderList t : exportlist) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("orderListId", t.getOrderListId());
+				map.put("createTime", t.getCreateTime());
+				map.put("money", t.getMoney());
+				map.put("orderListType", t.getOrderListType());
+				maps.add(map);
+
+			}
+
 			PoiWriteExcel<OrderList> pwe = new PoiWriteExcel<OrderList>();
-
-			// 设置标题
-			pwe.setFileTitle("");
-			// 设置生成文件路径
-			pwe.setExportFileName(path);
-
-			pwe.setHeaders(orderList.EXPORT_HEADERS);
-
-			pwe.setDataset(exportlist);
-
-			if (pwe.export()) {
+			if (pwe.exportForSXSSFWorkBook(path, orderList.EXPORT_HEADERS, maps, "账单明细")) {
 				downloadFile(request, response, path, tempName);
 			}
+
+			// 设置标题
+			// pwe.setFileTitle("");
+			// // 设置生成文件路径
+			// pwe.setExportFileName(path);
+			//
+			// pwe.setHeaders(orderList.EXPORT_HEADERS);
+			//
+			// pwe.setDataset(exportlist);
+			//
+			// if (pwe.export()) {
+			// downloadFile(request, response, path, tempName);
+			// }
 
 		} catch (Exception e) {
 			log.error(e, e);
@@ -357,22 +373,38 @@ public class OrderListController extends BaseController {
 			orderListSum.setPayDateTime("合计");
 
 			List<OrderList> exportlist = orderListService.queryOrderListBill(orderList);
+
 			exportlist.add(orderListSum);
+			List<Map<String, Object>> maps = new ArrayList<>();
+			for (OrderList t : exportlist) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("payDateTime", t.getPayDateTime());
+				map.put("money", t.getMoney());
+				map.put("backMoney", t.getBackMoney());
+				map.put("surplusMoney", t.getSurplusMoney());
+				maps.add(map);
+
+			}
 
 			PoiWriteExcel<OrderList> pwe = new PoiWriteExcel<OrderList>();
-
-			// 设置标题
-			pwe.setFileTitle("账单清单");
-			// 设置生成文件路径
-			pwe.setExportFileName(path);
-
-			pwe.setHeaders(orderList.EXPORT_HEADERS_DAY);
-
-			pwe.setDataset(exportlist);
-
-			if (pwe.export()) {
+			if (pwe.exportForSXSSFWorkBook(path, orderList.EXPORT_HEADERS_DAY, maps, "账单明细")) {
 				downloadFile(request, response, path, tempName);
 			}
+
+			// PoiWriteExcel<OrderList> pwe = new PoiWriteExcel<OrderList>();
+			//
+			// // 设置标题
+			// pwe.setFileTitle("账单清单");
+			// // 设置生成文件路径
+			// pwe.setExportFileName(path);
+			//
+			// pwe.setHeaders(orderList.EXPORT_HEADERS_DAY);
+			//
+			// pwe.setDataset(exportlist);
+			//
+			// if (pwe.export()) {
+			// downloadFile(request, response, path, tempName);
+			// }
 
 		} catch (Exception e) {
 			log.error(e, e);
@@ -404,35 +436,47 @@ public class OrderListController extends BaseController {
 			orderList.setPayTag("1");
 
 			List<OrderList> exportlist = orderListService.queryOrderListDetailList(orderList);
-			if (exportlist != null && exportlist.size() > 0) {
-				for (int i = 0; i < exportlist.size(); i++) {
-					if ("0".equals(exportlist.get(i).getOrderListType())) {
-						exportlist.get(i).setOrderListType("订单");
-					} else if ("1".equals(exportlist.get(i).getOrderListType())) {
-						exportlist.get(i).setOrderListType("退订单");
-					} else if ("2".equals(exportlist.get(i).getOrderListType())) {
-						exportlist.get(i).setOrderListType("赠品单");
-					}
+
+			List<Map<String, Object>> maps = new ArrayList<>();
+			for (OrderList t : exportlist) {
+				if ("0".equals(t.getOrderListType())) {
+					t.setOrderListType("订单");
+				} else if ("1".equals(t.getOrderListType())) {
+					t.setOrderListType("退订单");
+				} else if ("2".equals(t.getOrderListType())) {
+					t.setOrderListType("赠品单");
 				}
+
+				Map<String, Object> map = new HashMap<>();
+				map.put("orderCode", t.getOrderCode());
+				map.put("createTime", t.getCreateTime());
+				map.put("money", t.getMoney());
+				map.put("orderListType", t.getOrderListType());
+				maps.add(map);
+
 			}
 
 			PoiWriteExcel<OrderList> pwe = new PoiWriteExcel<OrderList>();
-
-			// 设置标题
-			pwe.setFileTitle("账单明细");
-			// 设置生成文件路径
-			pwe.setExportFileName(path);
-
-			pwe.setHeaders(orderList.EXPORT_HEADERS_DETAILLIST);
-
-			pwe.setDataset(exportlist);
-
-			if (pwe.export()) {
+			if (pwe.exportForSXSSFWorkBook(path, orderList.EXPORT_HEADERS_DETAILLIST, maps, "账单明细")) {
 				downloadFile(request, response, path, tempName);
 			}
+
+			// // 设置标题
+			// pwe.setFileTitle("账单明细");
+			// // 设置生成文件路径
+			// pwe.setExportFileName(path);
+			//
+			// pwe.setHeaders(orderList.EXPORT_HEADERS_DETAILLIST);
+			//
+			// pwe.setDataset(exportlist);
+			//
+			// if (pwe.export()) {
+			// downloadFile(request, response, path, tempName);
+			// }
 
 		} catch (Exception e) {
 			log.error(e, e);
 		}
 	}
+
 }
