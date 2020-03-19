@@ -4,247 +4,294 @@
 </head>
 
 <body>
-	<!--主窗体-->
-	<div class="cont-div">
-		<form action="coupon?method=add" method="post"
-			id="createCoupon">
+	<div class="waybill-title">
+		<span>新增优惠券</span>
+	</div>
+		<form action="coupon?method=add" method="post" id="createCoupon">
+			<input name="status" type="hidden" id="status" size="40" />
 			<!--编辑区-->
-			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
-
-				<tr class="cs">
-
-					<td>couponId：</td>
-					<td><input name="couponId" type="text"
-						id="couponId" size="40" /></td>
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td width="15%" class="tdright"><b><font class="f2">*</font>优惠券名称：</b></td>
+					<td width="35%"><input name="name" type="text" class="validate[required,maxSize[100]] data-inputtxt" 
+						id="productName" size="40" />
+					</td>
+					<td width="12%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
+					<td width="43%">
+						<label><input name="optainType" id="optainType0" type="radio" value="0"  hidden/><label for="optainType0" class="radiock"></label>商品页领取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	           			<label><input name="optainType" id="optainType1" type="radio" value="1" checked hidden/><label for="optainType1" class="radiock"></label>活动页领取</label>
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>spId：</td>
-					<td><input name="spId" type="text"
-						id="spId" size="40" /></td>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>发行总量：</b></td>
+					<td><input name="totalNum" type="text" class="validate[required,maxSize[10],custom[integer1-9999999999]] data-inputtxt" 
+						id="totalNum" size="40" />
+					</td>
+					<td class="tdright"><b>每日发行量：</b></td>
+					<td>
+						<input name="dayNum" type="text" class="validate[maxSize[10],custom[integer1-9999999999]] data-inputtxt" 
+						id="dayNum" size="40" />
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>name：</td>
-					<td><input name="name" type="text"
-						id="name" size="40" /></td>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>使用限制：</b></td>
+					<td>单笔订单中此优惠券的指定商品金额值<br>
+						<select name="useType" id="useType" onchange="changeUserType()" class="data-inputtxt-select" style="width:60px;">
+							<option value="1">满</option>
+							<option value="2">打折</option>
+						</select>
+						<input name="useLimit" type="text"
+						id="useLimit" size="40" style="width:130px;" class="validate[required,custom[num8point2]] data-inputtxt"/>元，使用
+					</td>
+					<td class="tdright"><b><span class="f2"><b>*</b></span><span id="useTypeSpan1">抵扣：</span></b></td>
+					<td>
+						<span id="useTypeSpan2">减</span>&nbsp;&nbsp;<input name="discount" type="text"
+						id="discount" size="40" style="width:175px;" class="validate[required,maxSize[10],custom[num8point2]] data-inputtxt"/>
+						<span id="useTypeSpan3">元</span><br>
+						<span style="color:red;" id="useTypeSpan4">抵扣金额不能大于满足金额的80%</span>
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>optainType：</td>
-					<td><input name="optainType" type="text"
-						id="optainType" size="40" /></td>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>每人限领：</b></td>
+					<td><input name="obtainLimit" type="text" class="validate[required,maxSize[10],custom[integer1-9999999999]] data-inputtxt" 
+						id="obtainLimit" size="40" />
+					</td>
+					<td class="tdright"><b><font class="f2">*</font>每人每天限领：</b></td>
+					<td>
+						<input name="dayObtainLimit" type="text" class="validate[maxSize[10],custom[integer1-9999999999]] data-inputtxt" 
+						id="dayObtainLimit" size="40" />
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>totalNum：</td>
-					<td><input name="totalNum" type="text"
-						id="totalNum" size="40" /></td>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>券有效期：</b></td>
+					<td colspan="3"><input name="validBegin" type="text"
+						id="validBegin" size="40" class="validate[required,maxSize[23]] data-searchtxt-time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'validEnd\')}'})" readonly="readonly"/>
+						- 
+						<input name="validEnd" type="text"
+						id="validEnd" size="40" class="validate[required,maxSize[23]] data-searchtxt-time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'validBegin\')}'})" readonly="readonly"/>
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>dayNum：</td>
-					<td><input name="dayNum" type="text"
-						id="dayNum" size="40" /></td>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>领券有效期：</b></td>
+					<td>
+						<select name="obtainDateType" id="obtainDateType" onchange="changeobtainDateType()" class="data-inputtxt-select">
+							<option value="1">有效时段</option>
+							<option value="2">有效时长</option>
+						</select>	
+					</td>
+					<td class="tdright"><b><font class="f2">*</font>有效时段：</b></td>
+					<td>
+						<span id="obtainDateTypeSpan2">
+						<input name="obtainDateBegin" type="text"
+						id="obtainDateBegin" size="40" class="validate[required,maxSize[23]] data-searchtxt-time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'validEnd\')}',minDate:'#F{$dp.$D(\'validBegin\')}'})" readonly="readonly"/>
+						- 
+						<input name="obtainDateEnd" type="text"
+						id="obtainDateEnd" size="40" class="validate[required,maxSize[23]] data-searchtxt-time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'obtainDateBegin\')}',maxDate:'#F{$dp.$D(\'validEnd\')}'})" readonly="readonly"/>
+						</span>
+						<span id="obtainDateTypeSpan3" style="display:none;">
+							<input name="obtainDateSpan" type="text" id="obtainDateSpan" class="validate[required,maxSize[2],custom[integer]] data-inputtxt" size="40" />天
+						</span>
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>userType：</td>
-					<td><input name="userType" type="text"
-						id="userType" size="40" /></td>
+				<tr >
+					<td class="tdright"><b><span class="f2"><b>*</b></span>使用范围：</b></td>
+					<td  colspan="3" style="line-height:47px;">
+						<input name="couponType" onclick="couponTypeChange('1')" type="radio" value="1" checked>全部商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	              		<input name="couponType" onclick="couponTypeChange('2')" type="radio" value="2">指定商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	              		<input name="couponType" onclick="couponTypeChange('3')" type="radio" value="3">指定活动
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>useLimit：</td>
-					<td><input name="useLimit" type="text"
-						id="useLimit" size="40" /></td>
+				<tr id="couponType2Td" style="display:none;">
+					<td class="tdright"></td>
+					<td  colspan="3" style="min-height:50px;">
+						<span >已选：商品&nbsp;&nbsp;<span id="pdcNum" style="color:#FF6600">0</span>&nbsp;&nbsp;个</span>&nbsp;&nbsp;&nbsp;&nbsp;<input onclick="choosePdc();" type="button" class="add-new" id="button3" style="margin-top:10px;margin-bottom:10px;" value="选择商品">
+						<input onclick="delMorePdc()" type="button" class="add-new" id="button4" style="margin-top:10px;margin-bottom:10px;" title="删除" value="删除">
+						<table id="checkPdcTable"  class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr>
+								<th width="4%" style="text-align:center"><input type="checkbox" id="allcheck" onclick="allCheck(this)"></th>
+								<th width="12%">缩略图</th>
+								<th width="30%">商品名称</th>
+								<th width="20%">资源名称</th> 
+								<th width="10%">商品售价(元)</th>
+								<th width="10%">操作</th>  
+							</tr>
+						</table>
+					</td>
 				</tr>
-
-
-				<tr class="cs">
-
-					<td>discount：</td>
-					<td><input name="discount" type="text"
-						id="discount" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>obtainLimit：</td>
-					<td><input name="obtainLimit" type="text"
-						id="obtainLimit" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>dayObtainLimit：</td>
-					<td><input name="dayObtainLimit" type="text"
-						id="dayObtainLimit" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>validBegin：</td>
-					<td><input name="validBegin" type="text"
-						id="validBegin" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>validEnd：</td>
-					<td><input name="validEnd" type="text"
-						id="validEnd" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>obtainDateType：</td>
-					<td><input name="obtainDateType" type="text"
-						id="obtainDateType" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>obtainDateBegin：</td>
-					<td><input name="obtainDateBegin" type="text"
-						id="obtainDateBegin" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>obtainDateEnd：</td>
-					<td><input name="obtainDateEnd" type="text"
-						id="obtainDateEnd" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>obtainDateSpan：</td>
-					<td><input name="obtainDateSpan" type="text"
-						id="obtainDateSpan" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>couponType：</td>
-					<td><input name="couponType" type="text"
-						id="couponType" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>status：</td>
-					<td><input name="status" type="text"
-						id="status" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>createTime：</td>
-					<td><input name="createTime" type="text"
-						id="createTime" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>creatorUid：</td>
-					<td><input name="creatorUid" type="text"
-						id="creatorUid" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>creator：</td>
-					<td><input name="creator" type="text"
-						id="creator" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>updateTime：</td>
-					<td><input name="updateTime" type="text"
-						id="updateTime" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>updaterUid：</td>
-					<td><input name="updaterUid" type="text"
-						id="updaterUid" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>updater：</td>
-					<td><input name="updater" type="text"
-						id="updater" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>delFlag：</td>
-					<td><input name="delFlag" type="text"
-						id="delFlag" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>couponTag：</td>
-					<td><input name="couponTag" type="text"
-						id="couponTag" size="40" /></td>
-				</tr>
-
-
-				<tr class="cs">
-
-					<td>pcouponId：</td>
-					<td><input name="pcouponId" type="text"
-						id="pcouponId" size="40" /></td>
-				</tr>
-
 			</table>
-			<!--操作区-->
-			<!--操作区-->
-			<div class="data-btn">
-				<input type="submit" class="data-btnbg" value="确认" /> 
-				<input type="reset" class="data-btnbg" onclick="javascript:location.href='{Session.BACK_URL!""}'" value="取消" />
+			<div class="footerbtn">
+				<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onclick="beforeSubmit('1');" type="button" class="add-new" id="button3" value="立即发布">
+				<input name="button3" onclick="beforeSubmit('0');" type="button" class="add-new" id="button3" value="保存草稿">
 			</div>
 		</form>
-	</div>
 </body>
 <script type="text/javascript">
+$(function() {
+	// 加载验证框架
+	$("#createCoupon").validationEngine();
+});
+
+function beforeSubmit(type){
+	if ($("#createCoupon").validationEngine('validate')) {
+		// 判断每日发行量  每日发行量 ≤ 发行总量
+		var dayNum = $("#dayNum").val();
+		var totalNum  = $("#totalNum").val();
+		if((dayNum*1)>(totalNum*1)){
+			parent.layer.alert("每日发行量不能大于发行总量");
+			return ;
+		}
+		//每人限领
+		var obtainLimit  = $("#obtainLimit").val();
+		if(obtainLimit * 1 > 10){
+			parent.layer.alert("每人限领不能超过10张");
+			return ;
+		}else if(obtainLimit * 1 < 1){
+			parent.layer.alert("每人限领最少1张");
+			return ;
+		}
+		// 每人每天限领
+		var dayObtainLimit =$("#dayObtainLimit").val();
+		if(dayObtainLimit * 1 > 10){
+			parent.layer.alert("每人每天限领不能超过10张");
+			return ;
+		}else if(dayObtainLimit * 1 < 1){
+			parent.layer.alert("每人每天限领最少1张");
+			return ;
+		}
+		
+		if(dayObtainLimit*1 > obtainLimit*1){
+			parent.layer.alert("每人每天限领不能超过每人限领数量");
+			return ;
+		}
+		
+		//判断抵扣金额
+		var useType = $("#useType").val();
+		if(useType=="1"){
+			var discount = $("#discount").val();
+			var useLimit = $("#useLimit").val();
+			
+			if((discount*1)>(useLimit * 0.8)){
+				art.dialog.alert("抵扣金额不能大于满足金额的80%");
+				return ;
+			}
+		}else if(useType=="2"){
+			var discount = $("#discount").val();
+			if(discount * 1 >= 1){
+				art.dialog.alert("折扣请填入0-1之间的小数，保留两位小数");
+				return ;
+			}
+		}
+		
+		var couponType = $("input[name='couponType']:checked").val();
+		if(couponType == "2"){
+			var productionIdList = $("#productionIdList").val();
+			if(productionIdList==""){
+				art.dialog.alert("请选择指定商品");
+				return ;
+			}
+		}
+			
+		if(checkDate()){
+			if(couponType == "1"){
+				$("#productionIdList").val("");	
+			}
+			$("#status").val(type);
+			$("#createCoupon").submit();
+		}
+		
+		
+	}
+}
+
+function checkDate(){
+	var result = true;
 	
+	var validBegin = $("#validBegin").val(); // 券有效期开始
+	var validEnd = $("#validEnd").val(); // 券有效期结束
+	
+	var oDate1 = new Date(validBegin);
+    var oDate2 = new Date(validEnd);
+    if(oDate1.getTime() > oDate2.getTime()){
+    	art.dialog.alert("券有效期结束日期不能大于券有效期开始日期");
+    	result =  false;
+    }
+	var obtainDateType  = $("#obtainDateType").val();
+	if(obtainDateType=="1"){
+		var obtainDateBegin =$("#obtainDateBegin").val();
+		var obtainDateEnd = $("#obtainDateEnd").val();
+		
+		var oDate3 = new Date(obtainDateBegin);
+	    var oDate4 = new Date(obtainDateEnd);
+	    if(oDate3.getTime() > oDate4.getTime()){
+	    	art.dialog.alert("有效时段开始日期不能大于有效时段结束日期");
+	    	result =  false;
+	    }
+	    
+	    if(oDate1 > oDate3){
+	    	art.dialog.alert("有效时段开始日期不能小于券有效期开始日期");
+	    	result =  false;
+	    }
+	    
+	    if(oDate3 > oDate2){
+	    	art.dialog.alert("有效时段开始日期不能大于券有效期结束日期");
+	    	result =  false;
+	    }
+	    
+	    if(oDate1 > oDate4){
+	    	art.dialog.alert("有效时段结束日期不能小于券有效期开始日期");
+	    	result =  false;
+	    }
+	    
+	    if(oDate4 > oDate2){
+	    	art.dialog.alert("有效时段结束日期不能大于券有效期结束日期");
+	    	result =  false;
+	    }
+	}else if(obtainDateType=="2"){
+		var obtainDateSpan = $("#obtainDateSpan").val();
+		if(obtainDateSpan<1 || obtainDateSpan>90){
+			art.dialog.alert("动态时长请填入1~90之间的数字");
+	    	result =  false;
+		}
+	}
+    return result;
+}
+
+function couponTypeChange(type){
+	if(type=="1"){
+		$("#couponType2Td").hide();
+	}else{
+		$("#couponType2Td").show();
+	}
+}
+
+function changeUserType(){
+	var changeUserType = $("#useType").val();
+	if(changeUserType=="1"){
+		$("#useTypeSpan1").html("抵扣：");
+		$("#useTypeSpan2").html("减");
+		$("#useTypeSpan3").html("元");
+		$("#useTypeSpan4").html("抵扣金额不能大于满足金额的80%");
+	}else if(changeUserType=="2"){
+		$("#useTypeSpan1").html("折扣：");
+		$("#useTypeSpan2").html("打");
+		$("#useTypeSpan3").html("折");
+		$("#useTypeSpan4").html("请填入0~1之间的小数");
+	}
+}
+function changeobtainDateType(){
+	var obtainDateType = $("#obtainDateType").val();
+	if(obtainDateType=="1"){
+		$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>有效时段：</b>");
+		$("#obtainDateTypeSpan2").show();
+		$("#obtainDateTypeSpan3").hide();
+		$("#obtainDateSpan").attr("disabled","disabled");
+	}else if(obtainDateType=="2"){
+		$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>动态时长：</b>");
+		$("#obtainDateTypeSpan2").hide();
+		$("#obtainDateTypeSpan3").show();
+		$("#obtainDateSpan").removeAttr("disabled");
+	}
+}
 </script>
 </html>
