@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("couponId");
+		document.getElementById("checkedCouponIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+
+	<a href="coupon?method=toAdd">添加用户</a>
+	<form id="queryFrm" action="coupon?method=query"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<table border="1" style="width: 100%">
+			<tr>
+				<td></td> 
+				<td>couponId</td> 
+				<td>spId</td> 
+				<td>name</td> 
+				<td>optainType</td> 
+				<td>totalNum</td> 
+				<td>dayNum</td> 
+				<td>userType</td> 
+				<td>useLimit</td> 
+				<td>discount</td> 
+				<td>obtainLimit</td> 
+				<td>dayObtainLimit</td> 
+				<td>validBegin</td> 
+				<td>validEnd</td> 
+				<td>obtainDateType</td> 
+				<td>obtainDateBegin</td> 
+				<td>obtainDateEnd</td> 
+				<td>obtainDateSpan</td> 
+				<td>couponType</td> 
+				<td>status</td> 
+				<td>createTime</td> 
+				<td>creatorUid</td> 
+				<td>creator</td> 
+				<td>updateTime</td> 
+				<td>updaterUid</td> 
+				<td>updater</td> 
+				<td>delFlag</td> 
+				<td>couponTag</td> 
+				<td>pcouponId</td> 
+				<td>操作</td>
+			</tr>
+
+			<#list couponlist as coupon>
+			<tr>
+				<td>
+					<input type="checkbox" name="couponId" value="${coupon.couponId!''}"></td> 
+				<td>${coupon.couponId!''}</td> 
+				<td>${coupon.spId!''}</td> 
+				<td>${coupon.name!''}</td> 
+				<td>${coupon.optainType!''}</td> 
+				<td>${coupon.totalNum!''}</td> 
+				<td>${coupon.dayNum!''}</td> 
+				<td>${coupon.userType!''}</td> 
+				<td>${coupon.useLimit!''}</td> 
+				<td>${coupon.discount!''}</td> 
+				<td>${coupon.obtainLimit!''}</td> 
+				<td>${coupon.dayObtainLimit!''}</td> 
+				<td>${coupon.validBegin!''}</td> 
+				<td>${coupon.validEnd!''}</td> 
+				<td>${coupon.obtainDateType!''}</td> 
+				<td>${coupon.obtainDateBegin!''}</td> 
+				<td>${coupon.obtainDateEnd!''}</td> 
+				<td>${coupon.obtainDateSpan!''}</td> 
+				<td>${coupon.couponType!''}</td> 
+				<td>${coupon.status!''}</td> 
+				<td>${coupon.createTime!''}</td> 
+				<td>${coupon.creatorUid!''}</td> 
+				<td>${coupon.creator!''}</td> 
+				<td>${coupon.updateTime!''}</td> 
+				<td>${coupon.updaterUid!''}</td> 
+				<td>${coupon.updater!''}</td> 
+				<td>${coupon.delFlag!''}</td> 
+				<td>${coupon.couponTag!''}</td> 
+				<td>${coupon.pcouponId!''}</td> 
+				<td><a
+					href="coupon?method=toUpdate&couponId=${coupon.couponId!''}">修改</a>
+					&nbsp;&nbsp; <a
+					href="coupon?method=delete&couponId=${coupon.couponId!''}">删除</a>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+
+		<#if couponlist?? && (couponlist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<form action="coupon?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedCouponIds"
+			id="checkedCouponIds">
+	</form>
+</body>
+</html>

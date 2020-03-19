@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CouponProductionDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCouponProduction" parameterType="couponProduction">
+		INSERT INTO 
+			t_sm_couponproduction  
+		(
+			F_COUPONPDCID ,
+			F_COUPONID ,
+			F_USECOUPONID ,
+			F_COUPONTYPE 
+		) VALUES (
+			#{couponPdcId} ,
+			#{couponId} ,
+			#{useCouponId} ,
+			#{couponType} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCouponProduction" parameterType="couponProduction">
+		REPLACE INTO 
+			t_sm_couponproduction 
+		(
+			F_COUPONPDCID ,
+			F_COUPONID ,
+			F_USECOUPONID ,
+			F_COUPONTYPE 
+		) VALUES (
+			#{couponPdcId} ,
+			#{couponId} ,
+			#{useCouponId} ,
+			#{couponType} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCouponProduction" parameterType="couponProduction">
+		UPDATE
+			t_sm_couponproduction 
+		SET
+			F_COUPONID = #{couponId} ,
+			F_USECOUPONID = #{useCouponId} ,
+			F_COUPONTYPE = #{couponType} 
+		<where>
+			F_COUPONPDCID = #{couponPdcId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCouponProduction" parameterType="couponProduction">
+		DELETE FROM
+			t_sm_couponproduction 
+		<where>
+			F_COUPONPDCID = #{couponPdcId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCouponProduction" parameterType="couponProduction">
+		DELETE FROM 
+			t_sm_couponproduction 
+		<where>
+			F_COUPONPDCID in
+			<foreach collection="couponProductionIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCouponProduction" parameterType="String" resultType="couponProduction">
+		SELECT
+			t.F_COUPONPDCID as couponPdcId ,
+			t.F_COUPONID as couponId ,
+			t.F_USECOUPONID as useCouponId ,
+			t.F_COUPONTYPE as couponType 
+		FROM
+			t_sm_couponproduction t
+		<where>
+			t.F_COUPONPDCID = #{couponPdcId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCouponProductionList" parameterType="couponProduction" resultType="couponProduction">
+		SELECT
+			t.F_COUPONPDCID as couponPdcId ,
+			t.F_COUPONID as couponId ,
+			t.F_USECOUPONID as useCouponId ,
+			t.F_COUPONTYPE as couponType 
+		FROM
+		t_sm_couponproduction t
+		<where>
+			<if test="couponPdcId!=null and couponPdcId!=''">
+		    	t.F_COUPONPDCID = #{couponPdcId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

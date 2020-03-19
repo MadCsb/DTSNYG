@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CouponDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCoupon" parameterType="coupon">
+		INSERT INTO 
+			t_sm_coupon  
+		(
+			F_COUPONID ,
+			F_SPID ,
+			F_NAME ,
+			F_OBTAINTYPE ,
+			F_TOTALNUM ,
+			F_DAYNUM ,
+			F_USETYPE ,
+			F_USELIMIT ,
+			F_DISCOUNT ,
+			F_OBTAINLIMIT ,
+			F_DAYOBTAINLIMIT ,
+			F_VALIDBEGIN ,
+			F_VALIDEND ,
+			F_OBTAINDATETYPE ,
+			F_OBTAINDATEBEGIN ,
+			F_OBTAINDATEEND ,
+			F_OBTAINDATESPAN ,
+			F_COUPONTYPE ,
+			F_STATUS ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_COUPONTAG ,
+			F_PCOUPONID 
+		) VALUES (
+			#{couponId} ,
+			#{spId} ,
+			#{name} ,
+			#{optainType} ,
+			#{totalNum} ,
+			#{dayNum} ,
+			#{userType} ,
+			#{useLimit} ,
+			#{discount} ,
+			#{obtainLimit} ,
+			#{dayObtainLimit} ,
+			#{validBegin} ,
+			#{validEnd} ,
+			#{obtainDateType} ,
+			#{obtainDateBegin} ,
+			#{obtainDateEnd} ,
+			#{obtainDateSpan} ,
+			#{couponType} ,
+			#{status} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{couponTag} ,
+			#{pcouponId} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCoupon" parameterType="coupon">
+		REPLACE INTO 
+			t_sm_coupon 
+		(
+			F_COUPONID ,
+			F_SPID ,
+			F_NAME ,
+			F_OBTAINTYPE ,
+			F_TOTALNUM ,
+			F_DAYNUM ,
+			F_USETYPE ,
+			F_USELIMIT ,
+			F_DISCOUNT ,
+			F_OBTAINLIMIT ,
+			F_DAYOBTAINLIMIT ,
+			F_VALIDBEGIN ,
+			F_VALIDEND ,
+			F_OBTAINDATETYPE ,
+			F_OBTAINDATEBEGIN ,
+			F_OBTAINDATEEND ,
+			F_OBTAINDATESPAN ,
+			F_COUPONTYPE ,
+			F_STATUS ,
+			F_CREATETIME ,
+			F_CREATORUID ,
+			F_CREATOR ,
+			F_UPDATETIME ,
+			F_UPDATERUID ,
+			F_UPDATER ,
+			F_DELFLAG ,
+			F_COUPONTAG ,
+			F_PCOUPONID 
+		) VALUES (
+			#{couponId} ,
+			#{spId} ,
+			#{name} ,
+			#{optainType} ,
+			#{totalNum} ,
+			#{dayNum} ,
+			#{userType} ,
+			#{useLimit} ,
+			#{discount} ,
+			#{obtainLimit} ,
+			#{dayObtainLimit} ,
+			#{validBegin} ,
+			#{validEnd} ,
+			#{obtainDateType} ,
+			#{obtainDateBegin} ,
+			#{obtainDateEnd} ,
+			#{obtainDateSpan} ,
+			#{couponType} ,
+			#{status} ,
+			#{createTime} ,
+			#{creatorUid} ,
+			#{creator} ,
+			#{updateTime} ,
+			#{updaterUid} ,
+			#{updater} ,
+			#{delFlag} ,
+			#{couponTag} ,
+			#{pcouponId} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCoupon" parameterType="coupon">
+		UPDATE
+			t_sm_coupon 
+		SET
+			F_SPID = #{spId} ,
+			F_NAME = #{name} ,
+			F_OBTAINTYPE = #{optainType} ,
+			F_TOTALNUM = #{totalNum} ,
+			F_DAYNUM = #{dayNum} ,
+			F_USETYPE = #{userType} ,
+			F_USELIMIT = #{useLimit} ,
+			F_DISCOUNT = #{discount} ,
+			F_OBTAINLIMIT = #{obtainLimit} ,
+			F_DAYOBTAINLIMIT = #{dayObtainLimit} ,
+			F_VALIDBEGIN = #{validBegin} ,
+			F_VALIDEND = #{validEnd} ,
+			F_OBTAINDATETYPE = #{obtainDateType} ,
+			F_OBTAINDATEBEGIN = #{obtainDateBegin} ,
+			F_OBTAINDATEEND = #{obtainDateEnd} ,
+			F_OBTAINDATESPAN = #{obtainDateSpan} ,
+			F_COUPONTYPE = #{couponType} ,
+			F_STATUS = #{status} ,
+			F_CREATETIME = #{createTime} ,
+			F_CREATORUID = #{creatorUid} ,
+			F_CREATOR = #{creator} ,
+			F_UPDATETIME = #{updateTime} ,
+			F_UPDATERUID = #{updaterUid} ,
+			F_UPDATER = #{updater} ,
+			F_DELFLAG = #{delFlag} ,
+			F_COUPONTAG = #{couponTag} ,
+			F_PCOUPONID = #{pcouponId} 
+		<where>
+			F_COUPONID = #{couponId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCoupon" parameterType="coupon">
+		DELETE FROM
+			t_sm_coupon 
+		<where>
+			F_COUPONID = #{couponId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCoupon" parameterType="coupon">
+		DELETE FROM 
+			t_sm_coupon 
+		<where>
+			F_COUPONID in
+			<foreach collection="couponIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCoupon" parameterType="String" resultType="coupon">
+		SELECT
+			t.F_COUPONID as couponId ,
+			t.F_SPID as spId ,
+			t.F_NAME as name ,
+			t.F_OBTAINTYPE as optainType ,
+			t.F_TOTALNUM as totalNum ,
+			t.F_DAYNUM as dayNum ,
+			t.F_USETYPE as userType ,
+			t.F_USELIMIT as useLimit ,
+			t.F_DISCOUNT as discount ,
+			t.F_OBTAINLIMIT as obtainLimit ,
+			t.F_DAYOBTAINLIMIT as dayObtainLimit ,
+			t.F_VALIDBEGIN as validBegin ,
+			t.F_VALIDEND as validEnd ,
+			t.F_OBTAINDATETYPE as obtainDateType ,
+			t.F_OBTAINDATEBEGIN as obtainDateBegin ,
+			t.F_OBTAINDATEEND as obtainDateEnd ,
+			t.F_OBTAINDATESPAN as obtainDateSpan ,
+			t.F_COUPONTYPE as couponType ,
+			t.F_STATUS as status ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_COUPONTAG as couponTag ,
+			t.F_PCOUPONID as pcouponId 
+		FROM
+			t_sm_coupon t
+		<where>
+			t.F_COUPONID = #{couponId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCouponList" parameterType="coupon" resultType="coupon">
+		SELECT
+			t.F_COUPONID as couponId ,
+			t.F_SPID as spId ,
+			t.F_NAME as name ,
+			t.F_OBTAINTYPE as optainType ,
+			t.F_TOTALNUM as totalNum ,
+			t.F_DAYNUM as dayNum ,
+			t.F_USETYPE as userType ,
+			t.F_USELIMIT as useLimit ,
+			t.F_DISCOUNT as discount ,
+			t.F_OBTAINLIMIT as obtainLimit ,
+			t.F_DAYOBTAINLIMIT as dayObtainLimit ,
+			t.F_VALIDBEGIN as validBegin ,
+			t.F_VALIDEND as validEnd ,
+			t.F_OBTAINDATETYPE as obtainDateType ,
+			t.F_OBTAINDATEBEGIN as obtainDateBegin ,
+			t.F_OBTAINDATEEND as obtainDateEnd ,
+			t.F_OBTAINDATESPAN as obtainDateSpan ,
+			t.F_COUPONTYPE as couponType ,
+			t.F_STATUS as status ,
+			t.F_CREATETIME as createTime ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_COUPONTAG as couponTag ,
+			t.F_PCOUPONID as pcouponId 
+		FROM
+		t_sm_coupon t
+		<where>
+			<if test="couponId!=null and couponId!=''">
+		    	t.F_COUPONID = #{couponId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CustomerCouponDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCustomerCoupon" parameterType="customerCoupon">
+		INSERT INTO 
+			t_sm_customercoupon  
+		(
+			F_CUSTOMERCOUPONID ,
+			F_CUSTOMERCODE ,
+			F_COUPONID ,
+			F_USETYPE ,
+			F_USELIMIT ,
+			F_DISCOUNT ,
+			F_COUPONTYPE ,
+			F_VALIDBEGIN ,
+			F_VALIDEND ,
+			F_OBTAINTIME ,
+			F_STATUS ,
+			F_ORDERID ,
+			F_DELFLAG 
+		) VALUES (
+			#{customerCouponId} ,
+			#{customerCode} ,
+			#{couponId} ,
+			#{useType} ,
+			#{useLimit} ,
+			#{discount} ,
+			#{couponType} ,
+			#{validBegin} ,
+			#{validEnd} ,
+			#{obtainTime} ,
+			#{status} ,
+			#{orderId} ,
+			#{delFlag} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCustomerCoupon" parameterType="customerCoupon">
+		REPLACE INTO 
+			t_sm_customercoupon 
+		(
+			F_CUSTOMERCOUPONID ,
+			F_CUSTOMERCODE ,
+			F_COUPONID ,
+			F_USETYPE ,
+			F_USELIMIT ,
+			F_DISCOUNT ,
+			F_COUPONTYPE ,
+			F_VALIDBEGIN ,
+			F_VALIDEND ,
+			F_OBTAINTIME ,
+			F_STATUS ,
+			F_ORDERID ,
+			F_DELFLAG 
+		) VALUES (
+			#{customerCouponId} ,
+			#{customerCode} ,
+			#{couponId} ,
+			#{useType} ,
+			#{useLimit} ,
+			#{discount} ,
+			#{couponType} ,
+			#{validBegin} ,
+			#{validEnd} ,
+			#{obtainTime} ,
+			#{status} ,
+			#{orderId} ,
+			#{delFlag} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCustomerCoupon" parameterType="customerCoupon">
+		UPDATE
+			t_sm_customercoupon 
+		SET
+			F_CUSTOMERCODE = #{customerCode} ,
+			F_COUPONID = #{couponId} ,
+			F_USETYPE = #{useType} ,
+			F_USELIMIT = #{useLimit} ,
+			F_DISCOUNT = #{discount} ,
+			F_COUPONTYPE = #{couponType} ,
+			F_VALIDBEGIN = #{validBegin} ,
+			F_VALIDEND = #{validEnd} ,
+			F_OBTAINTIME = #{obtainTime} ,
+			F_STATUS = #{status} ,
+			F_ORDERID = #{orderId} ,
+			F_DELFLAG = #{delFlag} 
+		<where>
+			F_CUSTOMERCOUPONID = #{customerCouponId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCustomerCoupon" parameterType="customerCoupon">
+		DELETE FROM
+			t_sm_customercoupon 
+		<where>
+			F_CUSTOMERCOUPONID = #{customerCouponId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCustomerCoupon" parameterType="customerCoupon">
+		DELETE FROM 
+			t_sm_customercoupon 
+		<where>
+			F_CUSTOMERCOUPONID in
+			<foreach collection="customerCouponIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCustomerCoupon" parameterType="String" resultType="customerCoupon">
+		SELECT
+			t.F_CUSTOMERCOUPONID as customerCouponId ,
+			t.F_CUSTOMERCODE as customerCode ,
+			t.F_COUPONID as couponId ,
+			t.F_USETYPE as useType ,
+			t.F_USELIMIT as useLimit ,
+			t.F_DISCOUNT as discount ,
+			t.F_COUPONTYPE as couponType ,
+			t.F_VALIDBEGIN as validBegin ,
+			t.F_VALIDEND as validEnd ,
+			t.F_OBTAINTIME as obtainTime ,
+			t.F_STATUS as status ,
+			t.F_ORDERID as orderId ,
+			t.F_DELFLAG as delFlag 
+		FROM
+			t_sm_customercoupon t
+		<where>
+			t.F_CUSTOMERCOUPONID = #{customerCouponId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCustomerCouponList" parameterType="customerCoupon" resultType="customerCoupon">
+		SELECT
+			t.F_CUSTOMERCOUPONID as customerCouponId ,
+			t.F_CUSTOMERCODE as customerCode ,
+			t.F_COUPONID as couponId ,
+			t.F_USETYPE as useType ,
+			t.F_USELIMIT as useLimit ,
+			t.F_DISCOUNT as discount ,
+			t.F_COUPONTYPE as couponType ,
+			t.F_VALIDBEGIN as validBegin ,
+			t.F_VALIDEND as validEnd ,
+			t.F_OBTAINTIME as obtainTime ,
+			t.F_STATUS as status ,
+			t.F_ORDERID as orderId ,
+			t.F_DELFLAG as delFlag 
+		FROM
+		t_sm_customercoupon t
+		<where>
+			<if test="customerCouponId!=null and customerCouponId!=''">
+		    	t.F_CUSTOMERCOUPONID = #{customerCouponId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

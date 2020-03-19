@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<!--主窗体-->
+	<div class="cont-div">
+		<form action="coupon?method=add" method="post"
+			id="createCoupon">
+			<!--编辑区-->
+			<table width="100%" cellpadding="0" cellspacing="0" class="data-tab1">
+
+				<tr class="cs">
+
+					<td>couponId：</td>
+					<td><input name="couponId" type="text"
+						id="couponId" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>spId：</td>
+					<td><input name="spId" type="text"
+						id="spId" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>name：</td>
+					<td><input name="name" type="text"
+						id="name" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>optainType：</td>
+					<td><input name="optainType" type="text"
+						id="optainType" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>totalNum：</td>
+					<td><input name="totalNum" type="text"
+						id="totalNum" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>dayNum：</td>
+					<td><input name="dayNum" type="text"
+						id="dayNum" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>userType：</td>
+					<td><input name="userType" type="text"
+						id="userType" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>useLimit：</td>
+					<td><input name="useLimit" type="text"
+						id="useLimit" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>discount：</td>
+					<td><input name="discount" type="text"
+						id="discount" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>obtainLimit：</td>
+					<td><input name="obtainLimit" type="text"
+						id="obtainLimit" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>dayObtainLimit：</td>
+					<td><input name="dayObtainLimit" type="text"
+						id="dayObtainLimit" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>validBegin：</td>
+					<td><input name="validBegin" type="text"
+						id="validBegin" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>validEnd：</td>
+					<td><input name="validEnd" type="text"
+						id="validEnd" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>obtainDateType：</td>
+					<td><input name="obtainDateType" type="text"
+						id="obtainDateType" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>obtainDateBegin：</td>
+					<td><input name="obtainDateBegin" type="text"
+						id="obtainDateBegin" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>obtainDateEnd：</td>
+					<td><input name="obtainDateEnd" type="text"
+						id="obtainDateEnd" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>obtainDateSpan：</td>
+					<td><input name="obtainDateSpan" type="text"
+						id="obtainDateSpan" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>couponType：</td>
+					<td><input name="couponType" type="text"
+						id="couponType" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>status：</td>
+					<td><input name="status" type="text"
+						id="status" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>createTime：</td>
+					<td><input name="createTime" type="text"
+						id="createTime" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>creatorUid：</td>
+					<td><input name="creatorUid" type="text"
+						id="creatorUid" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>creator：</td>
+					<td><input name="creator" type="text"
+						id="creator" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>updateTime：</td>
+					<td><input name="updateTime" type="text"
+						id="updateTime" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>updaterUid：</td>
+					<td><input name="updaterUid" type="text"
+						id="updaterUid" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>updater：</td>
+					<td><input name="updater" type="text"
+						id="updater" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>delFlag：</td>
+					<td><input name="delFlag" type="text"
+						id="delFlag" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>couponTag：</td>
+					<td><input name="couponTag" type="text"
+						id="couponTag" size="40" /></td>
+				</tr>
+
+
+				<tr class="cs">
+
+					<td>pcouponId：</td>
+					<td><input name="pcouponId" type="text"
+						id="pcouponId" size="40" /></td>
+				</tr>
+
+			</table>
+			<!--操作区-->
+			<!--操作区-->
+			<div class="data-btn">
+				<input type="submit" class="data-btnbg" value="确认" /> 
+				<input type="reset" class="data-btnbg" onclick="javascript:location.href='{Session.BACK_URL!""}'" value="取消" />
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>
