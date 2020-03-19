@@ -1,0 +1,1 @@
+alter table t_sm_commproduct add F_REFERENCEPRICE decimal(10,2) COMMENT '参考价格';

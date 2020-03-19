@@ -1,3 +1,11 @@
+/*１）先添加字段，设置字段类型等基本属性： */
+alter table t_sm_sellprice add F_PRICECODE INTEGER(10) not Null ; 
+/*（２）为该字段添加任意key：  test为任意的key名称 */
+alter table t_sm_sellprice ADD KEY test(F_PRICECODE);
+/*（３）将该字段修改为自增属性：  */
+ALTER TABLE t_sm_sellprice MODIFY F_PRICECODE BIGINT(20) auto_increment;
+
+
 drop table if exists t_sm_saletype;
 
 /*==============================================================*/

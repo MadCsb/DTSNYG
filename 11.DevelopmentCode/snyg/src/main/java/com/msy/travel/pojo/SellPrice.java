@@ -118,6 +118,17 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 
 	private String goodsThumbPic;
 
+	// F_PRICECODE
+	private String priceCode;
+
+	public String getPriceCode() {
+		return priceCode;
+	}
+
+	public void setPriceCode(String priceCode) {
+		this.priceCode = priceCode;
+	}
+
 	public String getGoodsThumbPic() {
 		return goodsThumbPic;
 	}
