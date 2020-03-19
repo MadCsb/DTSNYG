@@ -124,4 +124,10 @@ public interface IUserService {
 	 */
 	int getUserCountFromAdd(User user) throws Exception;
 
+	/**
+	 *
+	 * 获取或新增 山东移动用户
+	 * @param sdToken 山东移动访问我方平台时附带的token
+	 */
+	User getOrCreateBySdToken(String sdToken) throws Exception;
 }

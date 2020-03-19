@@ -1,11 +1,22 @@
 package com.msy.travel.service.impl;
 
+import com.chinamobile.sd.openapi.Common;
+import com.msy.travel.common.LogicException;
+import com.msy.travel.common.MD5;
+import com.msy.travel.common.Result;
+import com.msy.travel.pojo.Destsp;
+import java.util.HashMap;
 import java.util.List;
 
+import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -193,6 +204,61 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		return u;
+	}
+
+
+	/**
+	 *
+	 * 获取或新增 山东移动用户
+	 * @param sdToken 山东移动访问我方平台时附带的token
+	 */
+	public User getOrCreateBySdToken(String sdToken) throws Exception {
+
+		//根据token获取山东移动用户唯一手机号码 msisdn
+		Map<String,String> tokenParam = new HashMap<>();
+		tokenParam.put("token",sdToken);
+		Result tokenResult = Common.getUserByToken(tokenParam);
+		if (!"0".equals(tokenResult))
+		{
+			throw new LogicException(tokenResult.getResultMsg());
+		}
+		//用户手机号码密文.手机号码经过AES加密后的结果,密钥为接口签名秘钥secret经md5转换后的值(大写)
+		String msisdn = tokenResult.getResultPojo().toString();
+
+		User user = new User();
+		user.setUserLoginName(msisdn);
+		user.setType(User.USER_TYPE_SDMOBILE);
+		List<User> userList = userDao.queryUserListByLogin(user);
+
+		if (userList.size() != 0)
+		{
+			return userList.get(0);
+		}else
+		{
+			User userDb = new User();
+			userDb.setUserId(PrimaryKeyUtil.generateKey());
+			userDb.setUserLoginName(msisdn);
+			userDb.setUserName(msisdn);
+			String userPwd = null;
+			if(msisdn.length()>6)
+			{
+				userPwd = msisdn.substring(0,6);
+			}else
+			{
+				userPwd = "123456";
+			}
+			userDb.setUserPwd(MD5.encode(userPwd));
+			userDb.setUserRegDate(DateTimeUtil.getDateTime19());
+			userDb.setUserState("1");
+			userDb.setUserLocked("0");
+			userDb.setUserRoleType(null);
+			userDb.setAccId(Destsp.currentSpId);
+			userDb.setUnitId(Destsp.currentSpId);
+			userDb.setType(User.USER_TYPE_SDMOBILE);
+			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
+			userService.createUser(userDb);
+			return userDb;
+		}
 	}
 
 	/**

@@ -354,6 +354,10 @@
 			<if test="userLoginName!=null and userLoginName!='' ">
 			AND u.F_USER_LOGINNAME = #{userLoginName} AND LENGTH(u.F_USER_LOGINNAME) = LENGTH(#{userLoginName})
 			</if>
+			<if test="type!=null and type!='' ">
+				AND u.F_TYPE  = #{type}
+			</if>
+
 		</where>
 	</select>
 	

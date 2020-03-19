@@ -15,6 +15,22 @@ public class User extends BaseEntity implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -4597847906506203439L;
 	// columns START
+
+	/**
+	 * 用户类型 微信 0
+	 */
+	public static final String USER_TYPE_WEIXIN = "0";
+
+	/**
+	 * 用户类型 PC 1
+	 */
+	public static final String USER_TYPE_PC = "1";
+
+	/**
+	 * 用户类型 山东移动 2
+	 */
+	public static final String USER_TYPE_SDMOBILE = "2";
+
 	/**
 	 * 用户ID db_column: F_USER_ID
 	 */

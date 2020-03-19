@@ -146,6 +146,9 @@
 			<if test="priceId !=null and priceId !=''">
 		    	and t.F_PRICEID = #{priceId}
 		    </if>
+				<if test="priceCode !=null and priceCode !=''">
+					and t.F_PRICECODE = #{priceCode} AND  LENGTH(t.F_PRICECODE) = LENGTH(#{priceCode})
+				</if>
 		    <if test="goodsPriceId !=null and goodsPriceId !=''">
 		    	and t.F_GOODSPRICEID = #{goodsPriceId}
 		    </if>

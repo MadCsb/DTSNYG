@@ -263,20 +263,26 @@ public class HttpClientTool {
 	 * @param httpPost
 	 * @return null:未请求成功,字符串：请求结果body
 	 */
-	public static String doHttpPost(HttpPost httpPost) {
-		String result = null;
+	public static Result doHttpPost(HttpPost httpPost) {
+		Result result = new Result();
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse httpResponse = null;
 		try {
 			httpResponse = httpClient.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				result = EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
+				String resultStr = EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
 				EntityUtils.consume(httpResponse.getEntity());
+				result.setResultCode("0");
+				result.setResultMsg(resultStr);
 			} else {
 				log.error(httpPost.getURI().toString() + ":" + httpResponse.getStatusLine().getStatusCode() + ":" + httpResponse.getStatusLine().getReasonPhrase());
+				result.setResultCode("1");
+				result.setResultMsg("Http Post StatusCode is " + httpResponse.getStatusLine().getStatusCode());
 			}
 		} catch (IOException e) {
 			log.error(e);
+			result.setResultCode("1");
+			result.setResultMsg("Http Post IOException");
 		} finally {
 			try {
 				if (httpResponse != null) {
@@ -284,6 +290,8 @@ public class HttpClientTool {
 				}
 			} catch (IOException e) {
 				log.error("httpResponse.close false:" + e.getMessage());
+				result.setResultCode("1");
+				result.setResultMsg("Http Post httpResponse.close false");
 			}
 			try {
 				if (httpClient != null) {
@@ -291,6 +299,8 @@ public class HttpClientTool {
 				}
 			} catch (IOException e) {
 				log.error("httpClient.close false:" + e.getMessage());
+				result.setResultCode("1");
+				result.setResultMsg("Http Post httpClient.close false");
 			}
 		}
 		return result;
