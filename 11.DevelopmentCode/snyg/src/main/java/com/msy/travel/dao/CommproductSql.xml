@@ -328,7 +328,8 @@
 			sub.F_SUBJECT as subjectName,
 			p.F_TYPENAME as typeName,
 			p.F_PICURL as typeUrl,
-			t.F_REFERENCEPRICE as referencePrice
+			t.F_REFERENCEPRICE as referencePrice,
+			s.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice s
 		left join t_sm_commproduct t on s.F_PRODUCTID = t.F_PRODUCTID

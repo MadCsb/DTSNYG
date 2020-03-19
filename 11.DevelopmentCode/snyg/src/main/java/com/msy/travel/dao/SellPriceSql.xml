@@ -136,7 +136,8 @@
 			g.F_THUMBPIC as thumbPic ,
 			g.F_FREIGHT as freight,
 			g.F_COMPANYEXPRESSID as companyExpressId,
-			g.F_THUMBPIC as goodsThumbPic
+			g.F_THUMBPIC as goodsThumbPic,
+			t.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g on t.F_GOODSPRICEID = g.F_GOODSPRICEID
@@ -182,7 +183,8 @@
 			g.F_COMPANYEXPRESSID as companyExpressId,
 			g.F_GOODSPRICEID as goodsPriceId,
 			p.F_PRODUCTID as productId,
-			g.F_THUMBPIC as goodsThumbPic
+			g.F_THUMBPIC as goodsThumbPic,
+			s.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
@@ -264,7 +266,8 @@
 			t.F_UPDATETIME as updateTime ,
 			g.F_FREIGHT as freight,
 			g.F_COMPANYEXPRESSID as companyExpressId,
-			g.F_THUMBPIC as goodsThumbPic
+			g.F_THUMBPIC as goodsThumbPic,
+			t.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice t
 		LEFT JOIN t_sm_goodsprice g ON t.F_GOODSPRICEID = g.F_GOODSPRICEID
@@ -375,7 +378,8 @@
 			g.F_FREIGHT as freight,
 			g.F_COMPANYEXPRESSID as companyExpressId,
 			g.F_GOODSPRICEID as goodsPriceId,
-			g.F_THUMBPIC as goodsThumbPic
+			g.F_THUMBPIC as goodsThumbPic,
+			s.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
@@ -455,7 +459,8 @@
 			g.F_COMPANYEXPRESSID as companyExpressId,
 			g.F_GOODSPRICEID as goodsPriceId,
 			IFNULL(orderTemp.F_NUM,0)+IFNULL(p.F_SALENUM,0) as saleNum,
-			g.F_THUMBPIC as goodsThumbPic
+			g.F_THUMBPIC as goodsThumbPic,
+			s.F_PRICECODE as priceCode
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
