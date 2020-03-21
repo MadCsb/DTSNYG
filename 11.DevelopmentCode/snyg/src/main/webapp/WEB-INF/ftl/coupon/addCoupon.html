@@ -9,15 +9,17 @@
 	</div>
 		<form action="coupon?method=add" method="post" id="createCoupon">
 			<input name="status" type="hidden" id="status" size="40" />
+			<input name="couponId" type="hidden" id="couponId" size="40" value="${couponId!''}"/>
+			
 			<!--编辑区-->
 			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td width="15%" class="tdright"><b><font class="f2">*</font>优惠券名称：</b></td>
+					<td width="13%" class="tdright"><b><font class="f2">*</font>优惠券名称：</b></td>
 					<td width="35%"><input name="name" type="text" class="validate[required,maxSize[100]] data-inputtxt" 
 						id="productName" size="40" />
 					</td>
-					<td width="12%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
-					<td width="43%">
+					<td width="15%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
+					<td width="50%">
 						<label><input name="optainType" id="optainType0" type="radio" value="0"  hidden/><label for="optainType0" class="radiock"></label>商品页领取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	           			<label><input name="optainType" id="optainType1" type="radio" value="1" checked hidden/><label for="optainType1" class="radiock"></label>活动页领取</label>
 					</td>
@@ -96,9 +98,9 @@
 				<tr >
 					<td class="tdright"><b><span class="f2"><b>*</b></span>使用范围：</b></td>
 					<td  colspan="3" style="line-height:47px;">
-						<input name="couponType" onclick="couponTypeChange('1')" type="radio" value="1" checked>全部商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	              		<input name="couponType" onclick="couponTypeChange('2')" type="radio" value="2">指定商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	              		<input name="couponType" onclick="couponTypeChange('3')" type="radio" value="3">指定活动
+	              		<label><input name="couponType" id="couponType1" onclick="couponTypeChange('1')" type="radio" value="1" checked hidden><label for="couponType1" class="radiock"></label>全部商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	              		<label><input name="couponType" id="couponType2" onclick="couponTypeChange('2')" type="radio" value="2" hidden><label for="couponType2" class="radiock"></label>指定商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	              		<label><input name="couponType" id="couponType3" onclick="couponTypeChange('3')" type="radio" value="3" hidden><label for="couponType3" class="radiock"></label>指定活动&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 					</td>
 				</tr>
 				<tr id="couponType2Td" style="display:none;">
@@ -116,6 +118,12 @@
 								<th width="10%">操作</th>  
 							</tr>
 						</table>
+					</td>
+				</tr>
+				<tr id="couponType3Td" style="display:none;">
+					<td class="tdright"><b><font class="f2">*</font>活动类型：</b></td>
+					<td colspan="3">
+						
 					</td>
 				</tr>
 			</table>
@@ -185,8 +193,8 @@ function beforeSubmit(type){
 		
 		var couponType = $("input[name='couponType']:checked").val();
 		if(couponType == "2"){
-			var productionIdList = $("#productionIdList").val();
-			if(productionIdList==""){
+			var commproductIdList = $("#commproductIdList").val();
+			if(commproductIdList==""){
 				art.dialog.alert("请选择指定商品");
 				return ;
 			}
@@ -194,7 +202,7 @@ function beforeSubmit(type){
 			
 		if(checkDate()){
 			if(couponType == "1"){
-				$("#productionIdList").val("");	
+				$("#commproductIdList").val("");	
 			}
 			$("#status").val(type);
 			$("#createCoupon").submit();
@@ -258,10 +266,13 @@ function checkDate(){
 }
 
 function couponTypeChange(type){
-	if(type=="1"){
-		$("#couponType2Td").hide();
-	}else{
+
+	$("#couponType2Td").hide();
+	$("#couponType3Td").hide();
+	if(type=="2"){
 		$("#couponType2Td").show();
+	}else if(type=="3"){
+		$("#couponType3Td").show();
 	}
 }
 
@@ -292,6 +303,21 @@ function changeobtainDateType(){
 		$("#obtainDateTypeSpan3").show();
 		$("#obtainDateSpan").removeAttr("disabled");
 	}
+}
+
+function choosePdc(){
+	
+	var content = "commproduct.do?method=queryForCoupon&checkPdc=0&couponId="+$("#couponId").val();
+	parent.layer.open({
+		type : 2,
+		title : '选择商品',
+		area : [ '1320px', '600px' ],
+		fix : true,
+		content :content,
+		end: function(){
+			$("#queryFrm").submit();
+		}
+	});
 }
 </script>
 </html>

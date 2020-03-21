@@ -21,7 +21,8 @@
 			F_OBTAINTIME ,
 			F_STATUS ,
 			F_ORDERID ,
-			F_DELFLAG 
+			F_DELFLAG ,
+			F_PCOUPONID
 		) VALUES (
 			#{customerCouponId} ,
 			#{customerCode} ,
@@ -35,7 +36,8 @@
 			#{obtainTime} ,
 			#{status} ,
 			#{orderId} ,
-			#{delFlag} 
+			#{delFlag} ,
+			#{pcouponId} 
 		)
 	</insert>
 
@@ -56,7 +58,8 @@
 			F_OBTAINTIME ,
 			F_STATUS ,
 			F_ORDERID ,
-			F_DELFLAG 
+			F_DELFLAG ,
+			F_PCOUPONID
 		) VALUES (
 			#{customerCouponId} ,
 			#{customerCode} ,
@@ -70,7 +73,8 @@
 			#{obtainTime} ,
 			#{status} ,
 			#{orderId} ,
-			#{delFlag} 
+			#{delFlag} ,
+			#{pcouponId} 
 		)
 	</insert>
 
@@ -90,7 +94,8 @@
 			F_OBTAINTIME = #{obtainTime} ,
 			F_STATUS = #{status} ,
 			F_ORDERID = #{orderId} ,
-			F_DELFLAG = #{delFlag} 
+			F_DELFLAG = #{delFlag} ,
+			F_PCOUPONID = #{pcouponId}
 		<where>
 			F_CUSTOMERCOUPONID = #{customerCouponId} 
 			
@@ -131,7 +136,8 @@
 			t.F_OBTAINTIME as obtainTime ,
 			t.F_STATUS as status ,
 			t.F_ORDERID as orderId ,
-			t.F_DELFLAG as delFlag 
+			t.F_DELFLAG as delFlag ,
+			t.F_PCOUPONID as pcouponId
 		FROM
 			t_sm_customercoupon t
 		<where>
@@ -154,7 +160,8 @@
 			t.F_OBTAINTIME as obtainTime ,
 			t.F_STATUS as status ,
 			t.F_ORDERID as orderId ,
-			t.F_DELFLAG as delFlag 
+			t.F_DELFLAG as delFlag ,
+			t.F_PCOUPONID as pcouponId
 		FROM
 		t_sm_customercoupon t
 		<where>

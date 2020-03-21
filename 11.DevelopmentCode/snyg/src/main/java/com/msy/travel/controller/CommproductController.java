@@ -31,15 +31,20 @@ import com.msy.travel.common.UploadFileCom;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Company;
+import com.msy.travel.pojo.CouponCommproduct;
 import com.msy.travel.pojo.GoodsPrice;
 import com.msy.travel.pojo.PdcType;
 import com.msy.travel.pojo.RsPic;
+import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.Subject;
+import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
+import com.msy.travel.service.CouponCommproductService;
 import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IRsPicService;
 import com.msy.travel.service.PdcTypeService;
+import com.msy.travel.service.SaleTypeService;
 import com.msy.travel.service.SubjectService;
 
 @Controller
@@ -68,6 +73,12 @@ public class CommproductController extends BaseController {
 
 	@Resource(name = "subjectServiceImpl")
 	private SubjectService subjectService;
+
+	@Resource(name = "saleTypeServiceImpl")
+	private SaleTypeService saleTypeService;
+
+	@Resource(name = "couponCommproductServiceImpl")
+	private CouponCommproductService couponCommproductService;
 
 	/**
 	 * 跳转到新增页面
@@ -458,4 +469,91 @@ public class CommproductController extends BaseController {
 		}
 	}
 
+	/**
+	 * 查找优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月21日 下午1:27:18
+	 * @param commproduct
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryForCoupon")
+	public ModelAndView queryForCoupon(Commproduct commproduct, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			User u = getLoginUser(request);
+			if (commproduct.getEntityPage() == null) {
+				commproduct.setEntityPage(new EntityPage());
+			}
+
+			if (commproduct.getEntityPage().getSortField() == null || commproduct.getEntityPage().getSortField().equals("")) {
+
+				commproduct.getEntityPage().setSortField("t.F_SORTNUM");
+				commproduct.getEntityPage().setSortOrder("ASC");
+			}
+
+			commproduct.setDelFlag("0");
+			commproduct.setSpId(u.getAccId());
+
+			if (commproduct.getCheckPdc().equals("0")) {
+				// 设置分页
+				PageHelper.startPage(super.getPageNum(commproduct.getEntityPage()), super.getPageSize(commproduct.getEntityPage()));
+				List<Commproduct> productionlist = commproductService.queryCommproductList(commproduct);
+				PageInfo<Commproduct> pageInfo = new PageInfo<Commproduct>(productionlist);
+
+				String productionIdList = "";
+				if (commproduct.getCommproductIdList() != null && commproduct.getCommproductIdList().size() > 0) {
+					for (int i = 0; i < commproduct.getCommproductIdList().size(); i++) {
+						if (!productionIdList.equals("")) {
+							productionIdList += ",";
+						}
+						productionIdList += commproduct.getCommproductIdList().get(i);
+					}
+				}
+
+				CouponCommproduct cc = new CouponCommproduct();
+				cc.setCouponId(commproduct.getCouponId());
+				List<CouponCommproduct> couponCommproductList = couponCommproductService.queryCouponCommproductList(cc);
+
+				view = new ModelAndView("commproduct/queryCommproductForCoupon");
+
+				view.addObject("productionIdList", productionIdList);
+				view.addObject("productionlist", productionlist);
+				view.addObject("pageInfo", pageInfo);
+				view.addObject("couponCommSize", couponCommproductList == null || couponCommproductList.size() == 0 ? 0 : couponCommproductList.size());
+			} else if (commproduct.getCheckPdc().equals("1")) {
+				view = new ModelAndView("commproduct/queryCommproductForCouponCheck");
+
+				List<Commproduct> productionlist = new ArrayList<Commproduct>();
+
+				// 设置分页
+				PageHelper.startPage(super.getPageNum(commproduct.getEntityPage()), super.getPageSize(commproduct.getEntityPage()));
+				productionlist = commproductService.queryCommproductListForCouponCheck(commproduct);
+
+				PageInfo<Commproduct> pageInfo = new PageInfo<Commproduct>(productionlist);
+				view.addObject("pageInfo", pageInfo);
+				view.addObject("productionlist", productionlist);
+
+			}
+
+			SaleType saleType = new SaleType();
+			saleType.setSpId(u.getAccId());
+			saleType.setStatus("0");
+			saleType.setEntityPage(new EntityPage());
+			saleType.getEntityPage().setSortField("t.F_SALETYPEKEY asc");
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
+
+			view.addObject("entityPage", commproduct.getEntityPage());
+			view.addObject("commproduct", commproduct);
+			view.addObject("saleTypeList", saleTypeList);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
 }

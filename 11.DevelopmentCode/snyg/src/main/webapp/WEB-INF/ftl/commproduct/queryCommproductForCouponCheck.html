@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("productionId");
+		document.getElementById("checkedProductionIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<div class="tab-nav">
+         <ul class="nav"> 
+             <li><a href="javascript:void(0)" onclick="allPdc()" >可选商品</a></li> 
+             <li><a href="javascript:void(0)" id="pdcCheckInfo" class="active">已选商品(${productionlist?size})</a></li> 
+         </ul> 
+         <div style="clear:both;"></div>
+    </div>
+	<form id="queryFrm" action="commproduct?method=queryForCoupon"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="checkPdc" name="checkPdc"  value="1" />
+		<input type="hidden" id="couponId" name="couponId" value="${commproduct.couponId!''}" />
+<div class="cont-div">
+		<div class="waybill-title">
+		  	<div align="left">
+  				<input type="button" class="cbtn1" value="删除" onclick="deletePdc()" />
+		    </div>
+		  </div>
+<#if productionlist?? && (productionlist?size>0)> 
+<div style="height:290px;overflow:auto;">
+<#else>
+<div>
+</#if>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="4%" style="text-align:center"><input type="checkbox" id="allcheck" onclick="allCheck(this)"></th>
+				<th width="12%">商品编号</th>
+				<th width="30%">商品名称</th>
+				<th width="13%">商家名称</th> 
+				<th width="5%">商品状态</th>
+				<th width="23%">选择范围</th>
+			</tr>
+
+			<#list productionlist as li>
+			<tr>
+				<td align="center">
+					<input type="checkbox" name="delId" class="delIdProductId" value="${li.productId!''}"></td>  
+					<td>
+						${li.productCode!''}
+					</td>
+					<td>
+						${li.productName!''}
+					</td>
+					<td>
+						${li.venName!''}
+					</td> 
+					<td>
+						<#if li.state?? && li.state=='0'>
+		                                                     下架
+		                <#elseif li.state?? && li.state=='1'>
+		                                                     上架
+		                </#if>
+					</td> 
+					<td>
+						<#list saleTypeList as s>
+						<#if s.saleTypeKey=='0'>
+						<#if li.isCommon == '0'>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>
+						<#else>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" checked="checked" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>											
+						</#if>
+						</#if>
+						
+						<#if s.saleTypeKey=='1'>
+						<#if li.isGroupPro == '0'>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>
+						<#else>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" checked="checked" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>											
+						</#if>
+						</#if>
+						
+						<#if s.saleTypeKey=='2'>
+						<#if li.isSeckill == '0'>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>
+						<#else>
+							<label><input class="saleType${li.productId!''}" id="saleType${s_index}" type="checkbox" checked="checked" value="${s.saleTypeKey!''}"  hidden onchange="changeSaleType(this,'${li.productId!''}')"/><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>											
+						</#if>
+						</#if>
+
+						</#list>
+					</td> 
+			</tr>
+			</#list>
+		</table>
+</div>
+		<span id="pagination">
+		<#if productionlist?? && (productionlist?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+		</span>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+</div>
+	</form>
+	<div class="footerbtn">   
+		<input name="button3" onclick="beforeSubmit();" type="button" class="add-new" id="button3" value="确定">
+		<input name="button4" type="button" onclick="cancel()" class="cbtn2" id="button4" value="取消">
+	</div>
+	<form action="production?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedProductionIds"
+			id="checkedProductionIds">
+	</form>
+<script>
+function cancel(){
+	$.post("couponCommproduct?method=deleteCouponCommproductTemp",{
+		couponId:$("#couponId").val()
+	},function(data){
+		parent.layer.closeAll();
+	},'json');
+}
+
+//选择活动类型
+function changeSaleType(obj,productId){
+	var checkSaleType = false;
+	$(".saleType"+productId).each(function(i){
+		if($(this).attr("checked")){
+			checkSaleType = true;
+		}
+	});
+	if(!checkSaleType){
+		$(obj).attr("checked",true);
+		parent.layer.alert("至少一个活动范围")
+	}else{
+		$("#check"+productId).attr("checked",true);
+	}
+	setArrayStr();
+}
+
+//设置选中条数
+function setArrayStr(){
+	$("#pdcCheckInfo").html("已选商品("+$("input[name=delId]").length+")");
+}
+
+//删除
+function deletePdc(){
+	var checkStr = "";
+	
+	$("input[name=delId]:checked").each(function(i) {
+		if(checkStr!="")
+			checkStr+=",";
+		
+		checkStr+= $(this).val();
+	});
+	if(checkStr!=""){
+		layer.load(2,{shade: [0.2, '#000']});
+		$.post("couponCommproduct?method=createOrUpdateCouponCommproduct",{
+			couponId:$("#couponId").val(),
+			useCouponPdcIdString:checkStr,
+			deleteOrUpdate:"delete"
+		},function(data){
+			if(data.resultCode=='0'){
+				$("#queryFrm").submit();
+			}
+			layer.closeAll('loading'); 
+		},'json');
+	}
+	
+}
+//设置选中
+function setArrayList(){
+	$("input[name=delId]").each(function(i) {
+		var pdcId = $(this).val();
+		
+		if(checkStr!="") checkStr+=",";
+		checkStr+=pdcId;
+
+		var checkObj = new Object();
+		checkObj.productId = pdcId;
+		
+		var saleTypeKeyString = "";
+		
+		$(".saleType"+pdcId).each(function(i){
+			if(saleTypeKeyString!=""){
+				saleTypeKeyString+=",";
+			}
+			if($(this).attr("checked")){
+				saleTypeKeyString+="1";
+			}else{
+				saleTypeKeyString+="0";
+			}
+		});
+	})
+
+	art.dialog.data("checkArray",checkArray);
+}
+
+//切换全选
+function allPdc(){
+	var url = "commproduct.do?method=queryForCoupon&checkPdc=0&couponId="+$("#couponId").val();
+	window.location.href=url;
+}
+</script>
+</body>
+</html>

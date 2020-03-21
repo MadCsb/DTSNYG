@@ -11,7 +11,6 @@
 		(
 			F_SALETYPEID ,
 			F_SPID ,
-			F_VENID ,
 			F_SALETYPENAME ,
 			F_STATUS ,
 			F_SALETYPEKEY ,
@@ -19,7 +18,6 @@
 		) VALUES (
 			#{saleTypeId} ,
 			#{spId} ,
-			#{venId} ,
 			#{saleTypeName} ,
 			#{status} ,
 			#{saleTypeKey} ,
@@ -34,7 +32,6 @@
 		(
 			F_SALETYPEID ,
 			F_SPID ,
-			F_VENID ,
 			F_SALETYPENAME ,
 			F_STATUS ,
 			F_SALETYPEKEY ,
@@ -42,7 +39,6 @@
 		) VALUES (
 			#{saleTypeId} ,
 			#{spId} ,
-			#{venId} ,
 			#{saleTypeName} ,
 			#{status} ,
 			#{saleTypeKey} ,
@@ -56,7 +52,6 @@
 			t_sm_saletype 
 		SET
 			F_SPID = #{spId} ,
-			F_VENID = #{venId} ,
 			F_SALETYPENAME = #{saleTypeName} ,
 			F_STATUS = #{status} ,
 			F_SALETYPEKEY = #{saleTypeKey} ,
@@ -91,7 +86,6 @@
 		SELECT
 			t.F_SALETYPEID as saleTypeId ,
 			t.F_SPID as spId ,
-			t.F_VENID as venId ,
 			t.F_SALETYPENAME as saleTypeName ,
 			t.F_STATUS as status ,
 			t.F_SALETYPEKEY as saleTypeKey ,
@@ -108,7 +102,6 @@
 		SELECT
 			t.F_SALETYPEID as saleTypeId ,
 			t.F_SPID as spId ,
-			t.F_VENID as venId ,
 			t.F_SALETYPENAME as saleTypeName ,
 			t.F_STATUS as status ,
 			t.F_SALETYPEKEY as saleTypeKey ,

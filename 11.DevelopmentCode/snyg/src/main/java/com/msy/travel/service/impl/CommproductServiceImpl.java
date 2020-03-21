@@ -251,4 +251,18 @@ public class CommproductServiceImpl implements CommproductService {
 	public List<Commproduct> queryCommproductListAndPriceId(Commproduct commproduct) throws Exception {
 		return commproductDao.queryCommproductListAndPriceId(commproduct);
 	}
+
+	/**
+	 * 优惠券已选择的商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月21日 下午9:43:43
+	 * @param commproduct
+	 * @return
+	 * @throws Exception
+	 * @return List<Commproduct>
+	 */
+	public List<Commproduct> queryCommproductListForCouponCheck(Commproduct commproduct) throws Exception {
+		return commproductDao.queryCommproductListForCouponCheck(commproduct);
+	}
 }

@@ -22,6 +22,7 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
+import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.service.CouponService;
 
@@ -40,7 +41,14 @@ public class CouponController extends BaseController {
 	@RequestMapping(params = "method=toAdd")
 	public ModelAndView toAddCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
-		view = new ModelAndView("coupon/addCoupon");
+		try {
+			view = new ModelAndView("coupon/addCoupon");
+			view.addObject("couponId", PrimaryKeyUtil.generateKey());
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
 		return view;
 	}
 

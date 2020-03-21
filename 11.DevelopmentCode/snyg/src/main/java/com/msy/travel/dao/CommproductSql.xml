@@ -278,6 +278,15 @@
 			    	and t.F_SORTNUM is not null
 			    </if>
 		    </if>
+		    <if test='checkPdc!=null and checkPdc=="0" and couponId !=null and couponId!=""'>
+				and t.F_PRODUCTID not in (select cm.F_USECOUPONPDCID from t_sm_couponcommproduct cm where cm.F_COUPONID=#{couponId})
+		     </if>
+		     <if test='checkPdc!=null and checkPdc=="1" and couponId !=null and couponId!=""'>
+			    and t.F_PRODUCTID in (select cm.F_USECOUPONPDCID from t_sm_couponcommproduct cm where cm.F_COUPONID=#{couponId})
+		     </if>
+		     <if test='checkPdc!=null and checkPdc=="2"'>
+				
+		     </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
@@ -409,6 +418,89 @@
 			    </if>
 			    <if test='isSortNum =="0"'>
 			    	and t.F_SORTNUM is null
+			    </if>
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+	<!-- 已选择优惠券的商品 -->
+	<select id="queryCommproductListForCouponCheck" parameterType="commproduct" resultType="commproduct">
+		SELECT
+			t.F_PRODUCTID as productId ,
+			t.F_SPID as spId ,
+			t.F_VENID as venId ,
+			t.F_VENNAME as venName ,
+			t.F_PRODUCTNAME as productName ,
+			t.F_PRODUCTINFO as productInfo ,
+			t.F_FEEMEMO as feeMemo ,
+			t.F_TIGINFO as tigInfo ,
+			t.F_STATE as state ,
+			t.F_THUMBPIC as thumbPic ,
+			t.F_REORDER as reorder ,
+			t.F_SUBJECT as subject ,
+			t.F_SALENUM as saleNum ,
+			t.F_CREATORUID as creatorUid ,
+			t.F_CREATOR as creator ,
+			t.F_CREATETIME as createrTime ,
+			t.F_UPDATETIME as updateTime ,
+			t.F_UPDATERUID as updaterUid ,
+			t.F_UPDATER as updater ,
+			t.F_DELFLAG as delFlag ,
+			t.F_RECOMMEND as recommend ,
+			t.F_TYPE as type ,
+			t.F_SUBTYPE as subType,
+			t.F_PRODUCTCODE as productCode,
+			t.F_SORTNUM as sortNum,
+			t.F_REFERENCEPRICE as referencePrice,
+			c.F_ISGROUPPRO as isGroupPro ,
+			c.F_ISSECKILL as isSeckill ,
+			c.F_ISCOMMON as isCommon
+		FROM
+		t_sm_commproduct t
+		LEFT JOIN t_sm_couponcommproduct c on t.F_PRODUCTID = c.F_USECOUPONPDCID and c.F_COUPONID=#{couponId}
+		<where>
+			<if test="productId !=null and productId !=''">
+		    	and t.F_PRODUCTID = #{productId}
+		    </if>
+		    <if test="couponId !=null and couponId !=''">
+		    	and c.F_COUPONID = #{couponId}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	and t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		    <if test="productName !=null and productName !=''">
+		    	and t.F_PRODUCTNAME like concat('%',#{productName},'%')
+		    </if>
+		    <if test="productCode !=null and productCode !=''">
+		    	and t.F_PRODUCTCODE like concat('%',#{productCode},'%')
+		    </if>
+		    <if test="type !=null and type !=''">
+		    	and t.F_TYPE = #{type}
+		    </if>
+		    <if test="venId !=null and venId !=''">
+		    	and t.F_VENID = #{venId}
+		    </if>
+		    <if test="state !=null and state !=''">
+		    	and t.F_STATE = #{state}
+		    </if>
+		    <if test="isSortNum !=null and isSortNum !=''">
+		    	<if test='isSortNum ="1"'>
+			    	and t.F_SORTNUM is null
+			    </if>
+			    <if test='isSortNum ="0"'>
+			    	and t.F_SORTNUM is not null
 			    </if>
 		    </if>
 		</where>

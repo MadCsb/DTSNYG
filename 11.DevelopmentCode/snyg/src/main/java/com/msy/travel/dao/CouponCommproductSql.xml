@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.CouponCommproductDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertCouponCommproduct" parameterType="couponCommproduct">
+		INSERT INTO 
+			t_sm_couponcommproduct  
+		(
+			F_COUPONCOMMID ,
+			F_COUPONID ,
+			F_USECOUPONPDCID ,
+			F_ISCOMMON ,
+			F_ISGROUPPRO ,
+			F_ISSECKILL ,
+			F_CREATETIME,
+			F_SOURCETYPE
+		) VALUES (
+			#{couponCommId} ,
+			#{couponId} ,
+			#{useCouponPdcId} ,
+			#{isCommon} ,
+			#{isGroupPro} ,
+			#{isSeckill} ,
+			#{createTime},
+			#{sourceType}
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeCouponCommproduct" parameterType="couponCommproduct">
+		REPLACE INTO 
+			t_sm_couponcommproduct 
+		(
+			F_COUPONCOMMID ,
+			F_COUPONID ,
+			F_USECOUPONPDCID ,
+			F_ISCOMMON ,
+			F_ISGROUPPRO ,
+			F_ISSECKILL ,
+			F_CREATETIME,
+			F_SOURCETYPE
+		) VALUES (
+			#{couponCommId} ,
+			#{couponId} ,
+			#{useCouponPdcId} ,
+			#{isCommon} ,
+			#{isGroupPro} ,
+			#{isSeckill} ,
+			#{createTime},
+			#{sourceType}
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateCouponCommproduct" parameterType="couponCommproduct">
+		UPDATE
+			t_sm_couponcommproduct 
+		SET
+			F_COUPONID = #{couponId} ,
+			F_USECOUPONPDCID = #{useCouponPdcId} ,
+			F_ISCOMMON = #{isCommon} ,
+			F_ISGROUPPRO = #{isGroupPro} ,
+			F_ISSECKILL = #{isSeckill} ,
+			F_CREATETIME = #{createTime},
+			F_SOURCETYPE = #{sourceType}
+		<where>
+			F_COUPONCOMMID = #{couponCommId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteCouponCommproduct" parameterType="couponCommproduct">
+		DELETE FROM
+			t_sm_couponcommproduct 
+		<where>
+			<if test="couponCommId !=null and couponCommId !=''">
+				F_COUPONCOMMID = #{couponCommId}
+		    </if>
+		    <if test="couponId !=null and couponId !=''">
+				and F_COUPONID = #{couponId}
+		    </if>
+		    <if test="sourceType !=null and sourceType !=''">
+				and F_SOURCETYPE = #{sourceType}
+		    </if>
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchCouponCommproduct" parameterType="couponCommproduct">
+		DELETE FROM 
+			t_sm_couponcommproduct 
+		<where>
+			F_COUPONCOMMID in
+			<foreach collection="couponCommproductIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryCouponCommproduct" parameterType="String" resultType="couponCommproduct">
+		SELECT
+			t.F_COUPONCOMMID as couponCommId ,
+			t.F_COUPONID as couponId ,
+			t.F_USECOUPONPDCID as useCouponPdcId ,
+			t.F_ISCOMMON as isCommon ,
+			t.F_ISGROUPPRO as isGroupPro ,
+			t.F_ISSECKILL as isSeckill ,
+			t.F_CREATETIME as createTime,
+			t.F_SOURCETYPE as sourceType
+		FROM
+			t_sm_couponcommproduct t	 
+		<where>
+			<if test="couponCommId !=null and couponCommId !=''">
+		    	t.F_COUPONCOMMID = #{couponCommId}
+		    </if>
+			<if test="couponId !=null and couponId !=''">
+		    	and t.F_COUPONID = #{couponId}
+		    </if>
+		    <if test="useCouponPdcId !=null and useCouponPdcId !=''">
+		    	and t.F_USECOUPONPDCID = #{useCouponPdcId}
+		    </if>
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryCouponCommproductList" parameterType="couponCommproduct" resultType="couponCommproduct">
+		SELECT
+			t.F_COUPONCOMMID as couponCommId ,
+			t.F_COUPONID as couponId ,
+			t.F_USECOUPONPDCID as useCouponPdcId ,
+			t.F_ISCOMMON as isCommon ,
+			t.F_ISGROUPPRO as isGroupPro ,
+			t.F_ISSECKILL as isSeckill ,
+			t.F_CREATETIME as createTime,
+			t.F_SOURCETYPE as sourceType
+		FROM
+		t_sm_couponcommproduct t
+		<where>
+			<if test="couponCommId!=null and couponCommId!=''">
+		    	t.F_COUPONCOMMID = #{couponCommId}
+		    </if>
+			<if test="couponId !=null and couponId !=''">
+		    	and t.F_COUPONID = #{couponId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
-import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
@@ -123,7 +122,6 @@ public class CouponServiceImpl implements CouponService {
 		coupon.setCreateTime(DateTimeUtil.getDateTime19());
 		coupon.setCreatorUid(user.getUserId());
 		coupon.setCreator(user.getUserName());
-		coupon.setCouponId(PrimaryKeyUtil.generateKey());
 		coupon.setSpId(user.getAccId());
 		coupon.setDelFlag("0");
 		coupon.setCouponTag("1");

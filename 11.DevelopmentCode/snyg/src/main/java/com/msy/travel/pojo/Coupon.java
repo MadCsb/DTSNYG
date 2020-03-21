@@ -134,6 +134,7 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 	 * 首次生成优惠券ID db_column: F_PCOUPONID
 	 */
 	private String pcouponId;
+
 	// columns END
 	private List<String> couponIdList;
 
