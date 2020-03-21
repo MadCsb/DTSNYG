@@ -177,6 +177,8 @@ function checkPdcInfo(obj,pdcId){
 	},function(data){
 		if(data.resultCode=='0'){
 			$("#pdcCheckInfo").html("已选商品("+data.resultMsg+")");
+		}else{
+			parent.layer.alert(data.resultMsg);
 		}
 	},'json');
 }
@@ -239,12 +241,23 @@ function changeSaleType(obj,productId){
 	},function(data){
 		if(data.resultCode=='0'){
 			$("#pdcCheckInfo").html("已选商品("+data.resultMsg+")");
+		}else{
+			parent.layer.alert(data.resultMsg);
 		}
 	},'json');
 }
 
 function beforeSubmit(){
-	
+	$.post("couponCommproduct?method=updateCouponCommproductSourceType",{
+		couponId:$("#couponId").val(),
+		sourceType:'0'
+	},function(data){
+		if(data.resultCode=='0'){
+			parent.layer.closeAll();
+		}else{
+			parent.layer.alert(data.resultMsg);
+		}
+	},'json');
 }
 
 </script>

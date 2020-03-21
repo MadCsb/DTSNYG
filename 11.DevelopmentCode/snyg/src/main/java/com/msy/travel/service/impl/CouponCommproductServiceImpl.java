@@ -164,4 +164,16 @@ public class CouponCommproductServiceImpl implements CouponCommproductService {
 		return result;
 	}
 
+	/**
+	 * 更新sourceType 临时变更正式
+	 * 
+	 * @author wzd
+	 * @date 2020年3月21日 下午11:07:52
+	 * @param couponCommproduct
+	 * @throws Exception
+	 * @return void
+	 */
+	public void updateCouponCommproductSourceType(CouponCommproduct couponCommproduct) throws Exception {
+		couponCommproductDao.updateCouponCommproductSourceType(couponCommproduct);
+	}
 }

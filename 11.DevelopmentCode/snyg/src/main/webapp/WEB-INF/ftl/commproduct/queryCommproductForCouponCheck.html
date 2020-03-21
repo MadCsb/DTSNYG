@@ -177,6 +177,8 @@ function deletePdc(){
 		},function(data){
 			if(data.resultCode=='0'){
 				$("#queryFrm").submit();
+			}else{
+				parent.layer.alert(data.resultMsg);
 			}
 			layer.closeAll('loading'); 
 		},'json');

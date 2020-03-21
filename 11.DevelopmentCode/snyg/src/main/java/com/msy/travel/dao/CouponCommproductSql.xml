@@ -155,4 +155,15 @@
 			</if>
 		</if>
 	</select>
+	<!-- 更新数据类型 -->
+	<update id="updateCouponCommproductSourceType" parameterType="couponCommproduct">
+		UPDATE
+			t_sm_couponcommproduct 
+		SET
+			F_SOURCETYPE = #{sourceType}
+		<where>
+			F_COUPONID = #{couponId} 
+			
+		</where>
+	</update>
 </mapper>	

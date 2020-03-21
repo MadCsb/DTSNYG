@@ -230,11 +230,15 @@ public class CouponCommproductController extends BaseController {
 			result = couponCommproductService.createOrUpdateCouponCommproduct(couponCommproduct, deleteOrUpdate);
 
 		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
 			log.error(e, e);
 		}
 		try {
 			response.getWriter().print(JSONObject.fromObject(result).toString());
 		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
 			log.error(e, e);
 		}
 	}
@@ -260,11 +264,49 @@ public class CouponCommproductController extends BaseController {
 
 			result.setResultCode("0");
 		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
 			log.error(e, e);
 		}
 		try {
 			response.getWriter().print(JSONObject.fromObject(result).toString());
 		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 更新临时数据为正式数据
+	 * 
+	 * @author wzd
+	 * @date 2020年3月21日 下午10:45:15
+	 * @param couponId
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	@RequestMapping(params = "method=updateCouponCommproductSourceType")
+	public void updateCouponCommproductSourceType(String couponId, HttpServletResponse response, String deleteOrUpdate) {
+		Result result = new Result();
+		try {
+			CouponCommproduct c = new CouponCommproduct();
+			c.setCouponId(couponId);
+			c.setSourceType("1");
+			couponCommproductService.updateCouponCommproductSourceType(c);
+
+			result.setResultCode("0");
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
+			log.error(e, e);
+		}
+		try {
+			response.getWriter().print(JSONObject.fromObject(result).toString());
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
 			log.error(e, e);
 		}
 	}
