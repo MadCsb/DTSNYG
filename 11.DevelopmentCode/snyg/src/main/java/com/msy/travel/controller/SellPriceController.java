@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -453,5 +455,117 @@ public class SellPriceController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * 优惠券选择商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月22日 下午5:47:25
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryForCoupon")
+	public ModelAndView queryForCoupon(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+
+			if (sellPrice.getEntityPage().getSortField() == null || sellPrice.getEntityPage().getSortField().equals("")) {
+
+				sellPrice.getEntityPage().setSortField("p.F_SORTNUM ASC,p.F_PRODUCTNAME ASC");
+				sellPrice.getEntityPage().setSortOrder("");
+			}
+
+			sellPrice.setDelFlag("0");
+			sellPrice.setSpId(getLoginUser(request).getAccId());
+
+			if (sellPrice.getCheckPdc().equals("0")) {
+				// 设置分页
+				PageHelper.startPage(super.getPageNum(sellPrice.getEntityPage()), super.getPageSize(sellPrice.getEntityPage()));
+				List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForCoupon(sellPrice);
+				PageInfo<SellPrice> pageInfo = new PageInfo<SellPrice>(sellPriceList);
+
+				String sellPriceIdList = "";
+				if (sellPrice.getSellPriceIdList() != null && sellPrice.getSellPriceIdList().size() > 0) {
+					for (int i = 0; i < sellPrice.getSellPriceIdList().size(); i++) {
+						if (!sellPriceIdList.equals("")) {
+							sellPriceIdList += ",";
+						}
+						sellPriceIdList += sellPrice.getSellPriceIdList().get(i);
+					}
+				}
+
+				view = new ModelAndView("coupon/querySellPriceForCoupon");
+
+				view.addObject("sellPriceIdList", sellPriceIdList);
+				view.addObject("sellPriceList", sellPriceList);
+				view.addObject("pageInfo", pageInfo);
+			} else if (sellPrice.getCheckPdc().equals("1")) {
+				view = new ModelAndView("coupon/querySellPriceForCouponCheck");
+
+				List<SellPrice> sellPriceList = new ArrayList<SellPrice>();
+
+				if (sellPrice.getSellPriceIdList() != null && sellPrice.getSellPriceIdList().size() > 0) {
+					// 设置分页
+					PageHelper.startPage(super.getPageNum(sellPrice.getEntityPage()), super.getPageSize(sellPrice.getEntityPage()));
+					sellPriceList = sellPriceService.querySellPriceListForCoupon(sellPrice);
+
+				}
+				PageInfo<SellPrice> pageInfo = new PageInfo<SellPrice>(sellPriceList);
+				view.addObject("pageInfo", pageInfo);
+				view.addObject("sellPriceList", sellPriceList);
+
+			}
+
+			view.addObject("entityPage", sellPrice.getEntityPage());
+			view.addObject("sellPrice", sellPrice);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 选择的商品 回显
+	 * 
+	 * @author wzd
+	 * @date 2020年3月22日 下午8:51:31
+	 * @param sellPrice
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=queryForCouponPost")
+	public void queryForCouponPost(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+		try {
+
+			if (sellPrice.getEntityPage() == null) {
+				sellPrice.setEntityPage(new EntityPage());
+			}
+
+			if (sellPrice.getEntityPage().getSortField() == null || sellPrice.getEntityPage().getSortField().equals("")) {
+
+				sellPrice.getEntityPage().setSortField("p.F_SORTNUM ASC,p.F_PRODUCTNAME ASC");
+				sellPrice.getEntityPage().setSortOrder("");
+			}
+
+			sellPrice.setDelFlag("0");
+			sellPrice.setSpId(getLoginUser(request).getAccId());
+
+			List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForCoupon(sellPrice);
+
+			JSONArray jsonArray = JSONArray.fromObject(sellPriceList);
+			response.getWriter().print(jsonArray.toString());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
 	}
 }

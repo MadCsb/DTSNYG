@@ -235,4 +235,18 @@ public class SellPriceServiceImpl implements SellPriceService {
 	public List<SellPrice> querySellPriceListOrderByOrderCount(SellPrice sellPrice) throws Exception {
 		return sellPriceDao.querySellPriceListOrderByOrderCount(sellPrice);
 	}
+
+	/**
+	 * 优惠券选择商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月22日 下午5:57:11
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	public List<SellPrice> querySellPriceListForCoupon(SellPrice sellPrice) throws Exception {
+		return sellPriceDao.querySellPriceListForCoupon(sellPrice);
+	}
 }

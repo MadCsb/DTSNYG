@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<script type="text/javascript">
+	function deleteBatch() {
+
+		var chestr = getCheckedValues("productionId");
+		document.getElementById("checkedProductionIds").value = chestr;
+		artConfirmFun(null, myFun);
+	}
+
+	function myFun() {
+	
+		document.getElementById("deleteBatch").submit();
+	}
+</script>
+
+</head>
+<body>
+	<div class="tab-nav">
+         <ul class="nav"> 
+             <li><a href="javascript:void(0)" class="active">可选商品</a></li> 
+             <li><a href="javascript:void(0)" onclick="showCheckPdc()" id="pdcCheckInfo">已选商品(0)</a></li> 
+         </ul> 
+         <div style="clear:both;"></div>
+    </div>
+	<form id="queryFrm" action="sellPrice?method=queryForCoupon"
+		method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+		<input type="hidden" id="checkPdc" name="checkPdc" value="${sellPrice.checkPdc!''}" />
+		<input type="hidden" id="sellPriceIdString" size="600" name="sellPriceIdString" value="${sellPrice.sellPriceIdString!''}" />
+		<input type="hidden" id="sellPriceIdList" size="600" name="sellPriceIdList" value="${sellPriceIdList!''}" />
+		
+<div class="data-requry">
+	<table border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>商品名称：</td><td>
+          	<input name="productName" type="text" class="data-searchtxt" id="title" value="${sellPrice.productName!''}">
+          </td>
+          <td>商品编号：</td><td>
+          	<input name="productCode" type="text" class="data-searchtxt" id="title" value="${sellPrice.productCode!''}">
+          </td>
+          <td>是否上架：</td>
+          <td>
+          	<select name="state" id="state" class="data-searchtxt-select">
+          		<option value="">请选择</option>
+          		<#if sellPrice.state??>
+          			<#if sellPrice.state=='0'>
+		         		<option value="0" selected="selected">否</option>
+		         		<option value="1">是</option>
+		         	<#elseif sellPrice.state=='1'>
+		         		<option value="0">否</option>
+		         		<option value="1" selected="selected">是</option>
+	          		<#else>
+		         		<option value="0">否</option>
+		         		<option value="1">是</option>
+	          		</#if>
+          		<#else>
+	         		<option value="0">否</option>
+	         		<option value="1">是</option>
+          		</#if>
+			</select>
+          </td>
+          <td align="right">
+          	<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+          </td>
+        </tr>
+            
+      </table>
+</div>
+<#if sellPriceList?? && (sellPriceList?size>0)> 
+	
+<div style="height:290px;overflow:auto;">
+<#else>
+	
+<div>
+</#if>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
+			<tr>
+				<th width="5%" style="text-align:center"><input type="checkbox" id="allcheck" onclick="allCheck(this)"></th>
+				<th width="15%">商品编号</th>
+				<th width="28%">商品名称</th>
+				<th width="17%">商品规格</th>
+				<th width="10%">销售类型</th>
+				<th width="13%">商品售价(元)</th>
+				<th width="12%">商品状态</th> 
+			</tr>
+
+			<#list sellPriceList as li>
+			<tr>
+				<td>
+				<input type="checkbox" id="check${li.priceId!''}" name="delId" value="${li.priceId!''}" onclick="checkPdcInfo(this,'${li.priceId!''}')">
+				</td>
+				<td title="${li.productCode!''}">${li.productCode!''}</td> 
+				<td title="${li.productName!''}">${li.productName!''}</td> 
+				<td title="${li.priceName!''}">${li.priceName!''}</td> 
+				<td title="${li.saleTypeName!''}">${li.saleTypeName!''}</td> 
+				<td title="${li.price!''}">${li.price!''}</td> 
+				<td title="<#if li.state?? && li.state=='0'>下架<#elseif li.state?? && li.state=='1'>上架</#if>">
+				<#if li.state?? && li.state=='0'>
+                                                     下架
+                <#elseif li.state?? && li.state=='1'>
+                                                     上架
+                </#if>
+				</td> 
+			</tr>
+			</#list>
+		</table>
+</div>
+		<#if sellPriceList?? && (sellPriceList?size>0)> 
+			<#include "/pagination.html"> 
+		<#else>
+			<div id='ListIsNullMsg' style="font-size:17px;color:red">
+				<script type="text/javascript">
+					showListIsNullMsg();
+				</script>
+			</div>
+		</#if>
+
+	</form>
+	<div class="footerbtn">   
+		<input name="button3" onclick="beforeSubmit();" type="button" class="add-new" id="button3" value="确定">
+		<input name="button4" type="button" onclick="cancel()" class="cbtn2" id="button4" value="取消">
+	</div>
+	<form action="production?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedProductionIds"
+			id="checkedProductionIds">
+	</form>
+<script>
+
+	var checkArray=new Array();
+	$(function(){
+		// 从已选页面 切换到 可选页面  有值 保存已选商品pdcId 为了checkbox选中
+		var sellPriceIdString=$("#sellPriceIdString").val();
+		
+		checkArray = sellPriceIdString.split(",");
+		
+		if(checkArray.length>0&&checkArray[0]==""){
+			checkArray.splice(0,1);
+		}
+		if(checkArray.length>0&&checkArray[0]!=""){
+			$("#pdcCheckInfo").html("已选商品("+checkArray.length+")");
+			for(var i=0;i<checkArray.length;i++){
+				$(":checkbox[name='delId']").each(function(){
+					if(checkArray[i]==$(this).val()){
+						$(this).attr("checked","checked");
+					}
+				});
+			}
+		}
+		
+		// 为了防止不作选择会因为没有查询条件查询所有商品 页面打开时 附默认值
+		var sellPriceIdStringOld  = art.dialog.data("sellPriceIdStringOld");
+		art.dialog.data("sellPriceIdString",sellPriceIdStringOld);
+		
+	})
+	
+	function beforeSubmit(){
+		// 确认之前 保存 优惠券已选商品 + 本页面选择商品
+		var sellPriceIdStringOld = art.dialog.data("sellPriceIdStringOld");
+		if($("#sellPriceIdString").val()!=""){
+			if(sellPriceIdStringOld!=""){
+				sellPriceIdStringOld+=",";
+			}
+			sellPriceIdStringOld+=$("#sellPriceIdString").val();
+		}
+		art.dialog.data("sellPriceIdString",sellPriceIdStringOld);
+		parent.layer.closeAll();
+	}
+	function cancel(){
+		parent.layer.closeAll();
+	}
+	
+	
+	// 单条产品 check all nocheck
+	function checkPdcInfo(obj,pdcId){
+		// 单条商品 选中或非选中 处理
+		var checkInfo = $(obj).attr("checked");
+		if(checkInfo){
+			checkArray[checkArray.length]=pdcId;
+		}else{
+			for(var i=0;i<checkArray.length;i++){
+				if(checkArray[i]==pdcId){
+					checkArray.splice(i,1);
+				}
+			}
+		}
+		setArrayStr();
+	}
+	
+	// 全选 check all nocheck
+	function allCheck(obj){
+		var checkInfo = $(obj).attr("checked");
+		if(checkInfo){
+			for(var i=0;i<checkArray.length;i++){
+				$(":checkbox[name='delId']").each(function(){
+					if(checkArray[i]==$(this).val()){
+						checkArray.splice(i,1);
+					}
+				});
+			}
+			
+			var len = checkArray.length;
+			$(":checkbox[name='delId']").each(function(){
+				checkArray[len]=$(this).val();
+				len++;
+			});
+		}else{
+			for(var i=0;i<checkArray.length;i++){
+				$(":checkbox[name='delId']").each(function(){
+					if(checkArray[i]==$(this).val()){
+						checkArray.splice(i,1);
+					}
+				});
+			}
+			
+		}
+		setArrayStr();
+	}
+	
+	//设置
+	function setArrayStr(){
+		var checkStr = "";
+		
+		for(var i=0;i<checkArray.length;i++){
+			if(checkArray[i]!=""){
+				if(checkStr!="") checkStr+=",";
+				checkStr+=checkArray[i];
+			}
+		}
+		$("#sellPriceIdString").val(checkStr);
+
+		$("#pdcCheckInfo").html("已选商品("+checkArray.length+")");
+	}
+	
+	function showCheckPdc(){
+		var checkStr = "";
+		for(var i=0;i<checkArray.length;i++){
+			if(checkArray[i]!=""){
+				if(checkStr!="") checkStr+=",";
+				checkStr+=checkArray[i];
+			}
+		}
+		var url = "sellPrice.do?method=queryForCoupon&checkPdc=1&sellPriceIdList="+checkStr+"&sellPriceIdString="+checkStr;
+		window.location.href=url;
+	}
+</script>
+</body>
+</html>

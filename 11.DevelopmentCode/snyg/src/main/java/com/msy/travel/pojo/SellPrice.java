@@ -121,6 +121,47 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 	// F_PRICECODE
 	private String priceCode;
 
+	private String checkPdc;
+
+	private String saleTypeName;
+
+	// 优惠券 记录已选择的
+	private String sellPriceIdString;
+
+	private String couponId;
+
+	public String getSellPriceIdString() {
+		return sellPriceIdString;
+	}
+
+	public void setSellPriceIdString(String sellPriceIdString) {
+		this.sellPriceIdString = sellPriceIdString;
+	}
+
+	public String getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
+	public String getSaleTypeName() {
+		return saleTypeName;
+	}
+
+	public void setSaleTypeName(String saleTypeName) {
+		this.saleTypeName = saleTypeName;
+	}
+
+	public String getCheckPdc() {
+		return checkPdc;
+	}
+
+	public void setCheckPdc(String checkPdc) {
+		this.checkPdc = checkPdc;
+	}
+
 	public String getPriceCode() {
 		return priceCode;
 	}

@@ -9,7 +9,7 @@
 	</div>
 		<form action="coupon?method=add" method="post" id="createCoupon">
 			<input name="status" type="hidden" id="status" size="40" />
-			<input name="couponId" type="hidden" id="couponId" size="40" value="${couponId!''}"/>
+			<input name="sellPriceIdList" type="text" size="600" id="sellPriceIdList" size="40" />
 			
 			<!--编辑区-->
 			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -110,11 +110,13 @@
 						<input onclick="delMorePdc()" type="button" class="add-new" id="button4" style="margin-top:10px;margin-bottom:10px;" title="删除" value="删除">
 						<table id="checkPdcTable"  class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
 							<tr>
-								<th width="4%" style="text-align:center"><input type="checkbox" id="allcheck" onclick="allCheck(this)"></th>
-								<th width="12%">缩略图</th>
-								<th width="30%">商品名称</th>
-								<th width="20%">资源名称</th> 
-								<th width="10%">商品售价(元)</th>
+								<th width="5%" style="text-align:center"><input type="checkbox" id="allcheck" onclick="allCheck(this)"></th>
+								<th width="18%">商品编号</th>
+								<th width="28%">商品名称</th>
+								<th width="17%">商品规格</th>
+								<th width="10%">销售类型</th>
+								<th width="11%">商品售价(元)</th>
+								<th width="11%">商品状态</th> 
 								<th width="10%">操作</th>  
 							</tr>
 						</table>
@@ -141,10 +143,14 @@ $(function() {
 });
 
 function beforeSubmit(type){
+	
+	
 	if ($("#createCoupon").validationEngine('validate')) {
+		
 		// 判断每日发行量  每日发行量 ≤ 发行总量
 		var dayNum = $("#dayNum").val();
 		var totalNum  = $("#totalNum").val();
+		
 		if((dayNum*1)>(totalNum*1)){
 			parent.layer.alert("每日发行量不能大于发行总量");
 			return ;
@@ -180,29 +186,29 @@ function beforeSubmit(type){
 			var useLimit = $("#useLimit").val();
 			
 			if((discount*1)>(useLimit * 0.8)){
-				art.dialog.alert("抵扣金额不能大于满足金额的80%");
+				parent.layer.alert("抵扣金额不能大于满足金额的80%");
 				return ;
 			}
 		}else if(useType=="2"){
 			var discount = $("#discount").val();
 			if(discount * 1 >= 1){
-				art.dialog.alert("折扣请填入0-1之间的小数，保留两位小数");
+				parent.layer.alert("折扣请填入0-1之间的小数，保留两位小数");
 				return ;
 			}
 		}
 		
 		var couponType = $("input[name='couponType']:checked").val();
 		if(couponType == "2"){
-			var commproductIdList = $("#commproductIdList").val();
-			if(commproductIdList==""){
-				art.dialog.alert("请选择指定商品");
+			var sellPriceIdList = $("#sellPriceIdList").val();
+			if(sellPriceIdList==""){
+				parent.layer.alert("请选择指定商品");
 				return ;
 			}
 		}
 			
 		if(checkDate()){
 			if(couponType == "1"){
-				$("#commproductIdList").val("");	
+				$("#sellPriceIdList").val("");	
 			}
 			$("#status").val(type);
 			$("#createCoupon").submit();
@@ -212,112 +218,243 @@ function beforeSubmit(type){
 	}
 }
 
-function checkDate(){
-	var result = true;
-	
-	var validBegin = $("#validBegin").val(); // 券有效期开始
-	var validEnd = $("#validEnd").val(); // 券有效期结束
-	
-	var oDate1 = new Date(validBegin);
-    var oDate2 = new Date(validEnd);
-    if(oDate1.getTime() > oDate2.getTime()){
-    	art.dialog.alert("券有效期结束日期不能大于券有效期开始日期");
-    	result =  false;
-    }
-	var obtainDateType  = $("#obtainDateType").val();
-	if(obtainDateType=="1"){
-		var obtainDateBegin =$("#obtainDateBegin").val();
-		var obtainDateEnd = $("#obtainDateEnd").val();
+	//	判断日期
+	function checkDate(){
+		var result = true;
 		
-		var oDate3 = new Date(obtainDateBegin);
-	    var oDate4 = new Date(obtainDateEnd);
-	    if(oDate3.getTime() > oDate4.getTime()){
-	    	art.dialog.alert("有效时段开始日期不能大于有效时段结束日期");
+		var validBegin = $("#validBegin").val(); // 券有效期开始
+		var validEnd = $("#validEnd").val(); // 券有效期结束
+		
+		var oDate1 = new Date(validBegin);
+	    var oDate2 = new Date(validEnd);
+	    if(oDate1.getTime() > oDate2.getTime()){
+	    	parent.layer.alert("券有效期结束日期不能大于券有效期开始日期");
 	    	result =  false;
 	    }
-	    
-	    if(oDate1 > oDate3){
-	    	art.dialog.alert("有效时段开始日期不能小于券有效期开始日期");
-	    	result =  false;
-	    }
-	    
-	    if(oDate3 > oDate2){
-	    	art.dialog.alert("有效时段开始日期不能大于券有效期结束日期");
-	    	result =  false;
-	    }
-	    
-	    if(oDate1 > oDate4){
-	    	art.dialog.alert("有效时段结束日期不能小于券有效期开始日期");
-	    	result =  false;
-	    }
-	    
-	    if(oDate4 > oDate2){
-	    	art.dialog.alert("有效时段结束日期不能大于券有效期结束日期");
-	    	result =  false;
-	    }
-	}else if(obtainDateType=="2"){
-		var obtainDateSpan = $("#obtainDateSpan").val();
-		if(obtainDateSpan<1 || obtainDateSpan>90){
-			art.dialog.alert("动态时长请填入1~90之间的数字");
-	    	result =  false;
+		var obtainDateType  = $("#obtainDateType").val();
+		if(obtainDateType=="1"){
+			var obtainDateBegin =$("#obtainDateBegin").val();
+			var obtainDateEnd = $("#obtainDateEnd").val();
+			
+			var oDate3 = new Date(obtainDateBegin);
+		    var oDate4 = new Date(obtainDateEnd);
+		    if(oDate3.getTime() > oDate4.getTime()){
+		    	parent.layer.alert("有效时段开始日期不能大于有效时段结束日期");
+		    	result =  false;
+		    }
+		    
+		    if(oDate1 > oDate3){
+		    	parent.layer.alert("有效时段开始日期不能小于券有效期开始日期");
+		    	result =  false;
+		    }
+		    
+		    if(oDate3 > oDate2){
+		    	parent.layer.alert("有效时段开始日期不能大于券有效期结束日期");
+		    	result =  false;
+		    }
+		    
+		    if(oDate1 > oDate4){
+		    	parent.layer.alert("有效时段结束日期不能小于券有效期开始日期");
+		    	result =  false;
+		    }
+		    
+		    if(oDate4 > oDate2){
+		    	parent.layer.alert("有效时段结束日期不能大于券有效期结束日期");
+		    	result =  false;
+		    }
+		}else if(obtainDateType=="2"){
+			var obtainDateSpan = $("#obtainDateSpan").val();
+			if(obtainDateSpan<1 || obtainDateSpan>90){
+				parent.layer.alert("动态时长请填入1~90之间的数字");
+		    	result =  false;
+			}
+		}
+	    return result;
+	}
+
+	function changeUserType(){
+		var changeUserType = $("#useType").val();
+		if(changeUserType=="1"){
+			$("#useTypeSpan1").html("抵扣：");
+			$("#useTypeSpan2").html("减");
+			$("#useTypeSpan3").html("元");
+			$("#useTypeSpan4").html("抵扣金额不能大于满足金额的80%");
+		}else if(changeUserType=="2"){
+			$("#useTypeSpan1").html("折扣：");
+			$("#useTypeSpan2").html("打");
+			$("#useTypeSpan3").html("折");
+			$("#useTypeSpan4").html("请填入0~1之间的小数");
 		}
 	}
-    return result;
-}
-
-function couponTypeChange(type){
-
-	$("#couponType2Td").hide();
-	$("#couponType3Td").hide();
-	if(type=="2"){
-		$("#couponType2Td").show();
-	}else if(type=="3"){
-		$("#couponType3Td").show();
-	}
-}
-
-function changeUserType(){
-	var changeUserType = $("#useType").val();
-	if(changeUserType=="1"){
-		$("#useTypeSpan1").html("抵扣：");
-		$("#useTypeSpan2").html("减");
-		$("#useTypeSpan3").html("元");
-		$("#useTypeSpan4").html("抵扣金额不能大于满足金额的80%");
-	}else if(changeUserType=="2"){
-		$("#useTypeSpan1").html("折扣：");
-		$("#useTypeSpan2").html("打");
-		$("#useTypeSpan3").html("折");
-		$("#useTypeSpan4").html("请填入0~1之间的小数");
-	}
-}
-function changeobtainDateType(){
-	var obtainDateType = $("#obtainDateType").val();
-	if(obtainDateType=="1"){
-		$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>有效时段：</b>");
-		$("#obtainDateTypeSpan2").show();
-		$("#obtainDateTypeSpan3").hide();
-		$("#obtainDateSpan").attr("disabled","disabled");
-	}else if(obtainDateType=="2"){
-		$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>动态时长：</b>");
-		$("#obtainDateTypeSpan2").hide();
-		$("#obtainDateTypeSpan3").show();
-		$("#obtainDateSpan").removeAttr("disabled");
-	}
-}
-
-function choosePdc(){
 	
-	var content = "commproduct.do?method=queryForCoupon&checkPdc=0&couponId="+$("#couponId").val();
-	parent.layer.open({
-		type : 2,
-		title : '选择商品',
-		area : [ '1320px', '600px' ],
-		fix : true,
-		content :content,
-		end: function(){
-			$("#queryFrm").submit();
+	function changeobtainDateType(){
+		var obtainDateType = $("#obtainDateType").val();
+		if(obtainDateType=="1"){
+			$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>有效时段：</b>");
+			$("#obtainDateTypeSpan2").show();
+			$("#obtainDateTypeSpan3").hide();
+			$("#obtainDateSpan").attr("disabled","disabled");
+		}else if(obtainDateType=="2"){
+			$("#obtainDateTypeSpan1").html("<b><span class=\"f2\"><b>*</b></span>动态时长：</b>");
+			$("#obtainDateTypeSpan2").hide();
+			$("#obtainDateTypeSpan3").show();
+			$("#obtainDateSpan").removeAttr("disabled");
 		}
-	});
-}
+	}
+	
+	//选择商品相关 start  
+	
+	function couponTypeChange(type){
+		if(type=="1"){
+			$("#couponType2Td").hide();
+		}else{
+			$("#couponType2Td").show();
+		}
+	}
+	
+	function choosePdc(){
+		// 设置 优惠券页面已选择的商品id
+		art.dialog.data("sellPriceIdStringOld",$("#sellPriceIdList").val());
+		var content = "sellPrice.do?method=queryForCoupon&checkPdc=0&sellPriceIdList="+$("#sellPriceIdList").val();
+		parent.layer.open({
+			type : 2,
+			title : '选择商品',
+			area : [ '1320px', '600px' ],
+			fix : true,
+			content :content,
+			end: function(){
+				// 已选择的商品 + 新选择的商品
+	        	
+	        	var sellPriceIdString = art.dialog.data("sellPriceIdString");
+				
+				alert(sellPriceIdString);
+	        	getCheckPdcPost(sellPriceIdString);
+			}
+		});
+	}
+	
+	function getCheckPdcPost(sellPriceIdString){
+		if(sellPriceIdString!=""){
+			$("#sellPriceIdList").val(sellPriceIdString);
+			$.post("sellPrice.do?method=queryForCouponPost",{
+				checkPdc:1,
+				sellPriceIdList:sellPriceIdString
+			},function(data){
+				$(".checkTr").remove();
+				if(data.length>0){
+					$("#checkPdcTable").append(getDataHtml(data));
+				}
+				$("#pdcNum").html($("#checkPdcTable tr").length-1);
+			},'json')
+		}
+	}
+	
+	function getDataHtml(data){
+		var str="";
+		for(var i=0;i<data.length;i++){			
+			str+='<tr class="checkTr" id="checkPdcTr'+data[i].priceId+'">';
+			str+='<td align="center">';
+			str+='<input type="checkbox" id="check'+data[i].priceId+'" name="delId" value="'+data[i].priceId+'" onclick="checkPdcInfo(this,\''+data[i].priceId+'\')">';
+			str+='</td>';
+			str+='<td title="'+data[i].productCode+'">'+data[i].productCode+'</td>'; 
+			str+='<td title="'+data[i].productName+'">'+data[i].productName+'</td> ';
+			str+='<td title="'+data[i].priceName+'">'+data[i].priceName+'</td> ';
+			str+='<td title="'+data[i].saleTypeName+'">'+data[i].saleTypeName+'</td>'; 
+			str+='<td style="text-align:right;" title="'+data[i].price+'">'+data[i].price+'</td> ';
+			if(data[i].state=="0"){
+				str+='<td title="下架">下架</a></td>';
+			}else{
+				str+='<td title="上架">上架</a></td>';
+			}
+			str+='<td><a class="ico_btn1" title="删除" href="javascript:void(0);" onclick="delCheckPdc(\''+data[i].priceId+'\')">删除</a>';
+			str+='</td> ';
+            str+='</td> ';
+            str+='</tr>';
+		}
+		return str;
+	}
+	
+	function delCheckPdc(priceId){
+		var sellPriceIdList  = $("#sellPriceIdList").val();
+		var sellPriceIdListNew = "";
+		parent.layer.confirm("确定删除已选商品吗？", function() {
+			var checkArray = sellPriceIdList.split(",");
+			if(checkArray.length>0){
+				for(var i = 0;i<checkArray.length;i++){
+					if(checkArray[i]==pdcId){
+						checkArray.splice(i,1,"");
+						$("#checkPdcTr"+priceId).remove();
+					}else{
+						if(sellPriceIdListNew!=""){
+							sellPriceIdListNew+=",";
+						}
+						sellPriceIdListNew += checkArray[i];
+					}
+				}
+			}
+			 $("#sellPriceIdList").val(sellPriceIdListNew);
+
+			$("#pdcNum").html(sellPriceIdListNew.split(",").length);
+			parent.layer.closeAll();
+		},function(){
+			parent.layer.closeAll();
+		});
+	}
+	
+	function delMorePdc(){
+		
+		var str = "";
+		$("input:checkbox[name='delId']:checked").each(function(i) {
+			if(str!=""){
+				str+=",";
+			}
+			str+= $(this).val();
+		});
+		if(str !=""){
+			parent.layer.confirm("确定删除已选商品吗？", function() {
+
+				// 原来的pdcList
+				var checkArray  = $("#sellPriceIdList").val().split(",");
+				
+				var checkArrayDel = str.split(",");
+				// 新的pdcList
+				var sellPriceIdListNew = "";
+				if(checkArray.length>0){
+					for(var i = 0;i<checkArray.length;i++){
+						for(var j = 0;j<checkArrayDel.length;j++){
+							if(checkArray[i]==checkArrayDel[j]){
+								checkArray.splice(i,1,"");
+								$("#checkPdcTr"+checkArrayDel[j]).remove();
+								continue;
+							}
+						}
+						if(checkArray[i]!=""){
+							if(sellPriceIdListNew!=""){
+								sellPriceIdListNew+=",";
+							}
+							sellPriceIdListNew += checkArray[i];
+						}
+					}
+					
+				}
+				
+				 $("#sellPriceIdList").val(sellPriceIdListNew);
+				 if(sellPriceIdListNew==""){
+						$("#pdcNum").html(0);
+					}else{
+
+						 $("#pdcNum").html(sellPriceIdListNew.split(",").length);
+					}
+				 $("#allcheck").removeAttr("checked");
+				 parent.layer.closeAll();
+			},function(){
+				parent.layer.closeAll();
+			});
+		}else{
+			parent.layer.alert("请选择要删除的商品")
+		}		
+	}
+	
+	//选择商品相关 end  
 </script>
 </html>
