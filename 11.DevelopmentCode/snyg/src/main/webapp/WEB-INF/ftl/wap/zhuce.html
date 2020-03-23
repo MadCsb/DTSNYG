@@ -9,7 +9,8 @@
 	<script src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
 	<link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
 	<link href="${rc.contextPath}/web/css/login.css" rel="stylesheet" type="text/css">
-	<script src="${rc.contextPath}/wx/js/snyg.js"></script>
+	<script src="${rc.contextPath}/js/snyg.js"></script>
+	<script src="${rc.contextPath}/wx/js/snyg-wx.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/js/layer.js"></script>
 	<style>
 		input{-webkit-box-flex: 1;
@@ -29,7 +30,7 @@
 			<h3>帐号注册</h3>
 			<!-- tab con s -->
 			<form action="newUser" method="POST" id="zhuceform">
-
+				<input type="hidden" name="loginPage" value="${loginPage!'wap'}">
 				<!-- 输入框 -->
 				<label class="labelbox">
 					<input class="" autocomplete="off" type="text" name="userLoginName" id="userLoginName" placeholder="请输入用户名3-20位中英文、数字及_、-" value="${(user.userLoginName)!''}">

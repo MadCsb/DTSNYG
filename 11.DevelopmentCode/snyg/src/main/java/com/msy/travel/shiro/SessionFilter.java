@@ -34,6 +34,11 @@ public class SessionFilter extends AccessControlFilter {
 			return Boolean.TRUE;
 		}
 
+		// wap 端无需登录controller
+		if (url.indexOf("/wapIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1) {
+			return Boolean.TRUE;
+		}
+
 		Subject subject = getSubject(request, response);
 		Session session = subject.getSession(false);
 		if (session == null || session.getAttribute(ResourceCommon.LOGIN_USER) == null) {
@@ -54,10 +59,13 @@ public class SessionFilter extends AccessControlFilter {
 		// 先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
-		if (url.indexOf("/web") != -1) {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage=web");
-		} else {
-			WebUtils.issueRedirect(request, response, "/relogin");
+		if (url.indexOf("/"+Consts.LOGIN_PAGE_WEB) != -1) {
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_WEB);
+		} else if (url.indexOf("/"+Consts.LOGIN_PAGE_WAP) != -1)
+		{
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_WAP);
+		}	else {
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_MP);
 		}
 		// 再重定向
 
