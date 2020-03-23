@@ -18,89 +18,177 @@
 
 </head>
 <body>
-
-	<a href="coupon?method=toAdd">添加用户</a>
-	<form id="queryFrm" action="coupon?method=query"
-		method="post">
+	<form id="queryFrm" action="coupon?method=query" method="post">
        	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
 		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
 		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
-
-		<table border="1" style="width: 100%">
+		<div class="data-requry">
+		<table border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          	<td>优惠券名称：</td>
+	          	<td>
+	          		<input  name="name" type="text" class="data-searchtxt"  id="name" value="${coupon.name!''}">
+	          	</td>
+	          <td>
+	          	<select style="width:110px;" name="dateType" id="dateType" onchange="changeDateType()" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<#if coupon.dateType??>
+	          			<#if coupon.dateType=="0">
+	          				<option value="0" selected="selected">领券时间</option>
+		          			<option value="1">有效时间</option>
+	          			<#elseif coupon.dateType=="1">
+	          				<option value="0">领券时间</option>
+		          			<option value="1" selected="selected">有效时间</option>
+	          			<#else>
+	          				<option value="0">领券时间</option>
+		          			<option value="1">有效时间</option>
+	          			</#if>
+	          		<#else>
+		          		<option value="0">领券时间</option>
+		          		<option value="1">有效时间</option>
+	          		</#if>
+	          	</select>
+	          	<select style="width:110px;" name="dateTimeType" disabled="disabled" id="dateTimeType" class="data-searchtxt-select" onchange="changeDateTime111()">
+	          		<option value="">请选择</option>
+	          		<option value="0" <#if coupon.dateTimeType?? && coupon.dateTimeType=="0">selected="selected"</#if>>当天</option>
+	          		<option value="1" <#if coupon.dateTimeType?? && coupon.dateTimeType=="1">selected="selected"</#if>>当月</option>
+	          		<option value="2" <#if coupon.dateTimeType?? && coupon.dateTimeType=="2">selected="selected"</#if>>近一周</option>
+	          		<option value="3" <#if coupon.dateTimeType?? && coupon.dateTimeType=="3">selected="selected"</#if>>近一月</option>
+	          		<option value="4" <#if coupon.dateTimeType?? && coupon.dateTimeType=="4">selected="selected"</#if>>自定义</option>
+	          	</select>
+	          	<input  id="dateStart" type="text" disabled="disabled" class="data-searchtxt-time" readonly="readonly"  value="${coupon.dateStart!''}"> - 
+	          	<input  id="dateEnd" type="text"  disabled="disabled" class="data-searchtxt-time" readonly="readonly"  value="${coupon.dateEnd!''}">
+	          	<input type="hidden" value="${coupon.dateStart!''}" id="dateStartHidden">
+	          	<input type="hidden" value="${coupon.dateEnd!''}" id="dateEndHidden">
+	          </td>
+	          <td>优惠券状态：</td>
+	          <td>
+	          	<select style="width:110px;" name="status" id="status" class="data-searchtxt-select">
+	          		<option value="">请选择</option>
+	          		<option <#if coupon.status?? && coupon.status=="0"> selected="selected"</#if> value="0">草稿</option>
+	          		<option <#if coupon.status?? && coupon.status=="4"> selected="selected"</#if> value="4">待开始</option>
+	          		<option <#if coupon.status?? && coupon.status=="5"> selected="selected"</#if> value="5">进行中</option>
+	          		<option <#if coupon.status?? && coupon.status=="6"> selected="selected"</#if> value="6">已结束</option>
+	          		<option <#if coupon.status?? && coupon.status=="2"> selected="selected"</#if> value="2">已暂停</option>
+	          		<option <#if coupon.status?? && coupon.status=="3"> selected="selected"</#if> value="3">已终止</option>
+				</select>
+	          </td>
+	        </tr>
+	      </table>
+	      <input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+	      	                
+	    <div class="getMore">展开更多 ▼</div>  
+		</div>
+		<div class="cont-div">
+		<div class="waybill-title">
+		  	<div align="left">
+		  		<input name="button5" id="button5" type="button" class="cbtn1" value="新增" onClick="javascript:window.location.href='coupon?method=toAdd'">
+		    </div>
+		  </div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
 			<tr>
-				<td></td> 
-				<td>couponId</td> 
-				<td>spId</td> 
-				<td>name</td> 
-				<td>optainType</td> 
-				<td>totalNum</td> 
-				<td>dayNum</td> 
-				<td>userType</td> 
-				<td>useLimit</td> 
-				<td>discount</td> 
-				<td>obtainLimit</td> 
-				<td>dayObtainLimit</td> 
-				<td>validBegin</td> 
-				<td>validEnd</td> 
-				<td>obtainDateType</td> 
-				<td>obtainDateBegin</td> 
-				<td>obtainDateEnd</td> 
-				<td>obtainDateSpan</td> 
-				<td>couponType</td> 
-				<td>status</td> 
-				<td>createTime</td> 
-				<td>creatorUid</td> 
-				<td>creator</td> 
-				<td>updateTime</td> 
-				<td>updaterUid</td> 
-				<td>updater</td> 
-				<td>delFlag</td> 
-				<td>couponTag</td> 
-				<td>pcouponId</td> 
-				<td>操作</td>
+				<th width="19%">优惠券名称</th> 
+				<th width="8%">优惠券有效期</th> 
+				<th width="9%">优惠金额(元)</th> 
+				<th width="8%">领券日期</th> 
+				<th width="6%">剩余量</th> 
+				<th width="7%">优惠券状态</th> 
+				<th width="8%">成交用户量</th> 
+				<th width="8%">成交金额(元)</th>  
+				<th width="18%">操作</th>
 			</tr>
-
 			<#list couponlist as coupon>
 			<tr>
+			<!-- 	<td align="center">
+					<input type="checkbox" disabled="disabled" name="delId" value="${coupon.couponId!''}"></td> -->
+				<td title="${coupon.name!''}"> 
+					${coupon.name!''}
+				</td> 
+				<td  style="text-align:center" title="${coupon.validBegin!''}
+${coupon.validEnd!''}">${coupon.validBegin!''}<br/>${coupon.validEnd!''}</td> 
+				<td  style="text-align:center" title='满${coupon.useLimit!''}元
+<#if coupon.useType?? && coupon.useType=="1">减${coupon.discount!''}元<#elseif coupon.useType?? && coupon.useType=="2">打${((coupon.discount?number)*10)?string("###.#")}折</#if>' >
+					满${coupon.useLimit!''}元<br/>
+					<#if coupon.useType?? && coupon.useType=="1">
+						减${coupon.discount!''}元
+					<#elseif coupon.useType?? && coupon.useType=="2">
+						打${((coupon.discount?number)*10)?string("###.#")}折
+					</#if>
+				</td> 
+				<td  style="text-align:center" title="${coupon.obtainDateBegin!''}
+${coupon.obtainDateEnd!''}">${coupon.obtainDateBegin!''}<br/>${coupon.obtainDateEnd!''}</td> 
+				<td style="text-align:center" title="${coupon.surplus!''}">${coupon.surplus!''}</td> 
+				<td style="text-align:center" title="<#if coupon.status??><#if coupon.status == "0">草稿<#elseif coupon.status == "2">已暂停<#elseif coupon.status == "3">已终止<#elseif coupon.status == "1"><#if coupon.validBegin?date lte .now?date && .now?date lte coupon.validEnd?date>进行中<#elseif .now?string("yyyy-MM-dd") == coupon.validEnd>进行中<#elseif .now?date lt coupon.validBegin?date>待开始<#elseif coupon.validEnd?date lt .now?date>已结束</#if></#if><#else>未知</#if>">
+					<#if coupon.status??>
+						<#if coupon.status == "0">
+							草稿
+						<#elseif coupon.status == "2">
+							已暂停
+						<#elseif coupon.status == "3">
+							已终止
+						<#elseif coupon.status == "1">
+							<#if coupon.validBegin?date lte .now?date && .now?date lte coupon.validEnd?date>
+								进行中
+							<#elseif .now?string("yyyy-MM-dd") == coupon.validEnd>
+								进行中
+							<#elseif .now?date lt coupon.validBegin?date>
+								待开始
+							<#elseif coupon.validEnd?date lt .now?date>
+								已结束
+							</#if>
+						</#if>
+					<#else>
+						未知
+					</#if>
+				</td> 
+				<td title="${coupon.customerUseNum!'0'}" style="text-align:center">${coupon.customerUseNum!'0'}</td> 
+				<td title="&yen;${coupon.actualMoney!'0'}" style="text-align:center">&yen;${coupon.actualMoney!'0'}</td> 
 				<td>
-					<input type="checkbox" name="couponId" value="${coupon.couponId!''}"></td> 
-				<td>${coupon.couponId!''}</td> 
-				<td>${coupon.spId!''}</td> 
-				<td>${coupon.name!''}</td> 
-				<td>${coupon.optainType!''}</td> 
-				<td>${coupon.totalNum!''}</td> 
-				<td>${coupon.dayNum!''}</td> 
-				<td>${coupon.userType!''}</td> 
-				<td>${coupon.useLimit!''}</td> 
-				<td>${coupon.discount!''}</td> 
-				<td>${coupon.obtainLimit!''}</td> 
-				<td>${coupon.dayObtainLimit!''}</td> 
-				<td>${coupon.validBegin!''}</td> 
-				<td>${coupon.validEnd!''}</td> 
-				<td>${coupon.obtainDateType!''}</td> 
-				<td>${coupon.obtainDateBegin!''}</td> 
-				<td>${coupon.obtainDateEnd!''}</td> 
-				<td>${coupon.obtainDateSpan!''}</td> 
-				<td>${coupon.couponType!''}</td> 
-				<td>${coupon.status!''}</td> 
-				<td>${coupon.createTime!''}</td> 
-				<td>${coupon.creatorUid!''}</td> 
-				<td>${coupon.creator!''}</td> 
-				<td>${coupon.updateTime!''}</td> 
-				<td>${coupon.updaterUid!''}</td> 
-				<td>${coupon.updater!''}</td> 
-				<td>${coupon.delFlag!''}</td> 
-				<td>${coupon.couponTag!''}</td> 
-				<td>${coupon.pcouponId!''}</td> 
-				<td><a
-					href="coupon?method=toUpdate&couponId=${coupon.couponId!''}">修改</a>
-					&nbsp;&nbsp; <a
-					href="coupon?method=delete&couponId=${coupon.couponId!''}">删除</a>
+					<input type="hidden" id="couponUrl${coupon.couponId!''}" value="${tempContextUrl!''}${rc.contextPath}/wx.do?method=toLinkCoupon&couponId=${coupon.couponId!''}" >
+
+					<#if coupon.status??>
+						<#if coupon.status == "0">
+								<a href="coupon?method=toUpdate&couponId=${coupon.couponId!''}" title="编辑" class="ico_btn1">编辑</a>
+								<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+						<#elseif coupon.status == "2">
+								<a href="coupon?method=toUpdate&couponId=${coupon.couponId!''}" title="编辑" class="ico_btn1">编辑</a>
+								<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+								<a href="javascript:void(0)" onclick="changeStatus('${coupon.couponId!''}','1')" title="开始" class="ico_btn1">开始</a>
+								<a href="javascript:void(0)" onclick="changeStatus('${coupon.couponId!''}','3')" title="终止" class="ico_btn1">终止</a>
+								<a href="javascript:void(0)" onclick="copyUrl('${coupon.couponId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
+						<#elseif coupon.status == "3">
+								<a href="coupon?method=toUpdate&couponId=${coupon.couponId!''}" title="编辑" class="ico_btn1">编辑</a>
+								<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+						<#elseif coupon.status == "1">
+							<#if coupon.validBegin?date lte .now?date && .now?date lte coupon.validEnd?date>
+									<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+									<a href="javascript:void(0)"  onclick="changeStatus('${coupon.couponId!''}','3')" title="终止" class="ico_btn1">终止</a>
+									<a href="javascript:void(0)"  onclick="changeStatus('${coupon.couponId!''}','2')" title="暂停" class="ico_btn1">暂停</a>
+								<a href="javascript:void(0)" title="复制链接" onclick="copyUrl('${coupon.couponId!''}')" class="ico_btn1">复制链接</a>
+							<#elseif .now?string("yyyy-MM-dd") == coupon.validEnd>
+									<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+									<a href="javascript:void(0)"  onclick="changeStatus('${coupon.couponId!''}','3')" title="终止" class="ico_btn1">终止</a>
+									<a href="javascript:void(0)" onclick="changeStatus('${coupon.couponId!''}','2')" title="暂停" class="ico_btn1">暂停</a>
+								<a href="javascript:void(0)" title="复制链接" onclick="copyUrl('${coupon.couponId!''}')" class="ico_btn1">复制链接</a>
+							<#elseif .now?date lt coupon.validBegin?date>
+									<a href="coupon?method=toUpdate&couponId=${coupon.couponId!''}" title="编辑" class="ico_btn1">编辑</a>
+									<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+									<a href="javascript:void(0)"  onclick="changeStatus('${coupon.couponId!''}','3')" title="终止" class="ico_btn1">终止</a>
+									<a href="javascript:void(0)" onclick="changeStatus('${coupon.couponId!''}','2')" title="暂停" class="ico_btn1">暂停</a>
+								<a href="javascript:void(0)" title="复制链接"  onclick="copyUrl('${coupon.couponId!''}')" class="ico_btn1">复制链接</a>
+							<#elseif coupon.validEnd?date lt .now?date>
+									<a href="coupon?method=toUpdate&couponId=${coupon.couponId!''}" title="编辑" class="ico_btn1">编辑</a>
+									<a href="javascript:void(0)" onclick="copyCoupon('${coupon.couponId!''}')" title="复制" class="ico_btn1">复制</a>
+							</#if>
+						</#if>
+					<#else>
+						无法操作
+					</#if>
 				</td>
 			</tr>
 			</#list>
 		</table>
-		<br /> <input type="button" value="批量删除" onclick="deleteBatch();">
+		</div>
 
 		<#if couponlist?? && (couponlist?size>0)> 
 			<#include "/pagination.html"> 
@@ -118,5 +206,147 @@
 		<input type="hidden" name="checkedCouponIds"
 			id="checkedCouponIds">
 	</form>
+<script>
+$(function(){
+	var dateType = $("#dateType").val();
+	if(dateType!=""){
+		$("#dateTimeType").removeAttr("disabled");
+		$("#dateStart").removeAttr("disabled");
+		$("#dateEnd").removeAttr("disabled");
+	}else{
+		$("#dateTimeType").attr("disabled", "disabled");
+		$("#dateStart").attr("disabled", "disabled");
+		$("#dateEnd").attr("disabled", "disabled");
+	}
+	
+	
+	
+	var dateTimeType = $("#dateTimeType").val();
+	$("#dateStart").attr("disabled", "disabled");
+	$("#dateEnd").attr("disabled", "disabled");
+	if(dateTimeType=="4"){	//自定义
+		$("#dateStart").removeAttr("disabled");
+		$("#dateEnd").removeAttr("disabled");
+		$("#dateStart").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'dateEnd\\')}'})"); 
+		$("#dateEnd").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'dateStart\\')}'})");
+
+		$("#dateStartHidden").removeAttr("name");
+		$("#dateEndHidden").removeAttr("name");
+		$("#dateStart").attr("name","dateStart");
+		$("#dateEnd").attr("name","dateEnd");
+	}
+	
+	if(dateTimeType!="4"){
+		$("#dateStartHidden").attr("name","dateStart");
+		$("#dateEndHidden").attr("name","dateEnd");
+		
+		$("#dateStart").removeAttr("name");
+		$("#dateEnd").removeAttr("name");
+	}
+})
+
+function changeDateTime111(){
+	var dateTimeType = $("#dateTimeType").val();
+	$("#dateStart").attr("disabled", "disabled");
+	$("#dateEnd").attr("disabled", "disabled");
+	var date = new Date();
+	if(dateTimeType=="0"){	//当天
+		$("#dateStart").val(timeFormat(date));
+		$("#dateEnd").val(timeFormat(date));
+	}else if(dateTimeType=="1"){  //当月
+		date.setDate(1)
+		$("#dateStart").val(timeFormat(date));
+		var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+		$("#dateEnd").val(timeFormat(lastDay));
+	}else if(dateTimeType=="2"){	//近一周
+		$("#dateEnd").val(timeFormat(date));
+		date.setDate(date.getDate()-6);
+		$("#dateStart").val(timeFormat(date));
+	}else if(dateTimeType=="3"){	//近一月
+		$("#dateEnd").val(timeFormat(date));
+		date.setMonth(date.getMonth()-1);
+		date.setDate(date.getDate()+1)
+		$("#dateStart").val(timeFormat(date));
+	}else if(dateTimeType=="4"){	//自定义
+		$("#dateStart").removeAttr("disabled");
+		$("#dateEnd").removeAttr("disabled");
+		$("#dateStart").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'dateEnd\\')}'})"); 
+		$("#dateEnd").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'dateStart\\')}'})");
+		$("#dateEnd").val("");
+		$("#dateStart").val("");
+
+		$("#dateStartHidden").removeAttr("name");
+		$("#dateEndHidden").removeAttr("name");
+		$("#dateStart").attr("name","dateStart");
+		$("#dateEnd").attr("name","dateEnd");
+	}
+	
+	if(dateTimeType!="4"){
+		$("#dateStartHidden").val($("#dateStart").val());
+		$("#dateEndHidden").val($("#dateEnd").val());
+		$("#dateStartHidden").attr("name","dateStart");
+		$("#dateEndHidden").attr("name","dateEnd");
+		
+		$("#dateStart").removeAttr("name");
+		$("#dateEnd").removeAttr("name");
+	}
+}
+
+
+function timeFormat(date) {
+     var y = date.getFullYear(); //年
+     var m = date.getMonth() + 1; //月
+     if (m >= 1 && m <= 9) {
+         m = "0" + m;
+     }
+     var d = date.getDate(); //日
+     if (d >= 1 && d <= 9) {
+         d = "0" + d;
+     }
+
+     return y + "-" + m + "-" + d;
+}
+
+function changeDateType(){
+	var dateType = $("#dateType").val();
+	if(dateType!=""){		//选择时间
+		$("#dateTimeType").removeAttr("disabled");
+		$("#dateStart").removeAttr("disabled");
+		$("#dateEnd").removeAttr("disabled");
+	}else{		//不选择时间
+		$("#dateTimeType").attr("disabled", "disabled");
+		$("#dateStart").attr("disabled", "disabled");
+		$("#dateEnd").attr("disabled", "disabled");
+		$("#dateStart").val("");
+		$("#dateEnd").val("");
+		$("#dateTimeType").val("");
+	}
+
+
+	
+	var dateTimeType = $("#dateTimeType").val();
+	$("#dateStart").attr("disabled", "disabled");
+	$("#dateEnd").attr("disabled", "disabled");
+	if(dateTimeType=="4"){	//自定义
+		$("#dateStart").removeAttr("disabled");
+		$("#dateEnd").removeAttr("disabled");
+		$("#dateStart").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'dateEnd\\')}'})"); 
+		$("#dateEnd").attr("onfocus","WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'dateStart\\')}'})");
+
+		$("#dateStartHidden").removeAttr("name");
+		$("#dateEndHidden").removeAttr("name");
+		$("#dateStart").attr("name","dateStart");
+		$("#dateEnd").attr("name","dateEnd");
+	}
+	
+	if(dateTimeType!="4"){
+		$("#dateStartHidden").attr("name","dateStart");
+		$("#dateEndHidden").attr("name","dateEnd");
+		
+		$("#dateStart").removeAttr("name");
+		$("#dateEnd").removeAttr("name");
+	}
+}
+</script>
 </body>
 </html>

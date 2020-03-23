@@ -23,7 +23,9 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.pojo.Coupon;
+import com.msy.travel.pojo.SaleType;
 import com.msy.travel.service.CouponService;
+import com.msy.travel.service.SaleTypeService;
 
 @Controller
 @Scope(value = "prototype")
@@ -34,6 +36,9 @@ public class CouponController extends BaseController {
 	@Resource(name = "couponServiceImpl")
 	private CouponService couponService;
 
+	@Resource(name = "saleTypeServiceImpl")
+	private SaleTypeService saleTypeService;
+
 	/**
 	 * 跳转到新增页面
 	 */
@@ -41,8 +46,17 @@ public class CouponController extends BaseController {
 	public ModelAndView toAddCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("coupon/addCoupon");
+			SaleType saleType = new SaleType();
+			saleType.setSpId(getLoginUser(request).getAccId());
+			saleType.setStatus("1");
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
+			saleType = new SaleType();
+			saleType.setSaleTypeId(getLoginUser(request).getAccId());
+			saleType.setSaleTypeName("全部商品");
+			saleTypeList.add(0, saleType);
 
+			view = new ModelAndView("coupon/addCoupon");
+			view.addObject("saleTypeList", saleTypeList);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -58,7 +72,7 @@ public class CouponController extends BaseController {
 	public ModelAndView addCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			couponService.createCoupon(coupon, getLoginUser(request), request.getParameter("productionIdList"));
+			couponService.createCoupon(coupon, getLoginUser(request), request.getParameter("sellPriceIdList"));
 			view = new ModelAndView("success");
 
 		} catch (Exception e) {
@@ -77,7 +91,14 @@ public class CouponController extends BaseController {
 		ModelAndView view = null;
 		try {
 			Coupon objCoupon = couponService.displayCoupon(coupon);
+
+			SaleType saleType = new SaleType();
+			saleType.setSpId(getLoginUser(request).getAccId());
+			saleType.setStatus("1");
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
+
 			view = new ModelAndView("coupon/updateCoupon");
+			view.addObject("saleTypeList", saleTypeList);
 			view.addObject("coupon", objCoupon);
 
 		} catch (Exception e) {
@@ -156,6 +177,14 @@ public class CouponController extends BaseController {
 			if (coupon.getEntityPage() == null) {
 				coupon.setEntityPage(new EntityPage());
 			}
+			if (coupon.getEntityPage().getSortField() == null || coupon.getEntityPage().getSortField().equals("")) {
+				coupon.getEntityPage().setSortField("t.F_UPDATETIME");
+				coupon.getEntityPage().setSortOrder("DESC");
+			}
+			coupon.setDelFlag("0");
+			coupon.setSpId(getLoginUser(request).getAccId());
+			coupon.setCouponTag("1");
+
 			super.saveBackUrl(request);
 			// 设置分页
 			PageHelper.startPage(super.getPageNum(coupon.getEntityPage()), super.getPageSize(coupon.getEntityPage()));

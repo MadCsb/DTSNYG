@@ -138,7 +138,72 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 	// columns END
 	private List<String> couponIdList;
 
+	// 全部商品 使用范围
 	private String useCouponId;
+
+	// 剩余
+	private String surplus;
+
+	// 成交用户量
+	private String customerUseNum;
+
+	// 日期类型
+	private String dateType;
+
+	// 日期范围类型
+	private String dateTimeType;
+
+	private String dateStart;
+
+	private String dateEnd;
+
+	public String getDateType() {
+		return dateType;
+	}
+
+	public void setDateType(String dateType) {
+		this.dateType = dateType;
+	}
+
+	public String getDateTimeType() {
+		return dateTimeType;
+	}
+
+	public void setDateTimeType(String dateTimeType) {
+		this.dateTimeType = dateTimeType;
+	}
+
+	public String getDateStart() {
+		return dateStart;
+	}
+
+	public void setDateStart(String dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	public String getDateEnd() {
+		return dateEnd;
+	}
+
+	public void setDateEnd(String dateEnd) {
+		this.dateEnd = dateEnd;
+	}
+
+	public String getSurplus() {
+		return surplus;
+	}
+
+	public void setSurplus(String surplus) {
+		this.surplus = surplus;
+	}
+
+	public String getCustomerUseNum() {
+		return customerUseNum;
+	}
+
+	public void setCustomerUseNum(String customerUseNum) {
+		this.customerUseNum = customerUseNum;
+	}
 
 	public String getUseCouponId() {
 		return useCouponId;

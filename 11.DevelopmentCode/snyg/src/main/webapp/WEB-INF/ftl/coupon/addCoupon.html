@@ -100,7 +100,6 @@
 					<td  colspan="3" style="line-height:47px;">
 	              		<label><input name="couponType" id="couponType1" onclick="couponTypeChange('1')" type="radio" value="1" checked hidden><label for="couponType1" class="radiock"></label>全部商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	              		<label><input name="couponType" id="couponType2" onclick="couponTypeChange('2')" type="radio" value="2" hidden><label for="couponType2" class="radiock"></label>指定商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	              		<label><input name="couponType" id="couponType3" onclick="couponTypeChange('3')" type="radio" value="3" hidden><label for="couponType3" class="radiock"></label>指定活动&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 					</td>
 				</tr>
 				<tr id="couponType2Td" style="display:none;">
@@ -122,10 +121,17 @@
 						</table>
 					</td>
 				</tr>
-				<tr id="couponType3Td" style="display:none;">
+				<tr id="couponType1Td">
 					<td class="tdright"><b><font class="f2">*</font>活动类型：</b></td>
 					<td colspan="3">
-						
+						<select name="useCouponId" id="useCouponId" class="validate[required] data-inputtxt-select">
+						<option value="">请选择</option>
+						<#if saleTypeList?? && (saleTypeList?size>0)>
+							<#list saleTypeList as  li>
+							<option value="${li.saleTypeId!''}">${li.saleTypeName!''}</option>	
+							</#list>
+						</#if>
+						</select>
 					</td>
 				</tr>
 			</table>
@@ -306,9 +312,11 @@ function beforeSubmit(type){
 	
 	function couponTypeChange(type){
 		if(type=="1"){
+			$("#couponType1Td").show();
 			$("#couponType2Td").hide();
 		}else{
 			$("#couponType2Td").show();
+			$("#couponType1Td").hide();
 		}
 	}
 	

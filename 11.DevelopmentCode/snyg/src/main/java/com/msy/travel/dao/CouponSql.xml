@@ -259,14 +259,64 @@
 			t.F_UPDATER as updater ,
 			t.F_DELFLAG as delFlag ,
 			t.F_COUPONTAG as couponTag ,
-			t.F_PCOUPONID as pcouponId 
+			t.F_PCOUPONID as pcouponId ,
+			t.F_TOTALNUM - IFNULL(cp.F_SURPLUS,0) as surplus,
+			cup.F_CUSTOMERUSENUM as customerUseNum
 		FROM
 		t_sm_coupon t
+		left join (select count(1) as F_SURPLUS,F_COUPONID from t_sm_customercoupon group by F_COUPONID ) cp on cp.F_COUPONID=t.F_COUPONID 
+		left join (select count(DISTINCT(F_CUSTOMERCODE)) as F_CUSTOMERUSENUM,F_COUPONID from t_sm_customercoupon where F_STATUS=1 group by F_COUPONID) cup on cup.F_COUPONID=t.F_COUPONID
 		<where>
 			<if test="couponId!=null and couponId!=''">
 		    	t.F_COUPONID = #{couponId}
 		     </if>
-			
+		     <if test="name!=null and name!=''">
+		    	and t.F_NAME like concat('%',#{name},'%') 
+		     </if>
+		     <if test='dateType!=null and dateType=="0"'>
+		    	<if test="dateStart!=null and dateStart!=''">
+		    		and t.F_OBTAINDATEBEGIN >= #{dateStart}
+		     	</if>
+		     	<if test="dateEnd!=null and dateEnd!=''">
+		    		and t.F_OBTAINDATEEND &lt;= #{dateEnd}
+		     	</if>
+		     </if>
+		     <if test='dateType!=null and dateType=="1"'>
+		    	<if test="dateStart!=null and dateStart!=''">
+		    		and t.F_VALIDBEGIN >= #{dateStart}
+		     	</if>
+		     	<if test="dateEnd!=null and dateEnd!=''">
+		    		and t.F_VALIDEND &lt;= #{dateEnd}
+		     	</if>
+		     </if>
+		     <if test="status!=null and status!=''">
+		    	<if test='status=="0" || status=="2" || status=="3"' >
+		    		and t.F_STATUS = #{status}
+		    	</if>
+		    	<if test='status=="4"' >
+		    		and	<![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>
+		    		and t.F_STATUS =1
+		    	</if>
+		    	<if test='status=="5"' >
+		    		and	<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
+					and <![CDATA[t.F_VALIDEND >= date_format(now(),'%Y-%m-%d')]]>
+					and t.F_STATUS =1
+		    	</if>
+		    	<if test='status=="6"' >
+		    		and	<![CDATA[t.F_VALIDEND < date_format(now(),'%Y-%m-%d')]]>
+		    		and t.F_STATUS =1
+		    	</if>
+		     </if>
+		     <if test="crrObtainDate!=null and crrObtainDate!=''">
+		    	AND #{crrObtainDate} >= t.obtainDateBegin 
+		    	AND t.obtainDateEnd >= #{crrObtainDate}
+		     </if>
+		     <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId} 
+		     </if>
+		     <if test="couponTag !=null and couponTag !=''">
+		    	and t.F_COUPONTAG = #{couponTag} 
+		     </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

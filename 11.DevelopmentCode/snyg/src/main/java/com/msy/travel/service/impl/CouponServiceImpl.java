@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
@@ -127,6 +128,7 @@ public class CouponServiceImpl implements CouponService {
 	 * @return void
 	 */
 	public void createCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception {
+		coupon.setCouponId(PrimaryKeyUtil.generateKey());
 		coupon.setSpId(user.getAccId());
 		coupon.setCreateTime(DateTimeUtil.getDateTime19());
 		coupon.setUpdateTime(DateTimeUtil.getDateTime19());
@@ -170,6 +172,7 @@ public class CouponServiceImpl implements CouponService {
 				if (checkPdcList != null && checkPdcList.length > 0) {
 					for (int i = 0; i < checkPdcList.length; i++) {
 						CouponProduction c = new CouponProduction();
+						c.setCouponPdcId(PrimaryKeyUtil.generateKey());
 						c.setCouponId(coupon.getCouponId());
 						c.setUseCouponId(checkPdcList[i]);
 						c.setCouponType("1");
@@ -179,6 +182,7 @@ public class CouponServiceImpl implements CouponService {
 			}
 		} else if (coupon.getCouponType().equals("1")) {
 			CouponProduction c = new CouponProduction();
+			c.setCouponPdcId(PrimaryKeyUtil.generateKey());
 			c.setCouponId(coupon.getCouponId());
 			c.setUseCouponId(coupon.getUseCouponId());
 			c.setCouponType("0");

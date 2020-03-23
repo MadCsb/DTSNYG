@@ -125,10 +125,12 @@
 			</if>
 		</if>
 	</select>
-	<select id="querySaleTypeList" parameterType="saleType" resultType="saleType">
+	
+	<!-- 优惠券选择范围 -->
+	<select id="querySaleTypeListForCoupon" parameterType="saleType" resultType="saleType">
 		SELECT
-			t.F_SALETYPEID AS useCouponId,
-			t.F_SALETYPENAME AS useCouponName,
+			t.F_SALETYPEID AS saleTypeId,
+			t.F_SALETYPENAME AS saleTypeName,
 			t.F_SALETYPEKEY AS saleTypeKey
 		FROM
 			t_sm_saletype t
@@ -136,17 +138,23 @@
 			<if test="spId !=null and spId !=''">
 		    	t.F_SPID = #{spId}
 		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_STATUS = #{status}
+		    </if>
 		</where>
 		UNION ALL 
 			SELECT
-				c.F_CHANNELID AS useCouponId,
-				c.F_CHANNELNAME AS channelName,
+				c.F_CHANNELID AS saleTypeId,
+				c.F_CHANNELNAME AS saleTypeName,
 				c.F_CHANNELKEY AS saleTypeKey
 			FROM
 				t_sm_channel c
 		<where>
 			<if test="spId !=null and spId !=''">
 		    	c.F_SPID = #{spId}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and c.F_STATUS = #{status}
 		    </if>
 		</where>
 		<if test="entityPage != null">
