@@ -106,11 +106,11 @@ public class WapCommproductController extends BaseController {
 			commproduct = commproductService.queryCommproductForWx(commproduct);
 
 			if ("0".equals(commproduct.getPriceType())) {
-				view = new ModelAndView("wx/commproduct/commproductDetail0");
+				view = new ModelAndView("wap/commproduct/commproductDetail0");
 			} else if ("1".equals(commproduct.getPriceType())) {
-				view = new ModelAndView("wx/commproduct/commproductDetail1");
+				view = new ModelAndView("wap/commproduct/commproductDetail1");
 			} else if ("2".equals(commproduct.getPriceType())) {
-				view = new ModelAndView("wx/commproduct/commproductDetail2");
+				view = new ModelAndView("wap/commproduct/commproductDetail2");
 			}
 
 			RsPic rsPic = new RsPic();

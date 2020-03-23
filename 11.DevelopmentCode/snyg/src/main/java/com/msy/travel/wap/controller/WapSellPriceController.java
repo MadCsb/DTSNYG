@@ -65,8 +65,8 @@ public class WapSellPriceController extends BaseController {
 	 * @return
 	 * @return ModelAndView
 	 */
-	@RequestMapping(params = "method=querySellPriceList")
-	public void querySellPriceList(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(params = "method=querySellPriceListForWx")
+	public void querySellPriceListForWx(SellPrice sellPrice, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			if (sellPrice.getEntityPage() == null) {
 				sellPrice.setEntityPage(new EntityPage());

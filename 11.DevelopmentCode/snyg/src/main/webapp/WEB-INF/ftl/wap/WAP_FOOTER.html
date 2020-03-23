@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <#include "/WAP/WAP_INC_HEAD.html">
+  <#include "WAP_INC_HEAD.html">
 
     <style>
 
@@ -77,7 +77,6 @@ function getShopCartListLenth(){
 	$.post("wapShopcart?method=getShopCartListWeb",{
 		
 	},function(data){
-		alert(data);
 		if(data!=null && data!="" && data.length>0){
 			$("#shopCartNum").html(data.length);		
 		}else{

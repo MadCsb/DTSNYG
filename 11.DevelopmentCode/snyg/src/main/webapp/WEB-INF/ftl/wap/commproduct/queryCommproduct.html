@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">
+<#include "../WAP_INC_HEAD.html">   
 <style>
 
 #navbar.navbar_fixed {
@@ -34,15 +34,13 @@
 <body onLoad="javascript:window_onload();">
 <div id="navbar" class="navbar_absolute">
     <div class="snyg_topserch">
-    	<form id="form1" action="wx?method=toQueryCommproduct" method="POST">
+    	<form id="form1" action="wapCommproduct?method=toQueryCommproduct" method="POST">
     		<input type="hidden" id="spId" name="spId" value="${commproduct.spId!''}" />
     		<input type="hidden" id="sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
 			<input type="hidden" id="sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
 			<input type="hidden" id="type" name="type" value="${commproduct.type!''}" />
 			<input type="hidden" id="subType" name="subType" value="${commproduct.subType!''}" />
 			<input type="text" name="productName" id="productName" value="${commproduct.productName!''}" class="snyg_top_inputsech" placeholder="请输入检索关键字"/>
-			<input type="hidden" name="appId" id="appId" value="${serviceCode.appId!''}" />
-			<input type="hidden" name="url" id="url" value="${serviceCode.url!''}" />
 			<input type="hidden" name="priceType" id="priceType" value="${priceType!''}" />
 		</form>
 	</div>
@@ -131,7 +129,7 @@
 
 	function getDataList(){
 		
-		$.post("wx?method=querySellPriceListForWx",{
+		$.post("wapSellPrice?method=querySellPriceListForWx",{
 			'entityPage.currentPage': currentPage,
 			'entityPage.rowsPerPage': '10',
 			'entityPage.sortOrder': $("#sortOrder").val(),
@@ -183,12 +181,8 @@
 	}
 	
 	function productDetail(priceId){
-	//	var detailUrl = $("#url").val() + "/wx.do?method=toQueryCommproductDetail&productId=" + productId +
-	//	'&spId=' + $("#spId").val()+'&priceType='+priceType;
 		
-		window.location.href='wx?method=toQueryCommproductDetailByPriceId&priceId='+priceId+"&spId="+$("#spId").val();
-		
-	//	wxAuthorizeBase($("#appId").val(), detailUrl);
+		window.location.href='wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId='+priceId;
 	}
 	
 	function toShopCart(){
