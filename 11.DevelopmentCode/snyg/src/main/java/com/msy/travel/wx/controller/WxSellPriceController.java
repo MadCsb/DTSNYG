@@ -82,7 +82,6 @@ public class WxSellPriceController extends BaseController {
 			map.put("pageSize", super.getPageSize(sellPrice.getEntityPage()));
 			map.put("reasonable", false);
 			PageHelper.startPage(map);
-			log.error("***************************" + sellPrice.getIsSortNum());
 			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
 
 			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);

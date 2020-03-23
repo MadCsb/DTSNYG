@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">   
+
+<style>
+
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+
+}
+</style>
+
+<script>
+
+</script>
+
+</head>
+<body>
+
+<div class="flexslider">
+    <ul class="slides">
+    </ul>
+	<div style="clear:both;"></div>
+</div>
+
+
+
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="fm-1" action="wx?method=toQueryCommproduct" method="POST">
+		<input type="hidden" id="spId" name="spId" value="${spId!''}" />
+		<input type="hidden" name="currentDay" id="currentDay" value="${currentDay!''}" />
+		<input type="hidden" name="priceType" id="priceType" value="" />
+			<input type="text" name="productName" class="snyg_top_inputsech" placeholder="请输入检索关键字"/>
+		</form>
+	</div>
+</div>
+
+
+<!--地方特产-->
+<ul class="four-menu" id="pdcTypeUl" style="margin-bottom:0;">
+</ul> 
+
+<!--整点秒杀-->
+<a href="javascript:void(0)"><div class="snyg_details_title">整点秒杀</div></a>
+<ul class="mssjlist">
+	<li><a href="javascript:void(0)" onclick="changePriceType2('1',this)"><span id="priceTypeChange1" class="msbtn_on"><i class="ico_z"></i>早市抢鲜<br>09:00-10:00</span></a></li>
+	<li><a href="javascript:void(0)" onclick="changePriceType2('2',this)"><span id="priceTypeChange2" class="msbtn"><i class="ico_w"></i>午市抢鲜<br>12:00-13:00</span></a></li>
+	<li style="margin-right:0;"><a href="javascript:void(0)"  onclick="changePriceType2('3',this)"><span  id="priceTypeChange3" class="msbtn"><i class="ico_ws"></i>晚市抢鲜<br>21:00-22:00</span></a></li>
+</ul>
+<ul class="snyg_data_details" id="dataList2">
+</ul>
+<div style="clear:both;"></div>
+<a href="javascript:void(0)" onclick="changePriceType('2')"><div class="ckgd"><span class="morebtn">更多产品</span></div></a>
+<div class="snyg_flbanner"></div>
+
+<!--拼团专区 -->
+<a href="javascript:void(0)"><div class="snyg_details_title">拼团专区</div></a>
+<ul class="snyg_data_tglist" id="dataList1">
+</ul>
+<a href="javascript:void(0)" onclick="changePriceType('1')"><div class="ckgd"><span class="morebtn">更多产品</span></div></a>
+<div class="snyg_flbanner"></div>
+
+
+<!--商品精选-->
+<div class="snyg_details_title">
+   商品精选</div>
+<ul class="snyg_data_details"  id="dataList0">
+</ul>
+    
+<div class="clear"></div> 
+<div class="snyg_footer"></div>
+
+<#include "/wx/WX_FOOTER.html">
+
+<script>
+
+var currentPage = 1;
+$(function(){
+	changeBottomClass('1');
+	getDataList('2','4','','','1','');
+	getDataList('1','12','ASC','p.F_SORTNUM','1','');
+	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
+
+  setCarousel();
+  
+  getPdcTypeData('2','9833f5329c74467ca987a543d4cba9d1');  
+});
+
+
+function getPdcTypeData(level,ppdcTypeId){
+	$.post("wx?method=getPdcTypeListForWx",{
+		spId:$("#spId").val(),
+		level:level,
+		ppdcTypeId:ppdcTypeId
+	},function(data){
+		if(data!=null && data.length>0){
+			$("#pdcTypeUl").html(getDataStr2(data));
+		}else{
+			$("#pdcTypeUl").html("");
+		}
+	},'json');
+}
+
+
+function getDataStr2(data){
+	var str = "";
+	for(var i =0;i<data.length;i++){
+		//str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
+		if(i<4){
+			str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';	
+		}
+		
+	}
+	str+='<li><a href="wx?method=toQueryPdcTypeList&spId='+$("#spId").val()+'"><img src="${rc.contextPath}/wx/images/more.png"/><p>更多</p></a></li>';
+	return str;
+}
+
+//广告位管理
+function setCarousel()
+{
+  var carouselIds = new Array();
+  carouselIds.push("867bfc98ad0042c5bcc4bed562c7f1b1");//顶部轮播图
+  carouselIds.push("bcc7d3090117413a9f4271656ebe6543");//拼团专区
+  carouselIds.push("e326d5f032f74d7e95573ab52ab77229");//商品精选
+  $(".slides").html("");
+	for(var i=0;i<carouselIds.length;i++)
+	{
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "wx?method=wxAjaxCarouselDetail",
+      data: {
+        carouselId:carouselIds[i]
+      },
+      success: function (data) {
+        var linkUrl = "";
+        for(var j=0;j<data.length;j++)
+        {
+          if(data[j].linkUrl == null || data[j].linkUrl == "")
+					{
+            linkUrl = 'javascript:void(0)';
+					}else
+					{
+            linkUrl = data[j].linkUrl;
+					}
+          if(data[j].carouselId == carouselIds[0])
+					{
+            $(".slides").append('<li><a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a></li>');
+					}else if(data[j].carouselId == carouselIds[1])
+					{
+            $(".snyg_flbanner:eq(0)").html('<a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a>');
+					}else if(data[j].carouselId == carouselIds[2])
+					{
+            $(".snyg_flbanner:eq(1)").html('<a href="'+linkUrl+'" title="'+data[j].title+'"><img src="${rc.contextPath}/upload/wxpic/'+ data[j].picUrl +'" alt="" title="" /></a>');
+					}
+        }
+      }
+    });
+    $(".flexslider").flexslider({
+      animation: "slide",
+      slideshow: true,
+      slideDirection: "horizontal",
+      mousewheel: true,
+      animationLoop: true,
+      directionNav: false
+    });
+	}
+}
+
+
+function changePriceType(priceType){
+	$("#priceType").val(priceType);
+	$("#fm-1").submit();
+}
+
+
+	
+
+	var currentTab = "1";
+	
+	//priceType 价格类型   
+	//rowsPerPage 每页显示数量
+	//sortOrder,sortField 排序
+	//cPage 页数
+	function getDataList(priceType,rowsPerPage,sortOrder,sortField,cPage,isSortNum){
+
+		var priceStartDate = "";
+		var priceEndDate  = "";
+		if(priceType=="2"){
+			if(currentTab=="1"){
+			//	priceStartDate = $("#currentDay").val()+' 09:00:00';
+			//	priceEndDate =  $("#currentDay").val()+' 10:00:00';
+			}else if(currentTab=="2"){
+			//	priceStartDate = $("#currentDay").val()+' 12:00:00';
+			//	priceEndDate =  $("#currentDay").val()+' 13:00:00';
+			}else if(currentTab=="3"){
+			//	priceStartDate = $("#currentDay").val()+' 21:00:00';
+			//	priceEndDate =  $("#currentDay").val()+' 22:00:00';
+			}
+		}
+		
+		$.post("wx?method=querySellPriceListForWx",{
+			'entityPage.currentPage': cPage,
+			'entityPage.rowsPerPage': rowsPerPage,
+			'spId': $("#spId").val(),
+			'priceType':priceType,
+			'entityPage.sortOrder': sortOrder,
+			'entityPage.sortField': sortField,
+			'priceStartDate':priceStartDate,
+			'priceEndDate':priceEndDate,
+			'isSortNum':isSortNum
+		},function(data){
+			if(data.length==0){
+				$('.addMore').hide();
+			}else{
+				if(priceType=='0'){
+					getDataStr0(data);
+				}else{
+					$("#dataList"+priceType).html(getDataStr(data));
+				} 
+			}
+		},'json');
+	}
+	var isHaveArray = new Array();
+	function getDataStr0(data){
+		if(data!=null && data.length>0){
+			for(var i = 0;i<data.length;i++){
+				var str = "";
+				var isHave = false;
+				for(var j = 0;j<isHaveArray.length;j++){
+					if(isHaveArray[j]==data[i].productId){
+						isHave = true;
+					}
+				}
+				if(!isHave){
+					str+='<li>';
+			        str+='<a href="javascript:void(0)" onclick="productDetail(\''+data[i].priceId+'\')">';  
+			        str+='<div class="data_img"><img src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" />';
+			        str+='</div>';  
+			        str+='<div class="data_bt">' + data[i].productName + '</div>';  
+			        if(data[i].subject==""){
+			        	data[i].subject = "--";
+			        }
+			        str+='<div class="data_xl">' + data[i].priceName + '</div>';  
+			        str+='</a>';  
+			        str+='<a  onclick="productDetail(\''+data[i].priceId+'\')">';  
+			        str+='<div class="data_jg">&yen;' + data[i].price + '</div>';  
+			        str+='<div class="data_more"></div>';  
+			        str+='</a>';  
+			        str+='</li>';
+			        
+			        if(isHaveArray.length<20){
+						$("#dataList0").append(str);
+				        isHaveArray.push(data[i].productId);
+			        }
+				}
+			}
+			currentPage++;
+			if(isHaveArray.length<20){
+				getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
+			}
+		}
+	}
+	function getDataStr(data){
+		var str = "";
+		if(data!=null && data.length>0){
+			for(var i = 0;i<data.length;i++){
+				str+='<li>';
+				
+		        str+='<a href="javascript:void(0)" onclick="productDetail(\''+data[i].priceId+'\')">';  
+		        str+='<div class="data_img"><img src="${rc.contextPath}/upload/wxpic/' + data[i].thumbPic + '" />';
+		        if(data[i].priceType=='1'){
+					str+='<i class="tgspbq">团</i></a>';   
+				}else if(data[i].priceType=='2'){
+					str+='<i class="msspbq">秒</i></a>';
+				}
+		        str+='</div>';  
+		        str+='<div class="data_bt">' + data[i].productName + '</div>';  
+		        if(data[i].subject==""){
+		        	data[i].subject = "--";
+		        }
+		        str+='<div class="data_xl" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">' + data[i].priceName + '</div>';  
+		        str+='</a>';  
+		        str+='<a  onclick="productDetail(\''+data[i].priceId+'\')">';  
+		        str+='<div class="data_jg">&yen;' + data[i].price + '</div>';  
+		        str+='<div class="data_more"></div>';  
+		        str+='</a>';  
+
+		        str+='</li>';
+			}
+		}
+		return str;
+	}
+	function productDetail(priceId){
+		var detailUrl = "wx.do?method=toQueryCommproductDetailByPriceId&priceId=" + priceId +'&spId=' + $("#spId").val();
+		//window.location.href='wx?method=toQueryCommproductDetailByPriceId&priceId='+priceId+"&spId="+$("#spId").val();
+
+		wxAuthorizeBase(detailUrl);
+	}
+	
+	
+	//秒杀 切换
+	function changePriceType2(tab,obj){
+		currentTab = tab;
+		getDataList('2','4','','','1','');
+		$(".msbtn_on").removeClass("msbtn_on").addClass("msbtn");
+		$("#priceTypeChange"+tab).removeClass("msbtn").addClass("msbtn_on");
+	}
+	
+	
+</script>
+</body>
+</html>

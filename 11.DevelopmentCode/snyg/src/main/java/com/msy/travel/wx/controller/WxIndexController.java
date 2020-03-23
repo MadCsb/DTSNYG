@@ -81,7 +81,7 @@ public class WxIndexController extends BaseController {
 	}
 
 	/**
-	 * ajax 获取订单列表
+	 * ajax 获取广告列表
 	 */
 	@RequestMapping(params = "method=wxAjaxCarouselDetail")
 	public void wxAjaxCarouselDetail(Carousel carousel, HttpServletRequest request, HttpServletResponse response) {
