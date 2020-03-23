@@ -2,6 +2,7 @@ package com.chinamobile.sd.openapi;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.HttpClientTool;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.Result;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -65,6 +67,7 @@ public class Common {
    */
   public static String PORTALTYPE_WEIXIN = "WEIXIN";
 
+  private static AtomicInteger TRANSACTION_AI =  new AtomicInteger(0);
   /**
    * 获取签名
    * @param paramMap map中参加签名的对象
@@ -74,7 +77,6 @@ public class Common {
   public static Result getSign(Map<String, String> paramMap, String key)
   {
     Result result = new Result();
-    String sign = "";
     try {
       List<String> list = new ArrayList(paramMap.keySet());
       Collections.sort(list);// 升序排序
@@ -101,24 +103,20 @@ public class Common {
   }
 
   /**
-   * 获取登录手机号（第三方平台—>传播平台）
-   * @param param 获取登录手机号需要的参数Map {token:}
+   * 获取交易唯一编码 yyyMMddHHmmss+8位唯一序号
+   *
+   * @return
    */
-  public static Result getUserByToken(Map<String, String> param)
-  {
-    Result result = new Result();
-
-    param.put("portalType",Common.PORTALTYPE_WAP);
-    param.put("portalID",Common.portalID);
-    param.put("transactionID",Common.portalID);
-    param.put("method","getUserByToken");
-    param.put("signType","MD5");
-    Result signResult = Common.getSign(param,Common.key);
-    if (!"0".equals(signResult.getResultCode()))
-    {
-      return signResult;
-    }
-
+  private static String getOnlyTransactionID() {
+    return DateTimeUtil.getDateTime14()+String.valueOf(99999999-TRANSACTION_AI.incrementAndGet());
+  }
+  /**
+   * 获取完整Url
+   * @param param 参数Map
+   *
+   * @return
+   */
+  private static String getCompleteUrl(Map<String, String> param) {
     StringBuffer urlSb = new StringBuffer();
     urlSb.append(Common.url).append("?");
     Set<String> paramSet = param.keySet();
@@ -126,7 +124,31 @@ public class Common {
     {
       urlSb.append(tmp).append("=").append(param.get(tmp)).append("&");
     }
-    HttpPost httpPost = new HttpPost(urlSb.substring(0,urlSb.length()));
+    return urlSb.substring(0,urlSb.length());
+  }
+
+  /**
+   * 获取登录手机号（第三方平台—>传播平台）
+   * @param param 获取登录手机号需要的参数Map {token:}
+   * @return Result {resultCode:0,resultPojo:msisdn}
+   */
+  public static Result getUserByToken(Map<String, String> param)
+  {
+    Result result = new Result();
+
+    param.put("portalType",Common.PORTALTYPE_WAP);
+    param.put("portalID",Common.portalID);
+    param.put("transactionID",getOnlyTransactionID());
+    param.put("method","getUserByToken");
+    param.put("signType","MD5");
+    Result signResult = Common.getSign(param,Common.key);
+    if (!"0".equals(signResult.getResultCode()))
+    {
+      return signResult;
+    }
+    param.put("sign",signResult.getResultPojo().toString());
+
+    HttpPost httpPost = new HttpPost(getCompleteUrl(param));
     Result httpResult = HttpClientTool.doHttpPost(httpPost);
     if (!"0".equals(httpResult.getResultCode()))
     {
@@ -155,6 +177,109 @@ public class Common {
     {
       result.setResultCode("1");
       result.setResultMsg("token已过期");
+    }
+    return result;
+  }
+
+  /**
+   * 用户权益订购校验接口(第三方平台->内容传播平台) 第三方平台通过手机号、权益产品编码查询用户订购资格信息
+   * @param param 用户权益订购校验接口需要的参数Map {msisdn:用户手机号码密文,priceCode:本系统销售编码}
+   * @return Result {resultCode:0,resultPojo:1可以订购0不能订购}
+   */
+  public static Result validMemberMbr(Map<String, String> param) {
+    Result result = new Result();
+
+    param.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
+    param.put("portalID",Common.portalID); //请求方门户唯一标识
+    param.put("transactionID",getOnlyTransactionID()); //交易唯一编码
+    param.put("method","validMemberMbr");
+    param.put("signType","MD5");
+    param.put("msisdn",param.get("msisdn")); //用户手机号码密文
+    param.put("mbrSource","yryp"); //会员来源
+    param.put("mbrProdType","0"); //权益产品类型 0或空：电子券，1：额度
+    param.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
+    param.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
+
+    Result signResult = Common.getSign(param,Common.key);
+    if (!"0".equals(signResult.getResultCode()))
+    {
+      return signResult;
+    }
+    param.put("sign",signResult.getResultPojo().toString());
+
+    HttpPost httpPost = new HttpPost(getCompleteUrl(param));
+    Result httpResult = HttpClientTool.doHttpPost(httpPost);
+    if (!"0".equals(httpResult.getResultCode()))
+    {
+      return httpResult;
+    }
+    JSONObject httpResultObject = JSON.parseObject(httpResult.getResultPojo().toString());
+    String code = httpResultObject.getString("code");
+    if(Common.CODE_SUCCESS.equals(code))
+    {
+      result.setResultCode("0");
+      result.setResultMsg(httpResultObject.getString("message"));
+      result.setResultPojo(httpResultObject.getString("mbrValid"));
+    }else if(Common.CODE_ERROR.equals(code))
+    {
+      result.setResultCode("1");
+      result.setResultMsg("未知异常");
+    }else if(Common.CODE_SIGN_ERROR.equals(code))
+    {
+      result.setResultCode("1");
+      result.setResultMsg("签名错误");
+    }
+    return result;
+  }
+
+  /**
+   * 用户权益订购结果同步接口(第三方平台->内容传播平台) 第三方平台将权益产品的订单成功结果同步给内容平台
+   * @param param 用户权益订购结果同步接口需要的参数Map {msisdn:用户手机号码密文,priceCode:本系统销售编码,orderId:订单ID}
+   * @return Result {resultCode:0,resultPojo:ok成功fail失败error错误}
+   */
+  public static Result syncMemberMbrOrder(Map<String, String> param) {
+    Result result = new Result();
+
+    param.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
+    param.put("portalID",Common.portalID); //请求方门户唯一标识
+    param.put("transactionID",getOnlyTransactionID()); //交易唯一编码
+    param.put("method","syncMemberMbrOrder");
+    param.put("signType","MD5");
+    param.put("msisdn",param.get("msisdn")); //用户手机号码密文
+    param.put("mbrSource","yryp"); //会员来源
+    param.put("mbrProdType","0"); //权益产品类型 0或空：电子券，1：额度
+    param.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
+    param.put("mbrOrderId",Common.portalID+param.get("orderId")); //权益产品编码 portalID+xxxxxxxx
+    param.put("mbrOrderStatus","1");//订单状态：1：订购成功
+    param.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
+    Result signResult = Common.getSign(param,Common.key);
+    if (!"0".equals(signResult.getResultCode()))
+    {
+      return signResult;
+    }
+    param.put("sign",signResult.getResultPojo().toString());
+
+    HttpPost httpPost = new HttpPost(getCompleteUrl(param));
+    Result httpResult = HttpClientTool.doHttpPost(httpPost);
+    if (!"0".equals(httpResult.getResultCode()))
+    {
+      return httpResult;
+    }
+    JSONObject httpResultObject = JSON.parseObject(httpResult.getResultPojo().toString());
+    String code = httpResultObject.getString("code");
+    if(Common.CODE_SUCCESS.equals(code))
+    {
+      result.setResultCode("0");
+      result.setResultMsg(httpResultObject.getString("message"));
+      result.setResultPojo(httpResultObject.getString("status"));
+    }else if(Common.CODE_ERROR.equals(code))
+    {
+      result.setResultCode("1");
+      result.setResultMsg("未知异常");
+    }else if(Common.CODE_SIGN_ERROR.equals(code))
+    {
+      result.setResultCode("1");
+      result.setResultMsg("签名错误");
     }
     return result;
   }

@@ -32,7 +32,8 @@
                 /plugin/**=anon
                 /wx/**=anon
                 /upload/**=anon
-                /wx**=anon 
+                /wx**=anon
+                /open/**/**=anon
                 /web/css/**=anon
                 /web/js/**=anon
                 /web/images/**=anon
