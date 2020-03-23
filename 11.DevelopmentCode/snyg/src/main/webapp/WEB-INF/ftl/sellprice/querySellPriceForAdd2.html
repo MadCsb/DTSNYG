@@ -82,6 +82,7 @@ function saveSellPrice(){
 		}else{
 			var len = $("#saveTable tr").length;
 			if(len > 1){
+				layer.load(2,{shade: [0.2, '#000']});
 				$("#priceForm").submit();
 			}else{
 				parent.layer.alert("请选择活动商品");
