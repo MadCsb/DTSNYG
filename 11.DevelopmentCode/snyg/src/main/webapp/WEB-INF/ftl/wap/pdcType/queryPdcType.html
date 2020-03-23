@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">
+
+<style>
+
+#navbar.navbar_fixed {
+	position:fixed;
+	top:0px;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+}
+#navbar.navbar_absolute {
+	position: relative;
+	width:100%;
+	background: #fafafa;
+	height:1rem;
+	z-index:99;
+	min-height:60px;
+
+}
+</style>
+
+<script>
+
+</script>
+
+</head>
+<body >
+<input type="hidden" id="spId" name="spId" value="${spId!''}"/>
+
+
+<!-- 
+<div id="navbar" class="navbar_absolute">
+    <div class="snyg_topserch">
+    	<form id="fm_1" action="" method="POST">
+			<a href="搜索结果.html"><input type="text" name="keyword" class="snyg_top_inputsech" value="请输入检索关键字" placeholder="请输入检索关键字"/></a>
+		</form>
+	</div>
+</div>
+ -->
+
+
+<!--商品分类-->
+
+<div class="snyg_content">
+
+    <div class="l_spfl">
+ 		<ul class="onefl" id="ppdcTypeUl">
+        </ul>
+           
+    </div>
+    <div class="r_spfl">
+		<ul class="twofl" id="pdcTypeUl">
+
+        </ul>    
+        <div class="clear"></div>
+<div class="snyg_footer"></div>
+    </div>
+
+</div>
+<#include "/wx/WX_FOOTER.html">
+<script>
+
+	
+	var first = true;
+	var ppdcTypeIdChoose = "";
+	$(function(){
+		getPdcTypeData('1','');
+		changeBottomClass('2');
+	});
+	
+	
+	function getPdcTypeData(level,ppdcTypeId){
+		$.post("wx?method=getPdcTypeListForWx",{
+			spId:$("#spId").val(),
+			level:level,
+			ppdcTypeId:ppdcTypeId
+		},function(data){
+			if(data!=null && data.length>0){
+				if(level == "1"){
+					$("#ppdcTypeUl").html(getDataStr1(data,level));
+				}else{
+					$("#pdcTypeUl").html(getDataStr2(data));
+				}
+			}else{
+				if(level == "1"){
+					$("#ppdcTypeUl").html("");
+				}else{
+					$("#pdcTypeUl").html("");
+				}
+			}
+		},'json');
+	}
+	
+	function getDataStr1(data,level){
+		var str = "";
+		for(var i =0;i<data.length;i++){
+			if(i==0){
+				str+='<li class="menuon" onclick="checkPdcType(\''+data[i].pdcTypeId+'\',this)">'+data[i].typeName+'</li>';
+				if(first){
+					getPdcTypeData('2',data[i].pdcTypeId);  
+					first = false;
+				}
+			}else{
+				str+='<li class="menu" onclick="checkPdcType(\''+data[i].pdcTypeId+'\',this)">'+data[i].typeName+'</li>';
+			}
+		}
+		return str;
+	}
+	
+	function getDataStr2(data){
+		var str = "";
+		for(var i =0;i<data.length;i++){
+			str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
+		}
+		return str;
+	}
+	
+	function checkPdcType(pdcTypeId,obj){
+		$(obj).removeClass("menu").addClass("menuon");
+		$(".menuon").removeClass("menuon").addClass("menu");
+		getPdcTypeData('2',pdcTypeId);  
+	}
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">   
+<#include "WAP_INC_HEAD.html">   
 
 <style>
 
@@ -42,8 +42,7 @@
 
 <div id="navbar" class="navbar_absolute">
     <div class="snyg_topserch">
-    	<form id="fm-1" action="wx?method=toQueryCommproduct" method="POST">
-		<input type="hidden" id="spId" name="spId" value="${spId!''}" />
+    	<form id="fm-1" action="wapCommproduct?method=toQueryCommproduct" method="POST">
 		<input type="hidden" name="currentDay" id="currentDay" value="${currentDay!''}" />
 		<input type="hidden" name="priceType" id="priceType" value="" />
 			<input type="text" name="productName" class="snyg_top_inputsech" placeholder="请输入检索关键字"/>
@@ -86,7 +85,7 @@
 <div class="clear"></div> 
 <div class="snyg_footer"></div>
 
-<#include "/wx/WX_FOOTER.html">
+<#include "WAP_FOOTER.html">
 
 <script>
 
@@ -104,8 +103,7 @@ $(function(){
 
 
 function getPdcTypeData(level,ppdcTypeId){
-	$.post("wx?method=getPdcTypeListForWx",{
-		spId:$("#spId").val(),
+	$.post("wapPdcType?method=getPdcTypeList",{
 		level:level,
 		ppdcTypeId:ppdcTypeId
 	},function(data){
@@ -121,13 +119,12 @@ function getPdcTypeData(level,ppdcTypeId){
 function getDataStr2(data){
 	var str = "";
 	for(var i =0;i<data.length;i++){
-		//str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
 		if(i<4){
-			str+='<li><a href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';	
+			str+='<li><a href="wapCommproduct?method=toQueryCommproduct&subType='+data[i].pdcTypeId+'"><img src="${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'"/><p>'+data[i].typeName+'</p></a></li>';	
 		}
 		
 	}
-	str+='<li><a href="wx?method=toQueryPdcTypeList&spId='+$("#spId").val()+'"><img src="${rc.contextPath}/wx/images/more.png"/><p>更多</p></a></li>';
+	str+='<li><a href="wapPdcType?method=toQueryPdcTypeList"><img src="${rc.contextPath}/wx/images/more.png"/><p>更多</p></a></li>';
 	return str;
 }
 
@@ -141,11 +138,12 @@ function setCarousel()
   $(".slides").html("");
 	for(var i=0;i<carouselIds.length;i++)
 	{
+		alert("!");
     $.ajax({
       type: "POST",
       async: false,
       dataType: "json",
-      url: "wx?method=wxAjaxCarouselDetail",
+      url: "wap?method=wapAjaxCarouselDetail",
       data: {
         carouselId:carouselIds[i]
       },
@@ -216,7 +214,7 @@ function changePriceType(priceType){
 			}
 		}
 		
-		$.post("wx?method=querySellPriceListForWx",{
+		$.post("wapSellPrice?method=querySellPriceList",{
 			'entityPage.currentPage': cPage,
 			'entityPage.rowsPerPage': rowsPerPage,
 			'spId': $("#spId").val(),
@@ -309,10 +307,8 @@ function changePriceType(priceType){
 		return str;
 	}
 	function productDetail(priceId){
-		var detailUrl = "wx.do?method=toQueryCommproductDetailByPriceId&priceId=" + priceId +'&spId=' + $("#spId").val();
-		//window.location.href='wx?method=toQueryCommproductDetailByPriceId&priceId='+priceId+"&spId="+$("#spId").val();
-
-		wxAuthorizeBase(detailUrl);
+		var detailUrl = "wapCommproduct.do?method=toQueryCommproductDetailByPriceId&priceId=" + priceId ;
+		window.location.href=detailUrl;
 	}
 	
 	

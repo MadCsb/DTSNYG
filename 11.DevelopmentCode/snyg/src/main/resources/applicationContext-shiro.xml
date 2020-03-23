@@ -38,7 +38,6 @@
                 /web/js/**=anon
                 /web/images/**=anon
                 /web/fonts/**=anon
-                /wap**=anon
                 /wap/css/**=anon
                 /wap/js/**=anon
                 /wap/images/**=anon
