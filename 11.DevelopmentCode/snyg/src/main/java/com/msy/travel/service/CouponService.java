@@ -2,6 +2,7 @@ package com.msy.travel.service;
 
 import java.util.List;
 
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.User;
 
@@ -88,4 +89,30 @@ public interface CouponService {
 	 * @return void
 	 */
 	public void createCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception;
+
+	/**
+	 * 更新
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午2:14:30
+	 * @param coupon
+	 * @param user
+	 * @param sellPriceIdList
+	 * @throws Exception
+	 * @return void
+	 */
+	public void updateCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception;
+
+	/**
+	 * 复制优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午3:59:28
+	 * @param coupon
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result copyCoupon(Coupon coupon, User user) throws Exception;
 }

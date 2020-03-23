@@ -56,8 +56,12 @@
 		DELETE FROM
 			t_sm_couponproduction 
 		<where>
-			F_COUPONPDCID = #{couponPdcId}
-			
+			<if test="couponPdcId !=null and couponPdcId !=''">
+				F_COUPONPDCID = #{couponPdcId}
+	     	</if>
+	     	<if test="couponId !=null and couponId !=''">
+		    	AND F_COUPONID = #{couponId}
+		     </if>
 		</where>
 	</delete>
 	<!-- 批量删除消息 -->
@@ -98,7 +102,9 @@
 			<if test="couponPdcId!=null and couponPdcId!=''">
 		    	t.F_COUPONPDCID = #{couponPdcId}
 		     </if>
-			
+			<if test="couponId !=null and couponId !=''">
+		    	t.F_COUPONID = #{couponId}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

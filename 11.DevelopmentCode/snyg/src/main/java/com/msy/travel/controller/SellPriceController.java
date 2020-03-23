@@ -213,6 +213,8 @@ public class SellPriceController extends BaseController {
 				view = new ModelAndView("sellprice/querySellPrice");
 			} else if (priceType.equals("2")) {
 				view = new ModelAndView("sellprice/querySellPrice2");
+			} else {
+				view = new ModelAndView("sellprice/querySellPriceDefault");
 			}
 			view.addObject("sellPricelist", sellPricelist);
 			view.addObject("entityPage", sellPrice.getEntityPage());
@@ -357,6 +359,8 @@ public class SellPriceController extends BaseController {
 				view = new ModelAndView("sellprice/querySellPriceForAdd");
 			} else if (priceType.equals("2")) {
 				view = new ModelAndView("sellprice/querySellPriceForAdd2");
+			} else {
+				view = new ModelAndView("sellprice/querySellPriceForAddDefault");
 			}
 			view.addObject("sellPrice", sellPrice);
 			view.addObject("priceType", priceType);
@@ -381,6 +385,8 @@ public class SellPriceController extends BaseController {
 				view = new ModelAndView("sellprice/queryAddOrCreateSellPrice");
 			} else if (priceType.equals("2")) {
 				view = new ModelAndView("sellprice/queryAddOrCreateSellPrice2");
+			} else {
+				view = new ModelAndView("sellprice/queryAddOrCreateSellPriceDefault");
 			}
 
 			PdcType p = new PdcType();
@@ -443,6 +449,8 @@ public class SellPriceController extends BaseController {
 				view = new ModelAndView("sellprice/querySellPriceForAdd");
 			} else if (priceType.equals("2")) {
 				view = new ModelAndView("sellprice/querySellPriceForAdd2");
+			} else {
+				view = new ModelAndView("sellprice/querySellPriceForAddDefault");
 			}
 			view.addObject("tag", "1");
 			view.addObject("entityPage", new EntityPage());

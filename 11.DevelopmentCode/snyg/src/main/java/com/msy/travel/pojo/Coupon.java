@@ -14,7 +14,7 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 	 */
 	public static final String[] EXPORT_HEADERS = {
 			// columns START
-			"couponId:优惠券ID", "spId:运营商编号", "name:优惠券名称", "optainType:获取方式:1商品页领取；2活动页领取", "totalNum:发行总量", "dayNum:日发行量", "userType:使用类型:1满减，2折扣", "useLimit:使用限制：满XXXX元", "discount:折扣优惠",
+			"couponId:优惠券ID", "spId:运营商编号", "name:优惠券名称", "obtainType:获取方式:1商品页领取；2活动页领取", "totalNum:发行总量", "dayNum:日发行量", "userType:使用类型:1满减，2折扣", "useLimit:使用限制：满XXXX元", "discount:折扣优惠",
 			"obtainLimit:每人限领", "dayObtainLimit:每人每天限领", "validBegin:有效开始日期", "validEnd:有效结束日期", "obtainDateType:领券日期类型：1有效时段，2有效时长", "obtainDateBegin:领券开始日期", "obtainDateEnd:领券结束日期",
 			"obtainDateSpan:领券结束时长", "couponType:优惠类型:1全部商品，2指定商品", "status:状态:1", "createTime:创建时间", "creatorUid:创建人", "creator:创建人姓名", "updateTime:修改时间", "updaterUid:修改人", "updater:修改人姓名",
 			"delFlag:是否删除0-未删除1-已删除", "couponTag:优惠券标识，0:历史数据 1最新数据", "pcouponId:首次生成优惠券ID"
@@ -37,7 +37,7 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 	/**
 	 * 获取方式:1商品页领取；2活动页领取 db_column: F_OBTAINTYPE
 	 */
-	private String optainType;
+	private String obtainType;
 	/**
 	 * 发行总量 db_column: F_TOTALNUM
 	 */
@@ -237,12 +237,12 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 		return this.name;
 	}
 
-	public void setOptainType(String optainType) {
-		this.optainType = optainType;
+	public String getObtainType() {
+		return obtainType;
 	}
 
-	public String getOptainType() {
-		return this.optainType;
+	public void setObtainType(String obtainType) {
+		this.obtainType = obtainType;
 	}
 
 	public void setTotalNum(String totalNum) {

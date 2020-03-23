@@ -41,7 +41,7 @@
 			#{couponId} ,
 			#{spId} ,
 			#{name} ,
-			#{optainType} ,
+			#{obtainType} ,
 			#{totalNum} ,
 			#{dayNum} ,
 			#{useType} ,
@@ -106,7 +106,7 @@
 			#{couponId} ,
 			#{spId} ,
 			#{name} ,
-			#{optainType} ,
+			#{obtainType} ,
 			#{totalNum} ,
 			#{dayNum} ,
 			#{useType} ,
@@ -139,9 +139,8 @@
 		UPDATE
 			t_sm_coupon 
 		SET
-			F_SPID = #{spId} ,
 			F_NAME = #{name} ,
-			F_OBTAINTYPE = #{optainType} ,
+			F_OBTAINTYPE = #{obtainType} ,
 			F_TOTALNUM = #{totalNum} ,
 			F_DAYNUM = #{dayNum} ,
 			F_USETYPE = #{useType} ,
@@ -157,9 +156,6 @@
 			F_OBTAINDATESPAN = #{obtainDateSpan} ,
 			F_COUPONTYPE = #{couponType} ,
 			F_STATUS = #{status} ,
-			F_CREATETIME = #{createTime} ,
-			F_CREATORUID = #{creatorUid} ,
-			F_CREATOR = #{creator} ,
 			F_UPDATETIME = #{updateTime} ,
 			F_UPDATERUID = #{updaterUid} ,
 			F_UPDATER = #{updater} ,
@@ -197,7 +193,7 @@
 			t.F_COUPONID as couponId ,
 			t.F_SPID as spId ,
 			t.F_NAME as name ,
-			t.F_OBTAINTYPE as optainType ,
+			t.F_OBTAINTYPE as obtainType ,
 			t.F_TOTALNUM as totalNum ,
 			t.F_DAYNUM as dayNum ,
 			t.F_USETYPE as useType ,
@@ -235,7 +231,7 @@
 			t.F_COUPONID as couponId ,
 			t.F_SPID as spId ,
 			t.F_NAME as name ,
-			t.F_OBTAINTYPE as optainType ,
+			t.F_OBTAINTYPE as obtainType ,
 			t.F_TOTALNUM as totalNum ,
 			t.F_DAYNUM as dayNum ,
 			t.F_USETYPE as useType ,
@@ -306,10 +302,6 @@
 		    		and	<![CDATA[t.F_VALIDEND < date_format(now(),'%Y-%m-%d')]]>
 		    		and t.F_STATUS =1
 		    	</if>
-		     </if>
-		     <if test="crrObtainDate!=null and crrObtainDate!=''">
-		    	AND #{crrObtainDate} >= t.obtainDateBegin 
-		    	AND t.obtainDateEnd >= #{crrObtainDate}
 		     </if>
 		     <if test="spId !=null and spId !=''">
 		    	and t.F_SPID = #{spId} 

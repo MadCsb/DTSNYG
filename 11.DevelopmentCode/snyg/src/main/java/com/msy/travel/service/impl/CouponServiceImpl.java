@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
@@ -140,6 +141,7 @@ public class CouponServiceImpl implements CouponService {
 		coupon.setObtainDateSpan(WTConvert.emptyToNull(coupon.getObtainDateSpan()));
 		coupon.setDayNum(WTConvert.emptyToNull(coupon.getDayNum()));
 		coupon.setCouponTag("1");
+		coupon.setPcouponId(coupon.getCouponId());
 
 		if (coupon.getObtainDateType().equals("2")) {
 			coupon.setObtainDateBegin(coupon.getValidBegin());
@@ -164,6 +166,7 @@ public class CouponServiceImpl implements CouponService {
 			}
 
 		}
+		couponDao.insertCoupon(coupon);
 
 		// 指定商品
 		if (coupon.getCouponType().equals("2")) {
@@ -189,6 +192,193 @@ public class CouponServiceImpl implements CouponService {
 			couponProductionService.createCouponProduction(c);
 		}
 
-		couponDao.insertCoupon(coupon);
+	}
+
+	/**
+	 * 更新
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午2:14:30
+	 * @param coupon
+	 * @param user
+	 * @param sellPriceIdList
+	 * @throws Exception
+	 * @return void
+	 */
+	public void updateCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception {
+		Coupon oldCoupon = couponDao.queryCoupon(coupon);
+		// 如果上一次是草稿 则更新
+		if (oldCoupon.getStatus().equals("0")) {
+			coupon.setUpdateTime(DateTimeUtil.getDateTime19());
+			coupon.setUpdater(user.getUserName());
+			coupon.setUpdaterUid(user.getUserId());
+			coupon.setDelFlag("0");
+			coupon.setObtainDateSpan(WTConvert.emptyToNull(coupon.getObtainDateSpan()));
+			coupon.setDayNum(WTConvert.emptyToNull(coupon.getDayNum()));
+			coupon.setCouponTag("1");
+			if (coupon.getObtainDateType().equals("2")) {
+				coupon.setObtainDateBegin(coupon.getValidBegin());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+				// 结束日期
+				Date validEnd = sdf.parse(coupon.getValidEnd());
+				Calendar end = Calendar.getInstance();
+				end.setTime(validEnd);
+
+				// 开始日期 +结束时长
+				Date validBegin = sdf.parse(coupon.getValidBegin());
+				Calendar obtainDateEnd = Calendar.getInstance();
+				obtainDateEnd.setTime(validBegin);
+				obtainDateEnd.add(Calendar.DATE, (Integer.parseInt(coupon.getObtainDateSpan()) - 1));
+
+				if (obtainDateEnd.before(end)) {
+					coupon.setObtainDateEnd(sdf.format(obtainDateEnd.getTime()));
+				} else {
+					coupon.setObtainDateEnd(coupon.getValidEnd());
+				}
+
+			}
+			coupon.setPcouponId(oldCoupon.getPcouponId());
+			couponDao.updateCoupon(coupon);
+
+			CouponProduction cp = new CouponProduction();
+			cp.setCouponId(coupon.getCouponId());
+			couponProductionService.deleteCouponProduction(cp);
+
+			// 指定商品
+			if (coupon.getCouponType().equals("2")) {
+				if (sellPriceIdList != null && !sellPriceIdList.equals("")) {
+					String[] checkPdcList = sellPriceIdList.split(",");
+					if (checkPdcList != null && checkPdcList.length > 0) {
+						for (int i = 0; i < checkPdcList.length; i++) {
+							CouponProduction c = new CouponProduction();
+							c.setCouponPdcId(PrimaryKeyUtil.generateKey());
+							c.setCouponId(coupon.getCouponId());
+							c.setUseCouponId(checkPdcList[i]);
+							c.setCouponType("1");
+							couponProductionService.createCouponProduction(c);
+						}
+					}
+				}
+			} else if (coupon.getCouponType().equals("1")) {
+				CouponProduction c = new CouponProduction();
+				c.setCouponPdcId(PrimaryKeyUtil.generateKey());
+				c.setCouponId(coupon.getCouponId());
+				c.setUseCouponId(coupon.getUseCouponId());
+				c.setCouponType("0");
+				couponProductionService.createCouponProduction(c);
+			}
+		} else {
+			oldCoupon.setCouponTag("0");
+			couponDao.updateCoupon(oldCoupon);
+
+			coupon.setCouponId(PrimaryKeyUtil.generateKey());
+			coupon.setSpId(user.getAccId());
+			coupon.setCreateTime(DateTimeUtil.getDateTime19());
+			coupon.setUpdateTime(DateTimeUtil.getDateTime19());
+			coupon.setCreatorUid(user.getUserId());
+			coupon.setCreator(user.getUserName());
+			coupon.setUpdater(user.getUserName());
+			coupon.setUpdaterUid(user.getUserId());
+			coupon.setDelFlag("0");
+			coupon.setObtainDateSpan(WTConvert.emptyToNull(coupon.getObtainDateSpan()));
+			coupon.setDayNum(WTConvert.emptyToNull(coupon.getDayNum()));
+			coupon.setCouponTag("1");
+			coupon.setPcouponId(oldCoupon.getPcouponId());
+			if (coupon.getObtainDateType().equals("2")) {
+				coupon.setObtainDateBegin(coupon.getValidBegin());
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+				// 结束日期
+				Date validEnd = sdf.parse(coupon.getValidEnd());
+				Calendar end = Calendar.getInstance();
+				end.setTime(validEnd);
+
+				// 开始日期 +结束时长
+				Date validBegin = sdf.parse(coupon.getValidBegin());
+				Calendar obtainDateEnd = Calendar.getInstance();
+				obtainDateEnd.setTime(validBegin);
+				obtainDateEnd.add(Calendar.DATE, (Integer.parseInt(coupon.getObtainDateSpan()) - 1));
+
+				if (obtainDateEnd.before(end)) {
+					coupon.setObtainDateEnd(sdf.format(obtainDateEnd.getTime()));
+				} else {
+					coupon.setObtainDateEnd(coupon.getValidEnd());
+				}
+
+			}
+			couponDao.insertCoupon(coupon);
+
+			// 指定商品
+			if (coupon.getCouponType().equals("2")) {
+				if (sellPriceIdList != null && !sellPriceIdList.equals("")) {
+					String[] checkPdcList = sellPriceIdList.split(",");
+					if (checkPdcList != null && checkPdcList.length > 0) {
+						for (int i = 0; i < checkPdcList.length; i++) {
+							CouponProduction c = new CouponProduction();
+							c.setCouponPdcId(PrimaryKeyUtil.generateKey());
+							c.setCouponId(coupon.getCouponId());
+							c.setUseCouponId(checkPdcList[i]);
+							c.setCouponType("1");
+							couponProductionService.createCouponProduction(c);
+						}
+					}
+				}
+			} else if (coupon.getCouponType().equals("1")) {
+				CouponProduction c = new CouponProduction();
+				c.setCouponPdcId(PrimaryKeyUtil.generateKey());
+				c.setCouponId(coupon.getCouponId());
+				c.setUseCouponId(coupon.getUseCouponId());
+				c.setCouponType("0");
+				couponProductionService.createCouponProduction(c);
+			}
+		}
+	}
+
+	/**
+	 * 复制优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午3:59:28
+	 * @param coupon
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result copyCoupon(Coupon coupon, User user) throws Exception {
+		Result result = new Result();
+		String oldCouponId = coupon.getCouponId();
+		Coupon oldCoupon = couponDao.queryCoupon(coupon);
+		oldCoupon.setCouponId(PrimaryKeyUtil.generateKey());
+		oldCoupon.setSpId(user.getAccId());
+		oldCoupon.setCreateTime(DateTimeUtil.getDateTime19());
+		oldCoupon.setUpdateTime(DateTimeUtil.getDateTime19());
+		oldCoupon.setCreatorUid(user.getUserId());
+		oldCoupon.setCreator(user.getUserName());
+		oldCoupon.setUpdater(user.getUserName());
+		oldCoupon.setUpdaterUid(user.getUserId());
+		oldCoupon.setDelFlag("0");
+		oldCoupon.setStatus("0");
+		oldCoupon.setCouponTag("1");
+		oldCoupon.setPcouponId(oldCoupon.getCouponId());
+		couponDao.insertCoupon(oldCoupon);
+
+		CouponProduction c = new CouponProduction();
+		c.setCouponId(oldCouponId);
+		List<CouponProduction> couponProduction = couponProductionService.queryCouponProductionList(c);
+		if (couponProduction != null && couponProduction.size() > 0) {
+			for (int i = 0; i < couponProduction.size(); i++) {
+				CouponProduction newCouponProduction = couponProduction.get(i);
+				newCouponProduction.setCouponId(oldCoupon.getCouponId());
+				newCouponProduction.setCouponPdcId(PrimaryKeyUtil.generateKey());
+				couponProductionService.createCouponProduction(newCouponProduction);
+
+			}
+		}
+
+		result.setResultCode("0");
+		return result;
 	}
 }
