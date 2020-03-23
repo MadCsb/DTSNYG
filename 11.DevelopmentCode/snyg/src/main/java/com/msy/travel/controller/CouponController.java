@@ -42,6 +42,7 @@ public class CouponController extends BaseController {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("coupon/addCoupon");
+
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -57,7 +58,7 @@ public class CouponController extends BaseController {
 	public ModelAndView addCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			couponService.createCoupon(coupon, getLoginUser(request));
+			couponService.createCoupon(coupon, getLoginUser(request), request.getParameter("productionIdList"));
 			view = new ModelAndView("success");
 
 		} catch (Exception e) {

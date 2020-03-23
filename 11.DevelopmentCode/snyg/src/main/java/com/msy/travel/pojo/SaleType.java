@@ -32,7 +32,7 @@ public class SaleType extends BaseEntity implements java.io.Serializable {
 	 */
 	private String saleTypeName;
 	/**
-	 * 渠道状态 0:禁用,1:启用 db_column: F_STATUS
+	 * 活动状态 0:禁用,1:启用 db_column: F_STATUS
 	 */
 	private String status;
 	/**

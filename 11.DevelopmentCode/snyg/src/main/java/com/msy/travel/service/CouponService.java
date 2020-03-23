@@ -87,5 +87,5 @@ public interface CouponService {
 	 * @throws Exception
 	 * @return void
 	 */
-	public void createCoupon(Coupon coupon, User user) throws Exception;
+	public void createCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception;
 }

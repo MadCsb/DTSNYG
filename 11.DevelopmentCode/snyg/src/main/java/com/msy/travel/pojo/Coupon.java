@@ -138,6 +138,16 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 	// columns END
 	private List<String> couponIdList;
 
+	private String useCouponId;
+
+	public String getUseCouponId() {
+		return useCouponId;
+	}
+
+	public void setUseCouponId(String useCouponId) {
+		this.useCouponId = useCouponId;
+	}
+
 	public void setCouponId(String couponId) {
 		this.couponId = couponId;
 	}

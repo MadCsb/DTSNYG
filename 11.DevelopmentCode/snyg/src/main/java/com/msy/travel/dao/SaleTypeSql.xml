@@ -125,4 +125,39 @@
 			</if>
 		</if>
 	</select>
+	<select id="querySaleTypeList" parameterType="saleType" resultType="saleType">
+		SELECT
+			t.F_SALETYPEID AS useCouponId,
+			t.F_SALETYPENAME AS useCouponName,
+			t.F_SALETYPEKEY AS saleTypeKey
+		FROM
+			t_sm_saletype t
+		<where>
+			<if test="spId !=null and spId !=''">
+		    	t.F_SPID = #{spId}
+		    </if>
+		</where>
+		UNION ALL 
+			SELECT
+				c.F_CHANNELID AS useCouponId,
+				c.F_CHANNELNAME AS channelName,
+				c.F_CHANNELKEY AS saleTypeKey
+			FROM
+				t_sm_channel c
+		<where>
+			<if test="spId !=null and spId !=''">
+		    	c.F_SPID = #{spId}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
 </mapper>	

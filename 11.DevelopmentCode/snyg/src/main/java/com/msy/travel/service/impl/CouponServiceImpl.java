@@ -1,5 +1,8 @@
 package com.msy.travel.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,7 +14,9 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
+import com.msy.travel.pojo.CouponProduction;
 import com.msy.travel.pojo.User;
+import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
 
 /**
@@ -26,6 +31,9 @@ public class CouponServiceImpl implements CouponService {
 
 	@Resource(name = "couponDao")
 	private CouponDao couponDao;
+
+	@Resource(name = "couponProductionServiceImpl")
+	private CouponProductionService couponProductionService;
 
 	/**
 	 * 新增Coupon
@@ -118,18 +126,64 @@ public class CouponServiceImpl implements CouponService {
 	 * @throws Exception
 	 * @return void
 	 */
-	public void createCoupon(Coupon coupon, User user) throws Exception {
+	public void createCoupon(Coupon coupon, User user, String sellPriceIdList) throws Exception {
+		coupon.setSpId(user.getAccId());
 		coupon.setCreateTime(DateTimeUtil.getDateTime19());
+		coupon.setUpdateTime(DateTimeUtil.getDateTime19());
 		coupon.setCreatorUid(user.getUserId());
 		coupon.setCreator(user.getUserName());
-		coupon.setSpId(user.getAccId());
-		coupon.setDelFlag("0");
-		coupon.setCouponTag("1");
-		coupon.setPcouponId(coupon.getCouponId());
 		coupon.setUpdater(user.getUserName());
 		coupon.setUpdaterUid(user.getUserId());
-		coupon.setUpdateTime(DateTimeUtil.getDateTime19());
+		coupon.setDelFlag("0");
 		coupon.setObtainDateSpan(WTConvert.emptyToNull(coupon.getObtainDateSpan()));
+		coupon.setDayNum(WTConvert.emptyToNull(coupon.getDayNum()));
+		coupon.setCouponTag("1");
+
+		if (coupon.getObtainDateType().equals("2")) {
+			coupon.setObtainDateBegin(coupon.getValidBegin());
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			// 结束日期
+			Date validEnd = sdf.parse(coupon.getValidEnd());
+			Calendar end = Calendar.getInstance();
+			end.setTime(validEnd);
+
+			// 开始日期 +结束时长
+			Date validBegin = sdf.parse(coupon.getValidBegin());
+			Calendar obtainDateEnd = Calendar.getInstance();
+			obtainDateEnd.setTime(validBegin);
+			obtainDateEnd.add(Calendar.DATE, (Integer.parseInt(coupon.getObtainDateSpan()) - 1));
+
+			if (obtainDateEnd.before(end)) {
+				coupon.setObtainDateEnd(sdf.format(obtainDateEnd.getTime()));
+			} else {
+				coupon.setObtainDateEnd(coupon.getValidEnd());
+			}
+
+		}
+
+		// 指定商品
+		if (coupon.getCouponType().equals("2")) {
+			if (sellPriceIdList != null && !sellPriceIdList.equals("")) {
+				String[] checkPdcList = sellPriceIdList.split(",");
+				if (checkPdcList != null && checkPdcList.length > 0) {
+					for (int i = 0; i < checkPdcList.length; i++) {
+						CouponProduction c = new CouponProduction();
+						c.setCouponId(coupon.getCouponId());
+						c.setUseCouponId(checkPdcList[i]);
+						c.setCouponType("1");
+						couponProductionService.createCouponProduction(c);
+					}
+				}
+			}
+		} else if (coupon.getCouponType().equals("1")) {
+			CouponProduction c = new CouponProduction();
+			c.setCouponId(coupon.getCouponId());
+			c.setUseCouponId(coupon.getUseCouponId());
+			c.setCouponType("0");
+			couponProductionService.createCouponProduction(c);
+		}
 
 		couponDao.insertCoupon(coupon);
 	}
