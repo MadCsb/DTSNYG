@@ -9,7 +9,7 @@
 	</div>
 		<form action="coupon?method=add" method="post" id="createCoupon">
 			<input name="status" type="hidden" id="status" size="40" />
-			<input name="sellPriceIdList" type="text" size="600" id="sellPriceIdList" size="40" />
+			<input name="sellPriceIdList" type="hidden" size="600" id="sellPriceIdList" size="40" />
 			
 			<!--编辑区-->
 			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -327,7 +327,6 @@ function beforeSubmit(type){
 	        	
 	        	var sellPriceIdString = art.dialog.data("sellPriceIdString");
 				
-				alert(sellPriceIdString);
 	        	getCheckPdcPost(sellPriceIdString);
 			}
 		});
