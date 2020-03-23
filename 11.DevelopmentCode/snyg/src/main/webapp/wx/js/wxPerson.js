@@ -71,25 +71,5 @@ WxPerson.prototype.orderDetail = function (sync,orderId,func)
   return orderDetail;
 }
 
-/**
- * 根据openId返回user对象，非设置WxPerson.user
- */
-WxPerson.prototype.getUserByUserId = function () {
-  var userIdTmp = this.userId;
-  $.ajax({
-    type: "POST",
-    async: false,
-    dataType: "json",
-    url: "wxpersonal?method=getUserByUserId",
-    data: {
-      userId:userIdTmp
-    },
-    success: function (data) {
-      dataTmp = data;
-    }
-  });
-  this.user = dataTmp;
-}
-
 
 

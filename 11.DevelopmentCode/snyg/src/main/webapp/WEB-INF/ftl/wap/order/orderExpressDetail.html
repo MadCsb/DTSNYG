@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/WX_INC_HEAD.html">
+		<script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+		<script src="${rc.contextPath}/js/pay.js"></script>
+		</head>
+<body>
+<#list orderExpressList as oel>
+<input type="hidden" com="${oel.epmeCompany}" nu="${oel.epmeOrdCode}">
+</#list>
+<script>
+  $(function () {
+    var com = $("[com]");
+    if(com.length == 1)
+		{
+		  var url ="https://www.kuaidi100.com/chaxun?com="+$(com).attr("com")+"&nu="+$(com).attr("nu");
+		  window.location.href = url;
+		}
+  });
+</script>
+</body>
+</html> 

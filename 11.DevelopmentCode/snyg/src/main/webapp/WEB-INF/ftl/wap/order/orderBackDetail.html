@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">
+  <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
+</head>
+<body>
+<input id="orderId" type="hidden" name="orderId" value="${order.orderId!''}">
+
+<!--header 开始-->
+<!--<div class="snyg_headdiv" page="1">-->
+  <!--<span class="ico_ret"><a onclick="javascript:history.back(-1);"><img src="${rc.contextPath}/wx/images/return.png" ></a></span>-->
+  <!--<h2>退货申请</h2>-->
+  <!--<span class="ico_home"><a onclick="toPersonal();"><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>-->
+<!--</div>-->
+<!--header 结束-->
+<div class="snyg_contentb" page="1">
+  <div class="tsdiv">
+    <p id="orderBackInfo">
+      <#if orderBack.status == '1'>
+        您的申请正在审核中，请耐心等候
+      <#elseif orderBack.status == '3'>
+        您的申请已通过
+      <#elseif orderBack.status == '4' && orderBack.backGoodsStatus == "0">
+        您的申请已通过，请填写退货快递信息
+      <#elseif orderBack.status == '5' && orderBack.backMoneyStatus == "0">
+        您的退款正在进行中，请耐心等候
+      <#elseif orderBack.status == '6'>
+        您的退订已完成
+      </#if>
+    </p>
+    <div id="applyTime">申请时间：${orderBack.applyTime!}</div>
+    <div>可致电客服<b> 400-8013841</b>了解最新进展</div>
+  </div>
+</div>
+
+<div class="snyg_contentb" page="1">
+  <ul class="ddlist">
+    <#list orderListList as ol>
+      <#if ol.orderListType != '1'>
+        <li>
+          <div class="thddinfo">
+            <div class="iconleft">
+              <div class="icon">
+                <a onclick="toSellPrice('${ol.priceId!''}')">
+                  <img src="${rc.contextPath}/upload/wxpic/${ol.thumbPic!''}" />
+                </a>
+              </div>
+            </div>
+            <div class="info">
+              <a onclick="toSellPrice('${ol.priceId!''}')">
+                <h4>${ol.productName!''}</h4>
+              </a>
+              <p class="txt"><span class="f4">规格 ${ol.childName!''}</span></p>
+              <p class="txt"><span class="f4">数量 ${ol.num!''}</span></p>
+              <p class="txt"><span class="f4">合计 </span><span class="f2 fr">&yen;${ol.money!''}</span></p>
+            </div>
+        </li>
+      </#if>
+    </#list>
+  </ul>
+</div>
+
+<div class="snyg_contentb" page="1">
+  <div class="ddbt_title">
+    <a href="#">退款金额
+      <span class="hjjg">
+      <#if orderBack.status == '6'>
+        ${orderBack.backMoney!'0'}
+      <#else>
+        ${orderBack.applyBackMoney!'0'}
+      </#if>
+      </span>
+    </a>
+  </div>
+  <div class="ddbt_title">
+    <a href="#">退款单号<span class="hjjg">${orderBack.backCode!'0'}</span></a>
+  </div>
+  <div class="ddbt_title">
+    <a href="#">退款原因</a>
+  </div>
+  <div class="snyg_contentb">
+    <ul class="yylist">
+      <li>
+        ${orderBack.backReason!''}
+      </li>
+    </ul>
+  </div>
+</div>
+<#if orderBack.isBackGoods == '1'>
+  <div class="snyg_contentb" page="1">
+    <div class="ddbt_title">
+      <a href="">退货信息</a>
+    </div>
+    <ul class="yylist">
+      <li>
+        货物状态：
+        <span class="f2">
+        <#if orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "0">
+          待发货
+        <#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "1">
+          已发货，待收货
+        <#elseif orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "2">
+          已收货
+        </#if>
+        </span>
+      </li>
+      <li>退货凭证：</li>
+    </ul>
+    <div class="xccontent" style="padding-top:0;">
+      <ul class="sctu">
+        <#list rsPicList as rp>
+          <li><img src="${rc.contextPath}/upload/orderBack/${rp.picFileName!''}"></li>
+        </#list>
+    </div>
+  </div>
+</#if>
+
+<div class="snyg_footer" page="1"></div>
+
+<!--预订menu开始-->
+<nav class="snyg_nav" page="1">
+  <#if orderBack.backGoodsStatus?? && orderBack.backGoodsStatus == "0">
+    <a onclick="toPage('2')" title=""><span class="orange_btn wid1" >寄回</span></a>
+  </#if>
+</nav>
+
+
+<!--************************************-->
+
+
+<!--header 开始-->
+<div class="snyg_headdiv" page="2">
+  <span class="ico_ret"><a href="#"><img src="${rc.contextPath}/wx/images/return.png" ></a></span>
+  <h2>退换货寄回</h2>
+  <span class="ico_home"><a href="#"><img src="${rc.contextPath}/wx/images/gruser.png"></a></span>
+</div>
+<!--header 结束-->
+<form action="wxorder?method=sendGoods" method="post" id="sendGoods">
+  <input id="backId" type="hidden" name="backId" value="${orderBack.backId!''}">
+  <div class="snyg_contentb" page="2">
+    <div class="ddbt_title">
+      <a href="">发货信息</a>
+    </div>
+    <div class="snyg_xccon" style="padding:0;">
+      <p>
+        <select name="backGoodsEpmeCompany" autocomplete="off"  id="backGoodsEpmeCompany" class=" data-inputtxt-select">
+          <option value="">请选择快递公司</option>
+          <#list expressList as li>
+            <option value="${li.mapKey!''}">${li.mapValue!''}</option>
+          </#list>
+        </select>
+      <p><input id="backGoodsEpmeOrdCode" autocomplete="off" class="txt-input0" type="text" placeholder="请填写发货单号" value="" name="backGoodsEpmeOrdCode" ></p>
+    </div>
+  </div>
+</form>
+
+<div class="snyg_contentb" page="2">
+  <div class="ddbt_title">
+    <a href="">退换货信息</a>
+  </div>
+  <div class="thhxx"><span class="f4">收货地址：</span>${orderBack.backGoodsAddr!''}</div>
+
+  <div class="thhxx"><span class="f4">收货人：</span>${orderBack.backGoodsName!''}</div>
+
+  <div class="thhxx"><span class="f4">联系电话：</span>${orderBack.backGoodsPhone!''}</div>
+
+</div>
+<div align="center" page="2">
+  <button class="btn_big_h" onclick="toPage('1')">取消</button>
+  <button class="btn_big_g" onclick="sendGoods()">确定寄回</button>
+</div>
+
+<script>
+  //切换页面
+  function toPage(page)
+  {
+    $("[page]").hide();
+    $("[page="+page+"]").show();
+  }
+  toPage('1');
+
+  //发送货物
+  function sendGoods()
+  {
+    if($("#backGoodsEpmeCompany").val() == "")
+    {
+      Alert.show3sMsg("请选择快递公司");
+      return false;
+    }
+    if($("#backGoodsEpmeOrdCode").val() == "")
+    {
+      Alert.show3sMsg("请填写发货单号");
+      return false;
+    }
+    $("#sendGoods").submit();
+  }
+</script>
+
+
+</body>
+</html>

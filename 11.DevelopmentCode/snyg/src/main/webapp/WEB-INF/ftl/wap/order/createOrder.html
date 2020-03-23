@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/WX_INC_HEAD.html">
+  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+  <script src="${rc.contextPath}/js/pay.js"></script>
+</head>
+<body>
+
+<input type="hidden" id="userId" value="${user.userId!''}">
+<input type="hidden" id="userLoginName" value="${user.userLoginName!''}">
+<div id="price" style="display: none">${price!''}</div>
+<input type="hidden" id="consigneeId" value="">
+
+<!--header 开始-->
+<!--<div class="snyg_headdiv">-->
+  <!--<span class="ico_ret"><a onclick="javascript:history.back(-1);"><img src="images/return.png" ></a></span>-->
+  <!--<h2>待付款订单</h2>-->
+  <!--<span class="ico_home"><a onclick="toPersonal();"><img src="images/gruser.png"></a></span>-->
+<!--</div>-->
+<!--header 结束-->
+<div class="snyg_contentb">
+
+  <ul class="dddz_list">
+  </ul>
+</div>
+<ul class="one_sp_list">
+  <#list orderListList as oll>
+  <li class="lics" priceId="${oll.priceId!''}" transFee="${oll.goodsPrice.freight!'0'}" price="${oll.sellPrice.price!''}" cartId="${oll.cartId!''}" >
+    <div class="iconleft">
+      <div class="leftdivf" style="display: none;">
+        <label>
+          <input type="checkbox" id="${oll.priceId!''}" value="1" hidden/>
+          <label for="${oll.priceId!''}" class="check"></label>
+        </label>
+      </div>
+
+      <div class="icon">
+        <a onclick="toSellPrice('${oll.priceId!''}')"><img title="" src="${rc.contextPath}/upload/wxpic/${oll.goodsPrice.thumbPic!''}" alt="" /></a>
+      </div>
+    </div>
+    <div class="info">
+      <a onclick="toSellPrice('${oll.priceId!''}')"><h4>${oll.commproduct.productName!''}</h4></a>
+      <p class="txt1"><span class="f4">${oll.goodsPrice.priceName!''}</span><span class=" fr f2" style="display: none;">运费  包邮</span></p>
+      <p class="txt"><span class="f2">&yen;${oll.sellPrice.price!''}</span></p>
+      <div class="sl">
+        <button class="btnhui" onclick="changeNum(this,1)"></button>
+        <input type="text" readonly="readonly" class="input_sl" value="${oll.num!'1'}">
+        <button class="btnadd" onclick="changeNum(this,2)"></button>
+      </div>
+    </div>
+  </li>
+  </#list>
+</ul>
+
+<div class="snyg_contentb">
+  <div class="ddbt_title">
+    <a href="">费用合计<span class="hjjg" id="total">&yen;0.00</span></a>
+  </div>
+  <div class="zfbtx">
+    商品合计<span id="totalPrice">&yen;0.00</span>
+  </div>
+  <div class="zfbtx">
+    运费合计<span id="totalTransFee">&yen;0.00</span>
+  </div>
+</div>
+
+<!--<div class="snyg_contentb" style="display: none;">-->
+  <!--<div class="ddbt_title">-->
+    <!--<a href="">优惠券</a>-->
+  <!--</div>-->
+  <!--<div class="jtdiv">-->
+    <!--夏日清凉满减优惠-->
+    <!--<span class="f1">-&yen;1200</span>-->
+  <!--</div>-->
+  <!--<div class="jtdiv">-->
+    <!--夏日清凉满减优惠-->
+    <!--<span class="f2">暂无可用优惠券</span>-->
+  <!--</div>-->
+<!--</div>-->
+<div class="snyg_contentb">
+  <div class="ddbt_title">
+    <a href="">买家留言</a>
+  </div>
+  <div class="zfbtcon">
+    <textarea id="memo" cols="" rows="" class="txt-textarea" placeholder="请填写备注"></textarea>
+  </div>
+</div>
+<div class="snyg_footer"></div>
+
+<!--预订menu开始-->
+<nav class="snyg_nav">
+  <span class="wid2 text_c"><p class="f2 lh24">合计：<b id="totalPay">&yen;235.00</b></p><p class="tswz">含运费</p></span>
+  <a onclick="createOrder()"><span class="green_btn wid3" >提交订单</span></a>
+</nav>
+
+<iframe runat="server" id="ifa" src="" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" style="display: none;-webkit-overflow-scrolling: touch;-webkit-overflow:auto;"></iframe>
+<!--预订menu结束-->
+<script>
+  var consigneeObj = null;
+  var pay = null;
+  $(function () {
+    var queryObject = new Object();
+    queryObject.userId = $("#userId").val();
+    queryObject.defaultFirst = "1"; //默认地址排前边
+    getUserConsignee(queryObject); //获取用户信息以后，获取收货地址
+  })
+
+  //获取服务器收货地址详情
+  function getUserConsignee(queryData)
+  {
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "wxorder?method=getUserConsignee",
+      data: queryData,
+      success: function (data) {
+        var html;
+        if(data.length == 0)
+        {
+          html = '<div align="center"><a onclick="selectConsignee()"><button class="btn-big">+ 新增收货地址</button></a></div>';
+          $("#consigneeId").val("");
+        }else
+        {
+          html = '<li>'
+              + '<h2>'+ data[0].custName
+              + '<span>'+ data[0].custPhone + '</span>'
+              + '<a onclick="selectConsignee()"><button class="edit_btn2"></button></a>'
+              + '</h2>'
+              + '<p class="txt">'  + data[0].pcx + data[0].recAddress + '</p>'
+              + '</li>';
+          $("#consigneeId").val(data[0].consigneeId);
+        }
+        $(".dddz_list").html(html);
+        calculation();
+      }
+    });
+  }
+
+  //获取服务器快递费用信息
+  function getPriceExpress(priceId,num)
+  {
+    var transFee = null;
+    if($("#consigneeId").val() != "")
+    {
+      var queryObj = new Object();
+      queryObj.consigneeId = $("#consigneeId").val();
+      queryObj.priceId = priceId;
+      queryObj.num = num;
+      $.ajax({
+        type: "POST",
+        async: false,
+        dataType: "json",
+        url: "wxorder?method=getPriceExpress",
+        data: queryObj,
+        success: function (data) {
+          if(data.resultCode == '0')
+          {
+            transFee = data.resultPojo.expressFee;
+          }else
+          {
+            Alert.show3sMsg(data.resultMsg);
+          }
+        }
+      });
+    }
+    return transFee;
+  }
+
+  //重新选择收货地址
+  function addConsignee() {
+    $(".snyg_contentb").hide();
+    $(".one_sp_list").hide();
+    $(".snyg_footer").hide();
+    $(".snyg_nav").hide();
+    document.getElementById('ifa').style.minHeight = $(document).height()+"px";
+//    alert(primary);
+
+    $("#ifa").attr("src","wx?method=toAddConsignee&userId="+ $("#userId").val());
+    $("#ifa").show();
+  }
+
+  //重新选择收货地址
+  function selectConsignee() {
+    $(".snyg_contentb").hide();
+    $(".one_sp_list").hide();
+    $(".snyg_footer").hide();
+    $(".snyg_nav").hide();
+    document.getElementById('ifa').style.minHeight = $(document).height()+"px";
+//    $("#ifa").contentWindow.location.replace("wx?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
+    $("#ifa").attr("src","wx?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
+    $("#ifa").show();
+  }
+
+  //重新选中收货地址结果
+  function selectConsigneeResult(consigneeId)
+  {
+    $(".snyg_contentb").show();
+    $(".one_sp_list").show();
+    $(".snyg_footer").show();
+    $(".snyg_nav").show();
+    $("#ifa").hide();
+
+    var queryObject = new Object();
+    queryObject.consigneeId = consigneeId;
+    getUserConsignee(queryObject); //获取用户信息以后，获取收货地址
+  }
+
+  //加减数量 type = 1减 ；type = 2加
+  function changeNum(obj,type){
+    var inputText = null;
+    var subButton = null;
+    var addButton = null;
+    var num = null;
+    if(type == 1)
+    {
+      subButton = obj;
+      inputText = $(subButton).next();
+      addButton = $(inputText).next();
+      num = $(inputText).val();
+      num--;
+    }else if(type == 2)
+    {
+      addButton = obj;
+      inputText = $(addButton).prev();
+      subButton = $(inputText).prev();
+      num = $(inputText).val();
+      num++;
+    }
+    if(num < 1) //不算
+    {
+      $(inputText).val("1");
+    }else
+    {
+      $(inputText).val(num);
+    }
+    calculation();
+  }
+
+  //计算金额
+  function calculation() {
+    var totalPrice = 0; //总商品费用
+    var totalTransFee = 0; //总运费
+    $(".lics").each(function () {
+      var price = parseFloat($(this).attr("price"));
+      var num = parseInt($(this).find(".input_sl").eq(0).val());
+      var transFee = getPriceExpress($(this).attr("priceId"),num);
+      if(transFee == null)
+      {
+        $("#total").html("&yen;未知");
+        $("#totalPrice").html("&yen;未知");
+        $("#totalTransFee").html("&yen;未知");
+        $("#totalPay").html("&yen;未知");
+        return;
+      }
+      totalPrice = parseFloat(totalPrice + price*num);
+      totalTransFee = parseFloat(totalTransFee + parseFloat(transFee));
+    });
+
+    var total = (totalPrice + totalTransFee).toFixed(2);
+    totalPrice = totalPrice.toFixed(2);
+    totalTransFee = totalTransFee.toFixed(2);
+
+    $("#total").html("&yen;"+total);
+    $("#totalPrice").html("&yen;"+totalPrice);
+    $("#totalTransFee").html("&yen;"+totalTransFee);
+    $("#totalPay").html("&yen;"+total);
+  }
+
+  function createOrder() {
+    if($("#consigneeId").val() == "")
+    {
+      Alert.show3sMsg("请添加收货地址");
+      return false;
+    }
+    Alert.loading();
+//  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+    var param = new Object();
+    param.consigneeId = $("#consigneeId").val();
+    param.userId = $("#userId").val();
+    param.memo = $("#memo").val();
+    var priceHtml = $("#price").html();
+    if(priceHtml != "")
+    {
+      param.price = JSON.parse(priceHtml);
+    }
+
+    var orderListList = new Array();
+    $(".lics").each(function () {
+      var orderList = new Object();
+      orderList.priceId = $(this).attr("priceId");
+      orderList.num = $(this).find(".input_sl").eq(0).val();
+      orderList.cartId = $(this).attr("cartId");
+      orderListList.push(orderList);
+    });
+    param.orderListList = orderListList;
+
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "wxorder?method=createOrders",
+      data: {
+        param:JSON.stringify(param)
+      },
+      success: function (data) {
+        if(data.resultCode == "1") //创建订单失败
+        {
+          Alert.closedLoading();
+          Alert.show3sMsg(data.resultMsg);
+        }else {
+          createOrderSuccess();
+          pay = new Pay();
+          pay.payMethod =pay.PAY_METHOD_WX;
+          var payInfoParam = new Object();
+          payInfoParam.openId = $("#userLoginName").val();
+          payInfoParam.spId = currentSpId;
+          payInfoParam.platformOrders = data.resultPojo[0].orderId;
+          for (var i = 1; i < data.resultPojo.length; i++) {
+            payInfoParam.platformOrders = payInfoParam.platformOrders + ","
+                + data.resultPojo[i].orderId;
+          }
+          pay.getPayInfo(payInfoParam);
+          Alert.closedLoading();
+          doPay();
+        }
+      }
+    });
+  }
+
+  /**
+   * 创建订单成功后执行
+   */
+
+   function createOrderSuccess()
+   {
+     //不能编辑收获地址
+      $(".edit_btn2").parent().remove();
+      //不能增减数量
+     $(".btnhui").remove();
+     $(".btnadd").remove();
+     //不能编辑备注
+      $("#memo").attr("readonly","readonly");
+      //按钮修改为支付
+     $(".green_btn").html("支付");
+     $(".green_btn").parent().attr("onclick","doPay()");
+
+   }
+
+   function doPay()
+   {
+     if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+     {
+       pay.havePayed = function(){
+         toOrderList("0");
+       }
+       pay.checkPayed();
+       pay.toPay();
+     }else
+     {
+       Alert.show3sMsg(pay.payInfo.resultMsg);
+     }
+   }
+</script>
+
+
+</body>
+</html>

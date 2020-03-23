@@ -30,7 +30,7 @@
             <h3>帐号登录</h3>
             <!-- tab con s -->
             <form action="login" method="post" id="syslogin">
-                <input type="hidden" name="loginPage" value="web">
+                <input type="hidden" name="loginPage" value="${loginPage!'web'}">
                 <!-- 输入框 -->
                 <label class="labelbox">
                     <input class="validate[required]" autocomplete="off" type="text" name="userLoginName" id="userLoginName" placeholder="请输入用户名" value="${(user.userLoginName)!''}">
@@ -53,7 +53,7 @@
             <input class="btnadpt" id="login-button" type="submit" value="登录">
 
             <div class="n_links_area" id="custom_display_64">
-                <a class="outer-link" href="toNewUser">立即注册</a><span style="display: none;">|</span>
+                <a class="outer-link" href="toNewUser?loginPage=${loginPage!'web'}">立即注册</a><span style="display: none;">|</span>
                 <a class="outer-link" href="wjmm.html" style="display: none;">忘记密码</a>
             </div>
             <!-- 其他登录方式 s -->
