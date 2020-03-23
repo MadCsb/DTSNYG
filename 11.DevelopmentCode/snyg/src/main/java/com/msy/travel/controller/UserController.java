@@ -1,5 +1,6 @@
 package com.msy.travel.controller;
 
+import com.msy.travel.common.Consts;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.pojo.*;
 
@@ -20,6 +21,7 @@ import net.sf.json.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
@@ -84,10 +86,23 @@ public class UserController extends BaseController {
 	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("login");
-			if ("web".equals(loginPage))
+			if (loginPage == null || loginPage.trim().equals(""))
 			{
-				view = new ModelAndView("web/personal/login");
+				loginPage = Consts.LOGIN_PAGE_MP;
+			}
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage)) //跳转web登录
+			{
+				view = new ModelAndView("web/login");
+				view.addObject("loginPage",Consts.LOGIN_PAGE_WEB);
+
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) //跳转wap登录
+			{
+				view = new ModelAndView("wap/login");
+				view.addObject("loginPage",Consts.LOGIN_PAGE_WAP);
+			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage)) //跳转管理后台登录
+			{
+				view = new ModelAndView("login");
+				view.addObject("loginPage",Consts.LOGIN_PAGE_MP);
 			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -98,14 +113,25 @@ public class UserController extends BaseController {
 
 
 	/**
-	 * 跳转登陆页面
+	 * 跳转注册用户
 	 * @return
 	 */
 	@RequestMapping(value = "/toNewUser")
-	public ModelAndView toNewUser(HttpServletRequest request) {
+	public ModelAndView toNewUser(HttpServletRequest request,String loginPage) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("web/personal/zhuce");
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
+			{
+				view = new ModelAndView("web/zhuce");
+				view.addObject("loginPage",Consts.LOGIN_PAGE_WEB);
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+			{
+				view = new ModelAndView("wap/zhuce");
+				view.addObject("loginPage",Consts.LOGIN_PAGE_WAP);
+			}else
+			{
+				throw new Exception("不支持注册");
+			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);
@@ -120,45 +146,31 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/newUser")
-	public ModelAndView newUser(HttpServletRequest request, HttpServletResponse response, User user) {
+	public ModelAndView newUser(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
 
 			if (user.getUserLoginName() == null || user.getUserLoginName().trim().equals("")) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "请输入用户名");
-				view.addObject("user", user);
+				throw new LogicException("请输入用户名");
 			} else if (user.getUserPwd() == null || user.getUserPwd().trim().equals("")) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "请输入密码");
-				view.addObject("user", user);
+				throw new LogicException("请输入密码");
 			} else if (user.getUserNewPwd() == null || user.getUserNewPwd().trim().equals("")) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "请输入确认密码");
-				view.addObject("user", user);
+				throw new LogicException("请输入确认密码");
 			} else if (!user.getUserPwd().trim().equals(user.getUserNewPwd().trim())) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "两次输入密码不一致!");
-				view.addObject("user", user);
+				throw new LogicException("两次输入密码不一致");
 			}else	if (null == user.getSecurityCode()
 					|| user.getSecurityCode().equals("")
 					|| request.getSession().getAttribute("rand") == null) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "请输入验证码");
-				view.addObject("user",user);
+				throw new LogicException("请输入验证码");
 			} else if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
-				view = new ModelAndView("web/personal/zhuce");
-				view.addObject("errorMsg", "验证码错误");
-				view.addObject("user",user);
+				throw new LogicException("验证码错误");
 			} else {
 				User userTmp = new User();
 				userTmp.setUserLoginName(user.getUserLoginName().trim());
 				List<User> userList = userService.queryUserList(userTmp);
 				if(userList.size()!=0)
 				{
-					view = new ModelAndView("web/personal/zhuce");
-					view.addObject("errorMsg", "登录名已存在，请修改后重试!");
-					view.addObject("user", user);
+					throw new LogicException("登录名已存在，请修改后重试!");
 				}else
 				{
 					String time = DateTimeUtil.getDateTime19();
@@ -179,10 +191,31 @@ public class UserController extends BaseController {
 					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
-					WebUtils.issueRedirect(request, response, "/webPersonal?method=index");
+					if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
+					{
+						WebUtils.issueRedirect(request, response, "/webPersonal?method=index");
+					}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+					{
+						WebUtils.issueRedirect(request, response, "/wapPersonal?method=index");
+					}else
+					{
+						throw new Exception("不支持改用户登录");
+					}
 				}
 			}
-		} catch (Exception e) {
+		}catch (LogicException le)
+		{
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
+			{
+				view = new ModelAndView("/web/zhuce");
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+			{
+				view = new ModelAndView("wap/zhuce");
+			}
+			view.addObject("loginPage",loginPage);
+			view.addObject("errorMsg", le.getMessage());
+			view.addObject("user", user);
+		}catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);
 		}
@@ -200,17 +233,6 @@ public class UserController extends BaseController {
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
 		ModelAndView view = null;
 		try {
-			if ("web".equals(loginPage))
-			{
-				view = new ModelAndView("redirect:/webPersonal.do?method=index");
-			}else
-			{
-				view = new ModelAndView("main");
-			}
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) != null) {
-				return view;
-			}
-
 			if (null == user.getSecurityCode() || request.getSession().getAttribute("rand") == null) {
 				throw new LogicException("请输入验证码");
 			}
@@ -220,31 +242,52 @@ public class UserController extends BaseController {
 
 			UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
 			Subject subject = SecurityUtils.getSubject();
-			try {
-				subject.login(token);
-			} catch (Exception e) {
-				throw new LogicException(e.getMessage());
+			subject.login(token);
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
+			{
+				view = new ModelAndView("redirect:/webPersonal.do?method=index");
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+			{
+				view = new ModelAndView("redirect:/wapPersonal.do?method=index");
+			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
+			{
+				view = new ModelAndView("main");
 			}
 		}catch (LogicException le)
 		{
-			if ("web".equals(loginPage))
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
 			{
-				view = new ModelAndView("web/personal/login");
-			}else
+				view = new ModelAndView("web/login");
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+			{
+				view = new ModelAndView("wap/login");
+			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
 			{
 				view = new ModelAndView("login");
 			}
+			view.addObject("user",user);
+			view.addObject("loginPage",loginPage);
 			view.addObject("errorMsg",le.getMessage());
-		}catch (Exception e)
+		}catch (AuthenticationException ae)
 		{
-			if ("web".equals(loginPage))
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
 			{
-				view = new ModelAndView("web/personal/login");
-			}else
+				view = new ModelAndView("web/login");
+			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
+			{
+				view = new ModelAndView("wap/login");
+			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
 			{
 				view = new ModelAndView("login");
 			}
-			view.addObject("errorMsg","系统异常");
+			view.addObject("user",user);
+			view.addObject("loginPage",loginPage);
+			view.addObject("errorMsg",ae.getMessage());
+		}
+		catch (Exception e)
+		{
+			view = new ModelAndView("error");
+			log.error(e, e);
 		}
 		return view;
 	}
@@ -275,8 +318,14 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/logout")
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String loginPage) {
-		ModelAndView view = new ModelAndView("redirect:/tologin");
-		if ("web".equals(loginPage))
+		ModelAndView view = null;
+		if (Consts.LOGIN_PAGE_MP.equals(loginPage))
+		{
+			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
+		}else if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
+		{
+			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
+		}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
 		{
 			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
 		}

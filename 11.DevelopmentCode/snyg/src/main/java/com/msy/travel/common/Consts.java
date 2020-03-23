@@ -36,6 +36,23 @@ public class Consts {
 	public static final String WX_ARTICLE_FOLDER_NAME = "article";
 
 	/**
+	 * 登录页面-wx 微信
+	 */
+	public static final String LOGIN_PAGE_WX = "wx";
+	/**
+	 * 登录页面-WEB 网页
+	 */
+	public static final String LOGIN_PAGE_WEB = "web";
+	/**
+	 * 登录页面-WAP 移动网页
+	 */
+	public static final String LOGIN_PAGE_WAP = "wap";
+	/**
+	 * 登录页面-Management platform 管理平台
+	 */
+	public static final String LOGIN_PAGE_MP = "mp";
+
+	/**
 	 * 判断一个字符是否是中文
 	 * 
 	 * @author KDurant

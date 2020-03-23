@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <#include "WAP_INC_HEAD.html">
+</head>
+<body>
+            <form action="login" method="post" id="syslogin">
+                <input type="hidden" name="loginPage" value="${loginPage!'wap'}">
+                <!-- 输入框 -->
+                <label class="labelbox">
+                    <input class="validate[required]" autocomplete="off" type="text" name="userLoginName" id="userLoginName" placeholder="请输入用户名" value="${(user.userLoginName)!''}">
+                </label>
+
+                <label class="labelbox">
+                    <input class="validate[required] item_account" type="password" placeholder="请输入密码" autocomplete="off" id="userPwd" name="userPwd" value="${(user.userPwd)!''}">
+                </label>
+
+
+                <label class="labelbox">
+                    <input type="text" name="securityCode" maxlength="4" class="validate[required] text w180" placeholder="输入验证码" id="securityCode" value="" style="color: rgb(187, 187, 187); width:180px; display:inline-block;">
+                    <span style="float:right; margin-top:10px; margin-right:10px;">
+                        <img  src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()" >
+                    </span>
+                </label>
+                <#if errorMsg??>
+                <p style="color:orange">${errorMsg!''}</p>
+            </#if>
+            <input class="btnadpt" id="login-button" type="submit" value="登录">
+            </form>
+
+</body>
+<script type="text/javascript">
+    $( function() {
+        replaceCode();
+        $("#syslogin").validationEngine({
+            validationEventTrigger : "blur"
+        });
+    });
+
+    $("#syslogin").validationEngine({
+        validationEventTrigger : "blur"
+    });
+
+    //点击更换验证码
+    function replaceCode()
+    {
+        d = new Date().getTime();
+        document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
+    };
+</script>
+</head>
