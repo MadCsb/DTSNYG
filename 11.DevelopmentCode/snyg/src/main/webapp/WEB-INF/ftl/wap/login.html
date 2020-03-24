@@ -2,51 +2,95 @@
 
 <html>
 <head>
-    <#include "WAP_INC_HEAD.html">
+
+  <link href="${rc.contextPath}/wap/css/wsc-3n1g.css" rel="stylesheet" />
+  <link href="${rc.contextPath}/wap/js/flexslider/flexslider.css" rel="stylesheet" />
+  <script src="${rc.contextPath}/wap/js/jquery-1.9.1.min.js"></script>
+  <script src="${rc.contextPath}/wap/js/flexslider/jquery.flexslider-min.js"></script>
+  <script src="${rc.contextPath}/wap/js/default.js"></script>
+  <script type="text/javascript" src="${rc.contextPath}/wap/js/scrolltopcontrol.js"></script>
+  <style>
+    .snyg_xccon p { margin-bottom:6px;}
+  </style>
 </head>
-<body>
-            <form action="login" method="post" id="syslogin">
-                <input type="hidden" name="loginPage" value="${loginPage!'wap'}">
-                <!-- 输入框 -->
-                <label class="labelbox">
-                    <input class="validate[required]" autocomplete="off" type="text" name="userLoginName" id="userLoginName" placeholder="请输入用户名" value="${(user.userLoginName)!''}">
-                </label>
-
-                <label class="labelbox">
-                    <input class="validate[required] item_account" type="password" placeholder="请输入密码" autocomplete="off" id="userPwd" name="userPwd" value="${(user.userPwd)!''}">
-                </label>
-
-
-                <label class="labelbox">
-                    <input type="text" name="securityCode" maxlength="4" class="validate[required] text w180" placeholder="输入验证码" id="securityCode" value="" style="color: rgb(187, 187, 187); width:180px; display:inline-block;">
-                    <span style="float:right; margin-top:10px; margin-right:10px;">
-                        <img  src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()" >
-                    </span>
-                </label>
-                <#if errorMsg??>
-                <p style="color:orange">${errorMsg!''}</p>
-            </#if>
-            <input class="btnadpt" id="login-button" type="submit" value="登录">
-            </form>
-
+<body style="background:#f6f6f8;">
+    <input type="hidden" name="loginPage" value="${loginPage!'wap'}">
+    <div><img src="wap/images/logobg.jpg" width="100%"></div>
+    <div class="snyg_content">
+      <h2 align="center" style="margin-top:12px;">用户登录</h2>
+      <div class="snyg_xccon" style="background:transparent;">
+        <p><input name="userLoginName" id="userLoginName" autocomplete="off" class="txt-input xm" type="text" placeholder="请输入用户名"></p>
+        <p><input id="userPwd" name="userPwd" autocomplete="off" class="txt-input mm1" type="password" placeholder="请输入密码"></p>
+        <p style="position:relative;">
+          <input id="securityCode" name="securityCode" autocomplete="off" class="txt-input yzm" type="text" placeholder="请输入验证码">
+          <span style=" position:absolute;top:4px; right:0;">
+            <img src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()">
+          </span>
+        </p>
+        <div class="f2">
+          <span style="vertical-align: middle; margin-left:10px;" id="errorMsg">用户名和密码区分大小写，请确认大小写功能是否打开</span>
+        </div>
+      </div>
+    </div>
+    <a><div align="center"><button class="btn-big"  style="width:80%; margin-top:0;" onclick="doLogin()">登录</button></div></a>
+    <a href="toNewUser?loginPage=${loginPage!'wap'}"><div align="center">立即注册</div></a>
 </body>
 <script type="text/javascript">
     $( function() {
         replaceCode();
-        $("#syslogin").validationEngine({
-            validationEventTrigger : "blur"
-        });
     });
-
-    $("#syslogin").validationEngine({
-        validationEventTrigger : "blur"
-    });
-
     //点击更换验证码
     function replaceCode()
     {
         d = new Date().getTime();
         document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
     };
+
+    function beforeSubmit() {
+      console.log(1)
+      if($("#userLoginName").val() == '')
+      {
+        $("#errorMsg").html("请输入用户名");
+        return false;
+      }else if($("#userPwd").val() == '')
+      {
+        $("#errorMsg").html("请输入密码");
+        return false;
+      }else if($("#securityCode").val() == '')
+      {
+        $("#errorMsg").html("请输入验证码");
+        return false;
+      }
+      console.log(2);
+      return false;
+//      $("#syslogin").submit();
+    }
+
+    function doLogin() {
+        var userLoginName = $("#userLoginName").val();
+        var userPwd = $("#userPwd").val();
+        var securityCode = $("#securityCode").val();
+        $.ajax({
+          type: "POST",
+          url: "login",
+          dataType:"json",
+          data: {
+            userLoginName: userLoginName,
+            userPwd: userPwd,
+            securityCode: securityCode
+          },
+          success: function (data) {
+            if(data.resultCode == '0')
+            {
+              window.location.href = "wapPersonal.do?method=index";
+            }else
+            {
+              $("#errorMsg").html(data.resultMsg);
+              replaceCode()
+            }
+          }
+        })
+    }
+
 </script>
 </head>

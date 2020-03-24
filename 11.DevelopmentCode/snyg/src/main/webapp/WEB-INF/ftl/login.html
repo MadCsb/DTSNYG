@@ -19,10 +19,10 @@
 			<h4>三农壹购管理平台</h4>
 			<ul class="ulinfo">
 				<li>
-					<input id="userName" name="userLoginName" type="text" class="validate[required] u-input" value="" placeholder="请输入您的用户名" />
+					<input id="userLoginName" name="userLoginName" type="text" class="validate[required] u-input" value="" placeholder="请输入您的用户名" />
 				</li>
 				<li>
-					<input id="userPWD" name="userPwd" type="password" class="validate[required] p-input" value="" placeholder="请输入您的密码" />
+					<input id="userPwd" name="userPwd" type="password" class="validate[required] p-input" value="" placeholder="请输入您的密码" />
 					<div id="capital" style="display:none;color:#fe8b69;position: absolute;top:22px;right: 55px; font-size:12px;">大写锁定已开启</div>
 				</li>
 				<li>
@@ -31,15 +31,11 @@
 				</li>
 				<li>
 					<!---错误提示信息，默认不显示---->
-				<#if errorMsg??&&errorMsg!=''>
-					<p class="wrong-tip">${errorMsg!''}</p>
-				<#else>
-					<p class="wrong-tip">用户名和密码区分大小写，请确认大小写功能是否打开</p>
-				</#if>
+					<p class="wrong-tip" id="errorMsg">用户名和密码区分大小写，请确认大小写功能是否打开</p>
 				</li>
 				<li>
 					<section class="button-demo">
-					<button class="ladda-button" type="submit" data-color="green" data-style="expand-left">登录</button></section>
+					<button class="ladda-button" type="button" onclick="doLogin()" data-color="green" data-style="expand-left">登录</button></section>
 				</li>
 			</ul>
 			<h4>版本号：V1.0.0.0</h4>
@@ -154,6 +150,33 @@ window.onload=function(){
 	setTimeout("replaceCode()", 100);
 }
 
+function doLogin() {
+  if ($("#syslogin").validationEngine('validate')) {
+    var userLoginName = $("#userLoginName").val();
+    var userPwd = $("#userPwd").val();
+    var securityCode = $("#securityCode").val();
+    $.ajax({
+      type: "POST",
+      url: "login",
+      dataType:"json",
+      data: {
+        userLoginName: userLoginName,
+        userPwd: userPwd,
+        securityCode: securityCode
+      },
+      success: function (data) {
+        if(data.resultCode == '0')
+				{
+					window.location.href = "main";
+				}else
+				{
+				  $("#errorMsg").html(data.resultMsg);
+          replaceCode()
+				}
+      }
+    })
+  }
+}
 </script>
 
 

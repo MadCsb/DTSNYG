@@ -1,7 +1,9 @@
 package com.msy.travel.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.Consts;
 import com.msy.travel.common.LogicException;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.*;
 
 import java.io.PrintWriter;
@@ -146,8 +148,8 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/newUser")
-	public ModelAndView newUser(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
-		ModelAndView view = null;
+	public void newUser(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+		Result result = new Result();
 		try {
 
 			if (user.getUserLoginName() == null || user.getUserLoginName().trim().equals("")) {
@@ -191,35 +193,29 @@ public class UserController extends BaseController {
 					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
-					if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-					{
-						WebUtils.issueRedirect(request, response, "/webPersonal?method=index");
-					}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-					{
-						WebUtils.issueRedirect(request, response, "/wapPersonal?method=index");
-					}else
-					{
-						throw new Exception("不支持改用户登录");
-					}
+					result.setResultCode("0");
+					result.setResultMsg("新增用户成功");
 				}
 			}
 		}catch (LogicException le)
 		{
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-			{
-				view = new ModelAndView("/web/zhuce");
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-			{
-				view = new ModelAndView("wap/zhuce");
-			}
-			view.addObject("loginPage",loginPage);
-			view.addObject("errorMsg", le.getMessage());
-			view.addObject("user", user);
-		}catch (Exception e) {
-			view = new ModelAndView("error");
-			log.error(e, e);
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}catch (AuthenticationException ae)
+		{
+			result.setResultCode("1");
+			result.setResultMsg(ae.getMessage());
+		}	catch (Exception e)
+		{
+			result.setResultCode("1");
+			result.setResultMsg("系统错误");
 		}
-		return view;
+		try {
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
 	}
 
 
@@ -230,9 +226,16 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
-		ModelAndView view = null;
+	public void login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+		Result result = new Result();
 		try {
+			if (null == user.getUserLoginName() ||user.getUserLoginName().equals("")) {
+				throw new LogicException("请输入用户名");
+			}
+			if (null == user.getUserPwd() ||user.getUserPwd().equals("")) {
+				throw new LogicException("请输入密码");
+			}
+
 			if (null == user.getSecurityCode() || request.getSession().getAttribute("rand") == null) {
 				throw new LogicException("请输入验证码");
 			}
@@ -243,52 +246,36 @@ public class UserController extends BaseController {
 			UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
 			Subject subject = SecurityUtils.getSubject();
 			subject.login(token);
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-			{
-				view = new ModelAndView("redirect:/webPersonal.do?method=index");
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-			{
-				view = new ModelAndView("redirect:/wapPersonal.do?method=index");
-			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
-			{
-				view = new ModelAndView("main");
-			}
+			result.setResultCode("0");
+			result.setResultMsg("登录成功");
 		}catch (LogicException le)
 		{
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-			{
-				view = new ModelAndView("web/login");
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-			{
-				view = new ModelAndView("wap/login");
-			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
-			{
-				view = new ModelAndView("login");
-			}
-			view.addObject("user",user);
-			view.addObject("loginPage",loginPage);
-			view.addObject("errorMsg",le.getMessage());
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
 		}catch (AuthenticationException ae)
 		{
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-			{
-				view = new ModelAndView("web/login");
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-			{
-				view = new ModelAndView("wap/login");
-			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage))
-			{
-				view = new ModelAndView("login");
-			}
-			view.addObject("user",user);
-			view.addObject("loginPage",loginPage);
-			view.addObject("errorMsg",ae.getMessage());
+			result.setResultCode("1");
+			result.setResultMsg(ae.getMessage());
 		}
 		catch (Exception e)
 		{
-			view = new ModelAndView("error");
-			log.error(e, e);
+			result.setResultCode("1");
+			result.setResultMsg("系统错误");
 		}
+		try {
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
+	}
+
+	/**
+	 * 跳转到首页
+	 */
+	@RequestMapping(value = "/main")
+	public ModelAndView main(HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("main");
 		return view;
 	}
 

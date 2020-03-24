@@ -1,91 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9,chrome=1">
-	<title>三农壹购</title>
-	<meta name="keywords" content="三农壹购">
-	<meta name="description" content="三农壹购">
-	<script src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
-	<link href="${rc.contextPath}/web/css/base.css" rel="stylesheet" type="text/css">
-	<link href="${rc.contextPath}/web/css/login.css" rel="stylesheet" type="text/css">
-	<script src="${rc.contextPath}/js/snyg.js"></script>
-	<script src="${rc.contextPath}/wx/js/snyg-wx.js"></script>
-	<script type="text/javascript" src="${rc.contextPath}/js/layer.js"></script>
-	<style>
-		input{-webkit-box-flex: 1;
-			-moz-box-flex: 1;
-			box-flex: 1;
-			flex-grow: 1;}
-	</style>
+	<#include "WAP_INC_HEAD.html">
+		<style>
+			.snyg_xccon p { margin-bottom:6px;}
+		</style>
 </head>
-<body>
-<div class="login">
-	<a onclick="toWebIndex()" class="h_logo"></a>
+<body style="background:#f6f6f8;">
+<input type="hidden" name="loginPage" value="${loginPage!'wap'}">
+<div><img src="wap/images/logobg.jpg" width="100%"></div>
+<div class="snyg_content">
+	<h2 align="center" style="margin-top:12px;">用户注册</h2>
+	<div class="snyg_xccon" style="background:transparent;">
+		<p><input id="userLoginName" class="txt-input xm" type="text" placeholder="请输入用户名"></p>
+		<p><input id="userPwd" class="txt-input mm1" type="password" placeholder="请输入密码"></p>
+		<p><input id="userNewPwd" class="txt-input mm1" type="password" placeholder="请确认密码"></p>
+
+		<p style="position:relative;">
+			<input id="securityCode" class="txt-input yzm" type="text" placeholder="请输入验证码">
+			<span style=" position:absolute;top:4px; right:0;">
+     		<img src="${rc.contextPath}/verify_code.jsp" id="picsss" title="更换验证码" onClick="replaceCode()">
+			</span>
+		</p>
+		<label class="labelboxn">
+			<input id="isOk" type="checkbox">我同意
+		</label>
+		<a onClick="openArticle()">《三农壹购平台注册协议》 </a>
+		<div class="f2">
+			<span style="vertical-align: middle; margin-left:10px;" id="errorMsg"></span></div>
+	</div>
 </div>
-<div class="login_banner_panel">
-	<div class="layout_panel">
-		<div class="layout">
-			<!--表单输入登录-->
-			<h3>帐号注册</h3>
-			<!-- tab con s -->
-			<form action="newUser" method="POST" id="zhuceform">
-				<input type="hidden" name="loginPage" value="${loginPage!'wap'}">
-				<!-- 输入框 -->
-				<label class="labelbox">
-					<input class="" autocomplete="off" type="text" name="userLoginName" id="userLoginName" placeholder="请输入用户名3-20位中英文、数字及_、-" value="${(user.userLoginName)!''}">
-				</label>
+<a onclick="toZhuce()"><div align="center"><button class="btn-big"  style="width:80%; margin-top:0;">注册</button></div></a>
 
-				<label class="labelbox">
-					<input class="" type="password" placeholder="请输入密码8-16位英文、数字及标点符号" autocomplete="off" id="userPwd" name="userPwd" value="${(user.userPwd)!''}">
-				</label>
-
-				<label class="labelbox">
-					<input class="" type="password" placeholder="请确认密码8-16位英文、数字及标点符号" autocomplete="off" id="userNewPwd" name="userNewPwd" value="${(user.userNewPwd)!''}">
-				</label>
-
-				<label class="labelbox">
-					<input type="text" name="securityCode" maxlength="4" class="text w180" placeholder="输入验证码" id="securityCode" value="" style="color: rgb(187, 187, 187); width:180px; display:inline-block;">
-					<span style="float:right; margin-top:10px; margin-right:10px;"><img  src="${rc.contextPath}/verify_code.jsp" id="picsss"  title="更换验证码" onClick="replaceCode()" ></span>
-				</label>
-
-				<label class="labelboxn">
-					<input id="isOk" type="checkbox">我同意
-				</label>
-				<a onclick="openArticle()">《三农壹购平台注册协议》 </a>
-
-				<input class="btnadpt" type="button" onclick="beforeSubmit()" value="注册">
-
-				<p style="color:orange;font-size: 12px;" id="errorMsg">
-					<#if errorMsg??>
-					${errorMsg!''}
-				</#if>
-				</p>
-				<div class="n_links_area" id="custom_display_64">
-
-				</div>
-
-			</form>
-			<!-- tab con e -->
-		</div>
-	</div>
-
-
-	<div class="n-footer">
-
-		<div class="nf-link-area clearfix">
-			<p>版权所有-三农壹购-<a class="" target="_blank" href=""><span><img src="${rc.contextPath}/web/images/ghs.png"></span>京ICP备18004270号</a></p>
-		</div>
-	</div>
+<a href="tologin?loginPage=${loginPage!'wap'}"><div align="center">我要登录</div></a>
 	<script>
-		function beforeSubmit() {
-			if( !$("#isOk").is(":checked"))
-			{
-				$("#errorMsg").html("请同意《三农壹购平台注册协议》");
-				return false;
-			}
-			$("#zhuceform").submit();
-		}
+    function toZhuce() {
+      if( !$("#isOk").is(":checked"))
+      {
+        $("#errorMsg").html("请同意《三农壹购平台注册协议》");
+        return false;
+      }
+      var userLoginName = $("#userLoginName").val();
+      var userPwd = $("#userPwd").val();
+      var userNewPwd = $("#userNewPwd").val();
+      var securityCode = $("#securityCode").val();
+      $.ajax({
+        type: "POST",
+        url: "newUser",
+        dataType:"json",
+        data: {
+          userLoginName: userLoginName,
+          userPwd: userPwd,
+          userNewPwd: userNewPwd,
+          securityCode: securityCode
+        },
+        success: function (data) {
+          if(data.resultCode == '0')
+          {
+            window.location.href = "wapPersonal.do?method=index";
+          }else
+          {
+            $("#errorMsg").html(data.resultMsg);
+            replaceCode()
+          }
+        }
+      })
+    }
+
 		//点击更换验证码
 		function replaceCode()
 		{
@@ -93,18 +74,10 @@
 			document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
 		};
 		function openArticle() {
-			var articleId = "4ff9d989845b4fddaf3200dcd01e5367";
-			var url = 'webArticle?method=toArticleContext&articleId='+articleId;
-			layer.open({
-				type : 2,
-				title : '三农壹购平台注册协议',
-				area : [ '830px', '600px'],
-				fix : true,
-				content :url,
-				end: function(){
-				}
-			});
-		}
+      var articleId = "4ff9d989845b4fddaf3200dcd01e5367";
+      var url = 'webArticle?method=toArticleContext&articleId=' + articleId;
+      window.open(url);
+    }
 	</script>
 </div>
 </body>
