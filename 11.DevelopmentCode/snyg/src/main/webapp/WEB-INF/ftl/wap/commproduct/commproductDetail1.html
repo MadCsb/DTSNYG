@@ -40,7 +40,6 @@
 <input type="hidden" id="priceEndDate" name="priceEndDate" value="${commproduct.priceEndDate!''}"/>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
-<input type="hidden" style="width:500px;" id="userId" name="userId" value="${user.userId!''}"/>
 <input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
 
 
@@ -339,7 +338,6 @@ function timer(intDiff){
 
 <form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
-  <input type="hidden" name="userId" value="${user.userId!''}">
 </form>
 <script>
 var alertHtml = "";
@@ -370,8 +368,7 @@ var alertHtml = "";
 	}
 	
 	function getSellPriceList(){
-		$.post("wx?method=queryGoodsPriceListForWx",{
-			userId:$("#userId").val(),
+		$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
 			productId:$("#productId").val(),
 			priceType:$("#priceType").val(),
 			delFlag:'0'
@@ -484,7 +481,7 @@ var alertHtml = "";
 
 	
 	function getPrice1Ref(){
-		$.post("wx?method=queryPrice1RefForJson",{
+		$.post("wapPrice1Ref?method=queryPrice1RefForJson",{
 			'priceId':checkPriceId,
 			'isBegin':'1'
 		},function(data){
@@ -563,7 +560,7 @@ var alertHtml = "";
 	} 
 	
 	function showListByRefPatchCode(refPatchCode){
-		window.location.href="wx.do?method=queryPrice1RefList&userId="+$("#userId").val()+"&refPatchCode="+refPatchCode+"&priceId="+checkPriceId;
+		window.location.href="wapPrice1Ref.do?method=queryPrice1RefList&refPatchCode="+refPatchCode+"&priceId="+checkPriceId;
 	}
 	window.history.go(2);
 	

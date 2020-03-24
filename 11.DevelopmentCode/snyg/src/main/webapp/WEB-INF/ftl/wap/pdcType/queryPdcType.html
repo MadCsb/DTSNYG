@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">
+<#include "../WAP_INC_HEAD.html">   
 
 <style>
 
@@ -63,7 +63,7 @@
     </div>
 
 </div>
-<#include "/wx/WX_FOOTER.html">
+<#include "../WAP_FOOTER.html">   
 <script>
 
 	
@@ -76,7 +76,7 @@
 	
 	
 	function getPdcTypeData(level,ppdcTypeId){
-		$.post("wx?method=getPdcTypeListForWx",{
+		$.post("wapPdcType?method=getPdcTypeListForWx",{
 			spId:$("#spId").val(),
 			level:level,
 			ppdcTypeId:ppdcTypeId
@@ -116,7 +116,7 @@
 	function getDataStr2(data){
 		var str = "";
 		for(var i =0;i<data.length;i++){
-			str+='<li onclick="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wx?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
+			str+='<li onclick="wapPdcType?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"><div class="flimg"><img src=${rc.contextPath}/upload/wxpic/'+data[i].picUrl+'></div><p>'+data[i].typeName+'</p><a class="more" href="wapCommproduct?method=toQueryCommproduct&spId='+$("#spId").val()+'&subType='+data[i].pdcTypeId+'"></a></li>';
 		}
 		return str;
 	}

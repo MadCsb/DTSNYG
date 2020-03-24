@@ -38,7 +38,6 @@
 <a name="aaa"></a>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
-<input type="hidden" style="width:500px;" id="userId" name="userId" value="${user.userId!''}"/>
 <input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
 
 <div class="flexslider" style="margin-top:0;">
@@ -185,7 +184,6 @@
 
 <form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
-  <input type="hidden" name="userId" value="${user.userId!''}">
 </form>
 <script>
 
@@ -204,14 +202,15 @@ var alertHtml = "";
 	
 	function addShopCart(){
 		if(showType == "1"){
-			$.post("wx?method=toAddOrUpdateShopCart",{
-				userId:$("#userId").val(),
+			$.post("wapShopcart?method=toAddOrUpdateShopCart",{
 				priceId:checkPriceId,
 				num:$("#num").val()
 			},function(data){
 				if(data=="success"){
 					closeBottomHtml();
 					Alert.showMsg("加入购物车成功");
+				}else{
+					
 				}
 			});
 		}else{
@@ -220,8 +219,7 @@ var alertHtml = "";
 	}
 	
 	function getSellPriceList(){
-		$.post("wx?method=queryGoodsPriceListForWx",{
-			userId:$("#userId").val(),
+		$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
 			productId:$("#productId").val(),
 			priceType:$("#priceType").val(),
 			delFlag:'0'

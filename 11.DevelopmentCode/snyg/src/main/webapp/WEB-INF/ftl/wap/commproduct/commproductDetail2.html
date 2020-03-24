@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "../WAP_INC_HEAD.html">  >   
+<#include "../WAP_INC_HEAD.html">  
 <script src="${rc.contextPath}/wap/js/default.js"></script>
 <style>
 .flexslider {
@@ -41,7 +41,6 @@
 <input type="hidden" id="priceEndDate" name="priceEndDate" value="${commproduct.priceEndDate!''}"/>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
-<input type="hidden" style="width:500px;" id="userId" name="userId" value="${user.userId!''}"/>
 <input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
 
 <div class="flexslider" style="margin-top:0;">
@@ -332,8 +331,6 @@ function timer(intDiff){
 
 <form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
-  <input type="hidden" name="userId" value="${user.userId!''}">
-<input type="hidden" id="spId" name="spId" value="${spId!''}"/>
 </form>
 <script>
 var alertHtml = "";
@@ -346,7 +343,7 @@ var alertHtml = "";
 	
 	function addShopCart(){
 		if(showType == "1"){
-			$.post("wx?method=toAddOrUpdateShopCart",{
+			$.post("wapShopcart?method=toAddOrUpdateShopCart",{
 				userId:$("#userId").val(),
 				priceId:checkPriceId,
 				num:$("#num").val()
@@ -354,8 +351,6 @@ var alertHtml = "";
 				if(data=="success"){
 					closeBottomHtml();
 					Alert.showMsg("加入购物车成功");
-					//$("#tcyddiv").hide();
-					//$("#alert_show_3").css("height", "290");
 				}
 			});
 		}else{
@@ -364,7 +359,7 @@ var alertHtml = "";
 	}
 	
 	function getSellPriceList(){
-		$.post("wx?method=queryGoodsPriceListForWx",{
+		$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
 			userId:$("#userId").val(),
 			productId:$("#productId").val(),
 			priceType:$("#priceType").val(),

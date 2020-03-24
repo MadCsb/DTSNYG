@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.ResourceCommon;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Accessrecord;
@@ -23,7 +24,6 @@ import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.GoodsPriceService;
@@ -129,11 +129,13 @@ public class WapCommproductController extends BaseController {
 			ol.setOrderListType("0");
 			ol = orderListService.queryGoodPriceCount(ol);
 
-			User user = (User) view.getModel().get("user");
-
 			Accessrecord accessrecord = new Accessrecord();
 			accessrecord.setSpId(commproduct.getSpId());
-			accessrecord.setUserId(user.getUserId());
+			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
+				accessrecord.setUserId("");
+			} else {
+				accessrecord.setUserId(getLoginUser(request).getUserId());
+			}
 			accessrecord.setAccessTime(DateTimeUtil.getDateTime19());
 			accessrecord.setPdcId(commproduct.getProductId());
 			accessrecord.setType("2");
