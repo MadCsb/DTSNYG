@@ -347,6 +347,71 @@ function changeDateType(){
 		$("#dateEnd").removeAttr("name");
 	}
 }
+//复制
+function copyCoupon(couponId){
+	var lock=false;//默认未锁定
+	parent.layer.confirm("确定要复制这条数据？",function(){
+		parent.layer.closeAll();
+		if(!lock){
+           	lock=true;//锁定
+			$.post("coupon?method=toCopyCoupon",{
+				couponId:couponId
+			},function(data){
+				if(data.resultCode=="0"){
+					parent.layer.alert("操作成功",function(){
+						$("#queryFrm").submit();
+
+						parent.layer.closeAll();
+					});
+				}else{
+					parent.layer.alert(data.resultMsg);
+
+					parent.layer.closeAll();
+				}
+			},'json')
+		}
+	})
+}
+
+//修改状态  0草稿，1发布，2暂停，3终止
+function changeStatus(couponId,status){
+	var lock=false;//默认未锁定
+	parent.layer.confirm("确定要修改优惠券状态？",function(){
+		parent.layer.closeAll();
+		if(!lock){
+           	lock=true;//锁定
+			$.post("coupon?method=toChangeCouponStatus",{
+				couponId:couponId,
+				status:status
+			},function(data){
+				if(data.resultCode=='0'){
+					parent.layer.alert("操作成功",function(){
+						$("#queryFrm").submit();
+
+
+						parent.layer.closeAll();
+					});
+				}else{
+					parent.layer.alert(data.resultMsg);
+				}
+			},'json')
+		}
+	})
+}
+
+//复制链接
+function copyUrl(couponId)
+{
+    var Url2=$("#couponUrl"+couponId).val();
+    var oInput = document.createElement('input');
+    oInput.value = Url2;
+    document.body.appendChild(oInput);
+    oInput.select(); // 选择对象
+    document.execCommand("Copy"); // 执行浏览器复制命令
+    oInput.className = 'oInput';
+    oInput.style.display='none';
+    parent.layer.alert('链接复制成功');
+}
 </script>
 </body>
 </html>

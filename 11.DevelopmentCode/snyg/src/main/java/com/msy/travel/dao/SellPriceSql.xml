@@ -604,7 +604,7 @@
 	            </foreach>
 		     </if>
 		     <if test='checkPdc!=null and checkPdc=="2"'>
-				and s.F_PRICEID in (select F_PRICEID from t_sm_couponproduction where F_COUPONID=#{couponId} )
+				and s.F_PRICEID in (select F_USECOUPONID from t_sm_couponproduction where F_COUPONID=#{couponId} )
 		     </if>
 		</where>
 		<if test="entityPage != null">

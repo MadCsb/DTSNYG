@@ -1,4 +1,4 @@
-package com.msy.travel.wx.controller;
+package com.msy.travel.wap.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,9 +32,9 @@ import com.msy.travel.service.SellPriceService;
 
 @Controller
 @Scope(value = "prototype")
-@RequestMapping(value = "/wx")
-public class WxSellPriceController extends BaseController {
-	public static final Log log = LogFactory.getLog(WxSellPriceController.class);
+@RequestMapping(value = "/wapSellPrice")
+public class WapSellPriceController extends BaseController {
+	public static final Log log = LogFactory.getLog(WapSellPriceController.class);
 
 	@Resource(name = "sellPriceServiceImpl")
 	private SellPriceService sellPriceService;

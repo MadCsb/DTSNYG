@@ -1,4 +1,4 @@
-package com.msy.travel.wx.controller;
+package com.msy.travel.wap.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,6 @@ import com.msy.travel.common.EntityPage;
 import com.msy.travel.pojo.Carousel;
 import com.msy.travel.pojo.CarouselItem;
 import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.service.CarouselItemService;
 import com.msy.travel.service.CarouselService;
 import com.msy.travel.service.IDestspService;
@@ -29,16 +28,17 @@ import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 
 /**
- * 微信首页
+ * 浏览器首页
  * 
  * @author Gengb
  * @date 2018年7月19日 上午10:57:02
  */
 @Controller
 @Scope(value = "prototype")
-@RequestMapping(value = "/wx")
-public class WxIndexController extends BaseController {
-	public static final Log log = LogFactory.getLog(WxIndexController.class);
+@RequestMapping(value = "/wap")
+public class WapIndexController extends BaseController {
+	public static final Log log = LogFactory.getLog(WapIndexController.class);
+
 	@Resource(name = "destspServiceImpl")
 	private IDestspService destspService;
 
@@ -58,19 +58,10 @@ public class WxIndexController extends BaseController {
 	public ModelAndView wxIndex(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-
 			String currentDay = DateTimeUtil.getDateTime10();
-			view = new ModelAndView("wx/index");
-
-			wxSetViewObjects(view, request, serviceCode, userService);
-
-			// User user = new User();
-			// user.setUserId("5cb674732c2f488f8bb1f3dc0b6fc8c0");
-			// view.addObject("user", user);
+			view = new ModelAndView("wap/index");
 
 			view.addObject("spId", Destsp.currentSpId);
-			view.addObject("serviceCode", serviceCode);
 			view.addObject("currentDay", currentDay);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -81,9 +72,16 @@ public class WxIndexController extends BaseController {
 	}
 
 	/**
-	 * ajax 获取广告列表
+	 * 获取广告列表
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午7:05:53
+	 * @param carousel
+	 * @param request
+	 * @param response
+	 * @return void
 	 */
-	@RequestMapping(params = "method=wxAjaxCarouselDetail")
+	@RequestMapping(params = "method=wapAjaxCarouselDetail")
 	public void wxAjaxCarouselDetail(Carousel carousel, HttpServletRequest request, HttpServletResponse response) {
 		List<CarouselItem> carouselItemList = new ArrayList<>();
 		try {

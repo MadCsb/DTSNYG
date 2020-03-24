@@ -16,12 +16,12 @@
 				<tr>
 					<td width="13%" class="tdright"><b><font class="f2">*</font>优惠券名称：</b></td>
 					<td width="35%"><input name="name" type="text" class="validate[required,maxSize[100]] data-inputtxt" 
-						id="productName" size="40" />
+						id="productName" size="40"/>
 					</td>
 					<td width="15%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
 					<td width="50%">
-						<label><input name="optainType" id="optainType0" type="radio" value="0"  hidden/><label for="optainType0" class="radiock"></label>商品页领取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	           			<label><input name="optainType" id="optainType1" type="radio" value="1" checked hidden/><label for="optainType1" class="radiock"></label>活动页领取</label>
+						<label><input name="obtainType" id="obtainType1" type="radio" value="1"  hidden/><label for="obtainType1" class="radiock"></label>商品页领取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	           			<label><input name="obtainType" id="obtainType2" type="radio" value="2" checked hidden/><label for="obtainType2" class="radiock"></label>活动页领取</label>
 					</td>
 				</tr>
 				<tr>
@@ -32,7 +32,7 @@
 					<td class="tdright"><b>每日发行量：</b></td>
 					<td>
 						<input name="dayNum" type="text" class="validate[maxSize[10],custom[integer1-9999999999]] data-inputtxt" 
-						id="dayNum" size="40" />
+						id="dayNum" size="40"/>
 					</td>
 				</tr>
 				<tr>
@@ -137,8 +137,8 @@
 			</table>
 			<div class="footerbtn">
 				<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
-				<input name="button3" onclick="beforeSubmit('1');" type="button" class="add-new" id="button3" value="立即发布">
 				<input name="button3" onclick="beforeSubmit('0');" type="button" class="add-new" id="button3" value="保存草稿">
+				<input name="button3" onclick="beforeSubmit('1');" type="button" class="add-new" id="button3" value="立即发布">
 			</div>
 		</form>
 </body>
@@ -215,6 +215,8 @@ function beforeSubmit(type){
 		if(checkDate()){
 			if(couponType == "1"){
 				$("#sellPriceIdList").val("");	
+			}else{
+				$("#useCouponId").val("");
 			}
 			$("#status").val(type);
 			$("#createCoupon").submit();
@@ -375,7 +377,6 @@ function beforeSubmit(type){
 			}
 			str+='<td><a class="ico_btn1" title="删除" href="javascript:void(0);" onclick="delCheckPdc(\''+data[i].priceId+'\')">删除</a>';
 			str+='</td> ';
-            str+='</td> ';
             str+='</tr>';
 		}
 		return str;

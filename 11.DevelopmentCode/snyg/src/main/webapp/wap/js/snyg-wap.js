@@ -4,7 +4,7 @@
  * searchObject
  */
 function toIndex(){
-  window.location.href = "wx?method=wxIndex&spId="+currentSpId;
+  window.location.href = "wap?method=wxIndex&spId="+currentSpId;
 }
 
 /**
@@ -12,7 +12,7 @@ function toIndex(){
  * searchObject
  */
 function toPdcTypeList(){
-  window.location.href = "wx?method=toQueryPdcTypeList&spId="+currentSpId;
+  window.location.href = "wapPdcType?method=toQueryPdcTypeList&spId="+currentSpId;
 }
 
 /**

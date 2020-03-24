@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -22,10 +24,16 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
+import com.msy.travel.pojo.CouponProduction;
 import com.msy.travel.pojo.SaleType;
+import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.pojo.User;
+import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
 import com.msy.travel.service.SaleTypeService;
+import com.msy.travel.service.SellPriceService;
 
 @Controller
 @Scope(value = "prototype")
@@ -38,6 +46,12 @@ public class CouponController extends BaseController {
 
 	@Resource(name = "saleTypeServiceImpl")
 	private SaleTypeService saleTypeService;
+
+	@Resource(name = "sellPriceServiceImpl")
+	private SellPriceService sellPriceService;
+
+	@Resource(name = "couponProductionServiceImpl")
+	private CouponProductionService couponProductionService;
 
 	/**
 	 * 跳转到新增页面
@@ -90,15 +104,40 @@ public class CouponController extends BaseController {
 	public ModelAndView toUpdateCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
+
+			view = new ModelAndView("coupon/updateCoupon");
+
 			Coupon objCoupon = couponService.displayCoupon(coupon);
+
+			if ("2".equals(objCoupon.getCouponType())) {
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setEntityPage(new EntityPage());
+				sellPrice.getEntityPage().setSortField("p.F_SORTNUM ASC,p.F_PRODUCTNAME ASC");
+				sellPrice.getEntityPage().setSortOrder("");
+
+				sellPrice.setDelFlag("0");
+				sellPrice.setSpId(getLoginUser(request).getAccId());
+				sellPrice.setCheckPdc("2");
+				sellPrice.setCouponId(objCoupon.getCouponId());
+
+				List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForCoupon(sellPrice);
+				view.addObject("sellPriceList", sellPriceList);
+			} else {
+				CouponProduction cp = new CouponProduction();
+				cp.setCouponId(objCoupon.getCouponId());
+				List<CouponProduction> couponProductionList = couponProductionService.queryCouponProductionList(cp);
+				if (couponProductionList != null && couponProductionList.size() > 0) {
+					cp = couponProductionList.get(0);
+				}
+				view.addObject("couponProduction", cp);
+			}
 
 			SaleType saleType = new SaleType();
 			saleType.setSpId(getLoginUser(request).getAccId());
 			saleType.setStatus("1");
 			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
-
-			view = new ModelAndView("coupon/updateCoupon");
 			view.addObject("saleTypeList", saleTypeList);
+
 			view.addObject("coupon", objCoupon);
 
 		} catch (Exception e) {
@@ -116,7 +155,7 @@ public class CouponController extends BaseController {
 	public ModelAndView updateCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			couponService.updateCoupon(coupon);
+			couponService.updateCoupon(coupon, getLoginUser(request), request.getParameter("sellPriceIdList"));
 			view = new ModelAndView("success");
 
 		} catch (Exception e) {
@@ -245,4 +284,68 @@ public class CouponController extends BaseController {
 		}
 	}
 
+	/**
+	 * 复制优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午3:58:53
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=toCopyCoupon")
+	public void toCopyCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			result = couponService.copyCoupon(coupon, getLoginUser(request));
+		} catch (Exception e) {
+			log.error(e, e);
+			result.setResultCode("1");
+			result.setResultMsg("程序错误，请稍后再试");
+		}
+		try {
+			response.getWriter().print(JSONObject.fromObject(result).toString());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 修改优惠券状态
+	 * 
+	 * @author wzd
+	 * @date 2020年3月23日 下午4:05:05
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=toChangeCouponStatus")
+	public void toChangeCouponStatus(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			String status = coupon.getStatus();
+			Coupon c = couponService.displayCoupon(coupon);
+
+			User user = getLoginUser(request);
+			c.setUpdateTime(DateTimeUtil.getDateTime19());
+			c.setUpdater(user.getUserName());
+			c.setUpdaterUid(user.getUserId());
+			c.setStatus(status);
+			couponService.updateCoupon(c);
+
+			result.setResultCode("0");
+
+		} catch (Exception e) {
+			log.error(e, e);
+			result.setResultCode("1");
+			result.setResultMsg("程序错误，请稍后再试");
+		}
+		try {
+			response.getWriter().print(JSONObject.fromObject(result).toString());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
 }
