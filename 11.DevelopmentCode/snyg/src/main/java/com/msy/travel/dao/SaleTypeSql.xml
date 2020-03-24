@@ -112,7 +112,12 @@
 			<if test="saleTypeId!=null and saleTypeId!=''">
 		    	t.F_SALETYPEID = #{saleTypeId}
 		     </if>
-			
+			<if test="saleTypeKey!=null and saleTypeKey!=''">
+		    	and t.F_SALETYPEKEY = #{saleTypeKey}
+		    </if>
+		    <if test="status !=null and status !=''">
+		    	and t.F_STATUS = #{status}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
@@ -138,7 +143,7 @@
 			<if test="spId !=null and spId !=''">
 		    	t.F_SPID = #{spId}
 		    </if>
-		    <if test="spId !=null and spId !=''">
+		    <if test="status !=null and status !=''">
 		    	and t.F_STATUS = #{status}
 		    </if>
 		</where>
@@ -153,7 +158,7 @@
 			<if test="spId !=null and spId !=''">
 		    	c.F_SPID = #{spId}
 		    </if>
-		    <if test="spId !=null and spId !=''">
+		    <if test="status !=null and status !=''">
 		    	and c.F_STATUS = #{status}
 		    </if>
 		</where>

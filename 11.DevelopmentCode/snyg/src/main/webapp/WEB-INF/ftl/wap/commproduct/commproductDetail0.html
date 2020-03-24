@@ -52,14 +52,13 @@
 <div class="snyg_contentb"> 
     <div class="cpbtdiv">
          <p>${commproduct.productName!''}</p>
-         <div class="ztwz" id="goodsPriceNameCheck">${commproduct.subject!''}</div>
+         <div class="ztwz" id="goodsPriceNameCheck"></div>
 		 <div class="jgwz">&yen;${commproduct.price!''} <span class="f4" style="text-decoration:line-through; font-size:13px;"><#if commproduct.referencePrice?? && commproduct.referencePrice!=''>原价:&yen;${commproduct.referencePrice!''}</#if></span></div>
          <div class="zswz"><span id="kuaidi"></span><span style="float: right;display:none;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
 </div>
-<!-- 
 <div class="snyg_contentb"> 
-    <a href="商品详情-优惠券.html">
+    <a href="javascript:void(0)" onclick="queryCouponList()">
     <div class="yhrkdiv">
          <div class="leftzi">优惠<span class="f1">平台优惠</span></div>
          <div class="centyhxx">
@@ -70,7 +69,6 @@
     </div>
     </a>
 </div>
- -->
 
 
 
@@ -182,7 +180,7 @@
 
 </div>
 
-<form action="wxorder?method=toCreateOrder" method="post" id="toCreateOrder">
+<form action="waporder?method=toCreateOrder" method="post" id="toCreateOrder">
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
 </form>
 <script>
@@ -195,6 +193,8 @@ var alertHtml = "";
 		window.addEventListener("popstate", function(e) {  
 		 //  alert("我监听到了浏览器的返回按钮事件啦");//根据自己的需求实现自己的功能  
 		}, false);
+		
+		queryCouponList();
 	});  
 	
 	
@@ -313,6 +313,18 @@ var alertHtml = "";
 	}
 	
 	window.history.go(2);
+	
+	function queryCouponList(){
+		var priceType = $("#priceType").val();
+		var priceId = $("#priceId").val();
+		alert("zhel");
+		$.post("wapCoupon?method=queryCouponList",{
+			priceType:priceType,
+			priceId:priceId
+		},function(data){
+			alert(data.length)
+		},'json')
+	}
 </script>
 
 

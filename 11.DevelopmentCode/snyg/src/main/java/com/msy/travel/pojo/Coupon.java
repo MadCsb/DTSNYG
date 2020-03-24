@@ -157,6 +157,38 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 
 	private String dateEnd;
 
+	// 当天日期
+	private String crrObtainDate;
+
+	// USECOUPONID
+	private List<String> useCouponIdList;
+
+	private String userId;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public List<String> getUseCouponIdList() {
+		return useCouponIdList;
+	}
+
+	public void setUseCouponIdList(List<String> useCouponIdList) {
+		this.useCouponIdList = useCouponIdList;
+	}
+
+	public String getCrrObtainDate() {
+		return crrObtainDate;
+	}
+
+	public void setCrrObtainDate(String crrObtainDate) {
+		this.crrObtainDate = crrObtainDate;
+	}
+
 	public String getDateType() {
 		return dateType;
 	}

@@ -321,4 +321,143 @@
 			</if>
 		</if>
 	</select>
+	<!-- 领取页获取优惠券以及已领优惠券 (用户登录查询) -->
+	<select id="queryCouponListForSellPriceLogin" parameterType="coupon" resultType="coupon">
+		SELECT 
+			b.*
+		FROM
+			(
+				SELECT 
+					a1.*,
+					IFNULL(a2.receiveCount,0) as receiveCount,
+					IFNULL(a3.todayCount,0) as todayCount
+				FROM
+				(
+					SELECT 
+						DISTINCT t.F_COUPONID as couponId ,
+						t.F_SPID as spId ,
+						t.F_NAME as name ,
+						t.F_OBTAINTYPE as obtainType ,
+						t.F_TOTALNUM as totalNum ,
+						t.F_DAYNUM as dayNum ,
+						t.F_USETYPE as useType ,
+						t.F_USELIMIT as useLimit ,
+						t.F_DISCOUNT as discount ,
+						t.F_OBTAINLIMIT as obtainLimit ,
+						t.F_DAYOBTAINLIMIT as dayObtainLimit ,
+						t.F_VALIDBEGIN as validBegin ,
+						t.F_VALIDEND as validEnd ,
+						t.F_OBTAINDATETYPE as obtainDateType ,
+						t.F_OBTAINDATEBEGIN as obtainDateBegin ,
+						t.F_OBTAINDATEEND as obtainDateEnd ,
+						t.F_OBTAINDATESPAN as obtainDateSpan ,
+						t.F_COUPONTYPE as couponType ,
+						t.F_STATUS as status ,
+						t.F_CREATETIME as createTime ,
+						t.F_CREATORUID as creatorUid ,
+						t.F_CREATOR as creator ,
+						t.F_UPDATETIME as f_UPDATETIME ,
+						t.F_UPDATERUID as updaterUid ,
+						t.F_UPDATER as updater ,
+						t.F_DELFLAG as delFlag  
+					FROM 
+						t_sm_coupon t 
+					LEFT JOIN 
+						t_sm_couponproduction b ON (t.F_COUPONID = b.F_COUPONID)
+					WHERE 
+						t.F_STATUS = '1'
+					AND  
+						t.F_OBTAINTYPE = '1'
+					AND t.F_COUPONTAG = '1'
+					AND t.F_DELFLAG='0'
+					AND 
+						#{crrObtainDate} >= t.F_OBTAINDATEBEGIN 
+				    AND 
+				    	t.F_OBTAINDATEEND >= #{crrObtainDate}
+				    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
+				    AND
+			    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
+		                  (t.F_COUPONTYPE = '1' AND b.F_USECOUPONID = #{param})
+		            	</foreach>
+		            </if>
+					) a1
+				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS receiveCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} GROUP BY F_COUPONID) a2 on (a1.couponId = a2.F_COUPONID)
+				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS todayCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} AND F_OBTAINTIME=#{crrObtainDate} GROUP BY F_COUPONID) a3 on (a1.couponId = a3.F_COUPONID)
+			) b
+		/*
+		WHERE 
+			b.obtainLimit > b.receiveCount
+		AND 
+			b.dayObtainLimit > b.todayCount*/
+		ORDER BY 
+			b.discount DESC ,b.validEnd
+	</select>
+	
+	<!-- 领取页获取优惠券以及已领优惠券 (用户未登录查询) -->
+	<select id="queryCouponListForSellPriceNoLogin" parameterType="coupon" resultType="coupon">
+		SELECT 
+			b.*
+		FROM
+			(
+				SELECT 
+					a1.*
+				FROM
+				(
+					SELECT 
+						DISTINCT t.F_COUPONID as couponId ,
+						t.F_SPID as spId ,
+						t.F_NAME as name ,
+						t.F_OBTAINTYPE as obtainType ,
+						t.F_TOTALNUM as totalNum ,
+						t.F_DAYNUM as dayNum ,
+						t.F_USETYPE as useType ,
+						t.F_USELIMIT as useLimit ,
+						t.F_DISCOUNT as discount ,
+						t.F_OBTAINLIMIT as obtainLimit ,
+						t.F_DAYOBTAINLIMIT as dayObtainLimit ,
+						t.F_VALIDBEGIN as validBegin ,
+						t.F_VALIDEND as validEnd ,
+						t.F_OBTAINDATETYPE as obtainDateType ,
+						t.F_OBTAINDATEBEGIN as obtainDateBegin ,
+						t.F_OBTAINDATEEND as obtainDateEnd ,
+						t.F_OBTAINDATESPAN as obtainDateSpan ,
+						t.F_COUPONTYPE as couponType ,
+						t.F_STATUS as status ,
+						t.F_CREATETIME as createTime ,
+						t.F_CREATORUID as creatorUid ,
+						t.F_CREATOR as creator ,
+						t.F_UPDATETIME as f_UPDATETIME ,
+						t.F_UPDATERUID as updaterUid ,
+						t.F_UPDATER as updater ,
+						t.F_DELFLAG as delFlag  
+					FROM 
+						t_sm_coupon t 
+					LEFT JOIN 
+						t_sm_couponproduction b ON (t.F_COUPONID = b.F_COUPONID)
+					WHERE 
+						t.F_STATUS = '1'
+					AND  
+						t.F_OBTAINTYPE = '1'
+					AND t.F_COUPONTAG = '1'
+					AND t.F_DELFLAG='0'
+					AND 
+						#{crrObtainDate} >= t.F_OBTAINDATEBEGIN 
+				    AND 
+				    	t.F_OBTAINDATEEND >= #{crrObtainDate}
+				    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
+				    AND
+			    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
+		                  (t.F_COUPONTYPE = '1' AND b.F_USECOUPONID = #{param})
+		            	</foreach>
+		            </if>
+					) a1
+			) b
+		/*
+		WHERE 
+			b.obtainLimit > b.receiveCount
+		AND 
+			b.dayObtainLimit > b.todayCount*/
+		ORDER BY 
+			b.discount DESC ,b.validEnd
+	</select>
 </mapper>	

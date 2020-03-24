@@ -381,4 +381,32 @@ public class CouponServiceImpl implements CouponService {
 		result.setResultCode("0");
 		return result;
 	}
+
+	/**
+	 * 用户登录商品页领取商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月24日 下午8:59:32
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListForSellPriceLogin(Coupon coupon) throws Exception {
+		return couponDao.queryCouponListForSellPriceLogin(coupon);
+	}
+
+	/**
+	 * 用户未登录商品页领取商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月24日 下午8:59:32
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListForSellPriceNoLogin(Coupon coupon) throws Exception {
+		return couponDao.queryCouponListForSellPriceNoLogin(coupon);
+	}
 }

@@ -55,7 +55,7 @@ public class WapSellPriceController extends BaseController {
 	private CompanyExpressService companyExpressService;
 
 	/**
-	 * 微信端获取商品列表
+	 * wap端获取商品列表
 	 * 
 	 * @author wzd
 	 * @date 2019年10月5日 下午5:18:10
@@ -93,7 +93,7 @@ public class WapSellPriceController extends BaseController {
 	}
 
 	/**
-	 * 微信端获取规格列表
+	 * wap端获取规格列表
 	 * 
 	 * @author wzd
 	 * @date 2019年10月5日 下午5:18:10

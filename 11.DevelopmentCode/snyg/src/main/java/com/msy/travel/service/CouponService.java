@@ -115,4 +115,28 @@ public interface CouponService {
 	 * @return Result
 	 */
 	public Result copyCoupon(Coupon coupon, User user) throws Exception;
+
+	/**
+	 * 用户登录商品页领取商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月24日 下午8:59:32
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListForSellPriceLogin(Coupon coupon) throws Exception;
+
+	/**
+	 * 用户未登录商品页领取商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月24日 下午8:59:32
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListForSellPriceNoLogin(Coupon coupon) throws Exception;
 }

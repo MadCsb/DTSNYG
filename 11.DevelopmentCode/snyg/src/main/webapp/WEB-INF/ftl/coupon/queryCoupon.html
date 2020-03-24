@@ -102,7 +102,7 @@
 			<!-- 	<td align="center">
 					<input type="checkbox" disabled="disabled" name="delId" value="${coupon.couponId!''}"></td> -->
 				<td title="${coupon.name!''}"> 
-					${coupon.name!''}
+					<a href="coupon?method=toDetailCoupon&couponId=${coupon.couponId!''}" class="ico_btn1">${coupon.name!''}</a>
 				</td> 
 				<td  style="text-align:center" title="${coupon.validBegin!''}
 ${coupon.validEnd!''}">${coupon.validBegin!''}<br/>${coupon.validEnd!''}</td> 

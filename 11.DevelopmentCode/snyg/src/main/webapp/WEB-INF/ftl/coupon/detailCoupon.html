@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head><#include "/INC_HEAD.html">
+</head>
+
+<body>
+	<div class="waybill-title">
+		<span>优惠券详情</span>
+	</div>
+			<input name="status" type="hidden" id="status" size="40" />
+			<input name="sellPriceIdList" type="hidden" size="600" id="sellPriceIdList" size="40" />
+			<input name="couponId" type="hidden" id="couponId" value="${coupon.couponId!''}" size="40" />
+			<!--编辑区-->
+			<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td width="13%" class="tdright"><b><font class="f2">*</font>优惠券名称：</b></td>
+					<td width="35%">${coupon.name!''}
+					</td>
+					<td width="15%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
+					<td width="50%">
+						<#if coupon.obtainType?? && coupon.obtainType == "1">
+							商品页领取
+						<#elseif coupon.obtainType?? && coupon.obtainType == "2">
+							活动页领取
+						</#if>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>发行总量：</b></td>
+					<td>${coupon.totalNum!''}
+					</td>
+					<td class="tdright"><b>每日发行量：</b></td>
+					<td>
+						${coupon.dayNum!''}
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>使用限制：</b></td>
+					<td>单笔订单中此优惠券的指定商品金额值<br>
+						<#if coupon.useType?? && coupon.useType=="1">
+               				满
+						<#elseif coupon.useType?? && coupon.useType=="2">
+               				打折
+               			</#if>
+               			${coupon.useLimit!''}元，使用
+					</td>
+					<td class="tdright"><b><span class="f2"><b>*</b></span><span id="useTypeSpan1">
+					<#if coupon.useType?? && coupon.useType=="1">
+              				抵扣：
+					<#elseif coupon.useType?? && coupon.useType=="2">
+              				折扣
+              		</#if>
+					</span></b></td>
+					<td>
+						<#if coupon.useType?? && coupon.useType=="1">
+               				减 ${coupon.discount!''} 元
+						<#elseif coupon.useType?? && coupon.useType=="2">
+               				打 ${coupon.discount!''} 折
+               			</#if>
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>每人限领：</b></td>
+					<td>${coupon.obtainLimit!''}
+					</td>
+					<td class="tdright"><b><font class="f2">*</font>每人每天限领：</b></td>
+					<td>
+						${coupon.dayObtainLimit!''}
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>券有效期：</b></td>
+					<td colspan="3">${coupon.validBegin!''}
+						至 
+						${coupon.validEnd!''}
+					</td>
+				</tr>
+				<tr>
+					<td class="tdright"><b><font class="f2">*</font>领券有效期：</b></td>
+					<td>
+						<#if coupon.obtainDateType?? && coupon.obtainDateType=="1">
+							有效时段
+						<#elseif coupon.obtainDateType?? && coupon.obtainDateType=="2">
+               				有效时长
+               			</#if>
+					</td>
+					<td class="tdright"><b><font class="f2">*</font>有效时段：</b></td>
+					<td>
+						<#if coupon.obtainDateType?? && coupon.obtainDateType=="1">
+							${coupon.obtainDateBegin!''} 至 ${coupon.obtainDateEnd!''}
+						<#elseif coupon.obtainDateType?? && coupon.obtainDateType=="2">
+               				${coupon.obtainDateSpan!''}
+               			</#if>
+					</td>
+				</tr>
+				<tr >
+					<td class="tdright"><b><span class="f2"><b>*</b></span>使用范围：</b></td>
+					<td  colspan="3" style="line-height:47px;">
+						<#if coupon.couponType?? && coupon.couponType == "1">全部商品</#if>
+						<#if coupon.couponType?? && coupon.couponType == "2">指定商品</#if>
+					</td>
+				</tr>
+				<tr id="couponType2Td" <#if coupon.couponType?? && coupon.couponType == "1">style="display:none;"</#if>>
+					<td class="tdright"></td>
+					<td  colspan="3" style="min-height:50px;">
+						<span >已选：商品&nbsp;&nbsp;<span id="pdcNum" style="color:#FF6600"><#if sellPriceList?? && (sellPriceList?size>0)>${sellPriceList?size}<#else>0</#if></span>&nbsp;&nbsp;个</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<table id="checkPdcTable"  class="datalist" cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr>
+								<th width="18%">商品编号</th>
+								<th width="28%">商品名称</th>
+								<th width="17%">商品规格</th>
+								<th width="10%">销售类型</th>
+								<th width="11%">商品售价(元)</th>
+								<th width="11%">商品状态</th> 
+							</tr>
+							<#if sellPriceList?? && (sellPriceList?size>0)>
+							<#list sellPriceList as li>
+							<tr class="checkTr" id="checkPdcTr${li.priceId}">
+								<td title="${li.productCode!''}">${li.productCode!''}</td>
+								<td title="${li.productName!''}">${li.productName!''}</td>
+								<td title="${li.priceName!''}">${li.priceName!''}</td>
+								<td title="${li.saleTypeName!''}">${li.saleTypeName!''}</td> 
+								<td style="text-align:right;" title="${li.price!''}">${li.price!''}</td>
+								<#if li.state=='0'>
+									<td title="下架">下架</a></td>
+								<#else>
+									<td title="上架">上架</a></td>
+								</#if>
+           						</tr>
+							</#list>
+							</#if>
+						</table>
+					</td>
+				</tr>
+				<tr id="couponType1Td" <#if coupon.couponType?? && coupon.couponType == "2">style="display:none;"</#if>>
+					<td class="tdright"><b><font class="f2">*</font>活动类型：</b></td>
+					<td colspan="3">
+						<#if saleTypeList?? && (saleTypeList?size>0)>
+							<#list saleTypeList as  li>
+								<#if couponProduction??>
+									<#if couponProduction.useCouponId?? && couponProduction.useCouponId==li.saleTypeId>${li.saleTypeName!''}</#if>
+								<#else>
+									
+								</#if>
+							</#list>
+						</#if>
+					</td>
+				</tr>
+			</table>
+			<div class="footerbtn">
+				<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="add-new" id="button4" value="关闭">
+			</div>
+</body>
+</html>

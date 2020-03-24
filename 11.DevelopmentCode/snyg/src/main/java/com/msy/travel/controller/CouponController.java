@@ -136,6 +136,10 @@ public class CouponController extends BaseController {
 			saleType.setSpId(getLoginUser(request).getAccId());
 			saleType.setStatus("1");
 			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
+			saleType = new SaleType();
+			saleType.setSaleTypeId(getLoginUser(request).getAccId());
+			saleType.setSaleTypeName("全部商品");
+			saleTypeList.add(0, saleType);
 			view.addObject("saleTypeList", saleTypeList);
 
 			view.addObject("coupon", objCoupon);
@@ -347,5 +351,68 @@ public class CouponController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+	}
+
+	/**
+	 * 详情
+	 * 
+	 * @author wzd
+	 * @date 2020年3月24日 下午8:20:05
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toDetailCoupon")
+	public ModelAndView toDetailCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+
+			view = new ModelAndView("coupon/detailCoupon");
+
+			Coupon objCoupon = couponService.displayCoupon(coupon);
+
+			if ("2".equals(objCoupon.getCouponType())) {
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setEntityPage(new EntityPage());
+				sellPrice.getEntityPage().setSortField("p.F_SORTNUM ASC,p.F_PRODUCTNAME ASC");
+				sellPrice.getEntityPage().setSortOrder("");
+
+				sellPrice.setDelFlag("0");
+				sellPrice.setSpId(getLoginUser(request).getAccId());
+				sellPrice.setCheckPdc("2");
+				sellPrice.setCouponId(objCoupon.getCouponId());
+
+				List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForCoupon(sellPrice);
+				view.addObject("sellPriceList", sellPriceList);
+			} else {
+				CouponProduction cp = new CouponProduction();
+				cp.setCouponId(objCoupon.getCouponId());
+				List<CouponProduction> couponProductionList = couponProductionService.queryCouponProductionList(cp);
+				if (couponProductionList != null && couponProductionList.size() > 0) {
+					cp = couponProductionList.get(0);
+				}
+				view.addObject("couponProduction", cp);
+			}
+
+			SaleType saleType = new SaleType();
+			saleType.setSpId(getLoginUser(request).getAccId());
+			saleType.setStatus("1");
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
+			saleType = new SaleType();
+			saleType.setSaleTypeId(getLoginUser(request).getAccId());
+			saleType.setSaleTypeName("全部商品");
+			saleTypeList.add(0, saleType);
+			view.addObject("saleTypeList", saleTypeList);
+
+			view.addObject("coupon", objCoupon);
+
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
 	}
 }
