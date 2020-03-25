@@ -232,3 +232,7 @@ function toWebPayOrder(orderId) {
 function toWebAlertMsg(msg) {
   parent.layer.alert(msg);
 }
+//跳转登录
+function toLogin(){
+	window.location.href="tologin?loginPage=wap";  
+}

@@ -28,14 +28,14 @@ public class SessionFilter extends AccessControlFilter {
 			return Boolean.TRUE;
 		}
 		// web 端无需登录controller
-		if (url.indexOf("/webIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/toArticleContext") != -1
-				|| url.indexOf("/newUser") != -1 || url.indexOf("/webArticle") != -1 || url.indexOf("/webCommproduct") != -1
-				|| url.indexOf("/webPdcType") != -1 || url.indexOf("/webPrice1Ref") != -1 || url.indexOf("/webSellPrice") != -1) {
+		if (url.indexOf("/webIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/toArticleContext") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/webArticle") != -1
+				|| url.indexOf("/webCommproduct") != -1 || url.indexOf("/webPdcType") != -1 || url.indexOf("/webPrice1Ref") != -1 || url.indexOf("/webSellPrice") != -1) {
 			return Boolean.TRUE;
 		}
 
 		// wap 端无需登录controller
-		if (url.indexOf("/wapIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1) {
+		if (url.indexOf("/wapIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/wapCommproduct") != -1 || url.indexOf("/wapCoupon") != -1
+				|| url.indexOf("/wap") != -1 || url.indexOf("/wapPdcType") != -1 || url.indexOf("/wapPrice1Ref") != -1 || url.indexOf("/wapSellPrice") != -1) {
 			return Boolean.TRUE;
 		}
 
@@ -59,13 +59,12 @@ public class SessionFilter extends AccessControlFilter {
 		// 先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
-		if (url.indexOf("/"+Consts.LOGIN_PAGE_WEB) != -1) {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_WEB);
-		} else if (url.indexOf("/"+Consts.LOGIN_PAGE_WAP) != -1)
-		{
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_WAP);
-		}	else {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage="+Consts.LOGIN_PAGE_MP);
+		if (url.indexOf("/" + Consts.LOGIN_PAGE_WEB) != -1) {
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WEB);
+		} else if (url.indexOf("/" + Consts.LOGIN_PAGE_WAP) != -1) {
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WAP);
+		} else {
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_MP);
 		}
 		// 再重定向
 

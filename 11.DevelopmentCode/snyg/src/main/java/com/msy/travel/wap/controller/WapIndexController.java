@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Carousel;
 import com.msy.travel.pojo.CarouselItem;
 import com.msy.travel.pojo.Destsp;
@@ -101,6 +104,38 @@ public class WapIndexController extends BaseController {
 			response.setContentType("text/json;charset=utf-8");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(JSON.toJSONString(carouselItemList));
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * 判断是否登录
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午3:52:03
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=checkLogin")
+	public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			if (getLoginUser(request) == null) {
+				result.setResultCode("1");
+			} else {
+				result.setResultCode("0");
+			}
+
+		} catch (Exception e) {
+			log.error(e);
+			result.setResultCode("2");
+		}
+		try {
+			response.setContentType("text/json;charset=utf-8");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(JSONObject.fromObject(result).toString());
 		} catch (Exception e) {
 			log.error(e);
 		}

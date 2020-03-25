@@ -343,16 +343,25 @@ var alertHtml = "";
 	
 	function addShopCart(){
 		if(showType == "1"){
-			$.post("wapShopcart?method=toAddOrUpdateShopCart",{
-				userId:$("#userId").val(),
-				priceId:checkPriceId,
-				num:$("#num").val()
+			$.post("wap?method=checkLogin",{
+				
 			},function(data){
-				if(data=="success"){
+				if(data.resultCode=='0'){
+					$.post("wapShopcart?method=toAddOrUpdateShopCart",{
+						userId:$("#userId").val(),
+						priceId:checkPriceId,
+						num:$("#num").val()
+					},function(data){
+						if(data=="success"){
+							closeBottomHtml();
+							Alert.showMsg("加入购物车成功");
+						}
+					});
+				}else{
 					closeBottomHtml();
-					Alert.showMsg("加入购物车成功");
+					Alert.showConfirmMsg("您还没有登录，请先登录",'toLogin');
 				}
-			});
+			},'json')
 		}else{
 			submitOrder();
 		}

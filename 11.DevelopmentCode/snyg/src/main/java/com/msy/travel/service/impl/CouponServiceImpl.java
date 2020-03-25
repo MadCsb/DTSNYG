@@ -466,6 +466,7 @@ public class CouponServiceImpl implements CouponService {
 		if (saleTypeList != null && saleTypeList.size() > 0) {
 			useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
 		}
+		coupon.setUseCouponIdList(useCouponIdList);
 
 		List<Coupon> couponList = new ArrayList<Coupon>();
 		if (isLogin) {
