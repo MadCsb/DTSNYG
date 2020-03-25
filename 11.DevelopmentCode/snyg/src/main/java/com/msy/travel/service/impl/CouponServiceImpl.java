@@ -476,4 +476,5 @@ public class CouponServiceImpl implements CouponService {
 
 		return couponList;
 	}
+
 }

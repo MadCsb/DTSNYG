@@ -151,4 +151,5 @@ public interface CouponService {
 	 * @return List<Coupon>
 	 */
 	public List<Coupon> queryCouponListByPriceId(User user, String priceId) throws Exception;
+
 }

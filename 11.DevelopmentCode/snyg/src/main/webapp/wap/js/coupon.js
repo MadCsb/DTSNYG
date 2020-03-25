@@ -16,7 +16,7 @@ function showCoupon(priceId) {
 	html = html
 		+ '</ul>'
 		+ ' </dl>'
-		+ '<div align="center"><span class="btn-big" onclick="closeBottomHtml()">完成</span></div>'
+		+ '<div align="center"><span class="btn-big" onclick="closeBottomHtml()">关闭</span></div>'
 		+ '</div>' + '</div>';
 	
 	Alert.showBottomHtml(html);
@@ -26,9 +26,11 @@ function showCoupon(priceId) {
 
 // 领取优惠券
 function receiveCouponAjax(couponId, fansId) {
-	
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
+	
+	var username = '<%= session.getAttribute("user").getUserId%>';
+	alert(username);
 
 	$.post("wx.do?method=receiveCouponSquareAjax", {
 		couponId : couponId,
@@ -72,7 +74,6 @@ function loadCouponUlList() {
 	$.post("wapCoupon?method=queryCouponList",{
 		priceId:m_priceId
 	},function(data){
-
 		if (data != null && data.length > 0) {
 			var html = "";
 			for (var i = 0; i < data.length; i++) {
@@ -114,8 +115,6 @@ function loadCouponUlList() {
 						+ '</div>' + '</li>';
 			}
 			$("#ulCouponList").html(html);
-		}else{
-			
 		}
 	},'json');
 }
@@ -123,19 +122,17 @@ function loadCouponUlList() {
 // 打开使用规则
 function openCouponRule(couponId) {
 
-	$.post("wx.do?method=couponRuleAjax",{
+	$.post("wapCoupon.do?method=couponRuleAjax",{
 		couponId : couponId
 	},function(data){
-		data = eval("(" + data + ")");
 		
-		var text3 = "";
-		
+		var text3 = "";  
 		// 全部商品
-		if (data.coupon.couponType == "1") {
-			text3 = '3. 本优惠券针对本平台/本商户所有品类的商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
-		} else {
-			text3 = '3. 本优惠券只针对<span class="f1">' + data.goodsName + '</span>商品使用，其他商品无法享受本次优惠/本优惠券针对平台类内所有商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
-		}
+		//if (data.coupon.couponType == "1") {
+		//	text3 = '3. 本优惠券针对本平台/本商户所有品类的商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
+		//} else {
+			text3 = '3. 本优惠券针对<span class="f1">' + data.goodsName + '</span>商品使用，其他商品无法享受本次优惠/本优惠券针对平台类内所有商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
+		//}
 		
 		var html = '<div class="yddiv" style="height:400px; background:#FFFFFF;">'
 			+ '<div class="content">'
@@ -143,7 +140,7 @@ function openCouponRule(couponId) {
 			+ '<span class="btline"></span>使用规则<a class="closdiv" onclick="closeBottomHtmlNoMask()"></a>'
 			+ '</div>'
 			+ '<dl class="xlxqcss" style="height:310px;overflow-y:auto;">'
-			+ '<dd>1. 优惠券是<span class="f1">' + data.name + '</span>的优惠购买的方式之一；</dd></br>'
+			+ '<dd>1. 优惠券是<span class="f1">三农壹购</span>的优惠购买的方式之一；</dd></br>'
 			+ '<dd>2. 您可通过优惠活动领取相应优惠券(例如满减活动、满折活动等)，或待平台邀请您参与相关优惠活动参与领券；</dd></br>'
 			+ '<dd>' + text3 + '</dd></br>'
 			+ '<dd>4. 本优惠券有效期为<span class="f1">' + data.coupon.validBegin + '至' + data.coupon.validEnd+ '</span>，超出即为失效将无法使用。 </dd>'
@@ -152,6 +149,6 @@ function openCouponRule(couponId) {
 			+ '</div>';
 
 		Alert.showBottomHtmlNoMask(html);
-	})
+	},'json')
 }
 

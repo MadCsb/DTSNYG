@@ -618,4 +618,51 @@
 			</if>
 		</if>
 	</select>
+	
+	<!-- 优惠券可使用商品 -->
+	<select id="querySellPriceListForCouponByCouponId" parameterType="sellPrice" resultType="sellPrice">
+		SELECT
+			s.F_PRICEID as priceId ,
+			s.F_PRICE as price,
+		    s.F_PRICETYPE as priceType,
+			s.F_DELFLAG as delFlag,
+			s.F_PRICESTARTDATE as priceStartDate ,
+			s.F_PRICEENDDATE as priceEndDate ,
+			s.F_MAXBUYCOUNT as maxBuyCount ,
+			s.F_LIMITBUYCOUNT as limitBuyCount ,
+			s.F_PEOPLENUM as peopleNum  ,
+		    s.F_PRODUCTID as productId,
+		    g.F_PRICENAME as priceName,
+			p.F_PRODUCTNAME as productName,
+		    p.F_THUMBPIC as thumbPic,
+			p.F_STATE as state,
+			p.F_PRODUCTCODE as productCode,
+			g.F_FREIGHT as freight,
+			g.F_COMPANYEXPRESSID as companyExpressId,
+			g.F_GOODSPRICEID as goodsPriceId,
+			p.F_PRODUCTID as productId,
+			g.F_THUMBPIC as goodsThumbPic,
+			s.F_PRICECODE as priceCode,
+			st.F_SALETYPENAME as saleTypeName
+		FROM
+			t_sm_sellprice s
+		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
+		LEFT JOIN t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_sm_saletype st on s.F_PRICETYPE = st.F_SALETYPEKEY
+		<where>
+			<if test="couponId !=null and couponId !=''">
+		    	s.F_PRICEID in (select F_USECOUPONID from t_sm_couponproduction where F_COUPONID =#{couponId})
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
 </mapper>	

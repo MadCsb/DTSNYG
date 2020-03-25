@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>三农壹购</title>
+<#include "../WAP_INC_HEAD.html">  
+
+</head>
+<body>
+
+<!--header 开始-->
+
+    
+<!--header 结束-->
+
+<div class="snyg_contentb">
+<input type="hidden" id="spId" value="${spId!''}"/>
+<input type="hidden"  style="width:200px;" id="isChoose" value="${isChoose!''}"/>
+    <ul class="dddz_list" id="addressUl">
+       
+        
+	</ul>
+
+</div>
+<div align="center"><a href="javascript:void(0)" onclick="addAddress()"><button class="btn-big">+ 新增收货地址</button></a></div>
+
+    <input type="hidden" name="consignee" id="consignee" value=""/>	
+<script>
+	$(function(){
+		getConsigneeData()
+	});
+	
+	function getConsigneeData(){
+		$.post("wapConsignee?method=toGetConsigneeListJson",{
+			
+		},function(data){
+			if(data!=null && data.length>0){
+				$("#addressUl").html(getDataStr(data));
+			}else{
+				$("#addressUl").html("");
+			}
+		},'json')
+	}
+	
+	function getDataStr(data){
+		var str = "";
+		
+		//判断是否是只做选择
+		var isChoose = $("#isChoose").val();
+		if(isChoose != "" && isChoose=="1"){
+			for(var i=0;i<data.length;i++){
+				str+='<li onclick="checkConsignee(\''+data[i].consigneeId+'\')">';
+				str+='<h2>'+data[i].custName+'<span>'+data[i].custPhone+'</span></h2>';
+				str+='<p class="txt">'+data[i].pcx+data[i].recAddress+'</p>';
+				str+='<div class=""><label>';
+				if(data[i].isDefault=="1"){
+					str+='<input  type="radio" id="radio'+i+'" value="radio" name="isDefault" checked hidden/>';
+					str+='<label for="radio'+i+'" class="radiock"></label>';
+					str+='';
+					str+='<span class="f1" style="vertical-align: middle; margin-left:10px;">默认地址</span></div></label>';  
+				}else{
+					
+				}
+				str+='</li>';
+			}
+		}else{
+			for(var i=0;i<data.length;i++){
+				str+='<li id="consigeneeLi'+data[i].consigneeId+'">';
+				str+='<h2>'+data[i].custName+'<span>'+data[i].custPhone+'</span><button type="button" onclick="delConsingee(\''+data[i].consigneeId+'\')" class="del_btn1"></button><a href="javascript:void(0)" onclick="editConsignee(\''+data[i].consigneeId+'\')"><button class="edit_btn2"></button></a></h2>';
+				str+='<p class="txt">'+data[i].pcx+data[i].recAddress+'</p>';
+				str+='<div class=""><label>';
+				if(data[i].isDefault=="1"){
+					str+='<input  type="radio" id="radio'+i+'" value="radio" name="isDefault" checked hidden/>';
+					str+='<label for="radio'+i+'" class="radiock"></label>';
+					str+='';
+					str+='<span class="f1" onclick="setDefault(\''+data[i].consigneeId+'\')"  style="vertical-align: middle; margin-left:10px;">设为默认</span></div></label>';  
+				}else{
+					str+='<input type="radio" id="radio'+i+'" name="isDefault" value="radio" hidden/>';
+					str+='<label for="radio'+i+'" class="radiock"></label>';
+					str+='';
+					str+='<span class="f1" onclick="setDefault(\''+data[i].consigneeId+'\')" style="vertical-align: middle;  margin-left:10px;">设为默认</span></div></label>';  
+				}
+				str+='</li>';
+			}
+		}
+		
+		return str;
+	}
+	
+	function setDefault(consigneeId){
+		$.post("wapConsignee?method=updateIsDefault",{
+			consigneeId:consigneeId,
+			isDefault:"1"
+		},function(data){
+		//	alert(data);
+		})
+	}
+	
+	function addAddress(){ 
+		var url = 'wapConsignee?method=toAddConsignee&isChoose='+$("#isChoose").val();
+	
+		window.location.href=url;
+	}
+	
+	function delConsingee(consigneeId){
+		$("#consignee").val(consigneeId);
+		Alert.showConfirmMsg("确定要删除该地址信息吗?","delConsignee");
+	}
+	
+	function delConsignee(){
+		var consignee = $("#consignee").val();
+		$.post("wapConsignee.do?method=deleteConsignee",{
+			consigneeId:consignee
+		},function(data){
+			$("#consigeneeLi"+consignee).remove();
+		});
+		rec3();
+	}
+	
+	function editConsignee(consigneeId){
+		//alert(consigneeId);
+		window.location.href='wapConsignee?method=toUpdateConsignee&consigneeId='+consigneeId;
+	}
+	
+	function checkConsignee(consigneeId){
+		//alert("选择地址");
+		window.parent.selectConsigneeResult(consigneeId)
+	}
+</script>
+</body>
+</html>

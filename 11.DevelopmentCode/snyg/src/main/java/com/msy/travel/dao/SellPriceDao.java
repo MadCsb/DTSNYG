@@ -146,4 +146,16 @@ public interface SellPriceDao {
 	 */
 	List<SellPrice> querySellPriceListForCoupon(SellPrice sellPrice) throws Exception;
 
+	/**
+	 * 优惠券可使用商品
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午1:44:30
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	List<SellPrice> querySellPriceListForCouponByCouponId(SellPrice sellPrice) throws Exception;
+
 }
