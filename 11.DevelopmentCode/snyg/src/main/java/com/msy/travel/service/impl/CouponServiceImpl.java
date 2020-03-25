@@ -1,6 +1,7 @@
 package com.msy.travel.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,9 +18,14 @@ import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
+import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.SaleType;
+import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
+import com.msy.travel.service.SaleTypeService;
+import com.msy.travel.service.SellPriceService;
 
 /**
  * CouponService接口实现类
@@ -36,6 +42,12 @@ public class CouponServiceImpl implements CouponService {
 
 	@Resource(name = "couponProductionServiceImpl")
 	private CouponProductionService couponProductionService;
+
+	@Resource(name = "sellPriceServiceImpl")
+	private SellPriceService sellPriceService;
+
+	@Resource(name = "saleTypeServiceImpl")
+	private SaleTypeService saleTypeService;
 
 	/**
 	 * 新增Coupon
@@ -408,5 +420,60 @@ public class CouponServiceImpl implements CouponService {
 	 */
 	public List<Coupon> queryCouponListForSellPriceNoLogin(Coupon coupon) throws Exception {
 		return couponDao.queryCouponListForSellPriceNoLogin(coupon);
+	}
+
+	/**
+	 * 根据销售id获取优惠券信息
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 上午11:06:42
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListByPriceId(User user, String priceId) throws Exception {
+		boolean isLogin = false;
+
+		if (user != null && user.getUserId() != null && !user.getUserId().equals("")) {
+			isLogin = true;
+		}
+		Coupon coupon = new Coupon();
+
+		coupon.setDelFlag("0");
+		coupon.setSpId(Destsp.currentSpId);
+		coupon.setCouponTag("1");
+		coupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
+		if (isLogin) {
+			coupon.setUserId(user.getUserId());
+		}
+
+		List<String> useCouponIdList = new ArrayList<String>();
+		// 全部商品渠道
+		useCouponIdList.add(Destsp.currentSpId);
+		// 销售Id
+		useCouponIdList.add(priceId);
+
+		SellPrice sellPrice = new SellPrice();
+		sellPrice.setPriceId(priceId);
+		sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+		// 活动id
+		SaleType saleType = new SaleType();
+		saleType.setSaleTypeKey(sellPrice.getPriceType());
+		saleType.setStatus("1");
+		List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
+		if (saleTypeList != null && saleTypeList.size() > 0) {
+			useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
+		}
+
+		List<Coupon> couponList = new ArrayList<Coupon>();
+		if (isLogin) {
+			couponList = couponDao.queryCouponListForSellPriceLogin(coupon);
+		} else {
+			couponList = couponDao.queryCouponListForSellPriceNoLogin(coupon);
+		}
+
+		return couponList;
 	}
 }

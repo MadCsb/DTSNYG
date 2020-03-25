@@ -109,13 +109,15 @@
 				</td>
 			</tr>
 			<tr class="cs">
+				<!-- 
 				<td class="tdright"><b>是否上架：</b></td>
 				<td >
 					<label><input name="state" id="state0" type="radio" value="0" <#if commproduct.state?? && commproduct.state=='0'>checked</#if> hidden/><label for="state0" class="radiock"></label>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	           		<label><input name="state" id="state1" type="radio" value="1" <#if commproduct.state?? && commproduct.state=='1'>checked</#if> hidden/><label for="state1" class="radiock"></label>是</label>	
 				</td>
+				 -->
 				<td class="tdright"><b>是否允许退货：</b></td>
-				<td>
+				<td colspan="3">
 					<label><input name="reorder" id="radio1" type="radio" value="0" <#if commproduct.reorder?? && commproduct.reorder=='0'>checked</#if> hidden/><label for="radio1" class="radiock"></label>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	           		<label><input name="reorder" id="radio2" type="radio" value="1" <#if commproduct.reorder?? && commproduct.reorder=='1'>checked</#if> hidden/><label for="radio2" class="radiock"></label>是</label>
 				</td>

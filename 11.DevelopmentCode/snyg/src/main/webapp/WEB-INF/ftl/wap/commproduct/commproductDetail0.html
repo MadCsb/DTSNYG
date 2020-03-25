@@ -3,6 +3,7 @@
 <head>
 <#include "../WAP_INC_HEAD.html">  
 <script src="${rc.contextPath}/wap/js/default.js"></script>
+<script src="${rc.contextPath}/wap/js/coupon.js"></script>
 <style>
 .flexslider {
     margin: 0;
@@ -57,19 +58,20 @@
          <div class="zswz"><span id="kuaidi"></span><span style="float: right;display:none;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
 </div>
-<div class="snyg_contentb"> 
-    <a href="javascript:void(0)" onclick="queryCouponList()">
+<#if coupon??>
+<div class="snyg_contentb" > 
+    <a href="javascript:void(0)" onclick="showCoupon('${commproduct.priceId!''}')">
     <div class="yhrkdiv">
          <div class="leftzi">优惠<span class="f1">平台优惠</span></div>
          <div class="centyhxx">
-         	<div class="f2">满300减60元</div>
-          	<div>09/01-09/30</div>   
+         	<div class="f2"></div>
+          	<div></div>   
          </div>
          <div class="rzi">领券</div>
     </div>
     </a>
 </div>
-
+</#if>
 
 
 <!-- 
@@ -194,7 +196,7 @@ var alertHtml = "";
 		 //  alert("我监听到了浏览器的返回按钮事件啦");//根据自己的需求实现自己的功能  
 		}, false);
 		
-		queryCouponList();
+	//	queryCouponList();
 	});  
 	
 	
@@ -317,12 +319,10 @@ var alertHtml = "";
 	function queryCouponList(){
 		var priceType = $("#priceType").val();
 		var priceId = $("#priceId").val();
-		alert("zhel");
 		$.post("wapCoupon?method=queryCouponList",{
 			priceType:priceType,
 			priceId:priceId
 		},function(data){
-			alert(data.length)
 		},'json')
 	}
 </script>

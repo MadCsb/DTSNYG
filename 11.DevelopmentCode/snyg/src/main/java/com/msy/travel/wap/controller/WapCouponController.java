@@ -1,6 +1,5 @@
 package com.msy.travel.wap.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,12 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.msy.travel.common.BaseController;
-import com.msy.travel.common.DateTimeUtil;
-import com.msy.travel.common.ResourceCommon;
 import com.msy.travel.pojo.Coupon;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.SaleType;
-import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponService;
 import com.msy.travel.service.SaleTypeService;
 
@@ -54,48 +48,9 @@ public class WapCouponController extends BaseController {
 	 * @return void
 	 */
 	@RequestMapping(params = "method=queryCouponList")
-	public void queryCouponList(Coupon coupon, HttpServletRequest request, HttpServletResponse response, String priceType, String priceId) {
+	public void queryCouponList(HttpServletRequest request, HttpServletResponse response, String priceId) {
 		try {
-			boolean isLogin = false;
-
-			User user = new User();
-
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) != null) {
-				isLogin = true;
-				user = getLoginUser(request);
-			}
-
-			if (coupon == null) {
-				coupon = new Coupon();
-			}
-			coupon.setDelFlag("0");
-			coupon.setSpId(Destsp.currentSpId);
-			coupon.setCouponTag("1");
-			coupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
-			if (isLogin) {
-				coupon.setUserId(user.getUserId());
-			}
-
-			List<String> useCouponIdList = new ArrayList<String>();
-			// 全部商品渠道
-			useCouponIdList.add(Destsp.currentSpId);
-			// 销售Id
-			useCouponIdList.add(priceId);
-			// 活动id
-			SaleType saleType = new SaleType();
-			saleType.setSaleTypeKey(priceType);
-			saleType.setStatus("1");
-			List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
-			if (saleTypeList != null && saleTypeList.size() > 0) {
-				useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
-			}
-
-			List<Coupon> couponList = new ArrayList<Coupon>();
-			if (isLogin) {
-				couponList = couponService.queryCouponListForSellPriceLogin(coupon);
-			} else {
-				couponList = couponService.queryCouponListForSellPriceNoLogin(coupon);
-			}
+			List<Coupon> couponList = couponService.queryCouponListByPriceId(getLoginUser(request), priceId);
 			response.getWriter().print(JSONArray.fromObject(couponList).toString());
 		} catch (Exception e) {
 			log.error(e, e);

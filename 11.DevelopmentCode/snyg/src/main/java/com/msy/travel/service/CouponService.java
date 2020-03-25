@@ -139,4 +139,16 @@ public interface CouponService {
 	 * @return List<Coupon>
 	 */
 	public List<Coupon> queryCouponListForSellPriceNoLogin(Coupon coupon) throws Exception;
+
+	/**
+	 * 根据销售id获取优惠券信息
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 上午11:06:42
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	public List<Coupon> queryCouponListByPriceId(User user, String priceId) throws Exception;
 }

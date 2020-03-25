@@ -1,15 +1,10 @@
-var m_pdcType;
-var m_pmastCoding;
-var m_pdcId;
-var m_fansId;
+
+var m_priceId;
 
 // 打开优惠券
-function showCoupon(pdcType, pmastCoding, pdcId, fansId) {
+function showCoupon(priceId) {
 
-	m_pdcType = pdcType;
-	m_pmastCoding = pmastCoding;
-	m_pdcId = pdcId;
-	m_fansId = fansId;
+	m_priceId = priceId;
 
 	var html = '<div id="yddiv" class="yddiv" style="height:400px; background:#FFFFFF;">'
 		+ '<div class="content">'
@@ -74,16 +69,9 @@ function receiveError() {
 function loadCouponUlList() {
 	
 	$("#ulCouponList").html("");
-	
-	$.post("wx.do?method=getCouponListByGoodsAjax", {
-		pdcType : m_pdcType,
-		pmastCoding : m_pmastCoding,
-		pdcId : m_pdcId,
-		customerCode : m_fansId
-	},
-	function(data) {
-
-		data = eval("(" + data + ")");
+	$.post("wapCoupon?method=queryCouponList",{
+		priceId:m_priceId
+	},function(data){
 
 		if (data != null && data.length > 0) {
 			var html = "";
@@ -122,13 +110,14 @@ function loadCouponUlList() {
 						+ data[i].validEnd
 						+ '</p>'
 						+ '</div></a>'
-						+ '<a href="javascript:void(0)" onclick="receiveCouponAjax(\''+ data[i].couponId + '\',\'' + m_fansId+ '\')"><div class="tcyhj-data">立即领取</div></a>'
+						+ '<a href="javascript:void(0)" onclick="receiveCouponAjax(\''+ data[i].couponId + '\')"><div class="tcyhj-data">立即领取</div></a>'
 						+ '</div>' + '</li>';
 			}
-			
 			$("#ulCouponList").html(html);
+		}else{
+			
 		}
-	})
+	},'json');
 }
 
 // 打开使用规则

@@ -384,11 +384,10 @@
 				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS receiveCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} GROUP BY F_COUPONID) a2 on (a1.couponId = a2.F_COUPONID)
 				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS todayCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} AND F_OBTAINTIME=#{crrObtainDate} GROUP BY F_COUPONID) a3 on (a1.couponId = a3.F_COUPONID)
 			) b
-		/*
 		WHERE 
 			b.obtainLimit > b.receiveCount
 		AND 
-			b.dayObtainLimit > b.todayCount*/
+			b.dayObtainLimit > b.todayCount
 		ORDER BY 
 			b.discount DESC ,b.validEnd
 	</select>
