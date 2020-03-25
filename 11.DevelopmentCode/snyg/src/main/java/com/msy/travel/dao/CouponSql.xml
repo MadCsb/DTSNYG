@@ -459,4 +459,134 @@
 		ORDER BY 
 			b.discount DESC ,b.validEnd
 	</select>
+	
+	
+	<!-- 活动页优惠券检索 未登录-->
+	<select id="queryCouponListBySquareNoLogin" parameterType="coupon" resultType="coupon">
+		SELECT 
+			b.F_COUPONID as couponId ,
+			b.F_SPID as spId ,
+			b.F_NAME as name ,
+			b.F_OBTAINTYPE as obtainType ,
+			b.F_TOTALNUM as totalNum ,
+			b.F_DAYNUM as dayNum ,
+			b.F_USETYPE as useType ,
+			b.F_USELIMIT as useLimit ,
+			b.F_DISCOUNT as discount ,
+			b.F_OBTAINLIMIT as obtainLimit ,
+			b.F_DAYOBTAINLIMIT as dayObtainLimit ,
+			b.F_VALIDBEGIN as validBegin ,
+			b.F_VALIDEND as validEnd ,
+			b.F_OBTAINDATETYPE as obtainDateType ,
+			b.F_OBTAINDATEBEGIN as obtainDateBegin ,
+			b.F_OBTAINDATEEND as obtainDateEnd ,
+			b.F_OBTAINDATESPAN as obtainDateSpan ,
+			b.F_COUPONTYPE as couponType ,
+			b.F_STATUS as status ,
+			b.F_CREATETIME as createTime ,
+			b.F_CREATORUID as creatorUid ,
+			b.F_CREATOR as creator ,
+			b.F_UPDATETIME as f_UPDATETIME ,
+			b.F_UPDATERUID as updaterUid ,
+			b.F_UPDATER as updater ,
+			b.F_DELFLAG as delFlag 
+		FROM
+			(
+				SELECT 
+					a1.*
+				FROM
+				(
+					SELECT 
+						t.*
+				 	FROM (
+						SELECT
+							*
+						FROM
+							t_sm_coupon t1
+						WHERE
+							t1.F_STATUS = '1'
+						AND
+						    t1.F_OBTAINTYPE = '2'
+						AND t1.F_COUPONTAG = '1'
+						AND t1.F_DELFLAG='0'
+						AND
+							#{crrObtainDate} >= t1.F_OBTAINDATEBEGIN 
+				    	AND 
+				    		t1.F_OBTAINDATEEND >= #{crrObtainDate}
+					) t
+				) a1
+			) b
+		ORDER BY 
+			b.F_DISCOUNT DESC ,b.F_VALIDEND
+	</select>
+	
+	<!-- 活动页优惠券检索 已登录-->
+	<select id="queryCouponListBySquareLogin" parameterType="coupon" resultType="coupon">
+		SELECT 
+			b.F_COUPONID as couponId ,
+			b.F_SPID as spId ,
+			b.F_NAME as name ,
+			b.F_OBTAINTYPE as obtainType ,
+			b.F_TOTALNUM as totalNum ,
+			b.F_DAYNUM as dayNum ,
+			b.F_USETYPE as useType ,
+			b.F_USELIMIT as useLimit ,
+			b.F_DISCOUNT as discount ,
+			b.F_OBTAINLIMIT as obtainLimit ,
+			b.F_DAYOBTAINLIMIT as dayObtainLimit ,
+			b.F_VALIDBEGIN as validBegin ,
+			b.F_VALIDEND as validEnd ,
+			b.F_OBTAINDATETYPE as obtainDateType ,
+			b.F_OBTAINDATEBEGIN as obtainDateBegin ,
+			b.F_OBTAINDATEEND as obtainDateEnd ,
+			b.F_OBTAINDATESPAN as obtainDateSpan ,
+			b.F_COUPONTYPE as couponType ,
+			b.F_STATUS as status ,
+			b.F_CREATETIME as createTime ,
+			b.F_CREATORUID as creatorUid ,
+			b.F_CREATOR as creator ,
+			b.F_UPDATETIME as f_UPDATETIME ,
+			b.F_UPDATERUID as updaterUid ,
+			b.F_UPDATER as updater ,
+			b.F_DELFLAG as delFlag ,
+			b.receiveCount,
+			b.todayCount
+		FROM
+			(
+				SELECT 
+					a1.*,
+					IFNULL(a2.receiveCount,0) as receiveCount,
+					IFNULL(a3.todayCount,0) as todayCount
+				FROM
+				(
+					SELECT 
+						t.*
+				 	FROM (
+						SELECT
+							*
+						FROM
+							t_sm_coupon t1
+						WHERE
+							t1.F_STATUS = '1'
+						AND
+						    t1.F_OBTAINTYPE = '2'
+						AND t1.F_COUPONTAG = '1'
+						AND t1.F_DELFLAG='0'
+						AND
+							#{crrObtainDate} >= t1.F_OBTAINDATEBEGIN 
+				    	AND 
+				    		t1.F_OBTAINDATEEND >= #{crrObtainDate}
+					) t
+				) a1
+				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS receiveCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} GROUP BY F_COUPONID) a2 on (a1.F_COUPONID = a2.F_COUPONID)
+				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS todayCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} AND F_OBTAINTIME=#{crrObtainDate} GROUP BY F_COUPONID) a3 on (a1.F_COUPONID = a3.F_COUPONID)
+			) b
+		/*
+		WHERE 
+			b.F_OBTAINLIMIT > b.receiveCount
+		AND 
+			b.F_DAYOBTAINLIMIT > b.todayCount*/
+		ORDER BY 
+			b.F_DISCOUNT DESC ,b.F_VALIDEND
+	</select>
 </mapper>	

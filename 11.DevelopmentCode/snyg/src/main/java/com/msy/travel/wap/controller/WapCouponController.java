@@ -1,6 +1,7 @@
 package com.msy.travel.wap.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
@@ -292,5 +296,91 @@ public class WapCouponController extends BaseController {
 		}
 
 		return "";
+	}
+
+	/**
+	 * 优惠券活动页
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:32:10
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toCouponSquare")
+	public ModelAndView toCouponSquare(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("wap/coupon/couponSquare");
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 活动页优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:42:04
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=getCouponSquareListAjax")
+	public void getCouponSquareListAjax(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		try {
+
+			// 检索条件
+			coupon.setStatus("1"); // 发布
+			coupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
+
+			// 设置分页
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("pageNum", super.getPageNum(coupon.getEntityPage()));
+			map.put("pageSize", super.getPageSize(coupon.getEntityPage()));
+			map.put("reasonable", false);
+			PageHelper.startPage(map);
+
+			List<Coupon> couponList = new ArrayList<Coupon>();
+
+			User user = getLoginUser(request);
+			if (user != null && user != null && !user.getUserId().equals("")) {
+				coupon.setUserId(user.getUserId());
+				coupon.setUserId(user.getUserId());
+				couponList = couponService.queryCouponListBySquareLogin(coupon);
+			} else {
+				couponList = couponService.queryCouponListBySquareNoLogin(coupon);
+			}
+			JSONArray jsonArray = JSONArray.fromObject(couponList);
+			response.getWriter().print(jsonArray.toString());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 处理优惠券列表显示
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:42:41
+	 * @param couponlist
+	 * @return void
+	 */
+	private void resetCouponList(List<Coupon> couponlist) {
+		if (couponlist != null && couponlist.size() > 0) {
+			for (int i = 0; i < couponlist.size(); i++) {
+
+				// 打折，显示*10
+				if ("2".equals(couponlist.get(i).getUseType())) {
+					couponlist.get(i).setDiscount(BigDecimalUtil.getPrettyNumber(BigDecimalUtil.multiply(couponlist.get(i).getDiscount(), "10")));
+				}
+			}
+		}
 	}
 }

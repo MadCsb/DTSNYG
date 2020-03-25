@@ -73,21 +73,8 @@ public class CustomerCoupon extends BaseEntity implements java.io.Serializable {
 	 */
 	private String delFlag;
 
-	/**
-	 * 首次生成优惠券ID db_column: F_PCOUPONID
-	 */
-	private String pcouponId;
-
 	// columns END
 	private List<String> customerCouponIdList;
-
-	public String getPcouponId() {
-		return pcouponId;
-	}
-
-	public void setPcouponId(String pcouponId) {
-		this.pcouponId = pcouponId;
-	}
 
 	public void setCustomerCouponId(String customerCouponId) {
 		this.customerCouponId = customerCouponId;

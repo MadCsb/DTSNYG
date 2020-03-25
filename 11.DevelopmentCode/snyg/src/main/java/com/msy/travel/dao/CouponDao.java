@@ -100,4 +100,28 @@ public interface CouponDao {
 	 */
 	List<Coupon> queryCouponListForSellPriceNoLogin(Coupon coupon) throws Exception;
 
+	/**
+	 * 活动页优惠券检索 未登录
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:45:25
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	List<Coupon> queryCouponListBySquareNoLogin(Coupon coupon) throws Exception;
+
+	/**
+	 * 活动页优惠券检索 未登录
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:45:25
+	 * @param coupon
+	 * @return
+	 * @throws Exception
+	 * @return List<Coupon>
+	 */
+	List<Coupon> queryCouponListBySquareLogin(Coupon coupon) throws Exception;
+
 }
