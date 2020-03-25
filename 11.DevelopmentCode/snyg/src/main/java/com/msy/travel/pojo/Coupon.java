@@ -165,6 +165,26 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 
 	private String userId;
 
+	private String receiveCount;
+
+	private String todayCount;
+
+	public String getReceiveCount() {
+		return receiveCount;
+	}
+
+	public void setReceiveCount(String receiveCount) {
+		this.receiveCount = receiveCount;
+	}
+
+	public String getTodayCount() {
+		return todayCount;
+	}
+
+	public void setTodayCount(String todayCount) {
+		this.todayCount = todayCount;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
