@@ -17,28 +17,31 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.EntityPage;
-import com.msy.travel.common.ResourceCommon;
 import com.msy.travel.pojo.Shopcart;
+import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.ShopcartService;
 
 @Controller
 @Scope(value = "prototype")
-@RequestMapping(value = "/wapShopcart")
+@RequestMapping(value = "/wapShopCart")
 public class WapShopcartController extends BaseController {
 	public static final Log log = LogFactory.getLog(WapShopcartController.class);
 
 	@Resource(name = "shopcartServiceImpl")
 	private ShopcartService shopcartService;
 
+	@Resource(name = "serviceCodeServiceImpl")
+	private IServiceCodeService serviceCodeService;
+
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
 	/**
-	 * pc端商品加入购物车
+	 * wap端 商品加入购物车
 	 * 
 	 * @author wzd
-	 * @date 2019年12月5日 下午7:17:12
+	 * @date 2019年10月15日 下午2:40:58
 	 * @param shopcart
 	 * @param request
 	 * @param response
@@ -47,70 +50,8 @@ public class WapShopcartController extends BaseController {
 	@RequestMapping(params = "method=toAddOrUpdateShopCart")
 	public void toAddOrUpdateShopCart(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
 		try {
-
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
-				response.getWriter().print("nologin");
-			} else {
-				shopcart.setUserId(getLoginUser(request).getUserId());
-				shopcartService.createOrUpdateShopcart(shopcart);
-				response.getWriter().print("success");
-			}
-		} catch (Exception e) {
-			log.error(e, e);
-		}
-	}
-
-	/**
-	 * 获取购物车信息
-	 * 
-	 * @author wzd
-	 * @date 2019年12月6日 下午4:17:09
-	 * @param shopcart
-	 * @param request
-	 * @param response
-	 * @param spId
-	 * @param userId
-	 * @return void
-	 */
-	@RequestMapping(params = "method=getShopCartListWeb")
-	public void getShopCartListWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
-		try {
-			if (request.getSession().getAttribute(ResourceCommon.LOGIN_USER) == null) {
-				response.getWriter().print("");
-			} else {
-				shopcart = new Shopcart();
-				shopcart.setUserId(getLoginUser(request).getUserId());
-				shopcart.setDelFlag("0");
-				shopcart.setState("1");
-				EntityPage en = new EntityPage();
-				en.setSortOrder("DESC");
-				en.setSortField("t.F_UPDATETIME");
-				shopcart.setEntityPage(en);
-				List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
-
-				JSONArray jsonArray = JSONArray.fromObject(shopCartList);
-				response.getWriter().print(jsonArray.toString());
-			}
-		} catch (Exception e) {
-			log.error(e, e);
-		}
-	}
-
-	/**
-	 * 删除购物车
-	 * 
-	 * @author wzd
-	 * @date 2019年12月7日 上午11:57:47
-	 * @param shopcart
-	 * @param request
-	 * @param response
-	 * @return void
-	 */
-	@RequestMapping(params = "method=deleteShopCartWeb")
-	public void deleteShopCartWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			shopcart = shopcartService.displayShopcart(shopcart);
-			shopcartService.deleteShopcart(shopcart);
+			shopcart.setUserId(getLoginUser(request).getUserId());
+			shopcartService.createOrUpdateShopcart(shopcart);
 			response.getWriter().print("success");
 		} catch (Exception e) {
 			log.error(e, e);
@@ -118,22 +59,21 @@ public class WapShopcartController extends BaseController {
 	}
 
 	/**
-	 * 跳转购物车列表
+	 * 跳转到购物车列表
 	 * 
 	 * @author wzd
-	 * @date 2019年12月14日 下午5:11:57
+	 * @date 2019年10月20日 下午4:53:50
 	 * @param shopcart
 	 * @param request
 	 * @param response
 	 * @return
 	 * @return ModelAndView
 	 */
-	@RequestMapping(params = "method=toQueryShopCartWeb")
-	public ModelAndView toQueryShopCartWeb(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(params = "method=toQueryShopCartWx")
+	public ModelAndView toQueryShopCartWx(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-
-			view = new ModelAndView("web/shopcart/queryShopcartWeb");
+			view = new ModelAndView("wap/shopcart/queryShopcartWx");
 			view.addObject("shopcart", shopcart);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -141,5 +81,109 @@ public class WapShopcartController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * 获取购物车里信息
+	 * 
+	 * @author wzd
+	 * @date 2019年10月20日 下午5:15:44
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @param spId
+	 * @param userId
+	 * @return void
+	 */
+	@RequestMapping(params = "method=getShopCartListWx")
+	public void getShopCartListWx(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
+		try {
+			shopcart.setUserId(getLoginUser(request).getUserId());
+			shopcart.setDelFlag("0");
+			shopcart.setState("1");
+			EntityPage en = new EntityPage();
+			en.setSortOrder("DESC");
+			en.setSortField("t.F_UPDATETIME");
+			shopcart.setEntityPage(en);
+			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+			JSONArray jsonArray = JSONArray.fromObject(shopCartList);
+			response.getWriter().print(jsonArray.toString());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 修改购物车数量
+	 * 
+	 * @author wzd
+	 * @date 2019年10月20日 下午6:54:39
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=changeShopCartNum")
+	public void changeShopCartNum(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			shopcart.setUserId(getLoginUser(request).getUserId());
+			String num = shopcart.getNum();
+			shopcart = shopcartService.displayShopcart(shopcart);
+			shopcart.setNum(num);
+			shopcartService.updateShopcart(shopcart);
+			response.getWriter().print("success");
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 获取购物车数量
+	 * 
+	 * @author wzd
+	 * @date 2019年11月25日 下午1:27:06
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @param spId
+	 * @param userId
+	 * @return void
+	 */
+	@RequestMapping(params = "method=getShopCartListLength")
+	public void getShopCartListLength(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response, String spId, String userId) {
+		try {
+			shopcart.setUserId(getLoginUser(request).getUserId());
+			shopcart.setDelFlag("0");
+			EntityPage en = new EntityPage();
+			en.setSortOrder("DESC");
+			en.setSortField("t.F_UPDATETIME");
+			shopcart.setEntityPage(en);
+			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
+			response.getWriter().print(shopCartList.size());
+		} catch (Exception e) {
+			log.error(e, e);
+		}
+	}
+
+	/**
+	 * 修改购物车数量
+	 * 
+	 * @author wzd
+	 * @date 2019年10月20日 下午6:54:39
+	 * @param shopcart
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=deleteShopCart")
+	public void deleteShopCart(Shopcart shopcart, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			shopcart.setUserId(getLoginUser(request).getUserId());
+			shopcart = shopcartService.displayShopcart(shopcart);
+			shopcartService.deleteShopcart(shopcart);
+			response.getWriter().print("success");
+		} catch (Exception e) {
+			log.error(e, e);
+		}
 	}
 }
