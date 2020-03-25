@@ -19,13 +19,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
+import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
+import com.msy.travel.service.CustomerCouponService;
 import com.msy.travel.service.SaleTypeService;
 import com.msy.travel.service.SellPriceService;
 
@@ -52,6 +57,9 @@ public class WapCouponController extends BaseController {
 
 	@Resource(name = "couponProductionServiceImpl")
 	private CouponProductionService couponProductionService;
+
+	@Resource(name = "customerCouponServiceImpl")
+	private CustomerCouponService customerCouponService;
 
 	/**
 	 * 获取优惠券列表
@@ -143,5 +151,146 @@ public class WapCouponController extends BaseController {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+	}
+
+	/**
+	 * 领取优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月25日 下午4:16:35
+	 * @param couponId
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=receiveCouponSquareAjax")
+	public void receiveCouponSquareAjax(String couponId, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+
+			// 检索优惠券信息
+			Coupon coupon = new Coupon();
+			coupon.setCouponId(couponId);
+			coupon = couponService.displayCoupon(coupon);
+
+			User user = getLoginUser(request);
+			// 用户
+			if (user != null) {
+				String msg = canReceiveMsg(coupon, user.getUserId());
+
+				// 可以领取
+				if (msg == null || "".equals(msg)) {
+					// 操作数据库
+					customerCouponService.receiveCoupon(user.getUserId(), coupon);
+					result.setResultCode("0");
+					result.setResultMsg(msg);
+				} else {
+					result.setResultCode("1");
+					result.setResultMsg(msg);
+				}
+			} else {
+				result.setResultCode("1");
+				result.setResultMsg("获取用户信息失败");
+			}
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg(e.getMessage());
+			log.error(e, e);
+		}
+
+		JSONObject json = JSONObject.fromObject(result);
+		try {
+			response.getWriter().print(json.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 判断能否领取
+	 * 
+	 * @param coupon
+	 * @param fansId
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean canReceive(Coupon coupon, String fansId) throws Exception {
+		String msg = canReceiveMsg(coupon, fansId);
+		if (msg == null || "".equals(msg)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 判断能否领取（返回提示信息）
+	 * 
+	 * @param coupon
+	 * @param fansId
+	 * @return
+	 * @throws Exception
+	 */
+	private String canReceiveMsg(Coupon coupon, String userId) throws Exception {
+		String crrDate = DateTimeUtil.getDateTime10();
+		String couponId = coupon.getCouponId();
+
+		// 不是发布状态
+		if (!"1".equals(coupon.getStatus())) {
+			return "尊敬的游客，该优惠活动已经结束了，请您刷新页面后查看最新的优惠活动";
+		}
+
+		// 领券日期不对
+		if (crrDate.compareTo(coupon.getObtainDateBegin()) < 0 || crrDate.compareTo(coupon.getObtainDateEnd()) > 0) {
+			return "尊敬的游客，该优惠活动未开始或已经结束(该优惠券不在领取时间内)，请您刷新页面后查看最新的优惠活动";
+		}
+
+		// 领取总数
+		CustomerCoupon obj1 = new CustomerCoupon();
+		obj1.setCouponId(couponId);
+		Long receiveTotal = customerCouponService.getCustomerCouponCount(obj1);
+
+		// 领取总数大于发行总量
+		if (receiveTotal >= Long.valueOf(coupon.getTotalNum())) {
+			return "尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
+		}
+
+		// 每日领取总数
+		CustomerCoupon obj2 = new CustomerCoupon();
+		obj2.setCouponId(couponId);
+		obj2.setObtainTime(DateTimeUtil.getDateTime10());
+		Long dayCount = customerCouponService.getCustomerCouponCount(obj2);
+
+		// 每日领取总数大于等于日发行量
+		if (coupon.getDayNum() != null && !"".equals(coupon.getDayNum())) {
+			if (dayCount >= Long.valueOf(coupon.getDayNum())) {
+				return "尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
+			}
+		}
+
+		// 本人领取总数
+		CustomerCoupon obj3 = new CustomerCoupon();
+		obj3.setCouponId(couponId);
+		obj3.setCustomerCode(userId);
+		Long myCount = customerCouponService.getCustomerCouponCount(obj3);
+
+		// 本人领取总数大于等于每人限领
+		if (myCount >= Long.valueOf(coupon.getObtainLimit())) {
+			return "尊敬的游客，该优惠券您已无法领取更多了，请尝试领取其他优惠券吧";
+		}
+
+		// 本人今天领取总数
+		CustomerCoupon obj4 = new CustomerCoupon();
+		obj4.setCouponId(couponId);
+		obj4.setCustomerCode(userId);
+		obj4.setObtainTime(DateTimeUtil.getDateTime10());
+		Long myTodayCount = customerCouponService.getCustomerCouponCount(obj4);
+
+		// 本人今天领取总数大于等于每人每天限领
+		if (myTodayCount >= Long.valueOf(coupon.getDayObtainLimit())) {
+			return "尊敬的游客，您已超出该优惠券的领取最大限制，请明天再来领取吧";
+		}
+
+		return "";
 	}
 }

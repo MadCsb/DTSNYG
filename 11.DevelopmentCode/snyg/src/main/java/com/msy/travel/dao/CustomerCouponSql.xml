@@ -181,4 +181,23 @@
 			</if>
 		</if>
 	</select>
+	
+	<!-- 获取优惠券总数 -->
+	<select id="getCustomerCouponCount" parameterType="customerCoupon" resultType="long">
+		SELECT
+			COUNT(1) 
+		FROM
+			t_sm_customercoupon t
+		<where>
+			<if test="couponId!=null and couponId!=''">
+		    	t.F_COUPONID = #{couponId}
+		     </if>
+		     <if test="obtainTime!=null and obtainTime!=''">
+		    	AND t.F_OBTAINTIME = #{obtainTime}
+		     </if>
+		     <if test="customerCode!=null and customerCode!=''">
+		    	AND t.F_CUSTOMERCODE = #{customerCode}
+		     </if>
+		</where>
+	</select>
 </mapper>	

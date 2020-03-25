@@ -29,20 +29,27 @@ function receiveCouponAjax(couponId, fansId) {
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
 	
-	var username = '<%= session.getAttribute("user").getUserId%>';
-	alert(username);
-
-	$.post("wx.do?method=receiveCouponSquareAjax", {
-		couponId : couponId,
-		fansId : fansId
-	}, function(data) {
-		data = eval('(' + data + ')');
-		if (data.resultCode == "0") {
-			Alert.alertMsgCallBack("领取成功", 'receiveSuccess');
-		} else {
-			Alert.alertMsgCallBack(data.resultMsg, 'receiveError');
+	$.post("wap?method=checkLogin",{
+		
+	},function(data){
+		if(data.resultCode=='0'){
+			$.post("wapCoupon.do?method=receiveCouponSquareAjax", {
+				couponId : couponId
+			}, function(data) {
+				data = eval('(' + data + ')');
+				if (data.resultCode == "0") {
+					Alert.alertMsgCallBack("领取成功", 'receiveSuccess');
+				} else {
+					Alert.alertMsgCallBack(data.resultMsg, 'receiveError');
+				}
+			})
+		}else{
+			closeBottomHtml();
+			Alert.showConfirmMsg("您还没有登录，请先登录",'toLogin');
 		}
-	})
+	},'json');
+
+	
 }
 
 /**
