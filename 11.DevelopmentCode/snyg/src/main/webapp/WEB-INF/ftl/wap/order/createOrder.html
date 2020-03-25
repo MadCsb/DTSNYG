@@ -86,6 +86,28 @@
     <textarea id="memo" cols="" rows="" class="txt-textarea" placeholder="请填写备注"></textarea>
   </div>
 </div>
+
+<div class="snyg_contentb">
+  <div class="ddbt_title">
+    <a href="">支付方式</a>
+  </div>
+  <div class="zfbtcon">
+    <div style="padding:6px 0;border-bottom:1px solid #efefef;"><label>
+      <input name="radio" type="radio" value="radio" hidden/>
+      <label for="radio" class="radiock"></label>
+      <i class="wx_ico"></i><span class="" style="vertical-align: middle; margin-left:10px;">微信</span>
+    </label>
+    </div>
+
+    <div style="padding:6px 0;"><label>
+      <input name="radio" type="radio" id="radio1" value="radio" hidden/>
+      <label for="radio1" class="radiock"></label>
+      <i class="zfb_ico"></i><span class="" style="vertical-align: middle; margin-left:10px;">支付宝</span>
+    </label>
+    </div>
+  </div>
+</div>
+
 <div class="snyg_footer"></div>
 
 <!--预订menu开始-->
@@ -189,7 +211,7 @@
     $(".snyg_nav").hide();
     document.getElementById('ifa').style.minHeight = $(document).height()+"px";
 //    $("#ifa").contentWindow.location.replace("wx?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
-    $("#ifa").attr("src","wap?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
+    $("#ifa").attr("src","wapConsignee?method=toQueryConsignee&isChoose=1");
     $("#ifa").show();
   }
 

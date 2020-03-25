@@ -18,13 +18,19 @@ function Pay(){
    */
   Pay.prototype.PAY_METHOD_WX = "WX";
   /**
-   * 微信支付方式-移动系统h5调用
+   * 微信支付方式-移动系统
    */
-  Pay.prototype.PAY_METHOD_WX_H5 = "WX_H5";
+  Pay.prototype.PAY_METHOD_WX_WAP = "WX_WAP";
   /**
    * 微信支付方式-pc系统二维码
    */
   Pay.prototype.PAY_METHOD_WX_PC = "WX_PC";
+
+  /**
+   * 微信支付方式-支付宝
+   */
+  Pay.prototype.PAY_METHOD_ZFB = "ZFB";
+
 
   /**
    * 验证支付成功定时器

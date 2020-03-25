@@ -167,7 +167,7 @@ public class PayController extends BaseController {
 			thirdPayFlow.setPlatformOrders(platformOrders);
 			thirdPayFlow.setSpId(spId);
 
-				//微信支付信息
+			//微信支付信息
 			Map<String,String> paramMap = new TreeMap<String, String>();
 			paramMap.put("appid", serviceCode.getAppId());  //公众账号 ID
 			paramMap.put("mch_id", serviceCode.getTenPayPartner()); //商户号
@@ -213,12 +213,12 @@ public class PayController extends BaseController {
 			paramMap.put("sign", sign);
 			org.dom4j.Document document = DocumentHelper.createDocument();
 			Element elementXml = document.addElement("xml");
-				for (Entry<String , String> entry : paramMap.entrySet()) {
-					elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
-				}
-				log.error("微信支付 params xml:"+ document.getRootElement().asXML());
-				//请求统一支付接口
-				String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
+			for (Entry<String , String> entry : paramMap.entrySet()) {
+				elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
+			}
+			log.error("微信支付 params xml:"+ document.getRootElement().asXML());
+			//请求统一支付接口
+			String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
 			log.error("微信支付统一支付接口响应:"+res);
 			document = DocumentHelper.parseText(res);
@@ -229,45 +229,45 @@ public class PayController extends BaseController {
 			{
 				paramMap.put(ele.getName(), ele.getText());
 			}
-				//支付成功
-				if(paramMap.get("return_code")!=null&&paramMap.get("result_code")!=null
-						&&"SUCCESS".equals(paramMap.get("return_code").toUpperCase())
- 						&&"SUCCESS".equals(paramMap.get("result_code").toUpperCase())){
+			//支付成功
+			if(paramMap.get("return_code")!=null&&paramMap.get("result_code")!=null
+					&&"SUCCESS".equals(paramMap.get("return_code").toUpperCase())
+					&&"SUCCESS".equals(paramMap.get("result_code").toUpperCase())){
 
-					//payMethod=wx微信浏览器，公众号直接支付
-					//payMethod=h5移动端html5页面，非微信浏览器打开
-					//payMethod=pc非移动浏览器打开，二维码
-         					if(payMethod.equals(PAY_METHOD_WX)) //微信支付，
-					{
-						Map<String,String> signParamMap = new TreeMap<String, String>();
-						signParamMap.put("appId", paramMap.get("appid"));
-						signParamMap.put("timeStamp", Sha1Util.getTimeStamp());
-						signParamMap.put("nonceStr", Sha1Util.getNonceStr());
-						signParamMap.put("package", "prepay_id="+paramMap.get("prepay_id"));
-						signParamMap.put("signType", "MD5");
-						log.error("支付签名前:"+JSON.toJSONString(signParamMap));
-						sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
-
-						payInfo.put("appId", paramMap.get("appid"));
-						payInfo.put("timeStamp", signParamMap.get("timeStamp"));
-						payInfo.put("nonceStr", signParamMap.get("nonceStr"));
-						payInfo.put("package", "prepay_id="+paramMap.get("prepay_id"));
-						payInfo.put("signType", "MD5");
-						payInfo.put("paySign", sign);
-						log.error("支付签名后:"+JSON.toJSONString(payInfo));
-					}else if(payMethod.equals(PAY_METHOD_WX_H5)) //移动端支付
-					{
-						payInfo.put("mweb_url", paramMap.get("mweb_url"));
-					}else if(payMethod.equals(PAY_METHOD_WX_PC)) //扫描支付
-					{
-						payInfo.put("code_url",paramMap.get("code_url"));
-					}
-					thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
-					payInfo.put("flowId",thirdPayFlow.getFlowId());
-				}else
+				//payMethod=wx微信浏览器，公众号直接支付
+				//payMethod=h5移动端html5页面，非微信浏览器打开
+				//payMethod=pc非移动浏览器打开，二维码
+				if(payMethod.equals(PAY_METHOD_WX)) //微信支付，
 				{
-					throw new LogicException("获取微信支付结果失败");
+					Map<String,String> signParamMap = new TreeMap<String, String>();
+					signParamMap.put("appId", paramMap.get("appid"));
+					signParamMap.put("timeStamp", Sha1Util.getTimeStamp());
+					signParamMap.put("nonceStr", Sha1Util.getNonceStr());
+					signParamMap.put("package", "prepay_id="+paramMap.get("prepay_id"));
+					signParamMap.put("signType", "MD5");
+					log.error("支付签名前:"+JSON.toJSONString(signParamMap));
+					sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
+
+					payInfo.put("appId", paramMap.get("appid"));
+					payInfo.put("timeStamp", signParamMap.get("timeStamp"));
+					payInfo.put("nonceStr", signParamMap.get("nonceStr"));
+					payInfo.put("package", "prepay_id="+paramMap.get("prepay_id"));
+					payInfo.put("signType", "MD5");
+					payInfo.put("paySign", sign);
+					log.error("支付签名后:"+JSON.toJSONString(payInfo));
+				}else if(payMethod.equals(PAY_METHOD_WX_H5)) //移动端支付
+				{
+					payInfo.put("mweb_url", paramMap.get("mweb_url"));
+				}else if(payMethod.equals(PAY_METHOD_WX_PC)) //扫描支付
+				{
+					payInfo.put("code_url",paramMap.get("code_url"));
 				}
+				thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
+				payInfo.put("flowId",thirdPayFlow.getFlowId());
+			}else
+			{
+				throw new LogicException("获取微信支付结果失败");
+			}
 		}catch (LogicException e1)
 		{
 			log.error(e1.getMessage());
