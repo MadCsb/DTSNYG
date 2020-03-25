@@ -48,7 +48,7 @@ public class OpenController extends BaseController {
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 	/**
-	 * 跳转到新增页面
+	 * 跳转到产品详情
 	 */
 	@RequestMapping(value = "/{priceCode}")
 	public ModelAndView toAddCity(@PathVariable("spId") String spId,@PathVariable("priceCode") String priceCode, HttpServletRequest request, HttpServletResponse response) {
@@ -91,6 +91,48 @@ public class OpenController extends BaseController {
 				view.addObject("detailPage","wap");
 			}
 
+		}catch (Exception e)
+		{
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+	/**
+	 * 跳转到订单列表
+	 */
+	@RequestMapping(value = "/orderList")
+	public ModelAndView toAddCity(@PathVariable("spId") String spId,HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("open/displayOrderList");
+			view.addObject("spId",spId);
+
+			User user = null;
+			//判断是否通过山东移动进入
+			String sdToken = request.getParameter("token");
+			if (sdToken != null && !sdToken.equals("")) //如果存在token，表示是山东进来的
+			{
+				user = userService.getOrCreateBySdToken(sdToken);
+				String userPwd = null;
+				if(user.getUserLoginName().length()>6)
+				{
+					userPwd = user.getUserLoginName().substring(0,6);
+				}else
+				{
+					userPwd = "123456";
+				}
+				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), userPwd);
+				Subject subject = SecurityUtils.getSubject();
+				subject.login(token);
+				view.addObject("detailPage","wap");
+			}
+
+			if (user == null)
+			{
+				throw new LogicException("当前用户未登录，请先登录");
+			}
 		}catch (Exception e)
 		{
 			view = new ModelAndView("error");

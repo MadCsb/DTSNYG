@@ -1,9 +1,9 @@
 /**
  * Created by cheng on 2019/10/17.
  */
-function WxPerson(){
-  WxPerson.prototype.userId = null;
-  WxPerson.prototype.user = null;
+function Person(){
+  Person.prototype.userId = null;
+  Person.prototype.user = null;
 }
 /**
  * 获取微信用户的订单
@@ -19,7 +19,7 @@ function WxPerson(){
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
  */
-WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
+Person.prototype.orderList = function (sync,searchObject,pageEntity)
 {
   var orderList = null;
   $.ajax({
@@ -51,7 +51,7 @@ WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
  * orderId 订单id
  * func 获取订单详情后，执行的方法，如果未定义，则返回订单详情
  */
-WxPerson.prototype.orderDetail = function (sync,orderId,func)
+Person.prototype.orderDetail = function (sync,orderId,func)
 {
   var orderDetail = null;
   $.ajax({
@@ -72,15 +72,15 @@ WxPerson.prototype.orderDetail = function (sync,orderId,func)
 }
 
 /**
- * 根据openId返回user对象，非设置WxPerson.user
+ * 根据openId返回user对象，非设置Person.user
  */
-WxPerson.prototype.getUserByUserId = function () {
+Person.prototype.getUserByUserId = function () {
   var userIdTmp = this.userId;
   $.ajax({
     type: "POST",
     async: false,
     dataType: "json",
-    url: "wxpersonal?method=getUserByUserId",
+    url: "wappersonal?method=getUserByUserId",
     data: {
       userId:userIdTmp
     },

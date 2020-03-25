@@ -115,6 +115,11 @@ public class WapOrderController extends BaseController {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@RequestMapping(params = "method=test")
+	public ModelAndView test(String prepareOrderJson,HttpServletRequest request) {
+		ModelAndView view =new ModelAndView("/wap/order/test");
+		return view;
+	}
 	/**
 	 * 进入订单收集数据页面
 	 * prepareOrderJson
@@ -138,7 +143,7 @@ public class WapOrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(params = "method=toCreateOrder")
-	public ModelAndView toCreateOrder(String userId,String prepareOrderJson,HttpServletRequest request) {
+	public ModelAndView toCreateOrder(String prepareOrderJson,HttpServletRequest request) {
 		ModelAndView view = null;
 		try {
 			JSONObject prepareOrderJsonObject = JSON.parseObject(prepareOrderJson);
@@ -170,16 +175,13 @@ public class WapOrderController extends BaseController {
 
 				orderListList.add(orderList);
 			}
-			view = new ModelAndView("/wx/order/createOrder");
+			view = new ModelAndView("/wap/order/createOrder");
 			view.addObject("orderListList",orderListList);
 			if (prepareOrderJsonObject.containsKey("price"))
 			{
 				view.addObject("price",prepareOrderJsonObject.getJSONObject("price").toJSONString());
 			}
-			User user = new User();
-			user.setUserId(userId);
-			user = userService.displayUser(user);
-			view.addObject("user",user);
+			view.addObject("user",getLoginUser(request));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -239,11 +241,10 @@ public class WapOrderController extends BaseController {
 	public ModelAndView toOrderList(String orderListType,String searchKey,HttpServletRequest request) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("/wx/order/orderList");
+			view = new ModelAndView("/wap/order/orderList");
 			view.addObject("orderListType",orderListType);
 			view.addObject("searchKey",searchKey);
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view.addObject("user",getLoginUser(request));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -260,11 +261,10 @@ public class WapOrderController extends BaseController {
 	{
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("wx/order/orderDetail");
+			view = new ModelAndView("wap/order/orderDetail");
 			view.addObject("orderId",orderId);
 			view.addObject("wxpayValidateTime",configParameter.getWxpayValidateTime());
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view.addObject("user",getLoginUser(request));
 		}catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -354,7 +354,7 @@ public class WapOrderController extends BaseController {
 
       List<Pubmap> pubmapList = pubmapService.getPubmapListByType("BACKREASON");
 
-			view = new ModelAndView("wx/order/orderBack");
+			view = new ModelAndView("wap/order/orderBack");
 			view.addObject("order",order);
       view.addObject("orderListList",orderListList);
       view.addObject("pubmapList",pubmapList);
@@ -376,9 +376,8 @@ public class WapOrderController extends BaseController {
   {
     ModelAndView view = null;
     try {
-			view = new ModelAndView("redirect:/wxorder?method=toOrderList&orderListType=0");
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view = new ModelAndView("redirect:/waporder?method=toOrderList&orderListType=0");
+			view.addObject("user",getLoginUser(request));
 
 			ModelMap modelMap = view.getModelMap();
 			User user = (User) modelMap.get("user");
@@ -458,7 +457,7 @@ public class WapOrderController extends BaseController {
 
 			List<Pubmap> expressList = pubmapService.getPubmapListByType("EXPRESS");
 
-			view = new ModelAndView("/wx/order/orderBackDetail");
+			view = new ModelAndView("/wap/order/orderBackDetail");
 			view.addObject("order",order);
 			view.addObject("orderListList",orderListList);
 			view.addObject("orderBack",orderBack);
@@ -486,7 +485,7 @@ public class WapOrderController extends BaseController {
 			OrderExpress orderExpress = new OrderExpress();
 			orderExpress.setOrderId(orderId);
 			List<OrderExpress> orderExpressList = orderExpressService.queryOrderExpressList(orderExpress);
-			view = new ModelAndView("/wx/order/orderExpressDetail");
+			view = new ModelAndView("/wap/order/orderExpressDetail");
 			view.addObject("orderExpressList",orderExpressList);
 		}catch (Exception e)
 		{
@@ -503,9 +502,8 @@ public class WapOrderController extends BaseController {
 		ModelAndView view = null;
 		Result result = new Result();
 		try {
-			view = new ModelAndView("redirect:/wxorder?method=toOrderList&orderListType=0");
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view = new ModelAndView("redirect:/waporder?method=toOrderList&orderListType=0");
+			view.addObject("user",getLoginUser(request));
 			ModelMap modelMap = view.getModelMap();
 			User user = (User) modelMap.get("user");
 
@@ -572,8 +570,8 @@ public class WapOrderController extends BaseController {
 	/**
 	 * ajax 获取订单列表
 	 */
-	@RequestMapping(params = "method=wxAjaxOrderList")
-	public void wxAjaxOrderList(Order order,int pageNum,int pageSize,HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(params = "method=wapAjaxOrderList")
+	public void wapAjaxOrderList(Order order,int pageNum,int pageSize,HttpServletRequest request,HttpServletResponse response) {
 		//验证微信用户
 		List<Order> orderList = new ArrayList<Order>();
 		try {
@@ -605,8 +603,8 @@ public class WapOrderController extends BaseController {
 	/**
 	 * ajax 获取订单的orderList列表
 	 */
-	@RequestMapping(params = "method=wxAjaxOrderDetail")
-	public void wxAjaxOrderDetail(String orderId,HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(params = "method=wapAjaxOrderDetail")
+	public void wapAjaxOrderDetail(String orderId,HttpServletRequest request,HttpServletResponse response) {
 		JSONObject object = new JSONObject();
 		//验证微信用户
 		try {

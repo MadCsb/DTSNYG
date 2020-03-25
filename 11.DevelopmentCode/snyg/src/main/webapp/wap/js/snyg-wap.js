@@ -19,15 +19,14 @@ function toPdcTypeList(){
  * 跳转我的购物车
  */
 function toShopCart(){
- var detailUrl = "wx?method=toQueryShopCartWx";
-  wxAuthorizeBase(detailUrl);
+  window.location.href = "wap?method=toQueryShopCartWx";
 }
 /**
  * 跳转个人中心
  * searchObject
  */
 function toPersonal(){
-  wxAuthorizeBase("wxpersonal.do?method=toPersonal");
+  window.location.href = "wappersonal.do?method=toPersonal";
 }
 /**
  * 跳转我的订单
@@ -43,53 +42,53 @@ function toOrderList(orderListType){
   {
     orderListType = "0";
   }
-  wxAuthorizeBase("wxorder.do?method=toOrderList&orderListType="+orderListType);
+  window.location.href = "waporder.do?method=toOrderList&orderListType="+orderListType;
 }
 
 /**
  * 跳转我的收货地址
  */
 function toConsignee(){
-  wxAuthorizeBase("wx?method=toQueryConsignee");
+  window.location.href ="wap?method=toQueryConsignee";
 }
 
 /**
  * 跳转文章详情
  */
 function toArticle(articleId){
-  window.location.href = "wx.do?method=showArticle&articleId="+articleId;
+  window.location.href = "wap?method=showArticle&articleId="+articleId;
 }
 
 /**
  * 跳转销售详情
  */
 function toSellPrice(priceId){
-  wxAuthorizeBase("wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId);
+  window.location.href = "wap?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
 }
 
 /**
  * 跳转订单详情
  */
 function toOrder(orderId){
-  wxAuthorizeBase("wxorder?method=toOrderDetail&orderId="+orderId);
+  window.location.href = "waporder?method=toOrderDetail&orderId="+orderId;
 }
 /**
  * 跳转订单物流详情
  */
 function toOrderExpress(orderId){
-  window.location.href = "wxorder?method=toOrderExpress&orderId="+orderId;
+  window.location.href = "waporder?method=toOrderExpress&orderId="+orderId;
 }
 /**
  * 跳转订单退货详情
  */
 function toOrderBack(orderId){
-  window.location.href = "wxorder?method=toOrderBack&orderId="+orderId;
+  window.location.href = "waporder?method=toOrderBack&orderId="+orderId;
 }
 /**
  * 跳转订单退货详情
  */
 function toOrderBackDetail(orderId){
-  window.location.href = "wxorder?method=toOrderBackDetail&orderId="+orderId;
+  window.location.href = "waporder?method=toOrderBackDetail&orderId="+orderId;
 }
 
 /**
@@ -155,7 +154,7 @@ function ajaxOrderDetail(sync,orderId,func)
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "wxorder?method=wxAjaxOrderDetail",
+    url: "waporder?method=wapAjaxOrderDetail",
     data: {
       d:new Date().getTime(),
       orderId:orderId

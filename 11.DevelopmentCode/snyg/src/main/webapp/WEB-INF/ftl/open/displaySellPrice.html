@@ -1,50 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head><#include "/INC_HEAD.html">
+<head>
+	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
 </head>
-
 <body>
-	<input type="hidden" id="priceId" value="${sellPrice.priceId!''}">
-	<input type="hidden" id="spId" value="${spId!''}">
-	<input type="hidden" id="detailPage" value="${detailPage!''}">
 </body>
 <script type="text/javascript">
-	var wapPage = "wap"; //html5 移动浏览器
-	var wxPage= "wx";  //微信公众号
-	var webPage = "web"; //web浏览器 pc
-	var detailPage = $("#detailPage").val();
-	if(detailPage == '' || detailPage == 'auto') //如果未指定进入详情页方式
-	{
-    var userAgentInfo = window.navigator.userAgent.toLowerCase();
-    if(userAgentInfo.match(/MicroMessenger/i) == 'micromessenger') { //微信浏览器判断
-      detailPage = wxPage;
-    }else
-    {
-      var isMobile = false;//当前浏览器是否为移动段浏览器，假设移动端浏览器都支持微信了
-      var mobileAgents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
-      for (var v = 0; v < mobileAgents.length; v++) {
-        if (userAgentInfo.indexOf(mobileAgents[v]) > 0) { isMobile = true; break; }
-      }
-      if(isMobile)
-      {
-        detailPage = wapPage;
-      }else {
-        detailPage = webPage;
-      }
-    }
-    var detailUrl = "";
-    if(detailPage == wxPage)
-		{
-      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+$("#priceId").val()+"&spId="+$("#spId").val();
-		}else if (detailPage == wapPage)
-		{
-//      detailUrl = "wx?method=toQueryCommproductDetailByPriceId&priceId="+$("#priceId").val()+"&spId="+$("#spId").val()
-		}else if (detailPage == webPage)
-		{
-      detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+$("#priceId").val();
-		}
-		alert(detailUrl);
-    window.location.replace(detailUrl)
-	}
+  OpenApi openApi = new OpenApi();
+  openApi.resetDefaultPageType("${detailPage!''}");
+  var param = new Object();
+  param.spId = "${spId!''}";
+  param.priceId = "${sellPrice.priceId!''}";
+  openApi.gotoSellPrice(param);
 </script>
 </html>

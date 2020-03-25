@@ -41,7 +41,6 @@
                 /wap/css/**=anon
                 /wap/js/**=anon
                 /wap/images/**=anon
-                /wap**=anon
                 /** = sessionFilter
             </value>  
         </property>

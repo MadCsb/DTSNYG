@@ -37,27 +37,6 @@ public class WapPersonalController extends BaseController {
 	private ConfigParameter configParameter;
 
 	/**
-	 * 获取当前微信用户通过OpenId
-	 * 
-	 * @param userId
-	 * @param request
-	 * @param response
-	 */
-	@RequestMapping(params = "method=getUserByUserId")
-	public void getUserByUserId(String userId, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			User user = new User();
-			user.setUserId(userId);
-			user = userService.displayUser(user);
-			response.setContentType("text/plain");
-			response.setContentType("application/json");
-			response.getWriter().write(net.sf.json.JSONObject.fromObject(user).toString());
-		} catch (Exception e) {
-			log.error(e);
-		}
-	}
-
-	/**
 	 * 进入微信个人中心
 	 * 
 	 * @return
@@ -66,9 +45,8 @@ public class WapPersonalController extends BaseController {
 	public ModelAndView toPersonal(HttpServletRequest request) {
 		ModelAndView view = null;
 		try {
-			view = new ModelAndView("wx/personal/personal");
-			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
-			wxSetViewObjects(view, request,serviceCode,userService);
+			view = new ModelAndView("wap/personal/personal");
+			view.addObject("user",getLoginUser(request));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

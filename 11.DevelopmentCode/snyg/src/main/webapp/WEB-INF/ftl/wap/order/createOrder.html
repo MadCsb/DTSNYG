@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">
-  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+  <#include "/wap/WAP_INC_HEAD.html">
+  <script src="${rc.contextPath}/wap/js/Person.js"></script>
   <script src="${rc.contextPath}/js/pay.js"></script>
 </head>
 <body>
@@ -113,7 +113,7 @@
       type: "POST",
       async: false,
       dataType: "json",
-      url: "wxorder?method=getUserConsignee",
+      url: "waporder?method=getUserConsignee",
       data: queryData,
       success: function (data) {
         var html;
@@ -152,7 +152,7 @@
         type: "POST",
         async: false,
         dataType: "json",
-        url: "wxorder?method=getPriceExpress",
+        url: "waporder?method=getPriceExpress",
         data: queryObj,
         success: function (data) {
           if(data.resultCode == '0')
@@ -177,7 +177,7 @@
     document.getElementById('ifa').style.minHeight = $(document).height()+"px";
 //    alert(primary);
 
-    $("#ifa").attr("src","wx?method=toAddConsignee&userId="+ $("#userId").val());
+    $("#ifa").attr("src","wap?method=toAddConsignee&userId="+ $("#userId").val());
     $("#ifa").show();
   }
 
@@ -189,7 +189,7 @@
     $(".snyg_nav").hide();
     document.getElementById('ifa').style.minHeight = $(document).height()+"px";
 //    $("#ifa").contentWindow.location.replace("wx?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
-    $("#ifa").attr("src","wx?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
+    $("#ifa").attr("src","wap?method=toQueryConsignee&isChoose=1&userId="+ $("#userId").val());
     $("#ifa").show();
   }
 
@@ -300,7 +300,7 @@
       type: "POST",
       async: false,
       dataType: "json",
-      url: "wxorder?method=createOrders",
+      url: "waporder?method=createOrders",
       data: {
         param:JSON.stringify(param)
       },
@@ -312,7 +312,7 @@
         }else {
           createOrderSuccess();
           pay = new Pay();
-          pay.payMethod =pay.PAY_METHOD_WX;
+          pay.payMethod =pay.PAY_METHOD_WX_H5;
           var payInfoParam = new Object();
           payInfoParam.openId = $("#userLoginName").val();
           payInfoParam.spId = currentSpId;

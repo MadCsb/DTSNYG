@@ -2,7 +2,7 @@
 <html>
   <head>
     <#include "/wap/WAP_INC_HEAD.html">
-    <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+    <script src="${rc.contextPath}/wap/js/wxPerson.js"></script>
   </head>
 <body>
 <!--<div class="snyg_headdiv">-->
@@ -14,35 +14,39 @@
 
 <div class="snyg_grzx">
   <div class="snyg_grzxtx">
-    <img src="${Session.LOGIN_USER.headPic!'${rc.contextPath}/wap/images/tx.jpg'}">
+    <#if user.headPic??>
+      <img src="${user.headPic!''}">
+    <#else>
+      <img src="${rc.contextPath}/wap/images/tx.jpg">
+    </#if>
   </div>
   <p>
-    ${Session.LOGIN_USER.userName!''}
+    ${user.userName!''}
   </p>
 </div>
 
 <div class="snyg_content">
   <ul class="snyg_tz_type">
     <div class="snyg_type_bt">我的订单<a onclick="toOrderList('0')"><span>全部订单</span></a></div>
-    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wx/images/1.png" /></a></li>
-    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wx/images/2.png" /></a></li>
-    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wx/images/3.png" /></a></li>
-    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wx/images/4.png" /></a></li>
+    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wap/images/1.png" /></a></li>
+    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wap/images/2.png" /></a></li>
+    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wap/images/3.png" /></a></li>
+    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wap/images/4.png" /></a></li>
     <div style="clear:both;"></div>
   </ul>
 </div>
 
 <div class="snyg_content">
   <ul class="snyg_gr_list">
-    <li><a onclick="toShopCart()"><span><img src="${rc.contextPath}/wx/images/ls.png"></span>我的购物车</a></li>
-    <li><a onclick="toConsignee()"><span><img src="${rc.contextPath}/wx/images/jf.png"></span>收货地址</a></li>
-    <li style="display:none;"><a href="优惠券.html"><span><img src="${rc.contextPath}/wx/images/yh.png"></span>我的优惠券</a></li>
-    <li><a onclick="toArticle('44d75b7c664f4fa78475062d08947688')"><span><img src="${rc.contextPath}/wx/images/sc.png"></span>关于我们</a></li>
-    <li><a onclick="toArticle('1e5479cbb91e46b8946bc110afb1481b')"><span><img src="${rc.contextPath}/wx/images/sh.png"></span>售后服务</a></li>
+    <li><a onclick="toShopCart()"><span><img src="${rc.contextPath}/wap/images/ls.png"></span>我的购物车</a></li>
+    <li><a onclick="toConsignee()"><span><img src="${rc.contextPath}/wap/images/jf.png"></span>收货地址</a></li>
+    <li style="display:none;"><a href="优惠券.html"><span><img src="${rc.contextPath}/wap/images/yh.png"></span>我的优惠券</a></li>
+    <li><a onclick="toArticle('44d75b7c664f4fa78475062d08947688')"><span><img src="${rc.contextPath}/wap/images/sc.png"></span>关于我们</a></li>
+    <li><a onclick="toArticle('1e5479cbb91e46b8946bc110afb1481b')"><span><img src="${rc.contextPath}/wap/images/sh.png"></span>售后服务</a></li>
   </ul>
 </div>
 <div class="snyg_footer">&nbsp;</div>
-<#include "/wx/WX_FOOTER.html">
+<#include "/wap/WAP_FOOTER.html">
 </body>
 <script>
   changeBottomClass('4');

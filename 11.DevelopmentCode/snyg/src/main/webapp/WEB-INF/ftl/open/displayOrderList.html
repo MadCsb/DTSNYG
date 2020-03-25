@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+	OpenApi openApi = new OpenApi();
+	openApi.resetDefaultPageType("${detailPage!''}");
+	var param = new Object();
+	param.spId = "${spId!''}";
+  openApi.gotoOrderList(param);
+</script>
+</html>

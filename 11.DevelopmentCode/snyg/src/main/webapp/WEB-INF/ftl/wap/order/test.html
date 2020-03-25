@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/wap/WAP_INC_HEAD.html">
+<body>
+  <input type="button" value="tijiao" onclick="toOrder()">
+
+  <form action="waporder?method=toCreateOrder" method="post" id="toCreateOrder">
+    <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
+  </form>
+
+  <script>
+  function toOrder() {
+    var prepareOrderJson = new Object();
+    prepareOrderJson.consigneeId = ""; //收货地址，可为空
+    var orderListList = new Array();
+
+    var orderList1 = new Object();
+    orderList1.priceId ="6bd6b23eccc74e1a93a95b465cc2f1cc"; //销售id
+    orderList1.num = "1"; //数量
+    orderList1.cartId = ""; //购物车id
+    orderListList.push(orderList1);
+
+    prepareOrderJson.orderListList = orderListList;
+    $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
+    $("#toCreateOrder").submit();
+  }
+</script>
+
+
+</body>
+</html>
