@@ -3,6 +3,7 @@
 <head>
 <#include "/WX_INC_HEAD.html">   
 <script src="${rc.contextPath}/wx/js/default.js"></script>
+<script src="${rc.contextPath}/wx/js/coupon.js"></script>
 <style>
 .flexslider {
     margin: 0;
@@ -58,6 +59,20 @@
          <div class="zswz"><span id="kuaidi"></span><span style="float: right;display:none;">销量  ${commproduct.saleNum!'0'}</span></div>
     </div>
 </div>
+<#if coupon??>
+<div class="snyg_contentb" > 
+    <a href="javascript:void(0)"  onclick="showCoupon('','','${commproduct.priceId!''}','${userId!''}')">
+    <div class="yhrkdiv">
+         <div class="leftzi">优惠<span class="f1">平台优惠</span></div>
+         <div class="centyhxx">
+         	<div class="f2"></div>
+          	<div></div>   
+         </div>
+         <div class="rzi">领券</div>
+    </div>
+    </a>
+</div>
+</#if>
 <!-- 
 <div class="snyg_contentb"> 
     <a href="商品详情-优惠券.html">

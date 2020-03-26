@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Accessrecord;
 import com.msy.travel.pojo.Commproduct;
+import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
@@ -27,6 +29,7 @@ import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
+import com.msy.travel.service.CouponService;
 import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IAccessrecordService;
 import com.msy.travel.service.IDestspService;
@@ -74,6 +77,9 @@ public class WxCommproductController extends BaseController {
 
 	@Resource(name = "sellPriceServiceImpl")
 	private SellPriceService sellPriceService;
+
+	@Resource(name = "couponServiceImpl")
+	private CouponService couponService;
 
 	/**
 	 * 跳转到列表
@@ -156,9 +162,21 @@ public class WxCommproductController extends BaseController {
 				commproduct.setSaleNum(ol.getNum());
 			}
 
+			// 检索优惠券
+			Coupon coupon = null;
+			List<Coupon> couponList = couponService.queryCouponListByPriceId(user, commproduct.getPriceId());
+			if (couponList != null && couponList.size() > 0) {
+				coupon = couponList.get(0);
+				coupon.setValidBegin(DateTimeUtil.dateToMonthDay(coupon.getValidBegin()));
+				coupon.setValidEnd(DateTimeUtil.dateToMonthDay(coupon.getValidEnd()));
+				coupon.setUseLimit(BigDecimalUtil.getPrettyNumber(coupon.getUseLimit()));
+				coupon.setDiscount(BigDecimalUtil.getPrettyNumber(coupon.getDiscount()));
+			}
+
 			view.addObject("commproduct", commproduct);
 			view.addObject("rsPicList", rsPicList);
 			view.addObject("spId", Destsp.currentSpId);
+			view.addObject("coupon", coupon);
 		} catch (Exception e) {
 			log.error(e, e);
 		}

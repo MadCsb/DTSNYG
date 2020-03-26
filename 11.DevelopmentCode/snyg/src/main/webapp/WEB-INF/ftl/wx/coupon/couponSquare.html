@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../WAP_INC_HEAD.html">  
+</head>
+
+<body onLoad="javascript:window_onload();">
+<img src="${rc.contextPath}/wap/images/yhjtop.jpg" width="100%" style="margin:0 auto;">
+	<input type="hidden" id="userId" name="userId" value="${user.userId!''}">
+	<input type="hidden" id="currentPage" value="1" />
+	<div class="clear"></div>
+	<div class="content">
+	    <ul class="gcyhj" id="ulList">
+	    </ul>
+		<div class="clear"></div>
+	</div> 
+	
+	
+	<div class="load-btn" id="loadtip" style="display: none;">数据加载中......</div>
+	<div class="wzpcss" id="divMore" style="display: none;">没有更多内容了</div>
+	<div class="wzpcss" id="divHasData" style="display: none;">
+       	<div align="center">
+      		<img src="${rc.contextPath}/wx/images/ts.gif" width="60%" style="margin:20% 0 40px 0;"> </div>
+   			<p style="font-size:16px; color:#aaa;text-align:center">抱歉，没有找到符合检索条件的记录</p> 
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript">
+
+
+// 是否打开蒙板层 false:没有打开；true:打开
+var popFlag = false;
+
+function window_onload() {
+  window.addEventListener("scroll",navbar_reset_top,false);
+}
+
+var navbar_top = 40;
+
+function navbar_reset_top() {
+
+	// 蒙板层，悬浮框保持现状
+	if (popFlag) {
+		popFlag = false;    	
+		return;
+	}
+	
+	var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+  	if (scrollTop > navbar_top&&navbar.className == "navbar_absolute") {
+    	document.getElementById("navbar").className = "navbar_fixed";
+  	} else if (scrollTop < navbar_top&&navbar.className == "navbar_fixed") {
+    	document.getElementById("navbar").className="navbar_absolute";
+  	}
+}
+
+var timeout = false; 
+var flag = false; // 防止重复提交
+
+$(function () { 
+	loadingData();
+});
+
+//滚动
+$(window).scroll(function () {
+	if ($("#divMore").is(":hidden") && $("#divHasData").is(":hidden")) {
+		if($(document).scrollTop() + $(window).height() >= $(document).height()){
+			if(flag == false){
+				flag = true;
+			    if (timeout) {
+				   clearTimeout(timeout);
+				} 	  		
+			    timeout = setTimeout(function(){ 	
+		        	$("#loadtip").show();		    	
+					loadingData();
+	        	},200); 
+			}		
+		}
+	}
+});
+
+//加载数据
+function loadingData() {
+	var currentPage = $("#currentPage").val();
+
+	$.post('wapCoupon.do?method=getCouponSquareListAjax', {
+		'entityPage.currentPage' : currentPage,
+		'entityPage.rowsPerPage' : 10
+	},function(data){
+		$("#loadtip").hide();
+		$("#ulList").append(getHtml(data));	
+		$("#currentPage").val(parseInt(currentPage) + 1); // 页数加1
+		
+		flag = false;
+		
+		// 没有数据提示信息
+		if ($("#ulList").html() == "") {
+			$("#divHasData").show();
+			$("#divMore").hide();
+		} else {
+			$("#divHasData").hide();
+		}
+	},'json');
+}
+
+// 获取列表html
+function getHtml(data) {
+	var html = "";
+	
+	// 数据小于10条
+	if (data.length < 10) {
+		$("#divMore").show();
+	} else {
+		$("#divMore").hide();
+	}
+	
+	for (var i = 0; i < data.length; i++) {
+		
+		var obj = data[i];
+		
+		var labelText = "";
+			
+		// 打折优惠
+		var discount = parseFloat(obj.discount);
+		var disCountText = "";
+		
+		// 使用限制
+		var useLimit = parseFloat(obj.useLimit);
+		var useLimitText = "";
+		
+		// 使用类型:1满减，2折扣
+		var useType = obj.useType;
+		
+		if (useType == "1") {
+			disCountText = "¥" + discount;
+			labelText = "代金券";
+		} else if (useType == "2") {
+			disCountText = discount + "折";
+			labelText = "打折券";
+		}
+		
+		// 状态 1：未使用 2：已过期 3：已使用 
+		var couponFlag = obj.couponFlag;
+		var topclass = "";
+		var buttonText = "";
+		if (couponFlag == "1") {
+			topclass = 'top';
+		} else if (couponFlag == "2") {
+			topclass = 'tophui';
+			buttonText = '<button class="sybtghui">已过期</button>';
+		} else if (couponFlag == "3") {
+			topclass = 'tophui';
+			buttonText = '<button class="sybtghui">已使用</button>';
+		}
+		
+		html = html + '<li>'
+			+ '<div class="gcyhj-list">'
+			+ '<div class="gcyhj-bt" onclick="openDetail(\'' + obj.couponId + '\')">'
+			+ '<span class="bqzi">'+ labelText + '</span>'
+			+ '<p class="btzi">' + disCountText + '</p>'
+			+ '<p class="nrzi">订单满' + useLimit + '元可使用</p>'  
+			+ '<p class="nrzi">有效期自' + obj.validBegin + '至' + obj.validEnd + '</p>'
+			+ '<span class="leftyuan"></span>'
+			+ '<span class="rightyuan"></span>'           
+			+ '</div>'
+			+ '<a href="javascript:void(0)" onclick="receiveCouponSquareAjax(\'' + obj.couponId + '\')"><div class="gcyhj-data">立即领取</div></a>'
+			+ '</div>'
+			+ '</li>';
+	}
+	
+	return html;
+}
+
+//打开使用规则
+function openDetail(couponId) {
+	
+	popFlag = true;
+
+	$.post("wapCoupon.do?method=couponRuleAjax",{
+		couponId : couponId
+	},function(data){
+		data = eval("(" + data + ")");
+		
+		var text3 = "";
+		
+		// 全部商品
+		if (data.coupon.couponType == "1") {
+			text3 = '3. 本优惠券针对本平台/本商户所有品类的商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
+		} else {
+			text3 = '3. 本优惠券只针对<span class="f1">' + data.goodsName + '</span>商品使用，其他商品无法享受本次优惠/本优惠券针对平台类内所有商品使用，结算时可抵扣或减免相应面额的商品费用，但不包含配送费，不设找零，超额需补差价，一次只能使用一张优惠券；';
+		}
+		
+		var html = '<div class="yddiv" style="height:400px; background:#FFFFFF;">'
+			+ '<div class="content">'
+			+ '<div class="details-title1">'
+			+ '<span class="btline"></span>使用规则<a class="closdiv" onclick="closeBottomHtml()"></a>'
+			+ '</div>'
+			+ '<dl class="xlxqcss" style="height:310px;overflow-y:auto;">'
+			+ '<dd>1. 优惠券是<span class="f1">三农壹购</span>的优惠购买的方式之一；</dd></br>'
+			+ '<dd>2. 您可通过优惠活动领取相应优惠券(例如满减活动、满折活动等)，或待平台邀请您参与相关优惠活动参与领券；</dd></br>'
+			+ '<dd>' + text3 + '</dd></br>'
+			+ '<dd>4. 本优惠券有效期为<span class="f1">' + data.coupon.validBegin + '至' + data.coupon.validEnd+ '</span>，超出即为失效将无法使用。 </dd>'
+			+ '</dl>'
+			+ '</div>'
+			+ '</div>';
+
+		Alert.showBottomHtml(html);
+	})
+}
+
+function resetList() {
+	
+	// 页数置为1
+	$("#currentPage").val(1); 
+	
+	// 清空列表
+	$("#ulList").html("");
+	
+	$("#divMore").hide();
+	
+	// 加载数据
+	loadingData();
+}
+
+// 领取优惠券
+function receiveCouponSquareAjax(couponId) {	
+	$.post("wxCoupon.do?method=receiveCouponSquareAjax", {
+		couponId : couponId,
+		userId:$("#userId").val()
+	}, function(data) {
+		data = eval('(' + data + ')');
+		if (data.resultCode == "0") {
+			Alert.showMsg3("领取成功", "resetList");
+		} else {
+			Alert.alertMsgCallBack(data.resultMsg);
+		}
+	})
+}
+
+</script>
+</html>

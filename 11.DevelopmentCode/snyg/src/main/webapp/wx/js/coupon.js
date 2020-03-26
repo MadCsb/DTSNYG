@@ -35,9 +35,9 @@ function receiveCouponAjax(couponId, fansId) {
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
 
-	$.post("wx.do?method=receiveCouponSquareAjax", {
+	$.post("wxCoupon.do?method=receiveCouponSquareAjax", {
 		couponId : couponId,
-		fansId : fansId
+		userId : fansId
 	}, function(data) {
 		data = eval('(' + data + ')');
 		if (data.resultCode == "0") {
@@ -75,11 +75,11 @@ function loadCouponUlList() {
 	
 	$("#ulCouponList").html("");
 	
-	$.post("wx.do?method=getCouponListByGoodsAjax", {
+	$.post("wxCoupon.do?method=getCouponListByGoodsAjax", {
 		pdcType : m_pdcType,
 		pmastCoding : m_pmastCoding,
-		pdcId : m_pdcId,
-		customerCode : m_fansId
+		priceId : m_pdcId,
+		userId : m_fansId
 	},
 	function(data) {
 
@@ -134,7 +134,7 @@ function loadCouponUlList() {
 // 打开使用规则
 function openCouponRule(couponId) {
 
-	$.post("wx.do?method=couponRuleAjax",{
+	$.post("wxCoupon.do?method=couponRuleAjax",{
 		couponId : couponId
 	},function(data){
 		data = eval("(" + data + ")");
@@ -154,7 +154,7 @@ function openCouponRule(couponId) {
 			+ '<span class="btline"></span>使用规则<a class="closdiv" onclick="closeBottomHtmlNoMask()"></a>'
 			+ '</div>'
 			+ '<dl class="xlxqcss" style="height:310px;overflow-y:auto;">'
-			+ '<dd>1. 优惠券是<span class="f1">' + data.name + '</span>的优惠购买的方式之一；</dd></br>'
+			+ '<dd>1. 优惠券是<span class="f1">三农壹购</span>的优惠购买的方式之一；</dd></br>'
 			+ '<dd>2. 您可通过优惠活动领取相应优惠券(例如满减活动、满折活动等)，或待平台邀请您参与相关优惠活动参与领券；</dd></br>'
 			+ '<dd>' + text3 + '</dd></br>'
 			+ '<dd>4. 本优惠券有效期为<span class="f1">' + data.coupon.validBegin + '至' + data.coupon.validEnd+ '</span>，超出即为失效将无法使用。 </dd>'
