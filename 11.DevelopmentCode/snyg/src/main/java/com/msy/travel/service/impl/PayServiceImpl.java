@@ -1,6 +1,11 @@
 package com.msy.travel.service.impl;
 
+import static com.alipay.api.AlipayConstants.APP_ID;
+
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
@@ -66,6 +71,13 @@ public class PayServiceImpl implements PayService {
 	@Resource(name = "thirdPayFlowServiceImpl")
 	private ThirdPayFlowService thirdPayFlowService;
 
+	@Resource(name = "alipayClient")
+	private AlipayClient alipayClient;
+
+
+
+
+
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
@@ -85,10 +97,9 @@ public class PayServiceImpl implements PayService {
 	private static String PAY_METHOD_WX_PC = "WX_PC";
 
 	/**
-	 * 支付宝支付方式
+	 * 支付宝 wap方式
 	 */
-	private static String PAY_METHOD_ZFB = "ZFB";
-
+	private static String PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
 
 	/**
 	 * 获取 支付 信息
@@ -169,9 +180,9 @@ public class PayServiceImpl implements PayService {
 		}else if (PAY_METHOD_WX_WAP.equals(payMethod)) //微信移动浏览器支付
 		{
 			result = getPayInfoByWXWAP(payInfoParam);
-		}else if (PAY_METHOD_ZFB.equals(payMethod)) //支付宝支付
+		}else if (PAY_METHOD_ALIPAY_WAP.equals(payMethod)) //支付宝 wap支付
 		{
-
+			result = getPayInfoByAlipayWAP(payInfoParam);
 		}
 		if (result.getResultCode().equals("1"))
 		{
@@ -506,6 +517,41 @@ public class PayServiceImpl implements PayService {
 			result.setResultCode("1");
 			result.setResultMsg("获取微信支付信息失败");
 		}
+		return result;
+	}
+
+
+	/**
+	 * 获取 阿里支付方式-wab 页面document.write内容
+	 * @param param 参数信息
+	 * param.spId 运营商ID
+	 * param.body 支付内容
+	 * param.flowId 本系统支付流水ID
+	 * param.remoteAddr 创建订单的用户ID
+	 * param.timeExpire 订单失效时间
+	 * param.openId 微信用户OpenId
+	 * param.productId 订单的商品ID
+	 * @return
+	 */
+	private Result getPayInfoByAlipayWAP(Map<String,String> param) throws Exception {
+    //
+		//AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
+		//alipayRequest.setReturnUrl("http://domain.com/CallBack/return_url.jsp");
+		//alipayRequest.setNotifyUrl("http://domain.com/CallBack/notify_url.jsp");//在公共参数中设置回跳和通知地址
+		//alipayRequest.setBizContent("{" +
+		//		" \"out_trade_no\":\"20150320010101002\"," +
+		//		" \"total_amount\":\"88.88\"," +
+		//		" \"subject\":\"Iphone6 16G\"," +
+		//		" \"product_code\":\"QUICK_WAP_PAY\"" +
+		//		" }");//填充业务参数
+		//String form="";
+		//try {
+		//	form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+		//} catch (AlipayApiException e) {
+		//	e.printStackTrace();
+		//}
+    //
+		Result result = new Result();
 		return result;
 	}
 }

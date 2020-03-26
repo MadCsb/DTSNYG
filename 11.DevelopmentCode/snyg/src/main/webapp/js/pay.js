@@ -29,7 +29,7 @@ function Pay(){
   /**
    * 微信支付方式-支付宝
    */
-  Pay.prototype.PAY_METHOD_ZFB = "ZFB";
+  Pay.prototype.PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
 
 
   /**
@@ -101,7 +101,6 @@ Pay.prototype.toPay = function()
     //payMethod=wx微信浏览器，公众号直接支付
     if(this.payMethod == this.PAY_METHOD_WX)
     {
-      console.log(1111111111111111111);
       if (typeof WeixinJSBridge == "undefined"){
         if( document.addEventListener ){
           document.addEventListener('WeixinJSBridgeReady', this.toPay, false);
@@ -134,6 +133,9 @@ Pay.prototype.toPay = function()
     }else if(this.payMethod == this.PAY_METHOD_WX_PC) //payMethod=pc非移动浏览器打开，二维码
     {
     	return this.payInfo.code_url; //返回微信二维码地址
+    }else if(this.payMethod == this.PAY_METHOD_ALIPAY_WAP) //payMethod=ALIPAY_
+    {
+      document.write(this.payInfo.documentContent); //支付宝wap支付，documentContent就是当前页面具体内容
     }
 }
 
