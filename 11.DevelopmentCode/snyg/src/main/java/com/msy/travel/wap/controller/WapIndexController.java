@@ -18,14 +18,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.Consts;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.Result;
+import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.pojo.Article;
 import com.msy.travel.pojo.Carousel;
 import com.msy.travel.pojo.CarouselItem;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.service.CarouselItemService;
 import com.msy.travel.service.CarouselService;
+import com.msy.travel.service.IArticleService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
@@ -56,6 +60,28 @@ public class WapIndexController extends BaseController {
 
 	@Resource(name = "carouselItemServiceImpl")
 	private CarouselItemService carouselItemService;
+
+	@Resource(name = "articleServiceImpl")
+	private IArticleService articleService;
+
+	@Resource(name = "configParameter")
+	private ConfigParameter configParameter;
+
+	@RequestMapping(params = "method=showArticle")
+	public String toShareArticle(Article article, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		Article objArticle = null;
+		try {
+			objArticle = articleService.displayArticle(article);
+
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		// return view;
+		return "forward:" + configParameter.getPicUrl() + "/" + Consts.WX_ARTICLE_FOLDER_NAME + "/" + objArticle.getFileName();
+	}
 
 	@RequestMapping(params = "method=wxIndex")
 	public ModelAndView wxIndex(HttpServletRequest request, HttpServletResponse response) {
