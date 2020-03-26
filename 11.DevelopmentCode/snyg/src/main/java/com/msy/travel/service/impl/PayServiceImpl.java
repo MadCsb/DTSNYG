@@ -101,7 +101,6 @@ public class PayServiceImpl implements PayService {
 
 		String payMethod = paramObject.getString("payMethod") ;
 		String openId = paramObject.getString("openId") ;
-		String userId = paramObject.getString("openId") ;
 		String spId = paramObject.getString("spId");
 		String platformOrders = paramObject.getString("platformOrders");
 		String remoteAddr = paramObject.getString("remoteAddr");
@@ -109,7 +108,6 @@ public class PayServiceImpl implements PayService {
 		payInfoParam.put("spId",spId);
 		payInfoParam.put("remoteAddr",remoteAddr);
 		payInfoParam.put("openId",openId);
-		payInfoParam.put("userId",userId);
 
 		StringBuffer bodySb = new StringBuffer();
 		double totalFee = 0; //订单金额
@@ -191,7 +189,6 @@ public class PayServiceImpl implements PayService {
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
-	 * param.userId 当前系统用户ID
 	 * param.productId 订单的商品ID
 	 * @return
 	 */
@@ -305,7 +302,6 @@ public class PayServiceImpl implements PayService {
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
-	 * param.userId 当前系统用户ID
 	 * param.productId 订单的商品ID
 	 * @return
 	 */
@@ -414,7 +410,6 @@ public class PayServiceImpl implements PayService {
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
-	 * param.userId 当前系统用户ID
 	 * param.productId 订单的商品ID
 	 * @return
 	 */
