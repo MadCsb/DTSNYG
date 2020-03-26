@@ -90,7 +90,7 @@
 			submitUser.userMobile = $("#userMobile").val();
 			submitUser.userEmail = $("#userEmail").val();
 			submitUser.sex = $('input:radio[name=sex]:checked').val();
-			submitUser.userAddr = $("#userAddr").val();
+			submitUser.userAddr = $("#userAddrs").val();
 		}else if("1" == $("#pageType").val())
 		{
 			if ($("#userPwd").val() == "")
@@ -225,7 +225,7 @@
 			<dt class="required">联系地址：</dt>
 			<dd>
 				<span class="w340">
-					<input type="text" class="text" style="width: 450px;" maxlength="100" id="userAddr" value="${user.userAddr!''}">
+					<input type="text" class="text" style="width: 450px;" maxlength="100" id="userAddrs" value="${user.userAddr!''}">
 				</span>
 			</dd>
 		</dl>

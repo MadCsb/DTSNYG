@@ -218,7 +218,7 @@ public class UserServiceImpl implements IUserService {
 		Map<String,String> tokenParam = new HashMap<>();
 		tokenParam.put("token",sdToken);
 		Result tokenResult = Common.getUserByToken(tokenParam);
-		if (!"0".equals(tokenResult))
+		if (!"0".equals(tokenResult.getResultCode()))
 		{
 			throw new LogicException(tokenResult.getResultMsg());
 		}
@@ -238,15 +238,8 @@ public class UserServiceImpl implements IUserService {
 			User userDb = new User();
 			userDb.setUserId(PrimaryKeyUtil.generateKey());
 			userDb.setUserLoginName(msisdn);
-			userDb.setUserName(msisdn);
-			String userPwd = null;
-			if(msisdn.length()>6)
-			{
-				userPwd = msisdn.substring(0,6);
-			}else
-			{
-				userPwd = "123456";
-			}
+			userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+			String userPwd = msisdn;
 			userDb.setUserPwd(MD5.encode(userPwd));
 			userDb.setUserRegDate(DateTimeUtil.getDateTime19());
 			userDb.setUserState("1");

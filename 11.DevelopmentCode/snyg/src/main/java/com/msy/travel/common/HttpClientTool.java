@@ -273,7 +273,7 @@ public class HttpClientTool {
 				String resultStr = EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
 				EntityUtils.consume(httpResponse.getEntity());
 				result.setResultCode("0");
-				result.setResultMsg(resultStr);
+				result.setResultPojo(resultStr);
 			} else {
 				log.error(httpPost.getURI().toString() + ":" + httpResponse.getStatusLine().getStatusCode() + ":" + httpResponse.getStatusLine().getReasonPhrase());
 				result.setResultCode("1");
