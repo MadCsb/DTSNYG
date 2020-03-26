@@ -34,7 +34,7 @@
 <!--header 结束-->
 <div id="navbar" class="navbar_absolute">
   <div class="snyg_topserch">
-    <form id="fm-1" action="wxorder?method=toOrderList" method="POST">
+    <form id="fm-1" action="waporder?method=toOrderList" method="POST">
       <a><input id="searchKey" name="searchKey" type="search" class="snyg_top_inputsech" placeholder="请输入检索关键字" value="${searchKey!''}"/></a>
     </form>
   </div>
@@ -148,11 +148,6 @@
     loading = true;
     pageEntity.pageNum = 1; //第1页开始查询
     queryOrderList();
-  }
-  //进入商品详情-anniu
-  function toOrderDetail(orderId)
-  {
-    window.location.href = "wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+$("#spId").val();
   }
   //查询订单列表，填充
   function queryOrderList()

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">
+  <#include "/wap/WAP_INC_HEAD.html">
+  <script src="${rc.contextPath}/wap/js/Person.js"></script>
   <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
-  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
   <script src="${rc.contextPath}/js/pay.js"></script>
 
 </head>
@@ -79,6 +79,28 @@
     <textarea cols="" rows="" class="txt-textarea" readonly="readonly" id="memo"></textarea>
   </div>
 </div>
+
+<div class="snyg_contentb" id="payMethodDiv" style="display: none">
+  <div class="ddbt_title">
+    <a onclick="javascript:void(0);">支付方式</a>
+  </div>
+  <div class="zfbtcon">
+    <div style="padding:6px 0;border-bottom:1px solid #efefef;"><label>
+      <input name="payMethod" type="radio" value="WX_WAP" id="wxPay" checked="checked" hidden/>
+      <label for="wxPay" class="radiock"></label>
+      <i class="wx_ico"></i><span class="" style="vertical-align: middle; margin-left:10px;">微信</span>
+    </label>
+    </div>
+
+    <div style="padding:6px 0;"><label>
+      <input name="payMethod" type="radio" id="zfbPay" value="ZFB" hidden/>
+      <label for="zfbPay" class="radiock"></label>
+      <i class="zfb_ico"></i><span class="" style="vertical-align: middle; margin-left:10px;">支付宝</span>
+    </label>
+    </div>
+  </div>
+</div>
+
 <div class="snyg_footer"></div>
 
 <nav class="snyg_nav">
@@ -102,7 +124,7 @@
   var pay = null; //支付js
   var loading = null;
   $(function () {
-    new WxPerson().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+    new Person().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
   })
 
   var orderDetailShow = function (orderDetail) {
@@ -164,6 +186,8 @@
         if($("#wxpayValidateTime").val() != '')
         {
           $("#toPayTag1Btn").show();
+          $("#payMethodDiv").show();
+
           $("#money1").parent().parent().attr("class","wid2 text_c");
 
           stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,order.createTime);
@@ -287,6 +311,7 @@
     {
       clearInterval(remainPay);
       $("#toPayTag1Btn").hide();
+      $("#payMethodDiv").hide();
       $("#orderTitle").html("已取消订单");
       $("#orderInfo").html("您的订单已超出支付时间，请重新下单");
       $("#money1").parent().parent().attr("class","wid1 text_c");
@@ -301,7 +326,7 @@
    */
   function toPay() {
     pay = new Pay();
-    pay.payMethod =pay.PAY_METHOD_WX;
+    pay.payMethod = $("input[name='payMethod']:checked").val();
     var payInfoParam = new Object();
     payInfoParam.openId = $("#userLoginName").val();
     payInfoParam.spId = currentSpId;
@@ -334,7 +359,7 @@
         type: "POST",
         async: false,
         dataType: "json",
-        url: "wxorder?method=closeOrderExpress",
+        url: "waporder?method=closeOrderExpress",
         data: {
           d:new Date().getTime(),
           orderId:$("#orderId").val(),

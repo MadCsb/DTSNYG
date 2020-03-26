@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "/WX_INC_HEAD.html">
+  <#include "/wap/WAP_INC_HEAD.html">
   <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
-  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+  <script src="${rc.contextPath}/wap/js/Person.js"></script>
   <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 </head>
 <body>
-<form method="post" id="createOrderBack" action="wxorder?method=createOrderBack">
+<form method="post" id="createOrderBack" action="waporder?method=createOrderBack">
 <input id="orderId" type="hidden" name="orderId" value="${order.orderId!''}">
 <input id="serverIds" type="hidden" name="serverIds" value="">
 
@@ -95,7 +95,7 @@
     localIds = new Array();
     //进入页面后获取微信js sdk权限
     var url = encodeURIComponent(location.href.split('#')[0]);
-    $.post("wxorder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
+    $.post("waporder.do?method=wxJsConfig",{"spId":currentSpId,"url":url},function(ret){
       if(ret!=''){
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。

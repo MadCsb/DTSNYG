@@ -4,7 +4,7 @@
  * searchObject
  */
 function toIndex(){
-  window.location.href = "wap?method=wxIndex&spId="+currentSpId;
+  window.location.href = "wap?method=wxIndex";
 }
 
 /**
@@ -12,14 +12,14 @@ function toIndex(){
  * searchObject
  */
 function toPdcTypeList(){
-  window.location.href = "wapPdcType?method=toQueryPdcTypeList&spId="+currentSpId;
+  window.location.href = "wapPdcType?method=toQueryPdcTypeList";
 }
 
 /**
  * 跳转我的购物车
  */
 function toShopCart(){
-  window.location.href = "wap?method=toQueryShopCartWx";
+  window.location.href = "wapShopCart?method=toQueryShopCartWx";
 }
 /**
  * 跳转个人中心
@@ -49,21 +49,21 @@ function toOrderList(orderListType){
  * 跳转我的收货地址
  */
 function toConsignee(){
-  window.location.href ="wap?method=toQueryConsignee";
+  window.location.href ="wapConsignee?method=toQueryConsignee";
 }
 
 /**
  * 跳转文章详情
  */
 function toArticle(articleId){
-  window.location.href = "wap?method=showArticle&articleId="+articleId;
+  window.location.href = "wap.do?method=showArticle&articleId="+articleId;
 }
 
 /**
  * 跳转销售详情
  */
 function toSellPrice(priceId){
-  window.location.href = "wap?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+  window.location.href = "wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
 }
 
 /**
