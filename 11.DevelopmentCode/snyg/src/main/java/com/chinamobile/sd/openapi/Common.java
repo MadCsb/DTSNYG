@@ -154,6 +154,7 @@ public class Common {
     {
       return httpResult;
     }
+    System.out.println(httpResult.getResultPojo().toString());
     JSONObject httpResultObject = JSON.parseObject(httpResult.getResultPojo().toString());
     String code = httpResultObject.getString("code");
     if(Common.CODE_SUCCESS.equals(code))
