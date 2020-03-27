@@ -5,13 +5,16 @@ import static com.alipay.api.AlipayConstants.APP_ID;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
+import com.alipay.config.AlipayConfig;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.WxPayUtil;
+import com.msy.travel.common.config.AlipayConfigParameter;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
 import com.msy.travel.controller.PayController;
@@ -82,6 +85,9 @@ public class PayServiceImpl implements PayService {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@Resource(name = "alipayConfigParameter")
+	private AlipayConfigParameter alipayConfigParameter;
+
 	/**
 	 * 微信支付方式-公众号原生
 	 */
@@ -147,6 +153,7 @@ public class PayServiceImpl implements PayService {
 			if (i==0)
 			{
 				payInfoParam.put("productId",orderListList.get(0).getPriceId());
+				payInfoParam.put("orderId",order.getOrderId());
 				if (configParameter.getWxpayValidateTime() != null && !configParameter.getWxpayValidateTime().trim().equals(""))
 				{
 					SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtil.sdf19);
@@ -170,7 +177,7 @@ public class PayServiceImpl implements PayService {
 		thirdPayFlow.setPlatformOrders(platformOrders);
 		thirdPayFlow.setSpId(spId);
 		thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
-		payInfoParam.put("flowId",thirdPayFlow.getFlowId());
+		payInfoParam.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 
 		if (PAY_METHOD_WX.equals(payMethod)) //微信公众号支付
 		{
@@ -197,7 +204,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -215,7 +222,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -260,7 +267,7 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WX 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
@@ -293,7 +300,7 @@ public class PayServiceImpl implements PayService {
 			payInfo.put("package", "prepay_id="+httpResponseResultMap.get("prepay_id"));
 			payInfo.put("signType", "MD5");
 			payInfo.put("paySign", sign);
-			payInfo.put("flowId",thirdPayFlow.getFlowId());
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -310,7 +317,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -328,7 +335,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -373,11 +380,11 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WXWAP 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WX 统一支付接口响应:"+res);
+		log.error("微信支付 WXWAP 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -401,6 +408,7 @@ public class PayServiceImpl implements PayService {
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
 			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url"));
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -418,7 +426,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -436,7 +444,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -482,11 +490,11 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WXPC 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WX 统一支付接口响应:"+res);
+		log.error("微信支付 WXPC 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -510,6 +518,7 @@ public class PayServiceImpl implements PayService {
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
 			payInfo.put("code_url",httpResponseResultMap.get("code_url"));
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -527,101 +536,71 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
-	 * param.timeExpire 订单失效时间
+	 * param.timeExpire 订单失效时间 2016-12-31 10:05:00
 	 * param.openId 微信用户OpenId
 	 * param.productId 订单的商品ID
+	 * param.orderId 订单ID
 	 * @return
 	 */
 	private Result getPayInfoByAlipayWAP(Map<String,String> param) throws Exception {
+		Result result = new Result();
+
+		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
+		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
-		alipayRequest.setReturnUrl("http://www.3nong1gou.com/pay_zfbPayedNotify");
+		alipayRequest.setReturnUrl("http://www.3nong1gou.com/waporder?method=toOrderDetail&orderId="+param.get("orderId"));
+		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
+		String body = param.get("body");
+		if (body.length()>128) //支付宝支付body最长128
+		{
+			body = body.substring(0,128);
+		}
 		alipayRequest.setBizContent("{" +
-				"\"body\":\"Iphone6 16G\"," +
-				"\"subject\":\"大乐透\"," +
-				"\"out_trade_no\":\"70501111111S001111119\"," +
-				"\"timeout_express\":\"90m\"," +
-				"\"time_expire\":\"2016-12-31 10:05\"," +
-				"\"total_amount\":9.00," +
-				"\"seller_id\":\"2088102147948060\"," +
-				"\"auth_token\":\"appopenBb64d181d0146481ab6a762c00714cC27\"," +
-				"\"goods_type\":\"0\"," +
-				"\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
-				"\"quit_url\":\"http://www.taobao.com/product/113714.html\"," +
-				"\"product_code\":\"QUICK_WAP_WAY\"," +
-				"\"promo_params\":\"{\\\"storeIdType\\\":\\\"1\\\"}\"," +
-				"\"royalty_info\":{" +
-				"\"royalty_type\":\"ROYALTY\"," +
-				"        \"royalty_detail_infos\":[{" +
-				"          \"serial_no\":1," +
-				"\"trans_in_type\":\"userId\"," +
-				"\"batch_no\":\"123\"," +
-				"\"out_relation_id\":\"20131124001\"," +
-				"\"trans_out_type\":\"userId\"," +
-				"\"trans_out\":\"2088101126765726\"," +
-				"\"trans_in\":\"2088101126708402\"," +
-				"\"amount\":0.1," +
-				"\"desc\":\"分账测试1\"," +
-				"\"amount_percentage\":\"100\"" +
-				"          }]" +
-				"    }," +
-				"\"extend_params\":{" +
-				"\"sys_service_provider_id\":\"2088511833207846\"," +
-				"\"hb_fq_num\":\"3\"," +
-				"\"hb_fq_seller_percent\":\"100\"," +
-				"\"industry_reflux_info\":\"{\\\\\\\"scene_code\\\\\\\":\\\\\\\"metro_tradeorder\\\\\\\",\\\\\\\"channel\\\\\\\":\\\\\\\"xxxx\\\\\\\",\\\\\\\"scene_data\\\\\\\":{\\\\\\\"asset_name\\\\\\\":\\\\\\\"ALIPAY\\\\\\\"}}\"," +
-				"\"card_type\":\"S0JP0000\"" +
-				"    }," +
-				"\"sub_merchant\":{" +
-				"\"merchant_id\":\"19023454\"," +
-				"\"merchant_type\":\"alipay: 支付宝分配的间连商户编号, merchant: 商户端的间连商户编号\"" +
-				"    }," +
-				"\"merchant_order_no\":\"20161008001\"," +
-				"\"enable_pay_channels\":\"pcredit,moneyFund,debitCardExpress\"," +
-				"\"disable_pay_channels\":\"pcredit,moneyFund,debitCardExpress\"," +
-				"\"store_id\":\"NJ_001\"," +
-				"\"settle_info\":{" +
-				"        \"settle_detail_infos\":[{" +
-				"          \"trans_in_type\":\"cardAliasNo\"," +
-				"\"trans_in\":\"A0001\"," +
-				"\"summary_dimension\":\"A0001\"," +
-				"\"settle_entity_id\":\"2088xxxxx;ST_0001\"," +
-				"\"settle_entity_type\":\"SecondMerchant、Store\"," +
-				"\"amount\":0.1" +
-				"          }]" +
-				"    }," +
-				"\"invoice_info\":{" +
-				"\"key_info\":{" +
-				"\"is_support_invoice\":true," +
-				"\"invoice_merchant_name\":\"ABC|003\"," +
-				"\"tax_num\":\"1464888883494\"" +
-				"      }," +
-				"\"details\":\"[{\\\"code\\\":\\\"100294400\\\",\\\"name\\\":\\\"服饰\\\",\\\"num\\\":\\\"2\\\",\\\"sumPrice\\\":\\\"200.00\\\",\\\"taxRate\\\":\\\"6%\\\"}]\"" +
-				"    }," +
-				"\"specified_channel\":\"pcredit\"," +
-				"\"business_params\":\"{\\\"data\\\":\\\"123\\\"}\"," +
-				"\"ext_user_info\":{" +
-				"\"name\":\"李明\"," +
-				"\"mobile\":\"16587658765\"," +
-				"\"cert_type\":\"IDENTITY_CARD\"," +
-				"\"cert_no\":\"362334768769238881\"," +
-				"\"min_age\":\"18\"," +
-				"\"fix_buyer\":\"F\"," +
-				"\"need_check_info\":\"F\"" +
-				"    }" +
-				"  }");
-		if ()
-		AlipayTradeWapPayResponse response = alipayClient.pageExecute(alipayRequest);
-		response.getCode();
-		response.getMsg();
-		response.getSubCode();
-		response.getOutTradeNo();
-		response.getBody();
-		response.isSuccess()
+				"\"body\":\""+body+"\"," +
+				"\"subject\":\""+body+"\"," +
+				"\"out_trade_no\":\""+thirdPayFlow.getThirdFlowCode()+"\"," +
+				"\"time_expire\":\""+param.get("timeExpire").substring(0,16)+"\"," +
+				"\"total_amount\":"+thirdPayFlow.getFlowMoney()+"," +
+				"\"quit_url\":\""+"http://www.3nong1gou.com/waporder.do?method=toOrderList&orderListType=0"+"\"," +
+				"\"product_code\":\""+param.get("productId")+"\""+
+				" }");
+		AlipayTradeWapPayResponse alipayResponse = alipayClient.pageExecute(alipayRequest);
+		log.error("alipayResponse.isSuccess() = "+alipayResponse.isSuccess());
+		log.error("alipayResponse.getBody() = "+alipayResponse.getBody());
+		log.error("alipayResponse.getCode() = "+alipayResponse.getCode());
+		log.error("alipayResponse.getSubCode() = "+alipayResponse.getSubCode());
 
-		Result result = new Result();
+		if(alipayResponse.isSuccess()){
+			result.setResultCode("0");
+			Map<String,String> payInfo = new HashMap<String,String>();
+			payInfo.put("body",alipayResponse.getBody());
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
+			result.setResultPojo(payInfo);
+			result.setResultMsg(alipayResponse.getMsg());
+		} else {
+			result.setResultCode("1");
+			result.setResultMsg(alipayResponse.getMsg());
+		}
 		return result;
+	}
+
+	/**
+	 * @Description 收到支付宝的成功回调之后验证签名是否正确
+	 * @param requestParams
+	 * @return
+	 */
+	public boolean aliPayCheckSignature(Map<String, String> requestParams)
+	{
+		try {
+			boolean flag = AlipaySignature.rsaCheckV1(requestParams, alipayConfigParameter.getAlipayPublicKey(), alipayConfigParameter.getCharset(),
+					alipayConfigParameter.getSignType());
+			return flag;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

@@ -124,6 +124,7 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
                 thirdPayFlowDb.setThirdFlowCode(thirdPayFlow.getThirdFlowCode());
                 thirdPayFlowDb.setThirdCreateTime(thirdPayFlow.getThirdCreateTime());
                 thirdPayFlowDb.setFlowState("1");
+                thirdPayFlowDb.setThirdType(thirdPayFlow.getThirdType());
                 updateThirdPayFlow(thirdPayFlowDb);
             }
         }

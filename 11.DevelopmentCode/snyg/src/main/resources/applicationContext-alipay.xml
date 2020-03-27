@@ -17,4 +17,11 @@
         <constructor-arg name="alipayPublicKey" type="java.lang.String" value="${alipay.alipayPublicKey}"></constructor-arg>
         <constructor-arg name="signType" type="java.lang.String" value="${alipay.signType}"></constructor-arg>
     </bean>
+    <!-- AlipayConfig 配置信息 -->
+    <bean id="alipayConfigParameter"  class="com.msy.travel.common.config.AlipayConfigParameter">
+        <property name="notifyUrl" value="${alipay.notifyUrl}" />
+        <property name="alipayPublicKey" value="${alipay.alipayPublicKey}" />
+        <property name="charset" value="${alipay.charset}" />
+        <property name="signType" value="${alipay.signType}" />
+    </bean>
 </beans>
