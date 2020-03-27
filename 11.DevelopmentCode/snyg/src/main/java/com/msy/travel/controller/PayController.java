@@ -248,4 +248,94 @@ public class PayController extends BaseController {
 		}
 
 	}
+
+
+	/**
+	 * 支付宝支付返回地址
+	 */
+	@RequestMapping(value = "/pay_zfbPayedNotify")
+	public void pay_zfbPayedNotify(HttpServletRequest request,HttpServletResponse response)
+	{
+		try
+		{
+			StringBuffer xmlStr = new StringBuffer();
+			request.setCharacterEncoding("utf-8");
+			BufferedReader reader = request.getReader();
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				line = line.replaceAll("\r|\n", "");
+				xmlStr.append(line);
+			}
+
+			org.dom4j.Document doc = DocumentHelper.parseText(xmlStr.toString());
+			Element rootElt = doc.getRootElement();
+			System.out.println("根节点：" + rootElt.getName());
+			Iterator iter = rootElt.elementIterator();
+			Map<String,String> resMap = new HashMap<>();
+			while (iter.hasNext()) {
+				Element recordEle = (Element) iter.next();
+				resMap.put(recordEle.getName(),recordEle.getText());
+				log.error(recordEle.getName()+"========"+recordEle.getText());
+			}
+
+			if(resMap.get("return_code")!=null&&resMap.get("result_code")!=null
+					&&"SUCCESS".equals(resMap.get("return_code").toUpperCase())
+					&&"SUCCESS".equals(resMap.get("result_code").toUpperCase())) {
+				//商户订单号
+				String out_trade_no = resMap.get("out_trade_no");
+				//财付通订单号
+				String transaction_id = resMap.get("transaction_id");
+				//
+				String total_fee = resMap.get("total_fee");
+				//支付类型
+				String trade_type = resMap.get("trade_type");
+				//随机字符串
+				String nonce_str = resMap.get("nonce_str");
+				//签名
+				String sign = resMap.get("sign");
+
+				ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+				thirdPayFlow.setPlatformFlowCode(out_trade_no);
+				List<ThirdPayFlow> thirdPayFlowList = thirdPayFlowService.queryThirdPayFlowList(thirdPayFlow);
+
+				//支付验证
+				if ((int) (Double.valueOf(thirdPayFlowList.get(0).getFlowMoney()) * 100) ==Integer.valueOf(total_fee))  // 返回的订单金额是否与商户侧的订单金额一致
+				{
+
+					//签名验证
+					Destsp destsp = new Destsp();
+					destsp.setSpId(thirdPayFlowList.get(0).getSpId());
+					destsp = destspService.displayDestsp(destsp);
+
+					ServiceCode serviceCode = new ServiceCode();
+					serviceCode.setServiceId(destsp.getWxServiceId());
+					serviceCode = serviceCodeService.displayServiceCode(serviceCode);
+
+					resMap.remove("sign");
+					String resultSign = WxPayUtil.createSign(resMap, serviceCode.getTenPayPartnerKey());
+
+					if (resultSign.equals(sign)) {
+						if(thirdPayFlowList.get(0).getFlowState().equals("0"))
+						{
+							thirdPayFlowList.get(0).setFlowState("1"); //流水成功
+							thirdPayFlowList.get(0).setThirdFlowCode(transaction_id);
+							thirdPayFlowList.get(0).setThirdCreateTime(DateTimeUtil.getDateTime19());
+
+							thirdPayFlowService.flowReturn(thirdPayFlowList.get(0));
+						}else
+						{
+							//已经支付成功
+						}
+						//发送通知成功消息给微信
+						response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
+					}
+				}
+			}
+		}catch(Exception e)
+		{
+			log.error("支付通知失败"+e);
+		}
+
+	}
+
 }

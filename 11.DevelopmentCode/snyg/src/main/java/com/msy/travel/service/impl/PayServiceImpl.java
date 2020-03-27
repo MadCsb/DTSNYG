@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
@@ -534,23 +535,92 @@ public class PayServiceImpl implements PayService {
 	 * @return
 	 */
 	private Result getPayInfoByAlipayWAP(Map<String,String> param) throws Exception {
-    //
-		//AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
-		//alipayRequest.setReturnUrl("http://domain.com/CallBack/return_url.jsp");
-		//alipayRequest.setNotifyUrl("http://domain.com/CallBack/notify_url.jsp");//在公共参数中设置回跳和通知地址
-		//alipayRequest.setBizContent("{" +
-		//		" \"out_trade_no\":\"20150320010101002\"," +
-		//		" \"total_amount\":\"88.88\"," +
-		//		" \"subject\":\"Iphone6 16G\"," +
-		//		" \"product_code\":\"QUICK_WAP_PAY\"" +
-		//		" }");//填充业务参数
-		//String form="";
-		//try {
-		//	form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
-		//} catch (AlipayApiException e) {
-		//	e.printStackTrace();
-		//}
-    //
+
+		AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
+		alipayRequest.setReturnUrl("http://www.3nong1gou.com/pay_zfbPayedNotify");
+		alipayRequest.setBizContent("{" +
+				"\"body\":\"Iphone6 16G\"," +
+				"\"subject\":\"大乐透\"," +
+				"\"out_trade_no\":\"70501111111S001111119\"," +
+				"\"timeout_express\":\"90m\"," +
+				"\"time_expire\":\"2016-12-31 10:05\"," +
+				"\"total_amount\":9.00," +
+				"\"seller_id\":\"2088102147948060\"," +
+				"\"auth_token\":\"appopenBb64d181d0146481ab6a762c00714cC27\"," +
+				"\"goods_type\":\"0\"," +
+				"\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
+				"\"quit_url\":\"http://www.taobao.com/product/113714.html\"," +
+				"\"product_code\":\"QUICK_WAP_WAY\"," +
+				"\"promo_params\":\"{\\\"storeIdType\\\":\\\"1\\\"}\"," +
+				"\"royalty_info\":{" +
+				"\"royalty_type\":\"ROYALTY\"," +
+				"        \"royalty_detail_infos\":[{" +
+				"          \"serial_no\":1," +
+				"\"trans_in_type\":\"userId\"," +
+				"\"batch_no\":\"123\"," +
+				"\"out_relation_id\":\"20131124001\"," +
+				"\"trans_out_type\":\"userId\"," +
+				"\"trans_out\":\"2088101126765726\"," +
+				"\"trans_in\":\"2088101126708402\"," +
+				"\"amount\":0.1," +
+				"\"desc\":\"分账测试1\"," +
+				"\"amount_percentage\":\"100\"" +
+				"          }]" +
+				"    }," +
+				"\"extend_params\":{" +
+				"\"sys_service_provider_id\":\"2088511833207846\"," +
+				"\"hb_fq_num\":\"3\"," +
+				"\"hb_fq_seller_percent\":\"100\"," +
+				"\"industry_reflux_info\":\"{\\\\\\\"scene_code\\\\\\\":\\\\\\\"metro_tradeorder\\\\\\\",\\\\\\\"channel\\\\\\\":\\\\\\\"xxxx\\\\\\\",\\\\\\\"scene_data\\\\\\\":{\\\\\\\"asset_name\\\\\\\":\\\\\\\"ALIPAY\\\\\\\"}}\"," +
+				"\"card_type\":\"S0JP0000\"" +
+				"    }," +
+				"\"sub_merchant\":{" +
+				"\"merchant_id\":\"19023454\"," +
+				"\"merchant_type\":\"alipay: 支付宝分配的间连商户编号, merchant: 商户端的间连商户编号\"" +
+				"    }," +
+				"\"merchant_order_no\":\"20161008001\"," +
+				"\"enable_pay_channels\":\"pcredit,moneyFund,debitCardExpress\"," +
+				"\"disable_pay_channels\":\"pcredit,moneyFund,debitCardExpress\"," +
+				"\"store_id\":\"NJ_001\"," +
+				"\"settle_info\":{" +
+				"        \"settle_detail_infos\":[{" +
+				"          \"trans_in_type\":\"cardAliasNo\"," +
+				"\"trans_in\":\"A0001\"," +
+				"\"summary_dimension\":\"A0001\"," +
+				"\"settle_entity_id\":\"2088xxxxx;ST_0001\"," +
+				"\"settle_entity_type\":\"SecondMerchant、Store\"," +
+				"\"amount\":0.1" +
+				"          }]" +
+				"    }," +
+				"\"invoice_info\":{" +
+				"\"key_info\":{" +
+				"\"is_support_invoice\":true," +
+				"\"invoice_merchant_name\":\"ABC|003\"," +
+				"\"tax_num\":\"1464888883494\"" +
+				"      }," +
+				"\"details\":\"[{\\\"code\\\":\\\"100294400\\\",\\\"name\\\":\\\"服饰\\\",\\\"num\\\":\\\"2\\\",\\\"sumPrice\\\":\\\"200.00\\\",\\\"taxRate\\\":\\\"6%\\\"}]\"" +
+				"    }," +
+				"\"specified_channel\":\"pcredit\"," +
+				"\"business_params\":\"{\\\"data\\\":\\\"123\\\"}\"," +
+				"\"ext_user_info\":{" +
+				"\"name\":\"李明\"," +
+				"\"mobile\":\"16587658765\"," +
+				"\"cert_type\":\"IDENTITY_CARD\"," +
+				"\"cert_no\":\"362334768769238881\"," +
+				"\"min_age\":\"18\"," +
+				"\"fix_buyer\":\"F\"," +
+				"\"need_check_info\":\"F\"" +
+				"    }" +
+				"  }");
+		if ()
+		AlipayTradeWapPayResponse response = alipayClient.pageExecute(alipayRequest);
+		response.getCode();
+		response.getMsg();
+		response.getSubCode();
+		response.getOutTradeNo();
+		response.getBody();
+		response.isSuccess()
+
 		Result result = new Result();
 		return result;
 	}
