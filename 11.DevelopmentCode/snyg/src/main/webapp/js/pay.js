@@ -11,7 +11,7 @@ function Pay(){
   /**
    * 我们支付流水编号
    */
-  Pay.prototype.flowId = null;
+  Pay.prototype.platformFlowCode = null;
 
   /**
    * 微信支付方式-公众号原生
@@ -29,7 +29,7 @@ function Pay(){
   /**
    * 微信支付方式-支付宝
    */
-  Pay.prototype.PAY_METHOD_ZFB = "ZFB";
+  Pay.prototype.PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
 
 
   /**
@@ -87,7 +87,7 @@ Pay.prototype.getPayInfo = function(param)
       payInfoTmp = data;
     }
   });
-  this.payInfo = payInfoTmp; //{resultCode:成功0,resultMsg:,flowId:流水id,不同支付必须的信息}
+  this.payInfo = payInfoTmp; //{resultCode:成功0,resultMsg:,platformFlowCode:流水id,不同支付必须的信息}
 }
 
 /**
@@ -101,7 +101,6 @@ Pay.prototype.toPay = function()
     //payMethod=wx微信浏览器，公众号直接支付
     if(this.payMethod == this.PAY_METHOD_WX)
     {
-      console.log(1111111111111111111);
       if (typeof WeixinJSBridge == "undefined"){
         if( document.addEventListener ){
           document.addEventListener('WeixinJSBridgeReady', this.toPay, false);
@@ -134,6 +133,9 @@ Pay.prototype.toPay = function()
     }else if(this.payMethod == this.PAY_METHOD_WX_PC) //payMethod=pc非移动浏览器打开，二维码
     {
     	return this.payInfo.code_url; //返回微信二维码地址
+    }else if(this.payMethod == this.PAY_METHOD_ALIPAY_WAP) //payMethod=ALIPAY_
+    {
+      document.write(this.payInfo.body); //支付宝wap支付，body就是当前页面具体内容
     }
 }
 
@@ -150,7 +152,7 @@ Pay.prototype.checkPayed = function()
     this.checkPayInterval = setInterval(function(){payTmp.checkPayed()},500);
   }else
   {
-    var flowId = this.payInfo.flowId;
+    var platformFlowCode = this.payInfo.platformFlowCode;
     var flowState = null;
     $.ajax({
       type : "GET",
@@ -158,7 +160,7 @@ Pay.prototype.checkPayed = function()
       dataType : "json",
       data: {
         "d":new Date().getTime(),
-        "flowId":flowId
+        "platformFlowCode":platformFlowCode
       },
       url: "pay_getThirdPayFlow",
       success: function(data){

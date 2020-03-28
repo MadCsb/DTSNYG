@@ -1,11 +1,20 @@
 package com.msy.travel.service.impl;
 
+import static com.alipay.api.AlipayConstants.APP_ID;
+
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.alipay.api.response.AlipayTradeWapPayResponse;
+import com.alipay.config.AlipayConfig;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.WxPayUtil;
+import com.msy.travel.common.config.AlipayConfigParameter;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
 import com.msy.travel.controller.PayController;
@@ -66,8 +75,18 @@ public class PayServiceImpl implements PayService {
 	@Resource(name = "thirdPayFlowServiceImpl")
 	private ThirdPayFlowService thirdPayFlowService;
 
+	@Resource(name = "alipayClient")
+	private AlipayClient alipayClient;
+
+
+
+
+
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
+
+	@Resource(name = "alipayConfigParameter")
+	private AlipayConfigParameter alipayConfigParameter;
 
 	/**
 	 * 微信支付方式-公众号原生
@@ -85,10 +104,9 @@ public class PayServiceImpl implements PayService {
 	private static String PAY_METHOD_WX_PC = "WX_PC";
 
 	/**
-	 * 支付宝支付方式
+	 * 支付宝 wap方式
 	 */
-	private static String PAY_METHOD_ZFB = "ZFB";
-
+	private static String PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
 
 	/**
 	 * 获取 支付 信息
@@ -135,6 +153,7 @@ public class PayServiceImpl implements PayService {
 			if (i==0)
 			{
 				payInfoParam.put("productId",orderListList.get(0).getPriceId());
+				payInfoParam.put("orderId",order.getOrderId());
 				if (configParameter.getWxpayValidateTime() != null && !configParameter.getWxpayValidateTime().trim().equals(""))
 				{
 					SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtil.sdf19);
@@ -158,7 +177,7 @@ public class PayServiceImpl implements PayService {
 		thirdPayFlow.setPlatformOrders(platformOrders);
 		thirdPayFlow.setSpId(spId);
 		thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
-		payInfoParam.put("flowId",thirdPayFlow.getFlowId());
+		payInfoParam.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 
 		if (PAY_METHOD_WX.equals(payMethod)) //微信公众号支付
 		{
@@ -169,9 +188,9 @@ public class PayServiceImpl implements PayService {
 		}else if (PAY_METHOD_WX_WAP.equals(payMethod)) //微信移动浏览器支付
 		{
 			result = getPayInfoByWXWAP(payInfoParam);
-		}else if (PAY_METHOD_ZFB.equals(payMethod)) //支付宝支付
+		}else if (PAY_METHOD_ALIPAY_WAP.equals(payMethod)) //支付宝 wap支付
 		{
-
+			result = getPayInfoByAlipayWAP(payInfoParam);
 		}
 		if (result.getResultCode().equals("1"))
 		{
@@ -185,7 +204,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -203,7 +222,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -226,7 +245,7 @@ public class PayServiceImpl implements PayService {
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
 		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
-		httpRequestParamMap.put("spbill_create_ip", "remoteAddr");//终端IP
+		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
 		{
@@ -248,7 +267,7 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WX 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
@@ -281,7 +300,7 @@ public class PayServiceImpl implements PayService {
 			payInfo.put("package", "prepay_id="+httpResponseResultMap.get("prepay_id"));
 			payInfo.put("signType", "MD5");
 			payInfo.put("paySign", sign);
-			payInfo.put("flowId",thirdPayFlow.getFlowId());
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -298,7 +317,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -316,7 +335,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -339,7 +358,7 @@ public class PayServiceImpl implements PayService {
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
 		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
-		httpRequestParamMap.put("spbill_create_ip", "remoteAddr");//终端IP
+		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
 		{
@@ -361,11 +380,11 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WXWAP 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WX 统一支付接口响应:"+res);
+		log.error("微信支付 WXWAP 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -389,6 +408,7 @@ public class PayServiceImpl implements PayService {
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
 			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url"));
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -406,7 +426,7 @@ public class PayServiceImpl implements PayService {
 	 * @param param 参数信息
 	 * param.spId 运营商ID
 	 * param.body 支付内容
-	 * param.flowId 本系统支付流水ID
+	 * param.platformFlowCode 本系统支付流水ID
 	 * param.remoteAddr 创建订单的用户ID
 	 * param.timeExpire 订单失效时间
 	 * param.openId 微信用户OpenId
@@ -424,7 +444,7 @@ public class PayServiceImpl implements PayService {
 		serviceCode.setServiceId(destsp.getWxServiceId());
 		serviceCode = serviceCodeService.displayServiceCode(serviceCode);
 		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setFlowId(param.get("flowId"));
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		//微信支付 http请求参数
@@ -447,7 +467,7 @@ public class PayServiceImpl implements PayService {
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
 		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
-		httpRequestParamMap.put("spbill_create_ip", "remoteAddr");//终端IP
+		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
 		{
@@ -470,11 +490,11 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX params xml:"+ document.getRootElement().asXML());
+		log.error("微信支付 WXPC 参数 xml:"+ document.getRootElement().asXML());
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WX 统一支付接口响应:"+res);
+		log.error("微信支付 WXPC 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -498,6 +518,7 @@ public class PayServiceImpl implements PayService {
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
 			payInfo.put("code_url",httpResponseResultMap.get("code_url"));
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
 			result.setResultPojo(payInfo);
@@ -507,5 +528,79 @@ public class PayServiceImpl implements PayService {
 			result.setResultMsg("获取微信支付信息失败");
 		}
 		return result;
+	}
+
+
+	/**
+	 * 获取 阿里支付方式-wab 页面document.write内容
+	 * @param param 参数信息
+	 * param.spId 运营商ID
+	 * param.body 支付内容
+	 * param.platformFlowCode 本系统支付流水ID
+	 * param.remoteAddr 创建订单的用户ID
+	 * param.timeExpire 订单失效时间 2016-12-31 10:05:00
+	 * param.openId 微信用户OpenId
+	 * param.productId 订单的商品ID
+	 * param.orderId 订单ID
+	 * @return
+	 */
+	private Result getPayInfoByAlipayWAP(Map<String,String> param) throws Exception {
+		Result result = new Result();
+
+		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
+		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+
+		AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
+		alipayRequest.setReturnUrl("http://www.3nong1gou.com/waporder?method=toOrderDetail&orderId="+param.get("orderId"));
+		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
+		String body = param.get("body");
+		if (body.length()>128) //支付宝支付body最长128
+		{
+			body = body.substring(0,128);
+		}
+		alipayRequest.setBizContent("{" +
+				"\"body\":\""+body+"\"," +
+				"\"subject\":\""+body+"\"," +
+				"\"out_trade_no\":\""+thirdPayFlow.getThirdFlowCode()+"\"," +
+				"\"time_expire\":\""+param.get("timeExpire").substring(0,16)+"\"," +
+				"\"total_amount\":"+thirdPayFlow.getFlowMoney()+"," +
+				"\"quit_url\":\""+"http://www.3nong1gou.com/waporder.do?method=toOrderList&orderListType=0"+"\"," +
+				"\"product_code\":\""+param.get("productId")+"\""+
+				" }");
+		AlipayTradeWapPayResponse alipayResponse = alipayClient.pageExecute(alipayRequest);
+		log.error("alipayResponse.isSuccess() = "+alipayResponse.isSuccess());
+		log.error("alipayResponse.getBody() = "+alipayResponse.getBody());
+		log.error("alipayResponse.getCode() = "+alipayResponse.getCode());
+		log.error("alipayResponse.getSubCode() = "+alipayResponse.getSubCode());
+
+		if(alipayResponse.isSuccess()){
+			result.setResultCode("0");
+			Map<String,String> payInfo = new HashMap<String,String>();
+			payInfo.put("body",alipayResponse.getBody());
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
+			result.setResultPojo(payInfo);
+			result.setResultMsg(alipayResponse.getMsg());
+		} else {
+			result.setResultCode("1");
+			result.setResultMsg(alipayResponse.getMsg());
+		}
+		return result;
+	}
+
+	/**
+	 * @Description 收到支付宝的成功回调之后验证签名是否正确
+	 * @param requestParams
+	 * @return
+	 */
+	public boolean aliPayCheckSignature(Map<String, String> requestParams)
+	{
+		try {
+			boolean flag = AlipaySignature.rsaCheckV1(requestParams, alipayConfigParameter.getAlipayPublicKey(), alipayConfigParameter.getCharset(),
+					alipayConfigParameter.getSignType());
+			return flag;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

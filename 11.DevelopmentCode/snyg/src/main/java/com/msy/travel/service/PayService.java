@@ -20,4 +20,12 @@ public interface PayService {
 	 * @return
 	 */
 	public Result getPayInfo(JSONObject param) throws Exception;
+
+	/**
+	 * @Description 收到支付宝的成功回调之后验证签名是否正确
+	 * @param requestParams
+	 * @return
+	 */
+	public boolean aliPayCheckSignature(Map<String, String> requestParams);
+
 }

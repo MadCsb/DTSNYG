@@ -11,7 +11,7 @@ function OpenApi(){
  * 如果 参数pageType等于以支持的页面，则this.pageType=参数
  * 否则 通过浏览器设置则this.pageType
  */
-Person.prototype.resetDefaultPageType = function (pageType) {
+OpenApi.prototype.resetDefaultPageType = function (pageType) {
   if (this.WEB == pageType || this.WX == pageType || this.WAP == pageType)
   {
     this.pageType = pageType;
@@ -43,12 +43,13 @@ Person.prototype.resetDefaultPageType = function (pageType) {
  * param.priceId 销售ID
  * param.spId 运营商ID
  */
-Person.prototype.gotoSellPrice = function (param) {
+OpenApi.prototype.gotoSellPrice = function (param) {
   if (this.pageType == null)
   {
     this.resetDefaultPageType();
   }
-
+  alert(this.pageType);
+  console.log(param);
   var detailUrl = "";
   if (this.pageType == this.WX)
   {
@@ -58,7 +59,7 @@ Person.prototype.gotoSellPrice = function (param) {
     detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId;
   }else if (this.pageType == this.WAP)
   {
-    detailUrl = "${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
+    detailUrl = "${rc.contextPath}/\"wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
   }
   window.location.replace(detailUrl)
 }
@@ -68,7 +69,7 @@ Person.prototype.gotoSellPrice = function (param) {
  * 根据 pageType 不同，跳转不同的订单列表
  * param.spId 运营商ID
  */
-Person.prototype.gotoOrderList = function (param) {
+OpenApi.prototype.gotoOrderList = function (param) {
   if (this.pageType == null)
   {
     this.resetDefaultPageType();

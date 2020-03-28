@@ -12,6 +12,7 @@
 			F_FLOWID ,
 			F_PLATFORM_FLOW_CODE ,
 			F_CREATETIME ,
+			F_THIRD_TYPE ,
 			F_THIRD_FLOW_CODE ,
 			F_THIRD_CREATETIME ,
 			F_FLOW_STATE ,
@@ -22,6 +23,7 @@
 			#{flowId} ,
 			#{platformFlowCode} ,
 			#{createTime} ,
+			#{thirdType} ,
 			#{thirdFlowCode} ,
 			#{thirdCreateTime} ,
 			#{flowState} ,
@@ -63,6 +65,7 @@
 		SET
 			F_PLATFORM_FLOW_CODE = #{platformFlowCode} ,
 			F_CREATETIME = #{createTime} ,
+			F_THIRD_TYPE = #{thirdType} ,
 			F_THIRD_FLOW_CODE = #{thirdFlowCode} ,
 			F_THIRD_CREATETIME = #{thirdCreateTime} ,
 			F_FLOW_STATE = #{flowState} ,
@@ -99,6 +102,7 @@
 			t.F_FLOWID as flowId ,
 			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
 			t.F_CREATETIME as createTime ,
+			t.F_THIRD_TYPE as thirdType ,
 			t.F_THIRD_FLOW_CODE as thirdFlowCode ,
 			t.F_THIRD_CREATETIME as thirdCreateTime ,
 			t.F_FLOW_STATE as flowState ,
@@ -108,8 +112,12 @@
 		FROM
 			t_sm_thirdpayflow t
 		<where>
-			t.F_FLOWID = #{flowId} 
-			
+			<if test="platformFlowCode!=null and platformFlowCode!=''">
+				and t.F_PLATFORM_FLOW_CODE = #{platformFlowCode}
+			</if>
+			<if test="flowId!=null and flowId!=''">
+				and t.F_FLOWID = #{flowId}
+			</if>
 		</where>
 	</select>
 	<!-- 按条件查询所有 -->
@@ -118,6 +126,7 @@
 			t.F_FLOWID as flowId ,
 			t.F_PLATFORM_FLOW_CODE as platformFlowCode ,
 			t.F_CREATETIME as createTime ,
+			t.F_THIRD_TYPE as thirdType ,
 			t.F_THIRD_FLOW_CODE as thirdFlowCode ,
 			t.F_THIRD_CREATETIME as thirdCreateTime ,
 			t.F_FLOW_STATE as flowState ,
