@@ -192,8 +192,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 	 *            '',userId:'',sellPrice:[{priceId:'',num:''},{priceId:'',num:''
 	 *            } ] }
 	 * @return {customerCouponId: '',userId:'', couponMoney:
-	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',
-	 *         i s U s e : ' 1 能 使 用 ' } ] }
+	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:''
+	 *         , i s U s e : ' 1 能 使 用 ' } ] }
 	 * @throws Exception
 	 * @return String
 	 */
@@ -393,9 +393,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
 			}
 
+			customerCoupon.setUseCouponIdList(useCouponIdList);
 		}
-
-		customerCoupon.setUseCouponIdList(useCouponIdList);
 
 		List<CustomerCoupon> customerCouponList = customerCouponDao.queryCustomerCouponListByUserId(customerCoupon);
 
