@@ -196,9 +196,9 @@
 	<!-- 获取用户优惠券 -->
 	<select id="queryCustomerCouponListByUserId" parameterType="customerCoupon" resultType="customerCoupon">
 		SELECT
+			DISTINCT(t.F_COUPONID) as couponId ,
 			t.F_CUSTOMERCOUPONID as customerCouponId ,
 			t.F_CUSTOMERCODE as customerCode ,
-			t.F_COUPONID as couponId ,
 			t.F_USETYPE as useType ,
 			t.F_USELIMIT as useLimit ,
 			t.F_DISCOUNT as discount ,

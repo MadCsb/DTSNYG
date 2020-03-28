@@ -231,12 +231,13 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		couponProduction.setCouponId(customerCoupon.getCouponId());
 		List<String> couponProductionList = couponProductionService.queryCouponProductionIdList(couponProduction);
 
+		String priceAll = "0";
+
 		// 当归属某个活动的时候 全部商品
 		if (coupon.getCouponType().equals("1")) {
 			String userCouponId = couponProductionList.get(0);
 			// 全部商品
 			if (userCouponId.equals(Destsp.currentSpId)) {
-				String priceAll = "0";
 
 				result.setResultCode("0");
 				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
@@ -266,8 +267,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 				SaleType saleType = new SaleType();
 				saleType.setSaleTypeId(userCouponId);
 				saleType = saleTypeService.displaySaleType(saleType);
-
-				String priceAll = "0";
 
 				result.setResultCode("0");
 				// 判断销售商品是否属于活动
@@ -303,7 +302,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			// 判断销售商品是否属于部分商品
 			JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
 			if (jsonArray != null && jsonArray.size() > 0) {
-				String priceAll = "0";
 
 				for (int i = 0; i < jsonArray.size(); i++) {
 					JSONObject job = jsonArray.getJSONObject(i);
@@ -334,7 +332,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			if (customerCoupon.getUseType().equals("1")) {
 				jsonObject.put("couponMoney", customerCoupon.getDiscount());
 			} else if (customerCoupon.getUseType().equals("2")) {
-				jsonObject.put("couponMoney", BigDecimalUtil.subtract(customerCoupon.getUseLimit(), BigDecimalUtil.multiply(customerCoupon.getUseLimit(), customerCoupon.getDiscount())));
+				jsonObject.put("couponMoney", BigDecimalUtil.subtract(priceAll, BigDecimalUtil.multiply(priceAll, customerCoupon.getDiscount())));
 			}
 
 			result.setResultPojo(jsonObject);

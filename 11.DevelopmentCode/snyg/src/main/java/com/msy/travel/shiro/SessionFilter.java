@@ -23,7 +23,7 @@ public class SessionFilter extends AccessControlFilter {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;application/json");
 		// 微信链接、微信图片
- 		if (url.indexOf("/logout") != -1 || url.indexOf("/wx/core") != -1 || url.indexOf("/wx.do") != -1 || url.indexOf("/" + Consts.WX_PIC_FOLDER_NAME + "/") != -1 || url.indexOf("/wx/") != -1
+		if (url.indexOf("/logout") != -1 || url.indexOf("/wx/core") != -1 || url.indexOf("/wx.do") != -1 || url.indexOf("/" + Consts.WX_PIC_FOLDER_NAME + "/") != -1 || url.indexOf("/wx/") != -1
 				|| url.indexOf("/wxAfterPay") != -1 || url.indexOf("/api") != -1 || url.indexOf("/loginApi") != -1 || url.indexOf("/wx") != -1 || url.indexOf("/pay") != -1) {
 			return Boolean.TRUE;
 		}
@@ -34,7 +34,7 @@ public class SessionFilter extends AccessControlFilter {
 		}
 
 		// wap 端无需登录controller
-		if (url.indexOf("/wapIndex") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/wapCommproduct") != -1 || url.indexOf("/wapCoupon") != -1
+		if (url.indexOf("/wap") != -1 || url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/wapCommproduct") != -1 || url.indexOf("/wapCoupon") != -1
 				|| url.indexOf("/wapPdcType") != -1 || url.indexOf("/wapPrice1Ref") != -1 || url.indexOf("/wapSellPrice") != -1) {
 			return Boolean.TRUE;
 		}
