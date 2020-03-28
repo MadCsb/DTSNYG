@@ -192,8 +192,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 	 *            '',userId:'',sellPrice:[{priceId:'',num:''},{priceId:'',num:''
 	 *            } ] }
 	 * @return {customerCouponId: '',userId:'', couponMoney:
-	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',nu
-	 *         m : ' ' , i s U s e : ' 1 能 使 用 ' } ] }
+	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',n
+	 *         u m : ' ' , i s U s e : ' 1 能 使 用 ' } ] }
 	 * @throws Exception
 	 * @return String
 	 */
@@ -270,6 +270,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
 				String priceAll = "";
 
+				result.setResultCode("0");
 				// 判断销售商品是否属于活动
 				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
 				if (jsonArray != null && jsonArray.size() > 0) {
@@ -300,6 +301,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
 			}
 		} else { // 部分商品
+			result.setResultCode("0");
 			// 判断销售商品是否属于部分商品
 			JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
 			if (jsonArray != null && jsonArray.size() > 0) {
