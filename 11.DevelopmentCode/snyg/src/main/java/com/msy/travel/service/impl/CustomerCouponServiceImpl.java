@@ -192,8 +192,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 	 *            '',userId:'',sellPrice:[{priceId:'',num:''},{priceId:'',num:''
 	 *            } ] }
 	 * @return {customerCouponId: '',userId:'', couponMoney:
-	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:
-	 *         ' ' , i s U s e : ' 1 能 使 用 ' } ] }
+	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',nu
+	 *         m : ' ' , i s U s e : ' 1 能 使 用 ' } ] }
 	 * @throws Exception
 	 * @return String
 	 */
@@ -335,7 +335,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			if (customerCoupon.getUseType().equals("1")) {
 				jsonObject.put("couponMoney", customerCoupon.getDiscount());
 			} else if (customerCoupon.getUseType().equals("2")) {
-				jsonObject.put("couponMoney", BigDecimalUtil.multiply(customerCoupon.getUseLimit(), customerCoupon.getDiscount()));
+				jsonObject.put("couponMoney", BigDecimalUtil.subtract(customerCoupon.getUseLimit(), BigDecimalUtil.multiply(customerCoupon.getUseLimit(), customerCoupon.getDiscount())));
 			}
 		}
 
