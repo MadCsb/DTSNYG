@@ -506,7 +506,7 @@
 						WHERE
 							t1.F_STATUS = '1'
 						AND
-						    t1.F_OBTAINTYPE = '2'
+						    t1.F_OBTAINTYPE = #{obtainType}
 						AND t1.F_COUPONTAG = '1'
 						AND t1.F_DELFLAG='0'
 						AND
@@ -569,7 +569,7 @@
 						WHERE
 							t1.F_STATUS = '1'
 						AND
-						    t1.F_OBTAINTYPE = '2'
+						    t1.F_OBTAINTYPE = #{obtainType}
 						AND t1.F_COUPONTAG = '1'
 						AND t1.F_DELFLAG='0'
 						AND
@@ -581,11 +581,10 @@
 				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS receiveCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} GROUP BY F_COUPONID) a2 on (a1.F_COUPONID = a2.F_COUPONID)
 				LEFT JOIN (SELECT F_COUPONID,COUNT(1) AS todayCount FROM t_sm_customercoupon WHERE F_CUSTOMERCODE=#{userId} AND F_OBTAINTIME=#{crrObtainDate} GROUP BY F_COUPONID) a3 on (a1.F_COUPONID = a3.F_COUPONID)
 			) b
-		/*
 		WHERE 
 			b.F_OBTAINLIMIT > b.receiveCount
 		AND 
-			b.F_DAYOBTAINLIMIT > b.todayCount*/
+			b.F_DAYOBTAINLIMIT > b.todayCount
 		ORDER BY 
 			b.F_DISCOUNT DESC ,b.F_VALIDEND
 	</select>

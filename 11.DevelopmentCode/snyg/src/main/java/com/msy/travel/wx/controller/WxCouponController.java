@@ -368,8 +368,10 @@ public class WxCouponController extends BaseController {
 			if (user != null && user != null && !user.getUserId().equals("")) {
 				coupon.setUserId(user.getUserId());
 				coupon.setUserId(user.getUserId());
+				coupon.setObtainType("2");
 				couponList = couponService.queryCouponListBySquareLogin(coupon);
 			} else {
+				coupon.setObtainType("2");
 				couponList = couponService.queryCouponListBySquareNoLogin(coupon);
 			}
 			JSONArray jsonArray = JSONArray.fromObject(couponList);
