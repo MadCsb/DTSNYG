@@ -81,6 +81,16 @@ public class CustomerCoupon extends BaseEntity implements java.io.Serializable {
 
 	private String crrObtainDate;
 
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getCrrObtainDate() {
 		return crrObtainDate;
 	}

@@ -208,10 +208,12 @@
 			t.F_OBTAINTIME as obtainTime ,
 			t.F_STATUS as status ,
 			t.F_ORDERID as orderId ,
-			t.F_DELFLAG as delFlag 
+			t.F_DELFLAG as delFlag ,
+			p.F_NAME as name
 		FROM
 		t_sm_customercoupon t
 		LEFT JOIN t_sm_couponproduction b ON (t.F_COUPONID = b.F_COUPONID)
+		LEFT JOIN t_sm_coupon p on t.F_COUPONID = p.F_COUPONID 
 		<where>
 			<if test="couponId !=null and couponId !=''">
 		    	AND t.F_COUPONID = #{couponId}
