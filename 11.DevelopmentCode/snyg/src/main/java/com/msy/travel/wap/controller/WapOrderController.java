@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.Result;
@@ -13,6 +14,7 @@ import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Consignee;
+import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.GoodsPrice;
 import com.msy.travel.pojo.Order;
@@ -28,6 +30,8 @@ import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
+import com.msy.travel.service.CouponService;
+import com.msy.travel.service.CustomerCouponService;
 import com.msy.travel.service.GoodsPriceService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IPubmapService;
@@ -58,6 +62,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -112,6 +117,12 @@ public class WapOrderController extends BaseController {
 	@Resource(name = "rsPicServiceImpl")
 	private IRsPicService rsPicService;
 
+	@Resource(name = "couponServiceImpl")
+	private CouponService couponService;
+
+	@Resource(name = "customerCouponServiceImpl")
+	private CustomerCouponService customerCouponService;
+
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
@@ -148,6 +159,7 @@ public class WapOrderController extends BaseController {
 		try {
 			JSONObject prepareOrderJsonObject = JSON.parseObject(prepareOrderJson);
 
+			StringBuffer priceIdsSB = new StringBuffer();
 			List<OrderList> orderListList = new ArrayList<>();
 			JSONArray orderListListJSONArray = prepareOrderJsonObject.getJSONArray("orderListList");
 			for (int i=0;i<orderListListJSONArray.size();i++)
@@ -174,9 +186,23 @@ public class WapOrderController extends BaseController {
 				orderList.setCommproduct(commproduct);
 
 				orderListList.add(orderList);
+				if (i != 0 )
+				{
+					priceIdsSB.append(",");
+				}
+				priceIdsSB.append(sellPrice.getPriceId());
 			}
+			CustomerCoupon customerCoupon = new CustomerCoupon();
+			customerCoupon.setCustomerCode(getLoginUser(request).getUserId()); //使用人
+			customerCoupon.setStatus("0");//未使用
+			customerCoupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
+			//个人中心 setStatus("0") setCustomerCode price = ""
+
+			List<CustomerCoupon> customerCouponList = customerCouponService.queryCustomerCouponListByUserIdAndPriceId(customerCoupon,priceIdsSB.toString());
+			//List<C< > = couponService.queryCouponListByPriceId(getLoginUser(request),priceIdsSB.toString());
 			view = new ModelAndView("/wap/order/createOrder");
 			view.addObject("orderListList",orderListList);
+			view.addObject("customerCouponList",customerCouponList);
 			if (prepareOrderJsonObject.containsKey("price"))
 			{
 				view.addObject("price",prepareOrderJsonObject.getJSONObject("price").toJSONString());
@@ -189,7 +215,34 @@ public class WapOrderController extends BaseController {
 		}
 		return view;
 	}
-
+	/**
+	 * ajax 验证能否使用优惠券
+	 * param
+	 * {customerCouponId:客户优惠券关联ID,sellPrice[{priceId:销售id,num:数量}]}
+	 */
+	@RequestMapping(params = "method=ajaxCanUseCoupon")
+	public void ajaxCanUseCoupon(String param,HttpServletRequest request,HttpServletResponse response) {
+		JSONObject data = JSON.parseObject(param);
+		data.put("userId",getLoginUser(request).getUserId());
+		Result result = new Result();
+		try
+		{
+			result = customerCouponService.canUseCoupon(data);
+		}catch (Exception e)
+		{
+			log.error(e,e);
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg("系统异常");
+		}
+		try
+		{
+				response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
+	}
 
 	/**
 	 * ajax 创建订单

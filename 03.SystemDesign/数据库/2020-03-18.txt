@@ -1,4 +1,4 @@
-/*１）先添加字段，设置字段类型等基本属性： */
+﻿/*１）先添加字段，设置字段类型等基本属性： */
 alter table t_sm_sellprice add F_PRICECODE INTEGER(10) not Null ; 
 /*（２）为该字段添加任意key：  test为任意的key名称 */
 alter table t_sm_sellprice ADD KEY test(F_PRICECODE);
@@ -6,8 +6,12 @@ alter table t_sm_sellprice ADD KEY test(F_PRICECODE);
 ALTER TABLE t_sm_sellprice MODIFY F_PRICECODE BIGINT(20) auto_increment;
 
 
-alter table t_sm_thirdpayflow modify column F_THIRD_FLOW_CODE varchar(100) ;
-alter table t_sm_thirdpayflow add column F_THIRD_TYPE VARCHAR(2) ;
+alter table t_sm_thirdpayflow modify column F_THIRD_FLOW_CODE varchar(100) COMMENT '对方支付回执编号 ';;
+alter table t_sm_thirdpayflow add column F_THIRD_TYPE VARCHAR(2) COMMENT '对方类型(0微信，1支付宝)'; 
+
+ALTER TABLE t_sm_order ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
+ALTER TABLE t_sm_orderlist ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
+ALTER TABLE t_sm_orderlist ADD F_CUSTOMERCOUPONID VARCHAR(50) COMMENT '客户优惠券关联ID';
 
 t_sm_saletype
 t_sm_channel

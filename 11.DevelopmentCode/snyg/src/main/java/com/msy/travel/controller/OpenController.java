@@ -47,7 +47,7 @@ public class OpenController extends BaseController {
 	 * 跳转到产品详情
 	 */
 	@RequestMapping(value = "/{priceCode}")
-	public ModelAndView toAddCity(@PathVariable("spId") String spId,@PathVariable("priceCode") String priceCode, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView toSellPriceDetail(@PathVariable("spId") String spId,@PathVariable("priceCode") String priceCode, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
 
@@ -92,7 +92,7 @@ public class OpenController extends BaseController {
 	 * 跳转到订单列表
 	 */
 	@RequestMapping(value = "/orderList")
-	public ModelAndView toAddCity(@PathVariable("spId") String spId,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView toOrderListDetail(@PathVariable("spId") String spId,HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("open/displayOrderList");

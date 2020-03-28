@@ -74,21 +74,6 @@ public class PayController extends BaseController {
 	private ConfigParameter configParameter;
 
 	/**
-	 * 微信支付方式-公众号原生
-	 */
-	private static String PAY_METHOD_WX = "WX";
-
-	/**
-	 * 微信支付方式-移动系统h5调用
-	 */
-	private static String PAY_METHOD_WX_H5 = "WX_H5";
-
-	/**
-	 * 微信支付方式-pc系统二维码
-	 */
-	private static String PAY_METHOD_WX_PC = "WX_PC";
-
-	/**
 	 * 获取当前微信用户的OpenId
 	 * @param param{payMethod:支付方式,openId:微信用户openId,spId:运营商id,platformOrders:订单ids,}
 	 * json返回内容{resultCode:成功0,resultMsg:,flowId:流水id,不同支付必须的信息}

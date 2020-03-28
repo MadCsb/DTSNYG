@@ -59,7 +59,7 @@ Pay.prototype.autoPayMethod = function()
     }
     if(isMobile)
     {
-      this.payMethod =this.PAY_METHOD_WX_H5;
+      this.payMethod =this.PAY_METHOD_WX_WAP;
     }else {
       this.payMethod =this.PAY_METHOD_WX_PC;
     }
@@ -127,9 +127,9 @@ Pay.prototype.toPay = function()
                 }
             }
         );
-    }else if(this.payMethod == this.PAY_METHOD_WX_H5)    //payMethod=h5移动端html5页面，非微信浏览器打开
+    }else if(this.payMethod == this.PAY_METHOD_WX_WAP)    //payMethod=h5移动端html5页面，非微信浏览器打开
     {
-        window.location.href = payInfo.mweb_url; //返回点击链接
+        window.location.href = this.payInfo.mweb_url; //返回点击链接
     }else if(this.payMethod == this.PAY_METHOD_WX_PC) //payMethod=pc非移动浏览器打开，二维码
     {
     	return this.payInfo.code_url; //返回微信二维码地址
