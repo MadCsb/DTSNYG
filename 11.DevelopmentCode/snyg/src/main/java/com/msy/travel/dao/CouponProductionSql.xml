@@ -117,4 +117,19 @@
 			</if>
 		</if>
 	</select>
+	<!-- 能使用优惠券的 产品Id -->
+	<select id="queryCouponProductionIdList" parameterType="couponProduction" resultType="String">
+		SELECT
+			t.F_USECOUPONID as useCouponId
+		FROM
+		t_sm_couponproduction t
+		<where>
+			<if test="couponPdcId!=null and couponPdcId!=''">
+		    	t.F_COUPONPDCID = #{couponPdcId}
+		     </if>
+			<if test="couponId !=null and couponId !=''">
+		    	t.F_COUPONID = #{couponId}
+		    </if>
+		</where>
+	</select>
 </mapper>	

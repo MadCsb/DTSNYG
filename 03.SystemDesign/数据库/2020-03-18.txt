@@ -5,6 +5,10 @@ alter table t_sm_sellprice ADD KEY test(F_PRICECODE);
 /*（３）将该字段修改为自增属性：  */
 ALTER TABLE t_sm_sellprice MODIFY F_PRICECODE BIGINT(20) auto_increment;
 
+
+alter table t_sm_thirdpayflow modify column F_THIRD_FLOW_CODE varchar(100) ;
+alter table t_sm_thirdpayflow add column F_THIRD_TYPE VARCHAR(2) ;
+
 t_sm_saletype
 t_sm_channel
 t_sm_channelbindsaletype

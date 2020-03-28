@@ -2,6 +2,8 @@ package com.msy.travel.service;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CustomerCoupon;
 
@@ -101,4 +103,18 @@ public interface CustomerCouponService {
 	 * @return String
 	 */
 	public String receiveCoupon(String userId, Coupon coupon) throws Exception;
+
+	/**
+	 * 判断是否可以优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午2:46:05
+	 * @param user
+	 * @param couponId
+	 * @param jsonArray
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 */
+	public Result canUseCoupon(JSONObject jsonObject) throws Exception;
 }

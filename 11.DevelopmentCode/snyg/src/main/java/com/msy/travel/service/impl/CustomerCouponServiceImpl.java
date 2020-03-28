@@ -7,12 +7,24 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.dao.CustomerCouponDao;
 import com.msy.travel.pojo.Coupon;
+import com.msy.travel.pojo.CouponProduction;
 import com.msy.travel.pojo.CustomerCoupon;
+import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.SaleType;
+import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.CouponProductionService;
+import com.msy.travel.service.CouponService;
 import com.msy.travel.service.CustomerCouponService;
+import com.msy.travel.service.SaleTypeService;
+import com.msy.travel.service.SellPriceService;
 
 /**
  * CustomerCouponService接口实现类
@@ -26,6 +38,18 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
 	@Resource(name = "customerCouponDao")
 	private CustomerCouponDao customerCouponDao;
+
+	@Resource(name = "couponServiceImpl")
+	private CouponService couponService;
+
+	@Resource(name = "couponProductionServiceImpl")
+	private CouponProductionService couponProductionService;
+
+	@Resource(name = "sellPriceServiceImpl")
+	private SellPriceService sellPriceService;
+
+	@Resource(name = "saleTypeServiceImpl")
+	private SaleTypeService saleTypeService;
 
 	/**
 	 * 新增CustomerCoupon
@@ -153,5 +177,150 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		customerCouponDao.insertCustomerCoupon(customerCoupon);
 
 		return "";
+	}
+
+	/**
+	 * 判断是否可以优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午2:46:05
+	 * @param user
+	 * @param couponId
+	 * @param jsonObject
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 */
+	public Result canUseCoupon(JSONObject jsonObject) throws Exception {
+		Result result = new Result();
+		String customerCouponId = jsonObject.getString("customerCouponId");
+		String userId = jsonObject.getString("userId");
+
+		CustomerCoupon customerCoupon = new CustomerCoupon();
+		customerCoupon.setCustomerCouponId(customerCouponId);
+		customerCoupon = customerCouponDao.queryCustomerCoupon(customerCoupon);
+
+		String crrDate = DateTimeUtil.getDateTime10();
+
+		if (!userId.equals(customerCoupon.getCustomerCode())) {
+			result.setResultCode("1");
+			result.setResultMsg("优惠券未领取");
+		} else if ("1".equals(customerCoupon.getDelFlag())) {
+			result.setResultCode("1");
+			result.setResultMsg("优惠券已删除");
+		} else if ("1".equals(customerCoupon.getStatus())) {
+			result.setResultCode("1");
+			result.setResultMsg("优惠券已使用");
+		} else if (crrDate.compareTo(customerCoupon.getValidBegin()) < 0 || crrDate.compareTo(customerCoupon.getValidEnd()) > 0) {
+			// 有效期不对
+			result.setResultCode("1");
+			result.setResultMsg("优惠券不在有效期内");
+		}
+
+		CouponProduction couponProduction = new CouponProduction();
+		couponProduction.setCouponId(customerCoupon.getCouponId());
+		List<String> couponProductionList = couponProductionService.queryCouponProductionIdList(couponProduction);
+
+		// 当归属某个活动的时候
+		if (couponProductionList.size() == 0) {
+			String userCouponId = couponProductionList.get(0);
+			// 全部商品
+			if (userCouponId.equals(Destsp.currentSpId)) {
+				String priceAll = "";
+
+				result.setResultCode("0");
+				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
+				if (jsonArray != null && jsonArray.size() > 0) {
+					for (int i = 0; i < jsonArray.size(); i++) {
+						JSONObject job = jsonArray.getJSONObject(i);
+
+						SellPrice sellPrice = new SellPrice();
+						sellPrice.setPriceId(job.getString("priceId"));
+						sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+						String price = BigDecimalUtil.multiply(job.getString("num"), sellPrice.getPrice());
+						priceAll = BigDecimalUtil.add(priceAll, price);
+
+						job.put("isUse", "1");
+
+					}
+					result.setResultPojo(jsonArray);
+
+					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
+					if (limitMoney > 0) {
+						result.setResultCode("1");
+						result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+					}
+				}
+			} else {
+				// 活动
+				SaleType saleType = new SaleType();
+				saleType.setSaleTypeId(userCouponId);
+				saleType = saleTypeService.displaySaleType(saleType);
+
+				String priceAll = "";
+
+				// 判断销售商品是否属于活动
+				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
+				if (jsonArray != null && jsonArray.size() > 0) {
+					for (int i = 0; i < jsonArray.size(); i++) {
+						JSONObject job = jsonArray.getJSONObject(i);
+
+						SellPrice sellPrice = new SellPrice();
+						sellPrice.setPriceId(job.getString("priceId"));
+						sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+						if (sellPrice.getPriceType().equals(saleType.getSaleTypeKey())) {
+							String price = BigDecimalUtil.multiply(job.getString("num"), sellPrice.getPrice());
+
+							priceAll = BigDecimalUtil.add(priceAll, price);
+							job.put("isUse", "1");
+						} else {
+							job.put("isUse", "0");
+						}
+					}
+					result.setResultPojo(jsonArray);
+
+					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
+					if (limitMoney > 0) {
+						result.setResultCode("1");
+						result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+					}
+				}
+
+			}
+		} else { // 部分商品
+			// 判断销售商品是否属于部分商品
+			JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
+			if (jsonArray != null && jsonArray.size() > 0) {
+				String priceAll = "";
+
+				for (int i = 0; i < jsonArray.size(); i++) {
+					JSONObject job = jsonArray.getJSONObject(i);
+
+					SellPrice sellPrice = new SellPrice();
+					sellPrice.setPriceId(job.getString("priceId"));
+					sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+					if (couponProductionList.contains(sellPrice.getPriceId())) {
+						String price = BigDecimalUtil.multiply(job.getString("num"), sellPrice.getPrice());
+
+						priceAll = BigDecimalUtil.add(priceAll, price);
+						job.put("isUse", "1");
+					} else {
+						job.put("isUse", "0");
+					}
+				}
+				result.setResultPojo(jsonArray);
+
+				double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
+				if (limitMoney > 0) {
+					result.setResultCode("1");
+					result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+				}
+			}
+		}
+
+		return result;
 	}
 }

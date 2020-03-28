@@ -32,7 +32,7 @@ public class CouponProduction extends BaseEntity implements java.io.Serializable
 	 */
 	private String useCouponId;
 	/**
-	 * 优惠类型:1全部商品，2指定商品 3活动商品 db_column: F_COUPONTYPE
+	 * 优惠类型:1全部商品，2指定商品 db_column: F_COUPONTYPE 已废弃
 	 */
 	private String couponType;
 	// columns END
