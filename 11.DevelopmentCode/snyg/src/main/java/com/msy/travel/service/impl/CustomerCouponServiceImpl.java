@@ -236,7 +236,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			String userCouponId = couponProductionList.get(0);
 			// 全部商品
 			if (userCouponId.equals(Destsp.currentSpId)) {
-				String priceAll = "";
+				String priceAll = "0";
 
 				result.setResultCode("0");
 				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
@@ -268,7 +268,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 				saleType.setSaleTypeId(userCouponId);
 				saleType = saleTypeService.displaySaleType(saleType);
 
-				String priceAll = "";
+				String priceAll = "0";
 
 				result.setResultCode("0");
 				// 判断销售商品是否属于活动
@@ -305,7 +305,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			// 判断销售商品是否属于部分商品
 			JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
 			if (jsonArray != null && jsonArray.size() > 0) {
-				String priceAll = "";
+				String priceAll = "0";
 
 				for (int i = 0; i < jsonArray.size(); i++) {
 					JSONObject job = jsonArray.getJSONObject(i);
