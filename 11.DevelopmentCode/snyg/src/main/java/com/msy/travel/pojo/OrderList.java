@@ -111,6 +111,18 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 	private String orderListType;
 
 	/**
+	 * 0优惠金额 db_column: F_COUPON_MONEY
+	 */
+	private String couponMoney;
+
+	/**
+	 * 客户优惠券关联ID db_column: F_CUSTOMERCOUPONID
+	 */
+	private String customerCouponId;
+
+
+
+	/**
 	 * 商品
 	 */
 	private Commproduct commproduct;
@@ -421,5 +433,21 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 
 	public void setPayTag(String payTag) {
 		this.payTag = payTag;
+	}
+
+	public String getCouponMoney() {
+		return couponMoney;
+	}
+
+	public void setCouponMoney(String couponMoney) {
+		this.couponMoney = couponMoney;
+	}
+
+	public String getCustomerCouponId() {
+		return customerCouponId;
+	}
+
+	public void setCustomerCouponId(String customerCouponId) {
+		this.customerCouponId = customerCouponId;
 	}
 }

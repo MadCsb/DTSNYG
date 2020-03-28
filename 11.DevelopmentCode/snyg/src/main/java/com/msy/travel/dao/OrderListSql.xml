@@ -19,6 +19,8 @@
 			F_PRODUCTNAME ,
 			F_PRICE ,
 			F_NUM ,
+			F_COUPON_MONEY ,
+			F_CUSTOMERCOUPONID ,
 			F_MONEY ,
 			F_PAYMONEY ,
 			F_BACKNUM ,
@@ -38,6 +40,8 @@
 			#{productName} ,
 			#{price} ,
 			#{num} ,
+			#{couponMoney} ,
+			#{customerCouponId} ,
 			#{money} ,
 			#{payMoney} ,
 			#{backNum} ,
@@ -106,6 +110,8 @@
 			<if test="productName !=null">F_PRODUCTNAME  = #{productName} ,</if>
 			<if test="price !=null">F_PRICE  = #{price} ,</if>
 			<if test="num !=null">F_NUM  = #{num} ,</if>
+			<if test="couponMoney !=null">F_COUPON_MONEY  = #{couponMoney} ,</if>
+			<if test="customerCouponId !=null">F_CUSTOMERCOUPONID  = #{customerCouponId} ,</if>
 			<if test="money !=null">F_MONEY  = #{money} ,</if>
 			<if test="payMoney !=null">F_PAYMONEY  = #{payMoney} ,</if>
 			<if test="backNum !=null">F_BACKNUM  = #{backNum} ,</if>
@@ -152,6 +158,8 @@
 			t.F_PRODUCTNAME as productName ,
 			t.F_PRICE as price ,
 			t.F_NUM as num ,
+			t.F_COUPON_MONEY as couponMoney ,
+			t.F_CUSTOMERCOUPONID as customerCouponId ,
 			t.F_MONEY as money ,
 			t.F_PAYMONEY as payMoney ,
 			t.F_BACKNUM as backNum ,
@@ -182,6 +190,8 @@
 			t.F_PRODUCTNAME as productName ,
 			t.F_PRICE as price ,
 			t.F_NUM as num ,
+			t.F_COUPON_MONEY as couponMoney ,
+		t.F_CUSTOMERCOUPONID as customerCouponId ,
 			t.F_MONEY as money ,
 			t.F_PAYMONEY as payMoney ,
 			t.F_BACKNUM as backNum ,

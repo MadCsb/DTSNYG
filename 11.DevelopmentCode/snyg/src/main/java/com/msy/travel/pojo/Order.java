@@ -186,6 +186,10 @@ public class Order extends BaseEntity implements java.io.Serializable
 	 * 商家备注       db_column: F_COMPANYREMARK
 	 */
 	private String companyRemark;
+	/**
+	 * 0优惠金额 db_column: F_COUPON_MONEY
+	 */
+	private String couponMoney;
 
 	/**
 	 * 已申请退货次数
@@ -672,5 +676,12 @@ public class Order extends BaseEntity implements java.io.Serializable
 		this.thumbPic = thumbPic;
 	}
 
+	public String getCouponMoney() {
+		return couponMoney;
+	}
+
+	public void setCouponMoney(String couponMoney) {
+		this.couponMoney = couponMoney;
+	}
 }
 
