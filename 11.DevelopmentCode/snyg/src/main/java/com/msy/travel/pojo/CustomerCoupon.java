@@ -76,6 +76,17 @@ public class CustomerCoupon extends BaseEntity implements java.io.Serializable {
 	// columns END
 	private List<String> customerCouponIdList;
 
+	// 使用的priceId
+	private List<String> useCouponIdList;
+
+	public List<String> getUseCouponIdList() {
+		return useCouponIdList;
+	}
+
+	public void setUseCouponIdList(List<String> useCouponIdList) {
+		this.useCouponIdList = useCouponIdList;
+	}
+
 	public void setCustomerCouponId(String customerCouponId) {
 		this.customerCouponId = customerCouponId;
 	}

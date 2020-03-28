@@ -117,4 +117,28 @@ public interface CustomerCouponService {
 	 * @return String
 	 */
 	public Result canUseCoupon(JSONObject jsonObject) throws Exception;
+
+	/**
+	 * 获取用户优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午4:29:42
+	 * @param customerCoupon
+	 * @return
+	 * @throws Exception
+	 * @return List<CustomerCoupon>
+	 */
+	public List<CustomerCoupon> queryCustomerCouponListByUserId(CustomerCoupon customerCoupon) throws Exception;
+
+	/**
+	 * 获取用户优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午4:29:42
+	 * @param customerCoupon
+	 * @return
+	 * @throws Exception
+	 * @return List<CustomerCoupon>
+	 */
+	public List<CustomerCoupon> queryCustomerCouponListByUserIdAndPriceId(CustomerCoupon customerCoupon, String priceId) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.msy.travel.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -187,7 +188,12 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 	 * @param user
 	 * @param couponId
 	 * @param jsonObject
-	 * @return
+	 *            {customerCouponId:
+	 *            '',userId:'',sellPrice:[{priceId:'',num:''},{priceId:'',num:''
+	 *            } ] }
+	 * @return {customerCouponId:
+	 *         '',userId:'',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',isUse:
+	 *         ' 1 能 使 用 ' } ] }
 	 * @throws Exception
 	 * @return String
 	 */
@@ -322,5 +328,70 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		}
 
 		return result;
+	}
+
+	/**
+	 * 获取用户优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午4:29:42
+	 * @param customerCoupon
+	 * @return
+	 * @throws Exception
+	 * @return List<CustomerCoupon>
+	 */
+	public List<CustomerCoupon> queryCustomerCouponListByUserId(CustomerCoupon customerCoupon) throws Exception {
+		return customerCouponDao.queryCustomerCouponListByUserId(customerCoupon);
+	}
+
+	/**
+	 * 获取用户优惠券
+	 * 
+	 * @author wzd
+	 * @date 2020年3月28日 下午4:29:42
+	 * @param customerCoupon
+	 * @return
+	 * @throws Exception
+	 * @return List<CustomerCoupon>
+	 */
+	public List<CustomerCoupon> queryCustomerCouponListByUserIdAndPriceId(CustomerCoupon customerCoupon, String priceId) throws Exception {
+
+		customerCoupon.setDelFlag("0");
+
+		List<String> useCouponIdList = new ArrayList<String>();
+		// 全部商品渠道
+		useCouponIdList.add(Destsp.currentSpId);
+
+		if (priceId != null && priceId.length() > 0) {
+			String[] priceIds = priceId.split(",");
+			for (String p : priceIds) {
+				// 销售Id
+				useCouponIdList.add(p);
+
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setPriceId(p);
+				sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+				// 活动id
+				SaleType saleType = new SaleType();
+				saleType.setSaleTypeKey(sellPrice.getPriceType());
+				saleType.setStatus("1");
+				List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
+				if (saleTypeList != null && saleTypeList.size() > 0) {
+					if (!useCouponIdList.contains(saleTypeList.get(0).getSaleTypeId())) {
+						useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
+					}
+				}
+
+			}
+
+		}
+
+		customerCoupon.setUseCouponIdList(useCouponIdList);
+
+		List<CustomerCoupon> customerCouponList = customerCouponDao.queryCustomerCouponListByUserId(customerCoupon);
+
+		return customerCouponList;
+
 	}
 }

@@ -193,4 +193,51 @@
 		     </if>
 		</where>
 	</select>
+	<!-- 获取用户优惠券 -->
+	<select id="queryCustomerCouponListByUserId" parameterType="customerCoupon" resultType="customerCoupon">
+		SELECT
+			t.F_CUSTOMERCOUPONID as customerCouponId ,
+			t.F_CUSTOMERCODE as customerCode ,
+			t.F_COUPONID as couponId ,
+			t.F_USETYPE as useType ,
+			t.F_USELIMIT as useLimit ,
+			t.F_DISCOUNT as discount ,
+			t.F_COUPONTYPE as couponType ,
+			t.F_VALIDBEGIN as validBegin ,
+			t.F_VALIDEND as validEnd ,
+			t.F_OBTAINTIME as obtainTime ,
+			t.F_STATUS as status ,
+			t.F_ORDERID as orderId ,
+			t.F_DELFLAG as delFlag 
+		FROM
+		t_sm_customercoupon t
+		LEFT JOIN t_sm_couponproduction b ON (t.F_COUPONID = b.F_COUPONID)
+		<where>
+			<if test="couponId !=null and couponId !=''">
+		    	AND t.F_COUPONID = #{couponId}
+		    </if>
+		    <if test="customerCode !=null and customerCode !=''">
+		    	AND t.F_CUSTOMERCODE = #{customerCode}
+		    </if>
+		    <if test="delFlag !=null and delFlag !=''">
+		    	AND t.F_DELFLAG = #{delFlag}
+		    </if>
+		    <if test="status !=null and status !=''">
+		    	AND t.F_STATUS = #{status}
+		    </if>
+		    <if test="crrObtainDate !=null and crrObtainDate !=''">
+		    	AND t.F_VALIDBEGIN &lt;= #{crrObtainDate}
+		    </if>
+		    <if test="crrObtainDate !=null and crrObtainDate !=''">
+		    	AND t.F_VALIDEND &gt;= #{crrObtainDate}
+		    </if>
+		    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
+		   		AND 
+	    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
+                  b.F_USECOUPONID = #{param}
+            	</foreach>
+            </if>
+		</where>
+	  	ORDER BY F_OBTAINTIME DESC
+	</select>
 </mapper>	
