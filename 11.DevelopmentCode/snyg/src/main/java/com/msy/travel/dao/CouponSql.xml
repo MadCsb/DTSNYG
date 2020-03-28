@@ -377,7 +377,7 @@
 				    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
 				    AND
 			    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
-		                  (t.F_COUPONTYPE = '1' AND b.F_USECOUPONID = #{param})
+		                  b.F_USECOUPONID = #{param}
 		            	</foreach>
 		            </if>
 					) a1
@@ -446,7 +446,7 @@
 				    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
 				    AND
 			    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
-		                  (t.F_COUPONTYPE = '1' AND b.F_USECOUPONID = #{param})
+		                  b.F_USECOUPONID = #{param}
 		            	</foreach>
 		            </if>
 					) a1

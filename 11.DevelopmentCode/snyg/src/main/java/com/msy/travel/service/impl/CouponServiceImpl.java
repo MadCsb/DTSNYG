@@ -451,21 +451,32 @@ public class CouponServiceImpl implements CouponService {
 		List<String> useCouponIdList = new ArrayList<String>();
 		// 全部商品渠道
 		useCouponIdList.add(Destsp.currentSpId);
-		// 销售Id
-		useCouponIdList.add(priceId);
 
-		SellPrice sellPrice = new SellPrice();
-		sellPrice.setPriceId(priceId);
-		sellPrice = sellPriceService.displaySellPrice(sellPrice);
+		if (priceId != null && priceId.length() > 0) {
+			String[] priceIds = priceId.split(",");
+			for (String p : priceIds) {
+				// 销售Id
+				useCouponIdList.add(p);
 
-		// 活动id
-		SaleType saleType = new SaleType();
-		saleType.setSaleTypeKey(sellPrice.getPriceType());
-		saleType.setStatus("1");
-		List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
-		if (saleTypeList != null && saleTypeList.size() > 0) {
-			useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setPriceId(p);
+				sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+				// 活动id
+				SaleType saleType = new SaleType();
+				saleType.setSaleTypeKey(sellPrice.getPriceType());
+				saleType.setStatus("1");
+				List<SaleType> saleTypeList = saleTypeService.querySaleTypeList(saleType);
+				if (saleTypeList != null && saleTypeList.size() > 0) {
+					if (!useCouponIdList.contains(saleTypeList.get(0).getSaleTypeId())) {
+						useCouponIdList.add(saleTypeList.get(0).getSaleTypeId());
+					}
+				}
+
+			}
+
 		}
+
 		coupon.setUseCouponIdList(useCouponIdList);
 
 		List<Coupon> couponList = new ArrayList<Coupon>();
