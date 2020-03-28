@@ -259,7 +259,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 					if (limitMoney > 0) {
 						result.setResultCode("1");
-						result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+						result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
 					}
 				}
 			} else {
@@ -295,7 +295,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 					if (limitMoney > 0) {
 						result.setResultCode("1");
-						result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+						result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
 					}
 				}
 
@@ -328,7 +328,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 				double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 				if (limitMoney > 0) {
 					result.setResultCode("1");
-					result.setResultMsg("还需要购买" + customerCoupon.getUseLimit() + "元才能使用该优惠券");
+					result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
 				}
 			}
 		}

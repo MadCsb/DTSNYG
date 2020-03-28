@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 <script type="text/javascript">
 	function deleteBatch() {
 
@@ -97,13 +98,13 @@
 		  </div>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor">
 			<tr>
-				<th width="14%">商品编号</th> 
-				<th width="16%">商品名称</th> 
+				<th width="13%">商品编号</th> 
+				<th width="15%">商品名称</th> 
 				<th width="10%">商品规格</th> 
-				<th width="10%">价格（元）</th> 
+				<th width="9%">价格（元）</th> 
 				<th width="14%">活动开始时间</th> 
 				<th width="14%">活动结束时间</th> 
-				<th width="15%">操作</th> 
+				<th width="18%">操作</th> 
 			</tr>
 
 			<#list sellPricelist as sellPrice>
@@ -120,7 +121,8 @@
 					<a href="commproduct?method=toDetail&productId=${sellPrice.productId!''}&priceType=${sellPrice.priceType!''}" title="详情" class="ico_btn1">详情</a>
 					<a href="sellPrice?method=toUpdateDetail&priceId=${sellPrice.priceId!''}">修改</a>
 					<a href="javascript:void(0)" onclick="delPrice('${sellPrice.priceId!''}')">删除</a>
-					<a href="javascript:void(0)" onclick="copyUrl('${sellPrice.priceId!''}','${sellPrice.priceId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
+					<a href="javascript:void(0)" onclick="copyUrl('${sellPrice.priceId!''}','${sellPrice.priceId!''}')" title="链接" class="ico_btn1">链接</a>
+					<a href="javascript:void(0)" onclick="copyUrlChannel('${sellPrice.priceId!''}','${sellPrice.priceCode!''}')" title="渠道链接" class="ico_btn1">渠道链接</a>
 					<input type="text" style="border:0px;width:1px;" id="productIdHidden${sellPrice.priceId!''}" value="" ></input>
 				</td>
 			</tr>
@@ -192,6 +194,15 @@ function toQueryForAdd(){
 			$("#queryFrm").submit();
 		}
 	});
+}
+
+function copyUrlChannel(id,priceCode){
+	var url = $("#domainName").val()+"/open/"+currentSpId+"/"+priceCode;
+	$("#productIdHidden"+id).val(url);
+	 var copyText = $("#productIdHidden"+id);//获取对象
+     copyText.select();//选择
+     document.execCommand("Copy");//执行复制
+　　parent.layer.alert("复制成功！");
 }
 </script>
 </body>
