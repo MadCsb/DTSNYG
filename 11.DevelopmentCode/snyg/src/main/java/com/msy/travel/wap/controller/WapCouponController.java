@@ -240,7 +240,7 @@ public class WapCouponController extends BaseController {
 		String couponId = coupon.getCouponId();
 
 		// 不是发布状态
-		if (!"1".equals(coupon.getStatus())) {
+		if (!"1".equals(coupon.getStatus()) || "0".equals(coupon.getCouponTag())) {
 			return "尊敬的游客，该优惠活动已经结束了，请您刷新页面后查看最新的优惠活动";
 		}
 
