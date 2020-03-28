@@ -254,7 +254,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 						job.put("isUse", "1");
 
 					}
-					result.setResultPojo(jsonArray);
 
 					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 					if (limitMoney > 0) {
@@ -290,7 +289,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 							job.put("isUse", "0");
 						}
 					}
-					result.setResultPojo(jsonArray);
 
 					double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 					if (limitMoney > 0) {
@@ -323,7 +321,6 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 						job.put("isUse", "0");
 					}
 				}
-				result.setResultPojo(jsonArray);
 
 				double limitMoney = Double.parseDouble(BigDecimalUtil.subtract(customerCoupon.getUseLimit(), priceAll));
 				if (limitMoney > 0) {
@@ -339,6 +336,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 			} else if (customerCoupon.getUseType().equals("2")) {
 				jsonObject.put("couponMoney", BigDecimalUtil.subtract(customerCoupon.getUseLimit(), BigDecimalUtil.multiply(customerCoupon.getUseLimit(), customerCoupon.getDiscount())));
 			}
+
+			result.setResultPojo(jsonObject);
 		}
 
 		return result;
