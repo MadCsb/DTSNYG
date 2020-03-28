@@ -208,7 +208,7 @@ var alertHtml = "";
 				
 			},function(data){
 				if(data.resultCode=='0'){
-					$.post("wapShopcart?method=toAddOrUpdateShopCart",{
+					$.post("wapShopCart?method=toAddOrUpdateShopCart",{
 						priceId:checkPriceId,
 						num:$("#num").val()
 					},function(data){
