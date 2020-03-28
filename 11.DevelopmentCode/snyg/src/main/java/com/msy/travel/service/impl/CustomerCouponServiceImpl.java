@@ -192,8 +192,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 	 *            '',userId:'',sellPrice:[{priceId:'',num:''},{priceId:'',num:''
 	 *            } ] }
 	 * @return {customerCouponId: '',userId:'', couponMoney:
-	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:''
-	 *         , i s U s e : ' 1 能 使 用 ' } ] }
+	 *         '优惠金额',sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:
+	 *         ' ' , i s U s e : ' 1 能 使 用 ' } ] }
 	 * @throws Exception
 	 * @return String
 	 */
@@ -205,6 +205,10 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		CustomerCoupon customerCoupon = new CustomerCoupon();
 		customerCoupon.setCustomerCouponId(customerCouponId);
 		customerCoupon = customerCouponDao.queryCustomerCoupon(customerCoupon);
+
+		Coupon coupon = new Coupon();
+		coupon.setCouponId(customerCoupon.getCouponId());
+		coupon = couponService.displayCoupon(coupon);
 
 		String crrDate = DateTimeUtil.getDateTime10();
 
@@ -227,8 +231,8 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		couponProduction.setCouponId(customerCoupon.getCouponId());
 		List<String> couponProductionList = couponProductionService.queryCouponProductionIdList(couponProduction);
 
-		// 当归属某个活动的时候
-		if (couponProductionList.size() == 0) {
+		// 当归属某个活动的时候 全部商品
+		if (coupon.getCouponType().equals("1")) {
 			String userCouponId = couponProductionList.get(0);
 			// 全部商品
 			if (userCouponId.equals(Destsp.currentSpId)) {
