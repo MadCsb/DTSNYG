@@ -29,7 +29,7 @@ function receiveCouponAjax(couponId, fansId) {
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
 	
-	$.post("wap?method=checkLogin",{
+	$.post("wapIndex?method=checkLogin",{
 		
 	},function(data){
 		if(data.resultCode=='0'){
