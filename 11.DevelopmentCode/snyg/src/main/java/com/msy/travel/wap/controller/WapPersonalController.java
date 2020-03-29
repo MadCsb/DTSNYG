@@ -1,13 +1,18 @@
 package com.msy.travel.wap.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
+import com.msy.travel.service.CustomerCouponService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +41,9 @@ public class WapPersonalController extends BaseController {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@Resource(name = "customerCouponServiceImpl")
+	private CustomerCouponService customerCouponService;
+
 	/**
 	 * 进入微信个人中心
 	 * 
@@ -54,5 +62,50 @@ public class WapPersonalController extends BaseController {
 		}
 		return view;
 	}
+
+
+	/**
+	 * 进入我的红包
+	 *
+	 * @return
+	 */
+	@RequestMapping(params = "method=toCustomerCoupon")
+	public ModelAndView toCustomerCoupon(HttpServletRequest request) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("wap/personal/customerCoupon");
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 进入我的红包
+	 *
+	 * @return
+	 */
+	@RequestMapping(params = "method=ajaxCustomerCouponList")
+	public void ajaxCustomerCouponList(HttpServletRequest request,HttpServletResponse response ,CustomerCoupon customerCoupon) {
+		List<CustomerCoupon> useFullCustomerCouponList = null;
+		try {
+			customerCoupon.setCustomerCode(getLoginUser(request).getUserId());
+			useFullCustomerCouponList = customerCouponService.queryCustomerCouponListByUserIdAndPriceId(customerCoupon,"");
+		}catch (Exception e)
+		{
+			log.error(e);
+		}finally {
+			try
+			{
+				response.getWriter().write(JSON.toJSONString(useFullCustomerCouponList));
+			}catch (Exception e)
+			{
+				log.error(e);
+			}
+		}
+	}
+
 
 }

@@ -305,9 +305,11 @@
       sellPriceTmp.num = $(this).find(".input_sl").eq(0).val();
       sellPrice.push(sellPriceTmp);
     });
+
     var couponMoney = 0;//优惠金额
     var customerCouponIdDiv = $("div [haveSelect='"+0+"']"); //选中的优惠券
-    $("[errMsg]").html("");
+    $("[errMsg]").html(""); //清空优惠券不能使用消息
+    $("[canUse]").attr("canUse","1"); //清空当前优惠券可使用
     if (customerCouponIdDiv && typeof($(customerCouponIdDiv).attr("customerCouponId")) != "undefined")
     {
       var customerCouponParam = new Object(); //优惠券请求参数
@@ -381,6 +383,8 @@
         param.customerCouponId = $(customerCouponIdDiv).attr("customerCouponId");
       }
     }
+    console.log(param);
+    return false;
     $.ajax({
       type: "POST",
       async: false,

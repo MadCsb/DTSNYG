@@ -51,7 +51,12 @@ function toOrderList(orderListType){
 function toConsignee(){
   window.location.href ="wapConsignee?method=toQueryConsignee";
 }
-
+/**
+ * 跳转我的优惠券
+ */
+function toCustomerCoupon(){
+  window.location.href ="wappersonal?method=toCustomerCoupon";
+}
 /**
  * 跳转文章详情
  */
