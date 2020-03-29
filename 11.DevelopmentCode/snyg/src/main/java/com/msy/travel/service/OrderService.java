@@ -122,5 +122,19 @@ public interface OrderService
    */
   public Result orderBackSuccess(Map<String,String> param,User opUser) throws Exception;
 
+  /**
+   * 验证山东移动是否能预订
+   * param 参数
+   * opUser 操作人
+   */
+  public Result sdMobileCanOrder(Map<String,String> param,User opUser) throws Exception;
+
+  /**
+   * 验证山东移动同步订单
+   * param 参数
+   * opUser 操作人
+   */
+  public Result sdMobileSyncOrder(Map<String,String> param,User opUser) throws Exception;
+
 }
 

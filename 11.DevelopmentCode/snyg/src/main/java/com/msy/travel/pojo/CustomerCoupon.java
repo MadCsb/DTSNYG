@@ -83,6 +83,19 @@ public class CustomerCoupon extends BaseEntity implements java.io.Serializable {
 
 	private String name;
 
+	/**
+	 * 查询状态用
+	 */
+	private String timeStatus;
+
+	public String getTimeStatus() {
+		return timeStatus;
+	}
+
+	public void setTimeStatus(String timeStatus) {
+		this.timeStatus = timeStatus;
+	}
+
 	public String getName() {
 		return name;
 	}

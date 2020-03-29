@@ -197,7 +197,7 @@ public class Common {
     param.put("signType","MD5");
     param.put("msisdn",param.get("msisdn")); //用户手机号码密文
     param.put("mbrSource","yryp"); //会员来源
-    param.put("mbrProdType","0"); //权益产品类型 0或空：电子券，1：额度
+    param.put("mbrProdType","1"); //权益产品类型 0或空：电子券，1：额度
     param.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
     param.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
 

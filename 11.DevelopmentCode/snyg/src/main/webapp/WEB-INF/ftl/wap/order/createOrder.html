@@ -8,6 +8,8 @@
 <body>
 
 <input type="hidden" id="userId" value="${user.userId!''}">
+<input type="hidden" id="userType" value="${user.type!''}">
+
 <input type="hidden" id="userLoginName" value="${user.userLoginName!''}">
 <div id="price" style="display: none">${price!''}</div>
 <input type="hidden" id="consigneeId" value="">
@@ -348,6 +350,7 @@
   }
 
   function createOrder() {
+    // sdCanOrder();
     if($("#consigneeId").val() == "")
     {
       Alert.show3sMsg("请添加收货地址");
@@ -450,6 +453,45 @@
      {
        Alert.show3sMsg(pay.payInfo.resultMsg);
      }
+   }
+
+  /**
+   * 山东移动验证是否能预订
+   * @returns {*}
+   */
+  function sdCanOrder() {
+       var canOrder = true;
+       if($("#userType").val() == '2') //如果是山东移动用户，需要验证是否能下单
+       {
+           var priceIds = "";
+           $(".lics").each(function () {
+               if(priceIds != "")
+               {
+                   priceIds = priceIds + ","
+               }
+               priceIds = priceIds + $(this).attr("priceId");
+           });
+
+           $.ajax({
+               type: "POST",
+               async: false,
+               dataType: "json",
+               url: "waporder?method=sdCanOrder",
+               data: {
+                   priceIds: priceIds
+               },
+               success: function (data) {
+                   if(data.resultCode == "1") //创建订单失败
+                   {
+                       canOrder = false;
+                       Alert.show3sMsg("当前用户不能预订!");
+                   }else {
+                       canOrder = true;
+                   }
+               }
+           });
+       }
+       return canOrder;
    }
 </script>
 

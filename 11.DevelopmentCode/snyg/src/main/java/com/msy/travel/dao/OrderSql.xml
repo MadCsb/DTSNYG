@@ -17,6 +17,7 @@
 			F_BACKNUM ,
 			F_GIFTNUM ,
 			F_NUM ,
+			F_COUPON_MONEY ,
 			F_MONEY ,
 			F_PAYMONEY ,
 			F_PRODUCTPRICE ,
@@ -45,6 +46,7 @@
 			#{backNum} ,
 			#{giftNum} ,
 			#{num} ,
+			#{couponMoney} ,
 			#{money} ,
 			#{payMoney} ,
 			#{productPrice} ,
@@ -142,6 +144,7 @@
 			<if test="backNum !=null">F_BACKNUM = #{backNum} ,</if>
 			<if test="giftNum !=null">F_GIFTNUM = #{giftNum} ,</if>
 			<if test="num !=null">F_NUM = #{num} ,</if>
+			<if test="couponMoney !=null">F_COUPON_MONEY  = #{couponMoney} ,</if>
 			<if test="money !=null">F_MONEY = #{money} ,</if>
 			<if test="payMoney !=null">F_PAYMONEY = #{payMoney} ,</if>
 			<if test="productPrice !=null">F_PRODUCTPRICE = #{productPrice} ,</if>
@@ -198,6 +201,7 @@
 			t.F_BACKNUM as backNum ,
 			t.F_GIFTNUM as giftNum ,
 			t.F_NUM as num ,
+			t.F_COUPON_MONEY as couponMoney ,
 			t.F_MONEY as money ,
 			t.F_PAYMONEY as payMoney ,
 			t.F_PRODUCTPRICE as productPrice ,
@@ -242,6 +246,7 @@
 			t.F_BACKNUM as backNum ,
 			t.F_GIFTNUM as giftNum ,
 			t.F_NUM as num ,
+			t.F_COUPON_MONEY as couponMoney ,
 			t.F_MONEY as money ,
 			t.F_PAYMONEY as payMoney ,
 			t.F_PRODUCTPRICE as productPrice ,

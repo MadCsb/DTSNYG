@@ -3,6 +3,7 @@ package com.msy.travel.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.DateTimeUtil;
@@ -11,33 +12,9 @@ import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.controller.OrderController;
-import com.msy.travel.pojo.Commproduct;
-import com.msy.travel.pojo.Company;
-import com.msy.travel.pojo.Consignee;
-import com.msy.travel.pojo.GoodsPrice;
-import com.msy.travel.pojo.OrderBack;
-import com.msy.travel.pojo.OrderCustomer;
-import com.msy.travel.pojo.OrderExpress;
-import com.msy.travel.pojo.OrderList;
-import com.msy.travel.pojo.OrderLog;
-import com.msy.travel.pojo.Price1Ref;
-import com.msy.travel.pojo.SellPrice;
-import com.msy.travel.pojo.Shopcart;
-import com.msy.travel.pojo.ThirdPayFlow;
-import com.msy.travel.pojo.User;
-import com.msy.travel.service.CommproductService;
-import com.msy.travel.service.CompanyExpressService;
-import com.msy.travel.service.ConsigneeService;
-import com.msy.travel.service.GoodsPriceService;
-import com.msy.travel.service.IUserService;
-import com.msy.travel.service.OrderBackService;
-import com.msy.travel.service.OrderCustomerService;
-import com.msy.travel.service.OrderExpressService;
-import com.msy.travel.service.OrderListService;
-import com.msy.travel.service.OrderLogService;
-import com.msy.travel.service.Price1RefService;
-import com.msy.travel.service.SellPriceService;
-import com.msy.travel.service.ShopcartService;
+import com.msy.travel.pojo.*;
+import com.msy.travel.service.*;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,9 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.msy.travel.pojo.Order;
 import com.msy.travel.dao.OrderDao;
-import com.msy.travel.service.OrderService;
 
 /**
  * OrderService接口实现类
@@ -115,6 +90,9 @@ public class OrderServiceImpl implements OrderService
     @Resource(name = "companyExpressServiceImpl")
     private CompanyExpressService companyExpressService;
 
+    @Resource(name = "customerCouponServiceImpl")
+    private CustomerCouponService customerCouponService;
+
 	  @Resource(name="orderDao")
     private OrderDao orderDao;
 
@@ -163,7 +141,7 @@ public class OrderServiceImpl implements OrderService
 
     /**
      * 创建订单前验证
-     * @param param  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+     * @param param  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],customerCouponId:优惠券ID}
      * @return
      * @throws Exception
      */
@@ -293,6 +271,36 @@ public class OrderServiceImpl implements OrderService
             }
         }
 
+        //验证优惠券
+        String customerCouponId = param.getString("customerCouponId");
+        if (customerCouponId !=null && !customerCouponId.equals(""))
+        {
+            JSONObject customerCouponParam = new JSONObject();
+            customerCouponParam.put("customerCouponId",customerCouponId); //
+            customerCouponParam.put("userId",user.getUserId()); //
+            JSONArray sellPriceJSONArray = new JSONArray();
+            for (int i=0;i<orderListListJSONArray.size();i++)
+            {
+                JSONObject sellPriceJSONObject = new JSONObject();
+                sellPriceJSONObject.put("priceId",orderListListJSONArray.getJSONObject(i).getString("priceId"));
+                sellPriceJSONObject.put("num",orderListListJSONArray.getJSONObject(i).getString("num"));
+                sellPriceJSONArray.add(sellPriceJSONObject);
+            }
+            customerCouponParam.put("sellPrice",sellPriceJSONArray); //
+            Result customerCouponResult = customerCouponService.canUseCoupon(customerCouponParam);
+            if (!customerCouponResult.getResultCode().equals("0"))
+            {
+                result.setResultCode("1");
+                result.setResultMsg("当前红包不可用");
+                log.error(JSON.toJSONString(customerCouponResult));
+                return result;
+            }else
+            {
+                param.put("customerCoupon",customerCouponResult.getResultPojo());
+                param.remove("customerCouponId");
+            }
+        }
+
         /************************* 保存订单前，不得新增/修改数据库内容 **********************************/
         List<Order> orderList = createOrder(param);
         result.setResultPojo(orderList);
@@ -388,7 +396,9 @@ public class OrderServiceImpl implements OrderService
 
     /**
      * 创建订单
-     * @param {consigneeId:收货地址Id,userId:用户Id,memo:备注,orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+     * @param {consigneeId:收货地址Id,userId:用户Id,memo:备注,orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],
+     * customerCoupon:{customerCouponId:使用优惠券ID,couponMoney:优惠券金额,userId:优惠券使用人,sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',isUse:'1能使用'}] }
+     * }
      * @return Order
      */
     public List<Order> createOrder(JSONObject param) throws LogicException,Exception
@@ -410,6 +420,12 @@ public class OrderServiceImpl implements OrderService
         String createTime = DateTimeUtil.getDateTime19();
         //数字格式化
         DecimalFormat df = new DecimalFormat("#.##");
+
+        //优惠券JSONObject
+        JSONObject customerCouponJSONObject = param.getJSONObject("customerCoupon");
+        //使用优惠券临时保存Array
+        JSONArray useCustomerCouponJSONArray = new JSONArray();
+        double useCustomerCouponTotalMoney = 0 ;//总共使用优惠券的订单明细总产品价格
 
         //根据orderListList分订单，目前一个orderList=一个订单
         JSONArray orders = separateOrder(param.getJSONArray("orderListList"));
@@ -518,6 +534,27 @@ public class OrderServiceImpl implements OrderService
                 num = num + Integer.valueOf(orderListNum);
                 transFee = transFee + orderListTransFee;
                 money = money + productPrice + transFee;
+                if(customerCouponJSONObject != null) //如果存在优惠券
+                {
+                    for(int m=0;m<customerCouponJSONObject.getJSONArray("sellPrice").size();m++)
+                    {
+                        JSONObject sellPriceJSONObject = customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(m);
+                        if(sellPriceJSONObject.getString("priceId").equals(priceId))
+                        {
+                            if(sellPriceJSONObject.getString("isUse").equals("1")) //可以使用优惠券
+                            {
+                                JSONObject useCustomerCouponJSONObject = new JSONObject();
+                                useCustomerCouponJSONObject.put("priceId",priceId);
+                                useCustomerCouponJSONObject.put("orderListId",orderList.getOrderListId());
+                                useCustomerCouponJSONObject.put("orderId",orderList.getOrderId());
+                                useCustomerCouponJSONObject.put("orderListProductPrice",orderListProductPrice);
+                                useCustomerCouponJSONArray.add(useCustomerCouponJSONObject);
+                                useCustomerCouponTotalMoney = useCustomerCouponTotalMoney + orderListProductPrice;
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             if (productNameStringBuffer.length()>299)
             {
@@ -560,6 +597,96 @@ public class OrderServiceImpl implements OrderService
 
             orderResult.add(order);
         }
+        //如果有使用优惠券，需要更新优惠券的金额
+        //{customerCouponId:使用优惠券ID,couponMoney:优惠券金额,userId:优惠券使用人,sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',isUse:'1能使用'}] }
+        if(customerCouponJSONObject != null) //如果存在优惠券
+        {
+            double couponMoney = customerCouponJSONObject.getDoubleValue("couponMoney");//总优惠金额
+            double reCouponMoney = couponMoney;//剩余优惠金额
+            for (int i=0;i<customerCouponJSONObject.getJSONArray("sellPrice").size();i++)
+            {
+                JSONObject sellPrice = customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(i);
+                if(sellPrice.getString("isUse").equals("1")) //可以使用
+                {
+                    //判断是否最后一个可以使用
+                    boolean isLast = true;
+                    for(int j=i+1;j<customerCouponJSONObject.getJSONArray("sellPrice").size();j++)
+                    {
+                        if(customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(j).getString("isUse").equals("1")) //可以使用
+                        {
+                            isLast = false;
+                            break;
+                        }
+                    }
+
+                    for(int j=0;j<useCustomerCouponJSONArray.size();j++)
+                    {
+                        JSONObject useCustomerCouponJSONObject = useCustomerCouponJSONArray.getJSONObject(j);
+                        if (useCustomerCouponJSONObject.getString("priceId").equals(sellPrice.getString("priceId")))
+                        {
+                            String orderListId = useCustomerCouponJSONObject.getString("orderListId");
+                            String orderId = useCustomerCouponJSONObject.getString("orderId");
+                            //当前订单明细 产品金额
+                            double orderListProductPrice = Double.parseDouble(useCustomerCouponJSONObject.getString("orderListProductPrice"));
+                            double orderListCouponMoney = 0;//订单应该优惠的金额
+                            if (isLast) //如果是最后一个,则订单明细优惠金额，等于剩余优惠金额
+                            {
+                                orderListCouponMoney = reCouponMoney;
+                            }else  //如果不是最后一个,则订单明细优惠金额 当前订单明细产品金额/所有优惠产品的产品总金额*总优惠金额
+                            {
+                                orderListCouponMoney= orderListProductPrice/useCustomerCouponTotalMoney*couponMoney;
+                            }
+                            String orderListCouponMoneyDf = df.format(orderListCouponMoney);
+                            reCouponMoney = reCouponMoney - Double.parseDouble(orderListCouponMoneyDf);
+                                    //更新订单明细表
+                            OrderList orderList = new OrderList();
+                            orderList.setOrderListId(orderListId);
+                            orderList = orderListService.displayOrderList(orderList);
+                            //订单金额 = （产品金额+运费） - 优惠金额
+                            double orderListMoney =  Double.parseDouble(orderList.getMoney())-Double.valueOf(orderListCouponMoneyDf);
+                            orderList = new OrderList();
+                            orderList.setOrderListId(orderListId);
+                            orderList.setCouponMoney(orderListCouponMoneyDf);
+                            orderList.setMoney(df.format(orderListMoney));
+                            orderList.setCustomerCouponId(customerCouponJSONObject.getString("customerCouponId"));
+                            orderListService.updateOrderList(orderList);
+                            //更新订单表
+                            Order order = new Order();
+                            order.setOrderId(orderId);
+                            order = orderDao.queryOrder(order);
+                            //订单金额 = （产品金额+运费） - 优惠金额
+                            double orderMoney =  Double.parseDouble(order.getMoney())-Double.valueOf(orderListCouponMoneyDf);
+                            order.setMoney(df.format(orderMoney));
+                            double orderCouponMoney = 0 ;
+                            if (order.getCouponMoney() == null)
+                            {
+
+                            }else
+                            {
+                                orderCouponMoney = orderCouponMoney + Double.parseDouble(order.getCouponMoney());
+                            }
+                            order.setCouponMoney(df.format(orderCouponMoney));
+                            orderDao.updateOrder(order);
+                            for (int k=0;k<orderResult.size();k++)
+                            {
+                                 if (orderResult.get(k).getOrderId().equals(order.getOrderId()))
+                                {
+                                    orderResult.set(k,order);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            CustomerCoupon customerCoupon = new CustomerCoupon();
+            customerCoupon.setCustomerCouponId(customerCouponJSONObject.getString("customerCouponId"));
+            customerCoupon = customerCouponService.displayCustomerCoupon(customerCoupon);
+            customerCoupon.setStatus("1");
+            customerCouponService.updateCustomerCoupon(customerCoupon);
+        }
+
         return orderResult;
     }
 
@@ -1030,5 +1157,34 @@ public class OrderServiceImpl implements OrderService
         JSONObject expressResultPojo = (JSONObject) result.getResultPojo();
         Double orderListTransFee =  Double.valueOf(expressResultPojo.getString("expressFee"));
         log.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+orderListTransFee);
+    }
+
+    /**
+     * 验证山东移动是否能预订
+     * param 参数 param.priceCode = 销售code
+     * opUser 操作人
+     */
+    public Result sdMobileCanOrder(Map<String,String> param,User opUser)
+    {
+        Map<String,String> map = new HashMap();
+        map.put("msisdn",opUser.getUserLoginName());
+        map.put("priceCode",param.get("priceCode"));
+        Result result =  Common.validMemberMbr(map);
+        return result;
+    }
+
+    /**
+     * 验证山东移动同步订单
+     * param 参数 param.priceCode = 销售code param.orderId = 订单ID
+     * opUser 操作人
+     */
+    public Result sdMobileSyncOrder(Map<String,String> param,User opUser)
+    {
+        Map<String,String> map = new HashMap<>();
+        map.put("msisdn",opUser.getUserLoginName());
+        map.put("priceCode",param.get("priceCode"));
+        map.put("orderId",param.get("orderId"));
+        Result result =  Common.syncMemberMbrOrder(map);
+        return result;
     }
 }

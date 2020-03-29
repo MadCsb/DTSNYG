@@ -196,7 +196,7 @@
 	<!-- 获取用户优惠券 -->
 	<select id="queryCustomerCouponListByUserId" parameterType="customerCoupon" resultType="customerCoupon">
 		SELECT
-			DISTINCT(t.F_COUPONID) as couponId ,
+			t.F_COUPONID as couponId ,
 			t.F_CUSTOMERCOUPONID as customerCouponId ,
 			t.F_CUSTOMERCODE as customerCode ,
 			t.F_USETYPE as useType ,
@@ -239,6 +239,22 @@
                   b.F_USECOUPONID = #{param}
             	</foreach>
             </if>
+		    <if test="timeStatus !=null and timeStatus !=''">
+		    	<if test='timeStatus == "4"' >  /*待开始*/
+		    		and	<![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>
+		    	</if>
+		    	<if test='timeStatus == "5"' > /*进行中*/
+		    		and	<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
+					and <![CDATA[t.F_VALIDEND >= date_format(now(),'%Y-%m-%d')]]>
+		    	</if>
+		    	<if test='timeStatus == "6"' >/*已结束*/
+		    		and	<![CDATA[t.F_VALIDEND < date_format(now(),'%Y-%m-%d')]]>
+		    	</if>
+		    	<if test='timeStatus == "7"' >/*可使用*/
+		    		and((<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
+					and <![CDATA[t.F_VALIDEND >= date_format(now(),'%Y-%m-%d')]]>) or <![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>) 
+				</if>
+		     </if>
 		</where>
 	  	ORDER BY F_OBTAINTIME DESC
 	</select>
