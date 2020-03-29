@@ -18,6 +18,10 @@ public class Channel extends BaseEntity implements java.io.Serializable {
 
 	};
 
+	public static final String SNYG = "SNYG";
+
+	public static final String SDYD = "SDYD";
+
 	// columns START
 	/**
 	 * 渠道ID db_column: F_CHANNELID

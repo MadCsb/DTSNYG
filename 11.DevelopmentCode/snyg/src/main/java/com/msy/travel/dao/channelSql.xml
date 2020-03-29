@@ -93,8 +93,12 @@
 		FROM
 			t_sm_channel t
 		<where>
-			t.F_CHANNELID = #{channelId} 
-			
+			<if test="channelId!=null and channelId!=''">
+				t.F_CHANNELID = #{channelId} 
+		    </if>
+		    <if test="channelKey !=null and channelKey !=''">
+				and t.F_CHANNELKEY = #{channelKey} 
+		    </if>
 		</where>
 	</select>
 	<!-- 按条件查询所有 -->

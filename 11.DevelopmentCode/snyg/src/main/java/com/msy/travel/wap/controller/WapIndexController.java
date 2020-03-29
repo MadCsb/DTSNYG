@@ -42,7 +42,7 @@ import com.msy.travel.service.IUserService;
  */
 @Controller
 @Scope(value = "prototype")
-@RequestMapping(value = "/wap")
+@RequestMapping(value = "/wapIndex")
 public class WapIndexController extends BaseController {
 	public static final Log log = LogFactory.getLog(WapIndexController.class);
 

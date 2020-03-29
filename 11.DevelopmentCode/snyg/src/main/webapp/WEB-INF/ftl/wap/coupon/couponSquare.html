@@ -223,7 +223,7 @@ function resetList() {
 
 // 领取优惠券
 function receiveCouponSquareAjax(couponId) {	
-	$.post("wap?method=checkLogin",{
+	$.post("wapIndex?method=checkLogin",{
 		
 	},function(data){
 		if(data.resultCode=='0'){
