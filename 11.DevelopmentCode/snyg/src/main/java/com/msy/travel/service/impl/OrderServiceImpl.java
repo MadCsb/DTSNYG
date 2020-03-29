@@ -3,6 +3,7 @@ package com.msy.travel.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.DateTimeUtil;
@@ -1156,5 +1157,34 @@ public class OrderServiceImpl implements OrderService
         JSONObject expressResultPojo = (JSONObject) result.getResultPojo();
         Double orderListTransFee =  Double.valueOf(expressResultPojo.getString("expressFee"));
         log.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+orderListTransFee);
+    }
+
+    /**
+     * 验证山东移动是否能预订
+     * param 参数 param.priceCode = 销售code
+     * opUser 操作人
+     */
+    public Result sdMobileCanOrder(Map<String,String> param,User opUser)
+    {
+        Map<String,String> map = new HashMap();
+        map.put("msisdn",opUser.getUserLoginName());
+        map.put("priceCode",param.get("priceCode"));
+        Result result =  Common.validMemberMbr(map);
+        return result;
+    }
+
+    /**
+     * 验证山东移动同步订单
+     * param 参数 param.priceCode = 销售code param.orderId = 订单ID
+     * opUser 操作人
+     */
+    public Result sdMobileSyncOrder(Map<String,String> param,User opUser)
+    {
+        Map<String,String> map = new HashMap<>();
+        map.put("msisdn",opUser.getUserLoginName());
+        map.put("priceCode",param.get("priceCode"));
+        map.put("orderId",param.get("orderId"));
+        Result result =  Common.syncMemberMbrOrder(map);
+        return result;
     }
 }

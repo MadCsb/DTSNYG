@@ -253,10 +253,27 @@ public class WapOrderController extends BaseController {
 	public void createOrders(String param,HttpServletRequest request,HttpServletResponse response) {
 		Result result = null;
 		try {
-
 			JSONObject paramObject = JSON.parseObject(URLDecoder.decode(param, "UTF-8"));
 			result = orderService.validateCreateOrder(paramObject);
+			User user = getLoginUser(request);
+			if (user.getType().equals("2") && result.getResultCode().equals("0")) //如果是山东的用户，需要同步订单
+			{
+				List<Order> orderList = (ArrayList<Order>)result.getResultPojo();
+				for(int i=0;i<orderList.size();i++) {
+					OrderList orderListTmp = new OrderList();
+					orderListTmp.setOrderId(orderList.get(i).getOrderId());
+					List<OrderList> orderListList = orderListService.queryOrderListList(orderListTmp);
 
+					SellPrice sellPrice = new SellPrice();
+					sellPrice.setPriceId(orderListList.get(0).getPriceId());
+					sellPrice = sellPriceService.displaySellPrice(sellPrice);
+					Map<String ,String> sdParam = new HashMap<>(); //param.priceCode = 销售code param.orderId = 订单ID
+					sdParam.put("orderId",orderList.get(i).getOrderId());
+					sdParam.put("priceCode",sellPrice.getPriceCode());
+					Result sdResult = orderService.sdMobileSyncOrder(sdParam,user);
+					log.error("山东订单同步："+ JSON.toJSONString(sdResult));
+				}
+			}
 		}catch (LogicException e1)
 		{
 			result = new Result();
@@ -304,6 +321,59 @@ public class WapOrderController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * ajax 验证山东移动用户能否下单
+	 * param
+	 * {customerCouponId:客户优惠券关联ID,sellPrice[{priceId:销售id,num:数量}]}
+	 */
+	@RequestMapping(params = "method=sdCanOrder")
+	public void sdCanOrder(String priceIds,HttpServletRequest request,HttpServletResponse response) {
+		Result result = new Result();
+		try
+		{
+			String[] priceIdArray = priceIds.split(",");
+			User user = getLoginUser(request);
+			if (user.getType().equals("2"))
+			{
+				Map<String ,String> param = new HashMap<>();
+
+				for(int i=0;i<priceIdArray.length;i++)
+				{
+					SellPrice sellPrice = new SellPrice();
+					sellPrice.setPriceId(priceIdArray[i]);
+					sellPrice = sellPriceService.displaySellPrice(sellPrice);
+					param.put("priceCode",sellPrice.getPriceCode());
+					Result sdResult = orderService.sdMobileCanOrder(param,user);
+					if (!"0".equals(sdResult.getResultCode()))
+					{
+						throw new LogicException(sdResult.getResultMsg());
+					}
+				}
+				result.setResultCode("0");
+				result.setResultMsg("可以预定");
+			}
+		}catch (LogicException le)
+		{
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}
+		catch (Exception e)
+		{
+			log.error(e,e);
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg("系统异常");
+		}
+		try
+		{
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
 	}
 
 	/**
