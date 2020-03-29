@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <#include "/wap/WAP_INC_HEAD.html">
+    <script src="${rc.contextPath}/wap/js/default.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/wap/js/scrolltopcontrol.js"></script>
+    <style>
+      #navbar.navbar_fixed {
+        position:fixed;
+        top:0px;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:50px;
+      }
+      #navbar.navbar_absolute {
+        position: relative;
+        width:100%;
+        background: #fafafa;
+        height:1rem;
+        z-index:99;
+        min-height:50px;
+
+      }
+    </style>
+
+    </head>
+<body onLoad="javascript:window_onload();">
+<input type="hidden" id="couponType" value="0">
+<div id="navbar" class="navbar_absolute">
+  <nav class="snyg_dd_nav">
+    <a><span style="width:50%" couponType="0" onclick="changeCouponType('0')">可使用</span></a>
+    <a><span  class="spanon" style="width:50%" couponType="1" onclick="changeCouponType('1')">不可使用</span></a>
+  </nav>
+</div>
+
+<script type="text/javascript">
+  function window_onload() {
+    window.addEventListener("scroll",navbar_reset_top,false);
+  }
+  var navbar_top=50;
+  function navbar_reset_top() {
+    var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+    if(scrollTop>navbar_top&&navbar.className==="navbar_absolute") {
+      document.getElementById("navbar").className="navbar_fixed";
+    }
+    else if(scrollTop<navbar_top&&navbar.className==="navbar_fixed") {
+      document.getElementById("navbar").className="navbar_absolute";
+    }
+  }
+</script>
+
+
+<div class="content">
+  <ul class="tcyhj" style="width:94%; margin:0 auto;">
+  </ul>
+</div>
+<div class="wzpcss">加载更多，敬请期待！</div>
+<script>
+  var searchObject = new Object(); //查询对象
+  searchObject.userId = $("#userId").val();
+  var pageEntity = new Object(); //查询 分页对象
+  pageEntity.pageNum = null;
+  pageEntity.pageSize = 10; //每次查询十条订单
+  var loading = false; //是否加载中/加载完成
+
+  $(function () {
+    loading = false;
+    changeCouponType("0");
+    $(window).scroll(function(){
+      if(!loading && pageEntity.pageNum != null) {
+
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        if( scrollTop + windowHeight < scrollHeight-10) { //如果拉倒最底部
+          loading = true;
+          pageEntity.pageNum = pageEntity.pageNum + 1;
+          queryOrderList();
+        }
+      }
+    })
+  })
+
+  //修改orderListType,查询订单列表
+  function changeCouponType(couponType)
+  {
+    pageEntity.pageNum = null;
+    if(couponType == $("#couponType").val())//如果已经选中,不处理
+    {
+      return false;
+    }
+    //修改选中样式
+    $(".snyg_dd_nav").find("span").each(function (index) {
+      if(index == parseInt(couponType)) //选中
+      {
+        $(this).attr("class","spanon");
+      }else //没选中
+      {
+        $(this).removeAttr("class");
+      }
+    })
+
+    //修改当前选中的订单类型
+    $("#couponType").val(couponType);
+    if (couponType == '0') // 可使用
+    {
+      searchObject.customerCode = $("#userId"); //用户ID
+      searchObject.delFlag = "0"; //未删除
+      searchObject.status = "0" //未使用
+      searchObject.backNumS = "7"; //
+    }else if (couponType == '1') // 不可使用
+    {
+      searchObject.customerCode = $("#userId"); //用户ID
+      searchObject.delFlag = "0"; //未删除
+      searchObject.status = "";
+      searchObject.backNumS = "5"; //
+    }
+    loading = true;
+    pageEntity.pageNum = 1; //第1页开始查询
+    queryOrderList();
+  }
+  //查询订单列表，填充
+  function queryOrderList()
+  {
+    $('.addMore').text('正在加载...');
+
+    if (pageEntity.pageNum == 1) //如果0开始，表示从新开始
+    {
+      $(".tcyhj").html("");
+    }
+    $.ajax({
+      type: "POST",
+      url: "wappersonal?method=ajaxCustomerCouponList",
+      dataType: 'json',
+      data: {
+        customerCode:searchObject.customerCode,
+        delFlag:searchObject.delFlag,
+        status:searchObject.status,
+
+      },
+      success: function (data) {
+        if($("#couponType").val() == 0) //未使用
+        {
+          setUseHtml(data);
+        }else if($("#couponType").val() == 1) //优惠券
+        {
+          setUnUseHtml(data);
+        }
+        if(data == null || data.length<pageEntity.pageSize)
+        {
+          loading = true;
+          $('.addMore').text('已全部加载完毕');
+        }else
+        {
+          loading = false;
+          $('.addMore').text('加载更多');
+        }
+      }
+    });
+  }
+
+  /**
+   * 设置未使用html
+   */
+  function setUseHtml(data) {
+    for(var i=0;i<data.length;i++)
+    {
+      var liHtml = '<li>' +
+          '<div class="tcyhj-list" style="width:99.2%;">' +
+          '<div class="tcyhj-bt"><p class="btzi">&yen;50.00</p>' +
+          '<span class="nrzi">代金券</span>' +
+          '<span class="leftyuan"></span>' +
+          '<span class="rightyuan"></span>' +
+          '<p>商品售价7折优惠用</p>' +
+          '<p>有效期2020-09-16~2020-09-30</p>' +
+          '</div><a href=""><div class="tcyhj-data">使用</div></a></div>' +
+          '</li>'
+      $(".tcyhj").append(liHtml);
+    }
+  }
+  /**
+   * 设置使用html
+   */
+  function setUnUseHtml(data) {
+    for(var i=0;i<data.length;i++)
+    {
+      var liHtml = '<li>' +
+          '<div class="tcyhj-listhui" style="width:99.2%;">' +
+          '<div class="tcyhj-bthui">' +
+          '<p class="btzi">&yen;50.00</p>' +
+          '<span class="nrzi">代金券</span>' +
+          '<span class="leftyuan"></span>' +
+          '<span class="rightyuan"></span>' +
+          '<p>商品售价7折优惠用</p>' +
+          '<p>有效期2020-09-16~2020-09-30</p>' +
+          '</div>' +
+          '<a href=""><div class="tcyhj-datahui">已过期</div></a>' +
+          '</div>' +
+          '</li>'
+      $(".tcyhj").append(liHtml);
+    }
+  }
+</script>
+
+
+</body>
+</html>
