@@ -1,11 +1,15 @@
 package com.msy.travel.wap.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.Order;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CustomerCouponService;
@@ -88,18 +92,23 @@ public class WapPersonalController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(params = "method=ajaxCustomerCouponList")
-	public void ajaxCustomerCouponList(HttpServletRequest request,HttpServletResponse response ,CustomerCoupon customerCoupon) {
-		List<CustomerCoupon> useFullCustomerCouponList = null;
+	public void ajaxCustomerCouponList(HttpServletRequest request,int pageNum,int pageSize,HttpServletResponse response ,CustomerCoupon customerCoupon) {
+		List<CustomerCoupon> customerCouponList = null;
 		try {
+			customerCoupon.setEntityPage(new EntityPage());
+			customerCoupon.getEntityPage().setCurrentPage(pageNum);
+			customerCoupon.getEntityPage().setRowsPerPage(pageSize);
+			PageHelper.startPage(super.getPageNum(customerCoupon.getEntityPage()), super.getPageSize(customerCoupon.getEntityPage()));
 			customerCoupon.setCustomerCode(getLoginUser(request).getUserId());
-			useFullCustomerCouponList = customerCouponService.queryCustomerCouponListByUserIdAndPriceId(customerCoupon,"");
+			customerCouponList = customerCouponService.queryCustomerCouponListByUserIdAndPriceId(customerCoupon,"");
+			PageInfo<CustomerCoupon> pageInfo = new PageInfo<CustomerCoupon>(customerCouponList);
 		}catch (Exception e)
 		{
 			log.error(e);
 		}finally {
 			try
 			{
-				response.getWriter().write(JSON.toJSONString(useFullCustomerCouponList));
+				response.getWriter().write(JSON.toJSONString(customerCouponList));
 			}catch (Exception e)
 			{
 				log.error(e);

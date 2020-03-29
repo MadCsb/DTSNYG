@@ -77,7 +77,7 @@ public class OpenController extends BaseController {
 				subject.login(token);
 
 				//进入详情具体的页面类型
-				view.addObject("detailPage","wap");
+				view.addObject("detailPage","WAP");
 			}
 
 		}catch (Exception e)

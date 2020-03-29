@@ -20,8 +20,11 @@
     <!-- AlipayConfig 配置信息 -->
     <bean id="alipayConfigParameter"  class="com.msy.travel.common.config.AlipayConfigParameter">
         <property name="notifyUrl" value="${alipay.notifyUrl}" />
+        <property name="wapReturnUrl" value="${alipay.wapReturnUrl}" />
         <property name="alipayPublicKey" value="${alipay.alipayPublicKey}" />
         <property name="charset" value="${alipay.charset}" />
         <property name="signType" value="${alipay.signType}" />
+        <property name="zfbPublicKey" value="${alipay.zfbPublicKey}" />
+
     </bean>
 </beans>

@@ -1,10 +1,22 @@
 package com.msy.travel.service.impl;
 
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Order;
+import com.msy.travel.pojo.OrderList;
+import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.pojo.User;
+import com.msy.travel.service.IUserService;
+import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.OrderService;
+import com.msy.travel.service.SellPriceService;
+import com.msy.travel.wx.controller.WxOrderController;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.msy.travel.pojo.ThirdPayFlow;
@@ -21,12 +33,22 @@ import com.msy.travel.service.ThirdPayFlowService;
 @Transactional
 public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
 {
+    public static final Log log = LogFactory.getLog(ThirdPayFlowServiceImpl.class);
 
 	@Resource(name="thirdPayFlowDao")
     private ThirdPayFlowDao thirdPayFlowDao;
 
     @Resource(name = "orderServiceImpl")
     private OrderService orderService;
+
+    @Resource(name = "orderListServiceImpl")
+    private OrderListService orderListService;
+
+    @Resource(name = "userServiceImpl")
+    private IUserService userService;
+
+    @Resource(name = "sellPriceServiceImpl")
+    private SellPriceService sellPriceService;
     
     /**
      * 新增ThirdPayFlow
@@ -113,11 +135,13 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
     {
         boolean operate = false; //需要操作订单相关内容
         ThirdPayFlow thirdPayFlowDb = null;
+        String orderIds = null;
         synchronized (thirdPayFlow.getPlatformFlowCode().intern())
         {
             thirdPayFlowDb = new ThirdPayFlow();
             thirdPayFlowDb.setFlowId(thirdPayFlow.getFlowId());
             thirdPayFlowDb = displayThirdPayFlow(thirdPayFlowDb);
+            orderIds = thirdPayFlowDb.getPlatformOrders();
             if (thirdPayFlowDb.getFlowState().equals("0"))
             {
                 operate = true;
@@ -131,6 +155,36 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
         if (operate)
         {
             orderService.payOrder(thirdPayFlowDb);
+        }
+        try {
+            String[] orderIdArray = orderIds.split(",");
+            for(int i=0;i<orderIdArray.length;i++)
+            {
+                Order order = new Order();
+                order.setOrderId(orderIdArray[i]);
+                order = orderService.displayOrder(order);
+                User user = new User();
+                user.setUserId(order.getUserId());
+                user = userService.displayUser(user);
+                if("2".equals(user.getType()))
+                {
+                    OrderList orderListTmp = new OrderList();
+                    orderListTmp.setOrderId(order.getOrderId());
+                    List<OrderList> orderListList = orderListService.queryOrderListList(orderListTmp);
+
+                    SellPrice sellPrice = new SellPrice();
+                    sellPrice.setPriceId(orderListList.get(0).getPriceId());
+                    sellPrice = sellPriceService.displaySellPrice(sellPrice);
+                    Map<String ,String> sdParam = new HashMap<>(); //param.priceCode = 销售code param.orderId = 订单ID
+                    sdParam.put("orderId",order.getOrderId());
+                    sdParam.put("priceCode",sellPrice.getPriceCode());
+                    Result sdResult = orderService.sdMobileSyncOrder(sdParam,user);
+                }
+            }
+        }catch (Exception e)
+        {
+            log.error("同步山东移动订单错误");
+            log.error(e,e);
         }
     }
 }

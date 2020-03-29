@@ -3,6 +3,7 @@ package com.msy.travel.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -16,6 +17,7 @@ import com.msy.travel.common.Result;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.WxPayUtil;
 import com.msy.travel.common.XmlJsonTool;
+import com.msy.travel.common.config.AlipayConfigParameter;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
 import com.msy.travel.pojo.*;
@@ -72,6 +74,9 @@ public class PayController extends BaseController {
 
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
+
+	@Resource(name = "alipayConfigParameter")
+	private AlipayConfigParameter alipayConfigParameter;
 
 	/**
 	 * 获取当前微信用户的OpenId
@@ -189,7 +194,6 @@ public class PayController extends BaseController {
 				if ((int) (Double.valueOf(thirdPayFlowList.get(0).getFlowMoney()) * 100) ==Integer.valueOf(total_fee))  // 返回的订单金额是否与商户侧的订单金额一致
 				{
 
-					//签名验证
 					Destsp destsp = new Destsp();
 					destsp.setSpId(thirdPayFlowList.get(0).getSpId());
 					destsp = destspService.displayDestsp(destsp);
@@ -235,26 +239,27 @@ public class PayController extends BaseController {
 		try {
 			Map<String, String> returnMap = new HashMap<>();
 			//获取支付宝POST过来反馈信息转换为Entry
-			Set<Entry<String, String[]>> entries = request.getParameterMap().entrySet();
+			Map<String, String[]> parameters = request.getParameterMap();
 			// 遍历
-			for (Map.Entry<String, String[]> entry : entries) {
-				String key = entry.getKey();
-				StringBuffer value = new StringBuffer("");
-				String[] val = entry.getValue();
-				if (null != val && val.length > 0) {
-					for (String v : val) {
-						value.append(v);
-					}
-				}
-				log.error("key=" + key + ";value=" + value.toString());
-				returnMap.put(key, value.toString());
+			StringBuffer requSb = new StringBuffer();
+			for (Object v : parameters.entrySet()) {
+				Map.Entry<String, String[]> item = (Map.Entry<String, String[]>) v;
+				returnMap.put(item.getKey(), item.getValue()[0]);
+				requSb.append(item.getKey()).append(":").append(item.getValue()[0]).append(";");
 			}
-			if (payService.aliPayCheckSignature(returnMap)) //如果签名验证通过
+			log.error("***********************************************");
+			log.error("11111111111");
+			log.error(requSb.toString());
+			String signType = returnMap.get("sign_type");
+			if (AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getZfbPublicKey(), "UTF-8", signType)) //如果签名验证通过
 			{
+				log.error("签名通过");
 				//交易状态
 				String trade_status = returnMap.get("trade_status");
+				log.error("trade_status="+trade_status);
 				if ("TRADE_SUCCESS".equals(trade_status)) //如果交易支付成功
 				{
+					log.error("TRADE_SUCCESS");
 					//商户网站唯一订单号
 					String out_trade_no = returnMap.get("out_trade_no");
 					//该交易在支付宝系统中的交易流水号。最长64位。
@@ -269,9 +274,11 @@ public class PayController extends BaseController {
 					ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
 					thirdPayFlow.setPlatformFlowCode(out_trade_no);
 					thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+					log.error("thirdPayFlow.getFlowMoney()="+thirdPayFlow.getFlowMoney()+";total_amount="+total_amount);
 					//支付验证
 					if (thirdPayFlow.getFlowMoney().equals(total_amount))  // 返回的订单金额是否与商户侧的订单金额一致
 					{
+						log.error("thirdPayFlow.getFlowState().="+thirdPayFlow.getFlowState());
 						if (thirdPayFlow.getFlowState().equals("0"))
 						{
 							thirdPayFlow.setFlowState("1"); //流水成功
@@ -283,6 +290,9 @@ public class PayController extends BaseController {
 						response.getWriter().write("success");
 					}
 				}
+			}else
+			{
+				log.error("签名no通过");
 			}
 		}catch (Exception e)
 		{

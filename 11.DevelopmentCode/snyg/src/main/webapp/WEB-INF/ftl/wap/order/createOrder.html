@@ -146,7 +146,10 @@
    **/
   function selectCustomerCoupon(divObject) {
     $("div [customerCouponId]").attr("haveSelect","1"); //所有优惠券不选中
+    $("div [customerCouponId]").attr("class","yhjoff"); //所有优惠券不选中
+
     $(divObject).attr("haveSelect","0"); //当前优惠券选中
+    $(divObject).attr("class","yhjon");  //当前优惠券选中
     calculation();
   }
   //获取服务器收货地址详情
@@ -350,7 +353,10 @@
   }
 
   function createOrder() {
-    // sdCanOrder();
+    if(!sdCanOrder())
+    {
+      return false;
+    }
     if($("#consigneeId").val() == "")
     {
       Alert.show3sMsg("请添加收货地址");
@@ -386,8 +392,6 @@
         param.customerCouponId = $(customerCouponIdDiv).attr("customerCouponId");
       }
     }
-    console.log(param);
-    return false;
     $.ajax({
       type: "POST",
       async: false,
@@ -481,6 +485,8 @@
                    priceIds: priceIds
                },
                success: function (data) {
+                 console.log("sdCanOrder--------");
+                 console.log(data);
                    if(data.resultCode == "1") //创建订单失败
                    {
                        canOrder = false;

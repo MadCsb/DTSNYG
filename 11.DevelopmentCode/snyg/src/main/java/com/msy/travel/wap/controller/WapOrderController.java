@@ -255,25 +255,6 @@ public class WapOrderController extends BaseController {
 		try {
 			JSONObject paramObject = JSON.parseObject(URLDecoder.decode(param, "UTF-8"));
 			result = orderService.validateCreateOrder(paramObject);
-			User user = getLoginUser(request);
-			if (user.getType().equals("2") && result.getResultCode().equals("0")) //如果是山东的用户，需要同步订单
-			{
-				List<Order> orderList = (ArrayList<Order>)result.getResultPojo();
-				for(int i=0;i<orderList.size();i++) {
-					OrderList orderListTmp = new OrderList();
-					orderListTmp.setOrderId(orderList.get(i).getOrderId());
-					List<OrderList> orderListList = orderListService.queryOrderListList(orderListTmp);
-
-					SellPrice sellPrice = new SellPrice();
-					sellPrice.setPriceId(orderListList.get(0).getPriceId());
-					sellPrice = sellPriceService.displaySellPrice(sellPrice);
-					Map<String ,String> sdParam = new HashMap<>(); //param.priceCode = 销售code param.orderId = 订单ID
-					sdParam.put("orderId",orderList.get(i).getOrderId());
-					sdParam.put("priceCode",sellPrice.getPriceCode());
-					Result sdResult = orderService.sdMobileSyncOrder(sdParam,user);
-					log.error("山东订单同步："+ JSON.toJSONString(sdResult));
-				}
-			}
 		}catch (LogicException e1)
 		{
 			result = new Result();

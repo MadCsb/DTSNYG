@@ -33,7 +33,10 @@ public class ConfigParameter {
 	private String website;
 
 	private String wxpayValidateTime;
+
 	private String wxpayNotifyUrl;
+
+	private String wxpayWapReturnUrl;
 
 	private String price1PatchTime;// 团购活动自动成团时间
 
@@ -200,5 +203,13 @@ public class ConfigParameter {
 
 	public void setOrderCloseDay(String orderCloseDay) {
 		this.orderCloseDay = orderCloseDay;
+	}
+
+	public String getWxpayWapReturnUrl() {
+		return wxpayWapReturnUrl;
+	}
+
+	public void setWxpayWapReturnUrl(String wxpayWapReturnUrl) {
+		this.wxpayWapReturnUrl = wxpayWapReturnUrl;
 	}
 }

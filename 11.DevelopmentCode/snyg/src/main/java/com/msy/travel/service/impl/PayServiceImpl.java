@@ -9,6 +9,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.alipay.config.AlipayConfig;
+import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
@@ -25,14 +26,19 @@ import com.msy.travel.pojo.Order;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.ThirdPayFlow;
+import com.msy.travel.pojo.User;
 import com.msy.travel.service.ICityService;
 import com.msy.travel.service.IDestspService;
 import com.msy.travel.service.IServiceCodeService;
+import com.msy.travel.service.IUserService;
 import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.OrderService;
 import com.msy.travel.service.PayService;
 import com.msy.travel.service.ThirdPayFlowService;
 import com.msy.travel.wx.utils.MD5Util;
+import com.sun.org.apache.bcel.internal.generic.IUSHR;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -68,6 +74,9 @@ public class PayServiceImpl implements PayService {
 
 	@Resource(name = "orderServiceImpl")
 	private OrderService orderService;
+
+	@Resource(name = "userServiceImpl")
+	private IUserService userService;
 
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
@@ -407,7 +416,18 @@ public class PayServiceImpl implements PayService {
 			signParamMap.put("signType", "MD5");
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
-			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url"));
+			String sdReturnUrl = getSdReturnUrl(thirdPayFlow.getPlatformFlowCode());
+			if (sdReturnUrl == null)
+			{
+				payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
+						.encode(configParameter.getWxpayWapReturnUrl(), "UTF-8"));
+			}else
+			{
+				payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
+						.encode(sdReturnUrl, "UTF-8"));
+			}
+			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
+					.encode(configParameter.getWxpayWapReturnUrl(), "UTF-8"));
 			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
@@ -552,8 +572,16 @@ public class PayServiceImpl implements PayService {
 		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
 
 		AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
-		alipayRequest.setReturnUrl("http://www.3nong1gou.com/waporder?method=toOrderDetail&orderId="+param.get("orderId"));
 		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
+		String sdReturnUrl = getSdReturnUrl(thirdPayFlow.getPlatformFlowCode());
+		if (sdReturnUrl == null)
+		{
+			alipayRequest.setReturnUrl(alipayConfigParameter.getWapReturnUrl()	);
+		}else
+		{
+			alipayRequest.setNotifyUrl(sdReturnUrl);
+		}
+
 		String body = param.get("body");
 		if (body.length()>128) //支付宝支付body最长128
 		{
@@ -562,10 +590,10 @@ public class PayServiceImpl implements PayService {
 		alipayRequest.setBizContent("{" +
 				"\"body\":\""+body+"\"," +
 				"\"subject\":\""+body+"\"," +
-				"\"out_trade_no\":\""+thirdPayFlow.getThirdFlowCode()+"\"," +
+				"\"out_trade_no\":\""+thirdPayFlow.getPlatformFlowCode()+"\"," +
 				"\"time_expire\":\""+param.get("timeExpire").substring(0,16)+"\"," +
 				"\"total_amount\":"+thirdPayFlow.getFlowMoney()+"," +
-				"\"quit_url\":\""+"http://www.3nong1gou.com/waporder.do?method=toOrderList&orderListType=0"+"\"," +
+				"\"quit_url\":\""+alipayConfigParameter.getWapReturnUrl()+"\"," +
 				"\"product_code\":\""+param.get("productId")+"\""+
 				" }");
 		AlipayTradeWapPayResponse alipayResponse = alipayClient.pageExecute(alipayRequest);
@@ -601,6 +629,28 @@ public class PayServiceImpl implements PayService {
 			return flag;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	private String getSdReturnUrl(String platformFlowCode) throws Exception
+	{
+		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+		thirdPayFlow.setPlatformFlowCode(platformFlowCode);
+		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+		String orderIds = thirdPayFlow.getPlatformOrders();
+		String[] orderIdArray = orderIds.split(",");
+		Order order = new Order();
+		order.setOrderId(orderIdArray[0]);
+		order = orderService.displayOrder(order);
+		User user = new User();
+		user.setUserId(order.getUserId());
+		user = userService.displayUser(user);
+		if(user.getType().equals("2"))
+		{
+			return Common.url;
+		}else
+		{
+			return null;
 		}
 	}
 }

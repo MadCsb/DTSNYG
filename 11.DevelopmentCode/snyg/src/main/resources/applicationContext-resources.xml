@@ -15,6 +15,7 @@
 		<property name="maxLoginTime" value="${max_login_time}" />
 		<property name="wxpayValidateTime" value="${wxpay.ValidateTime}" />
 		<property name="wxpayNotifyUrl" value="${wxpay.notifyUrl}"/>
+		<property name="wxpayWapReturnUrl" value="${wxpay.wapReturnUrl}"/>
 		<property name="price1PatchTime" value="${price.1.patchTime}"/>
 		<property name="orderExpressCloseDay" value="${orderExpress.closeDay}"/>
 		<property name="orderCloseDay" value="${order.closeDay}"/>

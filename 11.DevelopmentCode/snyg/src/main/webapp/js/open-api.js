@@ -12,58 +12,38 @@ function OpenApi(){
  * 否则 通过浏览器设置则this.pageType
  */
 OpenApi.prototype.resetDefaultPageType = function (pageType) {
+  this.pageType = null;
   if (this.WEB == pageType || this.WX == pageType || this.WAP == pageType)
   {
     this.pageType = pageType;
-  }else
-  {
-    var userAgentInfo = window.navigator.userAgent.toLowerCase();
-    if(userAgentInfo.match(/MicroMessenger/i) == 'micromessenger') { //微信浏览器判断
-      this.pageType = this.WX;
-    }else
-    {
-      var isMobile = false;//当前浏览器是否为移动段浏览器，假设移动端浏览器都支持微信了
-      var mobileAgents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
-      for (var v = 0; v < mobileAgents.length; v++) {
-        if (userAgentInfo.indexOf(mobileAgents[v]) > 0) { isMobile = true; break; }
-      }
-      if(isMobile)
-      {
-        this.pageType  = this.WAP;
-      }else {
-        this.pageType  = this.WEB;
+  }else {
+    //平台、设备和操作系统 
+    var system = {
+      win: false,
+      mac: false,
+      xll: false,
+      ipad: false
+    };
+    //检测平台 
+    var p = navigator.platform;
+    system.win = p.indexOf("Win") == 0;
+    system.mac = p.indexOf("Mac") == 0;
+    system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+    system.ipad = (navigator.userAgent.match(/iPad/i) != null) ? true : false;
+    //跳转语句，如果是手机访问就自动跳转到wap.baidu.com页面 
+    if (system.win || system.mac || system.xll || system.ipad) {
+      this.pageType = this.WEB;
+    } else {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        this.pageType = this.WX;
+      } else {
+        this.pageType = this.WAP;
       }
     }
   }
   return this.pageType;
 }
-
-/**
- * 根据 pageType 不同，跳转不同的销售详情
- * param.priceId 销售ID
- * param.spId 运营商ID
- */
-OpenApi.prototype.gotoSellPrice = function (param) {
-  if (this.pageType == null)
-  {
-    this.resetDefaultPageType();
-  }
-  alert(this.pageType);
-  console.log(param);
-  var detailUrl = "";
-  if (this.pageType == this.WX)
-  {
-    detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
-  }else if (this.pageType == this.WEB)
-  {
-    detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId;
-  }else if (this.pageType == this.WAP)
-  {
-    detailUrl = "${rc.contextPath}/\"wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
-  }
-  window.location.replace(detailUrl)
-}
-
 
 /**
  * 根据 pageType 不同，跳转不同的订单列表
@@ -78,13 +58,13 @@ OpenApi.prototype.gotoOrderList = function (param) {
   var detailUrl = "";
   if (this.pageType == this.WX)
   {
-    detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
+    detailUrl = this.rootPath+"/wx?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
   }else if (this.pageType == this.WEB)
   {
-    detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId;
+    detailUrl = this.rootPath+"/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId;
   }else if (this.pageType == this.WAP)
   {
-    detailUrl = "${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
+    detailUrl = this.rootPath+"/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
   }
   window.location.replace(detailUrl)
 }

@@ -2,6 +2,7 @@
 <html>
 <head>
   <#include "/wap/WAP_INC_HEAD.html">
+    <script src="${rc.contextPath}/wap/js/coupon.js"></script>
     <script src="${rc.contextPath}/wap/js/default.js"></script>
     <script type="text/javascript" src="${rc.contextPath}/wap/js/scrolltopcontrol.js"></script>
     <style>
@@ -27,7 +28,7 @@
 
     </head>
 <body onLoad="javascript:window_onload();">
-<input type="hidden" id="couponType" value="0">
+<input type="hidden" id="couponType" value="">
 <div id="navbar" class="navbar_absolute">
   <nav class="snyg_dd_nav">
     <a><span style="width:50%" couponType="0" onclick="changeCouponType('0')">可使用</span></a>
@@ -67,6 +68,7 @@
 
   $(function () {
     loading = false;
+    $("#couponType").val("");
     changeCouponType("0");
     $(window).scroll(function(){
       if(!loading && pageEntity.pageNum != null) {
@@ -106,16 +108,14 @@
     $("#couponType").val(couponType);
     if (couponType == '0') // 可使用
     {
-      searchObject.customerCode = $("#userId"); //用户ID
       searchObject.delFlag = "0"; //未删除
       searchObject.status = "0" //未使用
-      searchObject.backNumS = "7"; //
+      searchObject.timeStatus = "7"; //
     }else if (couponType == '1') // 不可使用
     {
-      searchObject.customerCode = $("#userId"); //用户ID
       searchObject.delFlag = "0"; //未删除
-      searchObject.status = "";
-      searchObject.backNumS = "5"; //
+      searchObject.status = "0";
+      searchObject.timeStatus = "6"; //
     }
     loading = true;
     pageEntity.pageNum = 1; //第1页开始查询
@@ -130,6 +130,7 @@
     {
       $(".tcyhj").html("");
     }
+    console.log(searchObject);
     $.ajax({
       type: "POST",
       url: "wappersonal?method=ajaxCustomerCouponList",
@@ -138,7 +139,9 @@
         customerCode:searchObject.customerCode,
         delFlag:searchObject.delFlag,
         status:searchObject.status,
-
+        timeStatus:searchObject.timeStatus,
+        pageNum: pageEntity.pageNum,
+        pageSize: pageEntity.pageSize
       },
       success: function (data) {
         if($("#couponType").val() == 0) //未使用
@@ -169,13 +172,21 @@
     {
       var liHtml = '<li>' +
           '<div class="tcyhj-list" style="width:99.2%;">' +
-          '<div class="tcyhj-bt"><p class="btzi">&yen;50.00</p>' +
+          '<div class="tcyhj-bt"><p class="btzi">';
+      if (data[i].useType == '1')
+      {
+        liHtml = liHtml + '&yen;' + data[i].discount;
+      }else if(data[i].useType == '2')
+      {
+        liHtml = liHtml + data[i].discount + '折';
+      }
+      liHtml = liHtml + '</p>' +
           '<span class="nrzi">代金券</span>' +
           '<span class="leftyuan"></span>' +
           '<span class="rightyuan"></span>' +
-          '<p>商品售价7折优惠用</p>' +
-          '<p>有效期2020-09-16~2020-09-30</p>' +
-          '</div><a href=""><div class="tcyhj-data">使用</div></a></div>' +
+          '<p>'+data[i].name+'</p>' +
+          '<p>有效期'+data[i].validBegin+'~'+data[i].validEnd+'</p>' +
+          '</div><a onclick="openCouponRule(\''+ data[i].couponId + '\')"><div class="tcyhj-data">查看</div></a></div>' +
           '</li>'
       $(".tcyhj").append(liHtml);
     }
@@ -189,14 +200,22 @@
       var liHtml = '<li>' +
           '<div class="tcyhj-listhui" style="width:99.2%;">' +
           '<div class="tcyhj-bthui">' +
-          '<p class="btzi">&yen;50.00</p>' +
+          '<p class="btzi">';
+      if (data[i].useType == '1')
+      {
+        liHtml = liHtml + '&yen;' + data[i].discount;
+      }else if(data[i].useType == '2')
+      {
+        liHtml = liHtml + data[i].discount + '折';
+      }
+      liHtml = liHtml + '</p>' +
           '<span class="nrzi">代金券</span>' +
           '<span class="leftyuan"></span>' +
           '<span class="rightyuan"></span>' +
-          '<p>商品售价7折优惠用</p>' +
-          '<p>有效期2020-09-16~2020-09-30</p>' +
+          '<p>'+data[i].name+'</p>' +
+          '<p>有效期'+data[i].validBegin+'~'+data[i].validEnd+'</p>' +
           '</div>' +
-          '<a href=""><div class="tcyhj-datahui">已过期</div></a>' +
+          '<a onclick="openCouponRule(\''+ data[i].couponId + '\')"><div class="tcyhj-datahui" >已过期</div></a>' +
           '</div>' +
           '</li>'
       $(".tcyhj").append(liHtml);
