@@ -23,7 +23,7 @@ import com.msy.travel.pojo.User;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
-import com.msy.travel.pojo.channel;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.service.channelService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class ChannelController extends BaseController{
 	 * 跳转到新增页面
 	 */
 	@RequestMapping(params = "method=toAdd")
-	public ModelAndView toAddchannel(channel channel,HttpServletRequest request,HttpServletResponse response)  {
+	public ModelAndView toAddchannel(Channel channel,HttpServletRequest request,HttpServletResponse response)  {
 			ModelAndView view = null;
 			view = new ModelAndView("channel/addchannel");
 			return view;
@@ -51,7 +51,7 @@ public class ChannelController extends BaseController{
 	 * 新增channel
 	 */
 	@RequestMapping(params = "method=add")
-	public ModelAndView addchannel(channel channel,HttpServletRequest request,HttpServletResponse response) {
+	public ModelAndView addchannel(Channel channel,HttpServletRequest request,HttpServletResponse response) {
 			ModelAndView view = null;
 			try {
 	        		channelService.createchannel(channel);
@@ -68,10 +68,10 @@ public class ChannelController extends BaseController{
 	 * 跳转到修改页面
 	 */
 	@RequestMapping(params = "method=toUpdate")
-	public ModelAndView toUpdatechannel(channel channel,HttpServletRequest request,HttpServletResponse response) {
+	public ModelAndView toUpdatechannel(Channel channel,HttpServletRequest request,HttpServletResponse response) {
 			ModelAndView view = null;
 			try {
-					channel  objchannel=
+					Channel  objchannel=
 					channelService.displaychannel(channel);
 					view = new ModelAndView("channel/updatechannel");
 					view.addObject("channel", objchannel);	
@@ -87,7 +87,7 @@ public class ChannelController extends BaseController{
 	 * 修改channel
 	 */
 	@RequestMapping(params = "method=update")
-	public ModelAndView updatechannel(channel channel,HttpServletRequest request,HttpServletResponse response)   {
+	public ModelAndView updatechannel(Channel channel,HttpServletRequest request,HttpServletResponse response)   {
 			ModelAndView view = null;
 			try {
 					channelService.updatechannel(channel);
@@ -104,7 +104,7 @@ public class ChannelController extends BaseController{
 	 * 删除channel
 	 */
 	@RequestMapping(params = "method=delete")
-	public ModelAndView deletechannel(channel channel,HttpServletRequest request,HttpServletResponse response)  {
+	public ModelAndView deletechannel(Channel channel,HttpServletRequest request,HttpServletResponse response)  {
 			ModelAndView view = null;
 			try{
 	        		channelService.deletechannel(channel);
@@ -121,7 +121,7 @@ public class ChannelController extends BaseController{
 	 * 批量删除
 	 */
 	@RequestMapping(params = "method=deleteBatch")
-	public ModelAndView deleteBatchchannel(channel channel,String checkedchannelIds,HttpServletRequest request,HttpServletResponse response)  {
+	public ModelAndView deleteBatchchannel(Channel channel,String checkedchannelIds,HttpServletRequest request,HttpServletResponse response)  {
 			ModelAndView view = null;
 			String[] channelIds= checkedchannelIds.split(",");
 			List<String> channelIdList =new ArrayList<String>();
@@ -142,7 +142,7 @@ public class ChannelController extends BaseController{
 	 * 分页查询
 	 */
 	@RequestMapping(params = "method=query")
-	public ModelAndView querychannelList(channel channel,HttpServletRequest request,HttpServletResponse response)  {
+	public ModelAndView querychannelList(Channel channel,HttpServletRequest request,HttpServletResponse response)  {
 			ModelAndView view = null;
 			try {
 				 if(channel.getEntityPage()==null){
@@ -151,9 +151,9 @@ public class ChannelController extends BaseController{
 				 super.saveBackUrl(request);
 	        	// 设置分页
 	        	PageHelper.startPage(super.getPageNum(channel.getEntityPage()), super.getPageSize(channel.getEntityPage()));
-	        	List<channel>  channellist = 
+	        	List<Channel>  channellist = 
 		        			channelService.querychannelList(channel);
-	        	PageInfo<channel> pageInfo = new PageInfo<channel>(channellist);
+	        	PageInfo<Channel> pageInfo = new PageInfo<Channel>(channellist);
 
 	        	view = new ModelAndView("channel/querychannel");
 				view.addObject("channellist", channellist);
@@ -172,7 +172,7 @@ public class ChannelController extends BaseController{
 	 * 导出excel
 	 */
 	@RequestMapping(params = "method=export")
-	public void exportchannel(channel channel,HttpServletRequest request,HttpServletResponse response)  {
+	public void exportchannel(Channel channel,HttpServletRequest request,HttpServletResponse response)  {
 			
 			try {
 				 String path = request.getSession().getServletContext().getRealPath("");
@@ -188,10 +188,10 @@ public class ChannelController extends BaseController{
 		         }
 				// 设置分页
 		        PageHelper.startPage(super.getPageNum(channel.getEntityPage()), super.getPageSize(channel.getEntityPage()));
-		        List<channel>  exportlist = 
+		        List<Channel>  exportlist = 
 	        			channelService.querychannelList(channel);
 
-	        	 PoiWriteExcel<channel> pwe = new PoiWriteExcel<channel>();
+	        	 PoiWriteExcel<Channel> pwe = new PoiWriteExcel<Channel>();
 
 	        	 //设置标题
 	             pwe.setFileTitle("");

@@ -13,9 +13,9 @@ ALTER TABLE t_sm_order ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
 ALTER TABLE t_sm_orderlist ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
 ALTER TABLE t_sm_orderlist ADD F_CUSTOMERCOUPONID VARCHAR(50) COMMENT '客户优惠券关联ID';
 
-t_sm_saletype
-t_sm_channel
-t_sm_channelbindsaletype
+t_sm_saletype    	数据同步
+t_sm_channel	数据同步
+t_sm_channelbindsaletype	数据同步
 t_sm_userbindchannel
 t_sm_coupon
 t_sm_couponproduction

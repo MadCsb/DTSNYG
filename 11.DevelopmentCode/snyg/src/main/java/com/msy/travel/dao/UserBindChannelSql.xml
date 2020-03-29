@@ -10,10 +10,12 @@
 			t_sm_userbindchannel  
 		(
 			F_CHANNELID ,
-			F_USERID 
+			F_USERID ,
+			F_CREATETIME
 		) VALUES (
 			#{channelId} ,
-			#{userId} 
+			#{userId} ,
+			#{createTime}
 		)
 	</insert>
 
@@ -23,10 +25,12 @@
 			t_sm_userbindchannel 
 		(
 			F_CHANNELID ,
-			F_USERID 
+			F_USERID ,
+			F_CREATETIME
 		) VALUES (
 			#{channelId} ,
-			#{userId} 
+			#{userId} ,
+			#{createTime}
 		)
 	</insert>
 
@@ -77,24 +81,18 @@
 	<select id="queryUserBindChannelList" parameterType="userBindChannel" resultType="userBindChannel">
 		SELECT
 			t.F_CHANNELID as channelId ,
-			t.F_USERID as userId 
+			t.F_USERID as userId ,
+			t.F_CREATETIME as createTime
 		FROM
 		t_sm_userbindchannel t
 		<where>
 			<if test="channelId!=null and channelId!=''">
 		    	t.F_CHANNELID = #{channelId}
-		     </if>
-			
+		    </if>
+			<if test="userId !=null and userId !=''">
+		    	t.F_USERID = #{userId}
+		    </if>
 		</where>
-		<if test="entityPage != null">
-			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
-		    	ORDER BY ${entityPage.sortField}
-			</if>
-		</if>	
-		<if test="entityPage != null">	
-			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
-		    	${entityPage.sortOrder}
-			</if>
-		</if>
+		order by t.F_CREATETIME ASC
 	</select>
 </mapper>	

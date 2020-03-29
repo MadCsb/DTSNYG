@@ -23,6 +23,7 @@ import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Consignee;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.ChannelBindSaleTypeService;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.IDestspService;
@@ -54,6 +55,9 @@ public class WapSellPriceController extends BaseController {
 	@Resource(name = "companyExpressServiceImpl")
 	private CompanyExpressService companyExpressService;
 
+	@Resource(name = "channelBindSaleTypeServiceImpl")
+	private ChannelBindSaleTypeService channelBindSaleTypeService;
+
 	/**
 	 * wap端获取商品列表
 	 * 
@@ -77,11 +81,14 @@ public class WapSellPriceController extends BaseController {
 			sellPrice.setDelFlag("0");
 			sellPrice.setState("1");
 
+			sellPrice.setPriceTypeList(channelBindSaleTypeService.querySaleTypeByUser(getLoginUser(request)));
+
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pageNum", super.getPageNum(sellPrice.getEntityPage()));
 			map.put("pageSize", super.getPageSize(sellPrice.getEntityPage()));
 			map.put("reasonable", false);
 			PageHelper.startPage(map);
+
 			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
 
 			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);

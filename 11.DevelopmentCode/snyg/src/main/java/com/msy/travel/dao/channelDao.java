@@ -1,7 +1,7 @@
 package com.msy.travel.dao;
 
 import java.util.List;
-import com.msy.travel.pojo.channel;
+import com.msy.travel.pojo.Channel;
 /**
  * channelDao接口
  * 
@@ -15,35 +15,35 @@ public interface channelDao
      * 
      * @param channel channel对象
      */
-    void insertchannel(channel channel) throws Exception;
+    void insertchannel(Channel channel) throws Exception;
    
     /**
      * 检查channel
      * 
      * @param channel channel对象
      */
-    void mergechannel(channel channel) throws Exception;
+    void mergechannel(Channel channel) throws Exception;
    
     /**
      * 删除channel
      * 
      * @param channel 成语对象
      */
-    void deletechannel(channel channel) throws Exception;
+    void deletechannel(Channel channel) throws Exception;
     
     /**
      * 批量删除channel
      * 
      * @param ids ids
      */
-    void deleteBatchchannel(channel channel) throws Exception;  
+    void deleteBatchchannel(Channel channel) throws Exception;  
     
     /**
      * 修改channel
      * 
      * @param channel channel对象
      */
-    void updatechannel(channel channel) throws Exception;  
+    void updatechannel(Channel channel) throws Exception;  
    
     /**
      * 查询单个channel信息
@@ -52,7 +52,7 @@ public interface channelDao
      * 
      * @return channel实体对象
      */
-    channel querychannel(channel channel) throws Exception;
+    Channel querychannel(Channel channel) throws Exception;
     
     /**
      * 查询channel列表信息
@@ -61,7 +61,7 @@ public interface channelDao
      * 
      * @return channel列表
      */
-    List<channel> querychannelList(channel channel) throws Exception;
+    List<Channel> querychannelList(Channel channel) throws Exception;
 
     /**
      * 获取channelID

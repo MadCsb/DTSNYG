@@ -1,7 +1,7 @@
 package com.msy.travel.service;
 
 import java.util.List;
-import com.msy.travel.pojo.channel;
+import com.msy.travel.pojo.Channel;
 
 /**
  * channelService接口
@@ -16,35 +16,35 @@ public interface channelService
      * 
      * @param channel channel对象
      */
-    public void createchannel(channel channel) throws Exception;
+    public void createchannel(Channel channel) throws Exception;
     
     /**
      * 检查channel
      * 
      * @param channel channel对象
      */
-    public void mergechannel(channel channel) throws Exception;
+    public void mergechannel(Channel channel) throws Exception;
   
     /**
      * 删除channel
      * 
      * @param channel channel对象
      */
-    public void deletechannel(channel channel) throws Exception;
+    public void deletechannel(Channel channel) throws Exception;
    
     /**
      * 批量删除channel
      * 
      * @param channelIdList  存放channel主键的list
      */
-    public void deleteBatchchannel(channel channel) throws Exception;  
+    public void deleteBatchchannel(Channel channel) throws Exception;  
     
     /**
      * 修改channel
      * 
      * @param channel channel对象
      */
-    public void updatechannel(channel channel) throws Exception;
+    public void updatechannel(Channel channel) throws Exception;
     
     /**
      * 查询单个channel
@@ -53,7 +53,7 @@ public interface channelService
      * 
      * @return channel实体对象
      */
-    public channel displaychannel(channel channel) throws Exception;
+    public Channel displaychannel(Channel channel) throws Exception;
   
    /**
      * 查询channel列表
@@ -62,7 +62,7 @@ public interface channelService
      * 
      * @return channel列表
      */
-    public List<channel> querychannelList(channel channel) throws Exception;
+    public List<Channel> querychannelList(Channel channel) throws Exception;
 
     /**
      * 获取channel主键ID
