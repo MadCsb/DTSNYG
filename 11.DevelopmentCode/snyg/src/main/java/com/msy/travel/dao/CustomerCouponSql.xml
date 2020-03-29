@@ -245,15 +245,15 @@
 		    <if test="validEndDate !=null and validEndDate !=''">
 		    	AND t.F_VALIDEND &gt;= #{validEndDate}
 		    </if>
-		    <if test="status !=null and status !=''">
-		    	<if test='status=="4"' >  /*待开始*/
+		    <if test="timeStatus !=null and timeStatus !=''">
+		    	<if test='timeStatus == "4"' >  /*待开始*/
 		    		and	<![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>
 		    	</if>
-		    	<if test='status=="5"' > /*进行中*/
+		    	<if test='timeStatus == "5"' > /*进行中*/
 		    		and	<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
 					and <![CDATA[t.F_VALIDEND >= date_format(now(),'%Y-%m-%d')]]>
 		    	</if>
-		    	<if test='status=="6"' >/*已结束*/
+		    	<if test='timeStatus == "6"' >/*已结束*/
 		    		and	<![CDATA[t.F_VALIDEND < date_format(now(),'%Y-%m-%d')]]>
 		    	</if>
 		     </if>
