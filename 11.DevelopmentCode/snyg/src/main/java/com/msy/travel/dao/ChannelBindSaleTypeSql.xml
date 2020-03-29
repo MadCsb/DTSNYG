@@ -97,4 +97,30 @@
 			</if>
 		</if>
 	</select>
+	<!-- 通过渠道判断可购买商品范围 -->
+	<select id="queryChannelBindSaleTypeListByUserId" parameterType="channelBindSaleType" resultType="String">
+		SELECT
+			s.F_SALETYPEKEY as saleTypeKey
+		FROM
+			t_sm_channelbindsaletype t
+		LEFT JOIN t_sm_saletype s on t.F_SALETYPEID = s.F_SALETYPEID
+		<where>
+			<if test="channelId !=null and channelId !=''">
+		    	t.F_CHANNELID = #{channelId}
+		    </if>
+			<if test="status !=null and status !=''">
+		    	s.F_STATUS = #{status}
+		    </if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
 </mapper>	

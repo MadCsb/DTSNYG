@@ -130,6 +130,16 @@ public class SellPrice extends BaseEntity implements java.io.Serializable {
 
 	private String couponId;
 
+	private List<String> priceTypeList;
+
+	public List<String> getPriceTypeList() {
+		return priceTypeList;
+	}
+
+	public void setPriceTypeList(List<String> priceTypeList) {
+		this.priceTypeList = priceTypeList;
+	}
+
 	public String getSellPriceIdString() {
 		return sellPriceIdString;
 	}
