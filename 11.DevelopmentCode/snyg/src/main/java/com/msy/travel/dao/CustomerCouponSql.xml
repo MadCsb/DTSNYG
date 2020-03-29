@@ -239,12 +239,6 @@
                   b.F_USECOUPONID = #{param}
             	</foreach>
             </if>
-            <if test="validBeginStart !=null and validBeginStart !=''">
-		    	AND t.F_VALIDBEGIN &lt;= #{validBeginStart}
-		    </if>
-		    <if test="validEndDate !=null and validEndDate !=''">
-		    	AND t.F_VALIDEND &gt;= #{validEndDate}
-		    </if>
 		    <if test="timeStatus !=null and timeStatus !=''">
 		    	<if test='timeStatus == "4"' >  /*待开始*/
 		    		and	<![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>
