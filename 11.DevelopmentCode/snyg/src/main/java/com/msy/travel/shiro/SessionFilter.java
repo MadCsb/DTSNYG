@@ -34,8 +34,8 @@ public class SessionFilter extends AccessControlFilter {
 		}
 
 		// wap 端无需登录controller
-		if (url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/wapCommproduct") != -1 || url.indexOf("/wapCoupon") != -1
-				|| url.indexOf("/wapPdcType") != -1 || url.indexOf("/wapPrice1Ref") != -1 || url.indexOf("/wapSellPrice") != -1) {
+		if (url.indexOf("/toNewUser") != -1 || url.indexOf("/newUser") != -1 || url.indexOf("/wapCommproduct") != -1 || url.indexOf("/wapCoupon") != -1 || url.indexOf("/wapPdcType") != -1
+				|| url.indexOf("/wapPrice1Ref") != -1 || url.indexOf("/wapSellPrice") != -1 || url.indexOf("/wapIndex") != -1) {
 			return Boolean.TRUE;
 		}
 
