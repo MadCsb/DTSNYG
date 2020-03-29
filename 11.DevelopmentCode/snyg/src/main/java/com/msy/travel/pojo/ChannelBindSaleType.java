@@ -32,6 +32,16 @@ public class ChannelBindSaleType extends BaseEntity implements java.io.Serializa
 
 	private String saleTypeKey;
 
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getSaleTypeKey() {
 		return saleTypeKey;
 	}

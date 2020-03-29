@@ -109,7 +109,7 @@
 		    	t.F_CHANNELID = #{channelId}
 		    </if>
 			<if test="status !=null and status !=''">
-		    	s.F_STATUS = #{status}
+		    	and s.F_STATUS = #{status}
 		    </if>
 		</where>
 		<if test="entityPage != null">

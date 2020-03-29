@@ -136,9 +136,10 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 
 			ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
 			channelBindSaleType.setChannelId(channel.getChannelId());
+			channelBindSaleType.setStatus("1");
 			saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 		} else {
-			if (!user.getType().equals("0") || !user.getType().equals("1")) {
+			if (!user.getType().equals("0") && !user.getType().equals("1")) {
 				// 判断用户绑定渠道
 				UserBindChannel userBindChannel = new UserBindChannel();
 				userBindChannel.setUserId(user.getUserId());
@@ -148,6 +149,7 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 					// 渠道绑定活动类型
 					ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
 					channelBindSaleType.setChannelId(userBindChannel.getChannelId());
+					channelBindSaleType.setStatus("1");
 					saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 				}
 			} else {
@@ -157,6 +159,7 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 
 				ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
 				channelBindSaleType.setChannelId(channel.getChannelId());
+				channelBindSaleType.setStatus("1");
 				saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 			}
 		}
