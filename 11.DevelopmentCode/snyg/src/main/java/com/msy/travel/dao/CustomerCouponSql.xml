@@ -251,7 +251,7 @@
 		    		and	<![CDATA[t.F_VALIDEND < date_format(now(),'%Y-%m-%d')]]>
 		    	</if>
 		    	<if test='timeStatus == "7"' >/*可使用*/
-		    		((and	<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
+		    		and((<![CDATA[t.F_VALIDBEGIN <= date_format(now(),'%Y-%m-%d')]]>
 					and <![CDATA[t.F_VALIDEND >= date_format(now(),'%Y-%m-%d')]]>) or <![CDATA[t.F_VALIDBEGIN > date_format(now(),'%Y-%m-%d')]]>) 
 				</if>
 		     </if>
