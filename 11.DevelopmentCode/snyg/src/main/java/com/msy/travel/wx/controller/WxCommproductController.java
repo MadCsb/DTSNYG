@@ -123,6 +123,10 @@ public class WxCommproductController extends BaseController {
 				view = new ModelAndView("wx/commproduct/commproductDetail1");
 			} else if ("2".equals(commproduct.getPriceType())) {
 				view = new ModelAndView("wx/commproduct/commproductDetail2");
+			} else if ("3".equals(commproduct.getPriceType())) {
+				view = new ModelAndView("wx/commproduct/commproductDetail3");
+			} else {// 其他进普通页
+				view = new ModelAndView("wx/commproduct/commproductDetail0");
 			}
 
 			// view.addObject("user", new User());
