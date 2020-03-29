@@ -119,7 +119,7 @@ public class WapCommproductController extends BaseController {
 				view = new ModelAndView("wap/commproduct/commproductDetail2");
 			} else if ("3".equals(commproduct.getPriceType())) {
 				view = new ModelAndView("wap/commproduct/commproductDetail3");
-			} else {
+			} else {// 其他进普通页
 				view = new ModelAndView("wap/commproduct/commproductDetail0");
 			}
 
