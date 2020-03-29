@@ -212,7 +212,6 @@
 			p.F_NAME as name
 		FROM
 		t_sm_customercoupon t
-		LEFT JOIN t_sm_couponproduction b ON (t.F_COUPONID = b.F_COUPONID)
 		LEFT JOIN t_sm_coupon p on t.F_COUPONID = p.F_COUPONID 
 		<where>
 			<if test="couponId !=null and couponId !=''">
@@ -234,10 +233,13 @@
 		    	AND t.F_VALIDEND &gt;= #{crrObtainDate}
 		    </if>
 		    <if test='useCouponIdList !=null and useCouponIdList.size()>0'>
-		   		AND 
-	    		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
-                  b.F_USECOUPONID = #{param}
-            	</foreach>
+		   		AND t.F_COUPONID in (
+		   			SELECT DISTINCT(b.F_COUPONID) from t_sm_couponproduction b where  
+			   		<foreach collection="useCouponIdList" item="param" separator="or" open="(" close=")">
+	                  b.F_USECOUPONID = #{param}
+	            	</foreach>
+		   		)
+	    		
             </if>
 		    <if test="timeStatus !=null and timeStatus !=''">
 		    	<if test='timeStatus == "4"' >  /*待开始*/
