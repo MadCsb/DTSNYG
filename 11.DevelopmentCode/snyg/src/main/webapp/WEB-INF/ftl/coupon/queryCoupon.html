@@ -93,8 +93,10 @@
 				<th width="8%">领券日期</th> 
 				<th width="6%">剩余量</th> 
 				<th width="7%">优惠券状态</th> 
+				<!-- 
 				<th width="8%">成交用户量</th> 
-				<th width="8%">成交金额(元)</th>  
+				<th width="8%">成交金额(元)</th>
+				 -->  
 				<th width="18%">操作</th>
 			</tr>
 			<#list couponlist as coupon>
@@ -141,8 +143,9 @@ ${coupon.obtainDateEnd!''}">${coupon.obtainDateBegin!''}<br/>${coupon.obtainDate
 						未知
 					</#if>
 				</td> 
+				<!-- 
 				<td title="${coupon.customerUseNum!'0'}" style="text-align:center">${coupon.customerUseNum!'0'}</td> 
-				<td title="&yen;${coupon.actualMoney!'0'}" style="text-align:center">&yen;${coupon.actualMoney!'0'}</td> 
+				<td title="&yen;${coupon.money!'0'}" style="text-align:center">&yen;${coupon.money!'0'}</td> --> 
 				<td>
 					<input type="hidden" id="couponUrl${coupon.couponId!''}" value="${tempContextUrl!''}${rc.contextPath}/wx.do?method=toLinkCoupon&couponId=${coupon.couponId!''}" >
 

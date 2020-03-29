@@ -256,12 +256,17 @@
 			t.F_DELFLAG as delFlag ,
 			t.F_COUPONTAG as couponTag ,
 			t.F_PCOUPONID as pcouponId ,
-			t.F_TOTALNUM - IFNULL(cp.F_SURPLUS,0) as surplus,
-			cup.F_CUSTOMERUSENUM as customerUseNum
+			t.F_TOTALNUM - IFNULL(cp.F_SURPLUS,0) as surplus
+			/*cup.F_CUSTOMERUSENUM as customerUseNum,
+			cd.F_money as money*/
 		FROM
 		t_sm_coupon t
 		left join (select count(1) as F_SURPLUS,F_COUPONID from t_sm_customercoupon group by F_COUPONID ) cp on cp.F_COUPONID=t.F_COUPONID 
+		/*
 		left join (select count(DISTINCT(F_CUSTOMERCODE)) as F_CUSTOMERUSENUM,F_COUPONID from t_sm_customercoupon where F_STATUS=1 group by F_COUPONID) cup on cup.F_COUPONID=t.F_COUPONID
+		left join (select ifnull(sum(od.F_money),0) as F_money,cc.F_COUPONID from t_sm_orderlist od 
+					left join t_sm_customercoupon cc on cc.F_CUSTOMERCOUPONID = od.F_CUSTOMERCOUPONID
+					group by cc.F_COUPONID) cd on cd.F_COUPONID = t.F_COUPONID*/
 		<where>
 			<if test="couponId!=null and couponId!=''">
 		    	t.F_COUPONID = #{couponId}
