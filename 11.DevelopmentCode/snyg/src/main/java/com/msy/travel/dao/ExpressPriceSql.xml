@@ -163,6 +163,9 @@
 		    <if test="provinceId !=null and provinceId !=''">
 				and t.F_PROVINCEID = #{provinceId} 
 		    </if>
+		    <if test="isSend !=null and isSend !=''">
+				and t.F_ISSEND = #{isSend} 
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
