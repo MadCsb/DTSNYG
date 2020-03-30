@@ -4,7 +4,7 @@
  * searchObject
  */
 function toIndex(){
-  window.location.href = "wap?method=wxIndex";
+  window.location.href = "wapIndex?method=wxIndex";
 }
 
 /**

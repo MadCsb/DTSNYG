@@ -241,12 +241,12 @@ public class WapCouponController extends BaseController {
 
 		// 不是发布状态
 		if (!"1".equals(coupon.getStatus()) || "0".equals(coupon.getCouponTag())) {
-			return "尊敬的游客，该优惠活动已经结束了，请您刷新页面后查看最新的优惠活动";
+			return "该优惠活动已经结束了，请刷新页面后查看最新的优惠活动";
 		}
 
 		// 领券日期不对
 		if (crrDate.compareTo(coupon.getObtainDateBegin()) < 0 || crrDate.compareTo(coupon.getObtainDateEnd()) > 0) {
-			return "尊敬的游客，该优惠活动未开始或已经结束(该优惠券不在领取时间内)，请您刷新页面后查看最新的优惠活动";
+			return "该优惠活动未开始或已经结束(该优惠券不在领取时间内)，请刷新页面后查看最新的优惠活动";
 		}
 
 		// 领取总数
@@ -256,7 +256,7 @@ public class WapCouponController extends BaseController {
 
 		// 领取总数大于发行总量
 		if (receiveTotal >= Long.valueOf(coupon.getTotalNum())) {
-			return "尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
+			return "该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
 		}
 
 		// 每日领取总数
@@ -268,7 +268,7 @@ public class WapCouponController extends BaseController {
 		// 每日领取总数大于等于日发行量
 		if (coupon.getDayNum() != null && !"".equals(coupon.getDayNum())) {
 			if (dayCount >= Long.valueOf(coupon.getDayNum())) {
-				return "尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
+				return "该优惠券刚刚被领完了，请尝试领取其他优惠券吧";
 			}
 		}
 
@@ -280,7 +280,7 @@ public class WapCouponController extends BaseController {
 
 		// 本人领取总数大于等于每人限领
 		if (myCount >= Long.valueOf(coupon.getObtainLimit())) {
-			return "尊敬的游客，该优惠券您已无法领取更多了，请尝试领取其他优惠券吧";
+			return "该优惠券今日领取已达上限，请尝试领取其他优惠券吧";
 		}
 
 		// 本人今天领取总数
@@ -292,7 +292,7 @@ public class WapCouponController extends BaseController {
 
 		// 本人今天领取总数大于等于每人每天限领
 		if (myTodayCount >= Long.valueOf(coupon.getDayObtainLimit())) {
-			return "尊敬的游客，您已超出该优惠券的领取最大限制，请明天再来领取吧";
+			return "您已超出该优惠券的领取最大限制，请明天再来领取吧";
 		}
 
 		return "";
