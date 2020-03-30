@@ -198,7 +198,7 @@
 		    	t.F_EXPRESSPRICEID = #{expressPriceId}
 		    </if>
 			<if test="companyExpressId !=null and companyExpressId !=''">
-		    	t.F_COMPANYEXPRESSID = #{companyExpressId}
+		    	and t.F_COMPANYEXPRESSID = #{companyExpressId}
 		    </if>
 		</where>
 		<if test="entityPage != null">
