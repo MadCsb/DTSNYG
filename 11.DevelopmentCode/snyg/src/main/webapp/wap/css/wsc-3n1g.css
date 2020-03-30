@@ -1325,6 +1325,8 @@ input[type="checkbox"]:checked + .check{
 	box-sizing:border-box;
 	width:20%;
 	border-bottom:4px solid #00ae60;
+	height:50px;
+	overflow:hidden;
 
 }
 

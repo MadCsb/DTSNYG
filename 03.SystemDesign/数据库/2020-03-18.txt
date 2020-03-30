@@ -8,6 +8,8 @@ ALTER TABLE t_sm_sellprice MODIFY F_PRICECODE BIGINT(20) auto_increment;
 
 alter table t_sm_thirdpayflow modify column F_THIRD_FLOW_CODE varchar(100) COMMENT '对方支付回执编号 ';;
 alter table t_sm_thirdpayflow add column F_THIRD_TYPE VARCHAR(2) COMMENT '对方类型(0微信，1支付宝)'; 
+ALTER TABLE t_pub_user MODIFY column  F_USER_LOGINNAME varchar(50) not null comment '用户登录名。PC端:登录名；微信公众号:openId；山东移动:tel-msisdn';
+
 
 ALTER TABLE t_sm_order ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
 ALTER TABLE t_sm_orderlist ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
