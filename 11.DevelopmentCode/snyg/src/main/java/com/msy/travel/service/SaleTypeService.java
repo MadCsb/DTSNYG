@@ -87,4 +87,28 @@ public interface SaleTypeService {
 	 * @return List<SaleType>
 	 */
 	public List<SaleType> querySaleTypeListForCoupon(SaleType saleType) throws Exception;
+
+	/**
+	 * 判断标识是否重复
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 上午10:12:31
+	 * @param saleType
+	 * @return
+	 * @throws Exception
+	 * @return int
+	 */
+	public int checkSaleTypeKeyExis(SaleType saleType) throws Exception;
+
+	/**
+	 * 获取活动或者渠道
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 上午11:02:36
+	 * @param saleType
+	 * @return
+	 * @throws Exception
+	 * @return List<SaleType>
+	 */
+	public List<SaleType> querySaleTypeListOrChannel(SaleType saleType, String spId) throws Exception;
 }

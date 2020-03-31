@@ -46,6 +46,17 @@ public class SaleType extends BaseEntity implements java.io.Serializable {
 	// columns END
 	private List<String> saleTypeIdList;
 
+	// F_ISSYS 是否系统字段0:否 1是 系统字段不可操作
+	private String isSys;
+
+	public String getIsSys() {
+		return isSys;
+	}
+
+	public void setIsSys(String isSys) {
+		this.isSys = isSys;
+	}
+
 	public void setSaleTypeId(String saleTypeId) {
 		this.saleTypeId = saleTypeId;
 	}

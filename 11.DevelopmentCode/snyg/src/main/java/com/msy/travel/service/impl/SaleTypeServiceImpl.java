@@ -1,5 +1,6 @@
 package com.msy.travel.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -117,5 +118,45 @@ public class SaleTypeServiceImpl implements SaleTypeService {
 	 */
 	public List<SaleType> querySaleTypeListForCoupon(SaleType saleType) throws Exception {
 		return saleTypeDao.querySaleTypeListForCoupon(saleType);
+	}
+
+	/**
+	 * 判断标识是否重复
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 上午10:12:31
+	 * @param saleType
+	 * @return
+	 * @throws Exception
+	 * @return int
+	 */
+	public int checkSaleTypeKeyExis(SaleType saleType) throws Exception {
+		return saleTypeDao.checkSaleTypeKeyExis(saleType);
+	}
+
+	/**
+	 * 获取活动或者渠道
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 上午11:02:36
+	 * @param saleType
+	 * @return
+	 * @throws Exception
+	 * @return List<SaleType>
+	 */
+	public List<SaleType> querySaleTypeListOrChannel(SaleType saleType, String spId) throws Exception {
+		if (saleType == null) {
+			saleType = new SaleType();
+		}
+		List<SaleType> saleTypeList = new ArrayList<SaleType>();
+		saleType.setSpId(spId);
+		saleType.setStatus("1");
+		saleTypeList = saleTypeDao.querySaleTypeListForCoupon(saleType);
+		saleType = new SaleType();
+		saleType.setSaleTypeId(spId);
+		saleType.setSaleTypeName("全部商品");
+		saleTypeList.add(0, saleType);
+
+		return saleTypeList;
 	}
 }

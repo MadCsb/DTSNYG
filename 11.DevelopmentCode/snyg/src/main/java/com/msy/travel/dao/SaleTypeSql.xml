@@ -14,14 +14,16 @@
 			F_SALETYPENAME ,
 			F_STATUS ,
 			F_SALETYPEKEY ,
-			F_SALETYPEDESC 
+			F_SALETYPEDESC ,
+			F_ISSYS
 		) VALUES (
 			#{saleTypeId} ,
 			#{spId} ,
 			#{saleTypeName} ,
 			#{status} ,
 			#{saleTypeKey} ,
-			#{saleTypeDesc} 
+			#{saleTypeDesc} ,
+			#{isSys} 
 		)
 	</insert>
 
@@ -35,14 +37,16 @@
 			F_SALETYPENAME ,
 			F_STATUS ,
 			F_SALETYPEKEY ,
-			F_SALETYPEDESC 
+			F_SALETYPEDESC ,
+			F_ISSYS
 		) VALUES (
 			#{saleTypeId} ,
 			#{spId} ,
 			#{saleTypeName} ,
 			#{status} ,
 			#{saleTypeKey} ,
-			#{saleTypeDesc} 
+			#{saleTypeDesc}  ,
+			#{isSys} 
 		)
 	</insert>
 
@@ -51,7 +55,6 @@
 		UPDATE
 			t_sm_saletype 
 		SET
-			F_SPID = #{spId} ,
 			F_SALETYPENAME = #{saleTypeName} ,
 			F_STATUS = #{status} ,
 			F_SALETYPEKEY = #{saleTypeKey} ,
@@ -89,7 +92,8 @@
 			t.F_SALETYPENAME as saleTypeName ,
 			t.F_STATUS as status ,
 			t.F_SALETYPEKEY as saleTypeKey ,
-			t.F_SALETYPEDESC as saleTypeDesc 
+			t.F_SALETYPEDESC as saleTypeDesc ,
+			t.F_ISSYS as isSys
 		FROM
 			t_sm_saletype t
 		<where>
@@ -105,7 +109,8 @@
 			t.F_SALETYPENAME as saleTypeName ,
 			t.F_STATUS as status ,
 			t.F_SALETYPEKEY as saleTypeKey ,
-			t.F_SALETYPEDESC as saleTypeDesc 
+			t.F_SALETYPEDESC as saleTypeDesc,
+			t.F_ISSYS as isSys
 		FROM
 		t_sm_saletype t
 		<where>
@@ -117,6 +122,12 @@
 		    </if>
 		    <if test="status !=null and status !=''">
 		    	and t.F_STATUS = #{status}
+		    </if>
+		    <if test="saleTypeName !=null and saleTypeName !=''">
+		    	and t.F_SALETYPENAME like concat('%',#{saleTypeName},'%')
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID like concat('%',#{spId},'%')
 		    </if>
 		</where>
 		<if test="entityPage != null">
@@ -172,5 +183,24 @@
 		    	${entityPage.sortOrder}
 			</if>
 		</if>
+	</select>
+	
+	<!-- 判断标识 -->
+	<select id="checkSaleTypeKeyExis" parameterType="saleType" resultType="int">
+		SELECT
+			count(1)
+		FROM
+		t_sm_saletype t
+		<where>
+			<if test="saleTypeId!=null and saleTypeId!=''">
+		    	t.F_SALETYPEID &lt;&gt; #{saleTypeId}
+		     </if>
+			<if test="saleTypeKey !=null and saleTypeKey !=''">
+		    	and t.F_SALETYPEKEY = #{saleTypeKey}
+		    </if>
+		    <if test="spId !=null and spId !=''">
+		    	and t.F_SPID = #{spId}
+		    </if>
+		</where>
 	</select>
 </mapper>	

@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<#include "/INC_HEAD.html">
+</head>
+<body>
+	
+	<div class="waybill-title">
+		<span>新增活动</span>
+	</div>
+	<form action="saleType.do?method=add" method="post" id="addSaleTypeForm" enctype="multipart/form-data">
+		<table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tbody id="list">
+				<tr class="">
+					<td width="20%" class="tdright"><b><font class="f2">*</font>活动名称：</b></td>
+					<td width="30%">
+						<input name="saleTypeName" type="text" class="validate[required,maxSize[50]] data-inputtxt" id="saleTypeName">
+	              	</td>
+	              	<td width="20%" class="tdright"><b><font class="f2">*</font>活动状态：</b></td>
+					<td width="30%">
+						<label><input name="status" id="status1" type="radio" value="1" checked hidden/><label for="status1" class="radiock"></label>启用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<label><input name="status" id="status0" type="radio" value="0" hidden/><label for="status0" class="radiock"></label>禁用</label>
+	           			
+	              	</td>
+				</tr>
+				<tr class="">
+					<td width="20%" class="tdright"><b><font class="f2">*</font>活动标识：</b></td>
+					<td width="30%">
+						<input name="saleTypeKey" type="text" class="validate[required,maxSize[50]] data-inputtxt" 
+	              	 	   id="saleTypeKey">
+	              	 	<br/>
+	              	 	<span style="color:Red;">活动标识不可更改，请谨慎输入</span>
+	              	</td>
+					<td width="20%" class="tdright"><b>活动描述：</b></td>
+					<td width="30%">
+						<input name="saleTypeDesc" type="text" class="validate[maxSize[500]] data-inputtxt" 
+	              	 	   id="saleTypeDesc">
+	              	 	<br>
+	              	</td>
+				</tr>
+			</tbody>
+		</table>
+	<div class="footerbtn">   
+
+		<input name="button4" type="button" onClick="javascript:location.href='${Session.BACK_URL!""}'" class="cbtn2" id="button4" value="取消">
+		<input name="button3" onClick="beforeSubmit();" type="button" class="cbtn1" id="button3" value="保存">
+	</div>
+	
+	
+	
+</body>
+<script type="text/javascript">
+// 保存前
+function beforeSubmit(){
+	if ($("#addSaleTypeForm").validationEngine('validate')) {
+		$.post("saleType?method=checkSaleTypeKey",{
+			saleTypeKey:$("#saleTypeKey").val()
+		},function(data){
+			if(data.resultCode=='0'){
+				$("#addSaleTypeForm").submit();
+			}else{
+				parent.layer.alert(data.resultMsg);
+			}
+		},'json')
+	}
+}
+
+</script>
+</html>

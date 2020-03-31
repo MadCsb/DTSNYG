@@ -70,7 +70,7 @@ public class CouponController extends BaseController {
 			saleTypeList.add(0, saleType);
 
 			view = new ModelAndView("coupon/addCoupon");
-			view.addObject("saleTypeList", saleTypeList);
+			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -132,15 +132,7 @@ public class CouponController extends BaseController {
 				view.addObject("couponProduction", cp);
 			}
 
-			SaleType saleType = new SaleType();
-			saleType.setSpId(getLoginUser(request).getAccId());
-			saleType.setStatus("1");
-			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
-			saleType = new SaleType();
-			saleType.setSaleTypeId(getLoginUser(request).getAccId());
-			saleType.setSaleTypeName("全部商品");
-			saleTypeList.add(0, saleType);
-			view.addObject("saleTypeList", saleTypeList);
+			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
 
 			view.addObject("coupon", objCoupon);
 
@@ -396,15 +388,7 @@ public class CouponController extends BaseController {
 				view.addObject("couponProduction", cp);
 			}
 
-			SaleType saleType = new SaleType();
-			saleType.setSpId(getLoginUser(request).getAccId());
-			saleType.setStatus("1");
-			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
-			saleType = new SaleType();
-			saleType.setSaleTypeId(getLoginUser(request).getAccId());
-			saleType.setSaleTypeName("全部商品");
-			saleTypeList.add(0, saleType);
-			view.addObject("saleTypeList", saleTypeList);
+			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
 
 			view.addObject("coupon", objCoupon);
 

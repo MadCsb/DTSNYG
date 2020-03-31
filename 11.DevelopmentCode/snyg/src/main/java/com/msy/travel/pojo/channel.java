@@ -50,6 +50,27 @@ public class Channel extends BaseEntity implements java.io.Serializable {
 	// columns END
 	private List<String> channelIdList;
 
+	/**
+	 * 系统渠道 不可操作 F_ISSYS
+	 */
+	private String isSys;
+
+	public List<String> getChannelIdList() {
+		return channelIdList;
+	}
+
+	public void setChannelIdList(List<String> channelIdList) {
+		this.channelIdList = channelIdList;
+	}
+
+	public String getIsSys() {
+		return isSys;
+	}
+
+	public void setIsSys(String isSys) {
+		this.isSys = isSys;
+	}
+
 	public void setChannelId(String channelId) {
 		this.channelId = channelId;
 	}
@@ -96,14 +117,6 @@ public class Channel extends BaseEntity implements java.io.Serializable {
 
 	public String getChannelDesc() {
 		return this.channelDesc;
-	}
-
-	public void setchannelIdList(List<String> channelIdList) {
-		this.channelIdList = channelIdList;
-	}
-
-	public List<String> getchannelIdList() {
-		return this.channelIdList;
 	}
 
 }

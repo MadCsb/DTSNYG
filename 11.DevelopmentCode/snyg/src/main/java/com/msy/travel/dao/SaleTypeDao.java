@@ -87,4 +87,16 @@ public interface SaleTypeDao {
 	 * @return List<SaleType>
 	 */
 	List<SaleType> querySaleTypeListForCoupon(SaleType saleType) throws Exception;
+
+	/**
+	 * 判断标识是否重复
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 上午10:12:31
+	 * @param saleType
+	 * @return
+	 * @throws Exception
+	 * @return int
+	 */
+	int checkSaleTypeKeyExis(SaleType saleType) throws Exception;
 }
