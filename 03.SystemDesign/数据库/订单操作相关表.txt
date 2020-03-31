@@ -1,0 +1,6 @@
+SELECT * FROM t_pub_user;
+SELECT * FROM t_sm_consignee;
+SELECT * FROM t_sm_order ;
+SELECT * FROM t_sm_orderlist ;
+SELECT * FROM t_sm_ordercustomer ;
+SELECT * FROM t_sm_orderlog ;

@@ -61,7 +61,7 @@ function toCustomerCoupon(){
  * 跳转文章详情
  */
 function toArticle(articleId){
-  window.location.href = "wap.do?method=showArticle&articleId="+articleId;
+  window.location.href = "wapIndex.do?method=showArticle&articleId="+articleId;
 }
 
 /**
