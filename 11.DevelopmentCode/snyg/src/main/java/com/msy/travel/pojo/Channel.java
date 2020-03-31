@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias;
 import com.msy.travel.common.BaseEntity;
 
 @Alias(value = "channel")
-public class channel extends BaseEntity implements java.io.Serializable {
+public class Channel extends BaseEntity implements java.io.Serializable {
 
 	/**
 	 * 用于确定导出EXCEL的列
