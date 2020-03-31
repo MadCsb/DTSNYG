@@ -45,27 +45,3 @@ OpenApi.prototype.resetDefaultPageType = function (pageType) {
   return this.pageType;
 }
 
-/**
- * 根据 pageType 不同，跳转不同的订单列表
- * param.spId 运营商ID
- */
-OpenApi.prototype.gotoOrderList = function (param) {
-  if (this.pageType == null)
-  {
-    this.resetDefaultPageType();
-  }
-
-  var detailUrl = "";
-  if (this.pageType == this.WX)
-  {
-    detailUrl = this.rootPath+"/wx?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
-  }else if (this.pageType == this.WEB)
-  {
-    detailUrl = this.rootPath+"/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId;
-  }else if (this.pageType == this.WAP)
-  {
-    detailUrl = this.rootPath+"/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+param.priceId+"&spId="+param.spId;
-  }
-  window.location.replace(detailUrl)
-}
-

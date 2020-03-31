@@ -4,7 +4,11 @@ import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.Result;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.UserBindChannel;
+import com.msy.travel.service.UserBindChannelService;
+import com.msy.travel.service.channelService;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,6 +60,12 @@ public class UserServiceImpl implements IUserService {
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
+
+	@Resource(name = "userBindChannelServiceImpl")
+	private UserBindChannelService userBindChannelService;
+
+	@Resource(name = "channelServiceImpl")
+	private com.msy.travel.service.channelService channelService;
 
 	/**
 	 * 新增User
@@ -222,11 +232,11 @@ public class UserServiceImpl implements IUserService {
 		{
 			throw new LogicException(tokenResult.getResultMsg());
 		}
-		//用户手机号码密文.手机号码经过AES加密后的结果,密钥为接口签名秘钥secret经md5转换后的值(大写)
-		String msisdn = tokenResult.getResultPojo().toString();
+		//用户手机号码-msisdn
+		String tel = tokenResult.getResultPojo().toString();
 
 		User user = new User();
-		user.setUserLoginName(msisdn);
+		user.setUserLoginName(tel);
 		user.setType(User.USER_TYPE_SDMOBILE);
 		List<User> userList = userDao.queryUserListByLogin(user);
 
@@ -237,9 +247,9 @@ public class UserServiceImpl implements IUserService {
 		{
 			User userDb = new User();
 			userDb.setUserId(PrimaryKeyUtil.generateKey());
-			userDb.setUserLoginName(msisdn);
+			userDb.setUserLoginName(tel);
 			userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
-			String userPwd = msisdn;
+			String userPwd = tel;
 			userDb.setUserPwd(MD5.encode(userPwd));
 			userDb.setUserRegDate(DateTimeUtil.getDateTime19());
 			userDb.setUserState("1");
@@ -250,6 +260,14 @@ public class UserServiceImpl implements IUserService {
 			userDb.setType(User.USER_TYPE_SDMOBILE);
 			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
 			userService.createUser(userDb);
+
+			Channel channel = new Channel();
+			channel.setChannelKey(Channel.SDYD);
+			channel = channelService.displaychannel(channel);
+			UserBindChannel userBindChannel = new UserBindChannel();
+			userBindChannel.setChannelId(channel.getChannelId());
+			userBindChannel.setUserId(userDb.getUserId());
+			userBindChannelService.createUserBindChannel(userBindChannel);
 			return userDb;
 		}
 	}

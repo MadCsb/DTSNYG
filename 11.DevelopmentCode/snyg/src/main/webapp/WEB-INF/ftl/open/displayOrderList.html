@@ -6,10 +6,21 @@
 <body>
 </body>
 <script type="text/javascript">
-	OpenApi openApi = new OpenApi();
-	openApi.resetDefaultPageType("${detailPage!''}");
-	var param = new Object();
-	param.spId = "${spId!''}";
-  openApi.gotoOrderList(param);
+  var openApi = new OpenApi();
+  openApi.resetDefaultPageType("${detailPage!''}");
+  var spId = "${spId!''}";
+  var detailUrl = null;
+  if (openApi.pageType == openApi.WX)
+  {
+    detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
+  }else if (openApi.pageType == openApi.WEB)
+  {
+    detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
+  }else if (openApi.pageType == openApi.WAP)
+  {
+    detailUrl ="${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
+  }
+  window.location.replace(detailUrl);
+
 </script>
 </html>

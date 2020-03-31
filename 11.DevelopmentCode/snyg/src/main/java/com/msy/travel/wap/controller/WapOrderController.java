@@ -3,6 +3,7 @@ package com.msy.travel.wap.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -326,7 +327,10 @@ public class WapOrderController extends BaseController {
 					sellPrice.setPriceId(priceIdArray[i]);
 					sellPrice = sellPriceService.displaySellPrice(sellPrice);
 					param.put("priceCode",sellPrice.getPriceCode());
-					Result sdResult = orderService.sdMobileCanOrder(param,user);
+					Map<String,String> map = new HashMap();
+					map.put("msisdn",user.getUserLoginName());
+					map.put("priceCode",param.get("priceCode"));
+					Result sdResult =  Common.validMemberMbr(map);
 					if (!"0".equals(sdResult.getResultCode()))
 					{
 						throw new LogicException(sdResult.getResultMsg());

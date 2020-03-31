@@ -6,15 +6,20 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.HttpClientTool;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.Result;
+import com.msy.travel.service.impl.OrderServiceImpl;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -28,7 +33,7 @@ public class Common {
   public static String portalType = Common.PORTALTYPE_WAP;
   public static String portalID = "QYDTDS";
   public static String key = "qLd8cG3^2mH%s#dU";
-
+  public static final Log log = LogFactory.getLog(Common.class);
   public static String testToken = "abc";
 
   /**
@@ -116,15 +121,27 @@ public class Common {
    *
    * @return
    */
-  private static String getCompleteUrl(Map<String, String> param) {
+  private static String getCompleteUrl(Map<String, String> param){
     StringBuffer urlSb = new StringBuffer();
     urlSb.append(Common.url).append("?");
     Set<String> paramSet = param.keySet();
     for (String tmp : paramSet)
     {
-      urlSb.append(tmp).append("=").append(param.get(tmp)).append("&");
+      //urlSb.append(tmp).append("=").append(param.get(tmp)).append("&");
+      if(tmp.equals("msisdn"))//有特殊字符需要encoder
+      {
+        try {
+          urlSb.append(tmp).append("=").append(URLEncoder.encode(param.get(tmp),"UTF-8")).append("&");
+        }catch (Exception e)
+        {
+          return "";
+        }
+      }else
+      {
+        urlSb.append(tmp).append("=").append(param.get(tmp)).append("&");
+      }
     }
-    return urlSb.substring(0,urlSb.length());
+    return urlSb.substring(0,urlSb.length()-1);
   }
 
   /**
@@ -135,7 +152,6 @@ public class Common {
   public static Result getUserByToken(Map<String, String> param)
   {
     Result result = new Result();
-
     param.put("portalType",Common.PORTALTYPE_WAP);
     param.put("portalID",Common.portalID);
     param.put("transactionID",getOnlyTransactionID());
@@ -146,6 +162,7 @@ public class Common {
     {
       return signResult;
     }
+
     param.put("sign",signResult.getResultPojo().toString());
 
     HttpPost httpPost = new HttpPost(getCompleteUrl(param));
@@ -156,12 +173,14 @@ public class Common {
     }
     System.out.println(httpResult.getResultPojo().toString());
     JSONObject httpResultObject = JSON.parseObject(httpResult.getResultPojo().toString());
+
     String code = httpResultObject.getString("code");
     if(Common.CODE_SUCCESS.equals(code))
     {
       result.setResultCode("0");
       result.setResultMsg(httpResultObject.getString("message"));
-      result.setResultPojo(httpResultObject.getString("msisdn"));
+      String tel=AESUtil.decrypt(AESUtil.md5Key(Common.key),httpResultObject.getString("msisdn"));
+      result.setResultPojo(tel+"-*-"+httpResultObject.getString("msisdn")); //防止国际电话，所以设置特殊的分隔符
     }else if(Common.CODE_ERROR.equals(code))
     {
       result.setResultCode("1");
@@ -189,26 +208,29 @@ public class Common {
    */
   public static Result validMemberMbr(Map<String, String> param) {
     Result result = new Result();
+    String telMsisdn = param.get("msisdn");
+    String tel = telMsisdn.substring(0,telMsisdn.indexOf("-*-"));
+    String msisdn = telMsisdn.substring(telMsisdn.indexOf("-*-")+3);
 
-    param.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
-    param.put("portalID",Common.portalID); //请求方门户唯一标识
-    param.put("transactionID",getOnlyTransactionID()); //交易唯一编码
-    param.put("method","validMemberMbr");
-    param.put("signType","MD5");
-    param.put("msisdn",param.get("msisdn")); //用户手机号码密文
-    param.put("mbrSource","yryp"); //会员来源
-    param.put("mbrProdType","1"); //权益产品类型 0或空：电子券，1：额度
-    param.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
-    param.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
-
-    Result signResult = Common.getSign(param,Common.key);
+    Map<String, String> signMap = new HashMap<>();
+    signMap.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
+    signMap.put("portalID",Common.portalID); //请求方门户唯一标识
+    signMap.put("transactionID",getOnlyTransactionID()); //交易唯一编码
+    signMap.put("method","validMemberMbr");
+    signMap.put("signType","MD5");
+    signMap.put("msisdn",tel); //URL传递msisdn是电话明文
+    signMap.put("mbrSource","yryp"); //会员来源
+    signMap.put("mbrProdType","1"); //权益产品类型 0或空：电子券，1：额度
+    signMap.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
+    signMap.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
+    Result signResult = Common.getSign(signMap,Common.key);
     if (!"0".equals(signResult.getResultCode()))
     {
       return signResult;
     }
-    param.put("sign",signResult.getResultPojo().toString());
-
-    HttpPost httpPost = new HttpPost(getCompleteUrl(param));
+    signMap.put("sign",signResult.getResultPojo().toString());
+    signMap.put("msisdn",msisdn);//URL传递msisdn是电话加密msisdn
+    HttpPost httpPost = new HttpPost(getCompleteUrl(signMap));
     Result httpResult = HttpClientTool.doHttpPost(httpPost);
     if (!"0".equals(httpResult.getResultCode()))
     {
@@ -240,27 +262,32 @@ public class Common {
    */
   public static Result syncMemberMbrOrder(Map<String, String> param) {
     Result result = new Result();
+    String telMsisdn = param.get("msisdn");
+    String tel = telMsisdn.substring(0,telMsisdn.indexOf("-*-"));
+    String msisdn = telMsisdn.substring(telMsisdn.indexOf("-*-")+3);
 
-    param.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
-    param.put("portalID",Common.portalID); //请求方门户唯一标识
-    param.put("transactionID",getOnlyTransactionID()); //交易唯一编码
-    param.put("method","syncMemberMbrOrder");
-    param.put("signType","MD5");
-    param.put("msisdn",param.get("msisdn")); //用户手机号码密文
-    param.put("mbrSource","yryp"); //会员来源
-    param.put("mbrProdType","0"); //权益产品类型 0或空：电子券，1：额度
-    param.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
-    param.put("mbrOrderId",Common.portalID+param.get("orderId")); //权益产品编码 portalID+xxxxxxxx
-    param.put("mbrOrderStatus","1");//订单状态：1：订购成功
-    param.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
-    Result signResult = Common.getSign(param,Common.key);
+    Map<String, String> signMap = new HashMap<>();
+    signMap.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
+    signMap.put("portalID",Common.portalID); //请求方门户唯一标识
+    signMap.put("transactionID",getOnlyTransactionID()); //交易唯一编码
+    signMap.put("method","syncMemberMbrOrder");
+    signMap.put("signType","MD5");
+    signMap.put("msisdn",tel); //用户手机号码密文
+    signMap.put("mbrSource","yryp"); //会员来源
+    signMap.put("mbrProdType","1"); //权益产品类型 0或空：电子券，1：额度
+    signMap.put("mbrProdNo",Common.portalID+param.get("priceCode")); //权益产品编码 portalID+xxxxxxxx
+    signMap.put("mbrOrderId",Common.portalID+param.get("orderId")); //权益产品编码 portalID+xxxxxxxx
+    signMap.put("mbrOrderStatus","1");//订单状态：1：订购成功
+    signMap.put("dateTime",DateTimeUtil.getDateTime14());//操作时间
+    Result signResult = Common.getSign(signMap,Common.key);
     if (!"0".equals(signResult.getResultCode()))
     {
       return signResult;
     }
-    param.put("sign",signResult.getResultPojo().toString());
+    signMap.put("sign",signResult.getResultPojo().toString());
+    signMap.put("msisdn",msisdn);
 
-    HttpPost httpPost = new HttpPost(getCompleteUrl(param));
+    HttpPost httpPost = new HttpPost(getCompleteUrl(signMap));
     Result httpResult = HttpClientTool.doHttpPost(httpPost);
     if (!"0".equals(httpResult.getResultCode()))
     {
@@ -288,11 +315,19 @@ public class Common {
 
   public static void main(String[] args)
   {
-    String s = "dateTime=20160622111213&method=getTicket&msisdn=13588888888&portalID=WXYYT&portalType=WEIXIN&signType=MD5&transactionID=2016062211121300065535abce$OO7&+-*22L";
-    //
-    if (MD5.encode(s,"utf-8").toUpperCase().equals("465B4A51074DFB822E75FBE8B4DDEB2B"))
-    {
-      System.out.println(112);
-    }
+    //String s = "dateTime=20200330113344&mbrProdNo=QYDTDS178&mbrProdType=1&mbrSource=yryp&method=validMemberMbr&msisdn=13969062325&portalID=QYDTDS&portalType=WAP&signType=MD5&transactionID=2020033011334499999996qLd8cG3^2mH%s#dU";
+    ////
+    //if (MD5.encode(s,"utf-8").toUpperCase().equals("F518E225AADA56BEC126680FBCD7F72F"))
+    //{
+    //  System.out.println(112);
+    //}
+    String ss = "18912-*823345-*-abcd";
+
+    String tel = ss.substring(0,ss.indexOf("-*-"));
+    String msisdn = ss.substring(ss.indexOf("-*-")+3);
+    System.out.println(tel);
+    System.out.println(msisdn);
+
+
   }
 }

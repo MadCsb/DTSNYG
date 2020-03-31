@@ -104,15 +104,8 @@ public class OpenController extends BaseController {
 			if (sdToken != null && !sdToken.equals("")) //如果存在token，表示是山东进来的
 			{
 				user = userService.getOrCreateBySdToken(sdToken);
-				String userPwd = null;
-				if(user.getUserLoginName().length()>6)
-				{
-					userPwd = user.getUserLoginName().substring(0,6);
-				}else
-				{
-					userPwd = "123456";
-				}
-				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), userPwd);
+				String userPwd = user.getUserLoginName();
+				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(userPwd));
 				Subject subject = SecurityUtils.getSubject();
 				subject.login(token);
 				view.addObject("detailPage","wap");

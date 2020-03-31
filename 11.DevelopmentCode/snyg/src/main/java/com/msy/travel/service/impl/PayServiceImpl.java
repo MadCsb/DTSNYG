@@ -426,8 +426,6 @@ public class PayServiceImpl implements PayService {
 				payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
 						.encode(sdReturnUrl, "UTF-8"));
 			}
-			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
-					.encode(configParameter.getWxpayWapReturnUrl(), "UTF-8"));
 			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
