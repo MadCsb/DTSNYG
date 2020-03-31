@@ -158,4 +158,18 @@ public class OrderListServiceImpl implements OrderListService {
 	public List<OrderList> queryOrderListDetailList(OrderList orderList) throws Exception {
 		return orderListDao.queryOrderListDetailList(orderList);
 	}
+
+	/**
+	 * 账单明细导出
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 下午4:53:51
+	 * @param orderList
+	 * @return
+	 * @throws Exception
+	 * @return List<OrderList>
+	 */
+	public List<OrderList> queryOrderListDetailListExport(OrderList orderList) throws Exception {
+		return orderListDao.queryOrderListDetailListExport(orderList);
+	}
 }

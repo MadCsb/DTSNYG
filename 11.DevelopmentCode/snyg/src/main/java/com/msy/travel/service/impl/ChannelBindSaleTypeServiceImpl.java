@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.Result;
 import com.msy.travel.dao.ChannelBindSaleTypeDao;
-import com.msy.travel.pojo.channel;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.ChannelBindSaleType;
 import com.msy.travel.pojo.User;
 import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelBindSaleTypeService;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.UserBindChannelService;
-import com.msy.travel.service.channelService;
 
 /**
  * ChannelBindSaleTypeService接口实现类
@@ -35,7 +35,7 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	private UserBindChannelService userBindChannelService;
 
 	@Resource(name = "channelServiceImpl")
-	private channelService channelService;
+	private ChannelService channelService;
 
 	/**
 	 * 新增ChannelBindSaleType
@@ -131,8 +131,8 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	public List<String> querySaleTypeByUser(User user) throws Exception {
 		List<String> saleTypeIdList = new ArrayList<String>();
 		if (user == null || user.getUserId().equals("")) {
-			channel channel = new channel();
-			channel.setChannelKey(com.msy.travel.pojo.channel.SNYG);
+			Channel channel = new Channel();
+			channel.setChannelKey(Channel.SNYG);
 			channel = channelService.displaychannel(channel);
 
 			ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
@@ -154,8 +154,8 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 					saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 				}
 			} else {
-				channel channel = new channel();
-				channel.setChannelKey(com.msy.travel.pojo.channel.SNYG);
+				Channel channel = new Channel();
+				channel.setChannelKey(Channel.SNYG);
 				channel = channelService.displaychannel(channel);
 
 				ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();

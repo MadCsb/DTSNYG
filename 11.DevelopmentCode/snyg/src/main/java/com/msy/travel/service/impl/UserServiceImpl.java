@@ -1,17 +1,9 @@
 package com.msy.travel.service.impl;
 
-import com.chinamobile.sd.openapi.Common;
-import com.msy.travel.common.LogicException;
-import com.msy.travel.common.MD5;
-import com.msy.travel.common.Result;
-import com.msy.travel.pojo.channel;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.UserBindChannel;
-import com.msy.travel.service.UserBindChannelService;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
@@ -20,14 +12,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
+import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.LogicException;
+import com.msy.travel.common.MD5;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.dao.UserDao;
+import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
+import com.msy.travel.pojo.UserBindChannel;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
+import com.msy.travel.service.UserBindChannelService;
 import com.msy.travel.wx.pojo.WxUser;
 import com.msy.travel.wx.utils.WeixinService;
 import com.msy.travel.wx.utils.WeixinUtil;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements IUserService {
 	private UserBindChannelService userBindChannelService;
 
 	@Resource(name = "channelServiceImpl")
-	private com.msy.travel.service.channelService channelService;
+	private ChannelService channelService;
 
 	/**
 	 * 新增User
@@ -211,23 +212,23 @@ public class UserServiceImpl implements IUserService {
 		return u;
 	}
 
-
 	/**
 	 *
 	 * 获取或新增 山东移动用户
-	 * @param sdToken 山东移动访问我方平台时附带的token
+	 * 
+	 * @param sdToken
+	 *            山东移动访问我方平台时附带的token
 	 */
 	public User getOrCreateBySdToken(String sdToken) throws Exception {
 
-		//根据token获取山东移动用户唯一手机号码 msisdn
-		Map<String,String> tokenParam = new HashMap<>();
-		tokenParam.put("token",sdToken);
+		// 根据token获取山东移动用户唯一手机号码 msisdn
+		Map<String, String> tokenParam = new HashMap<>();
+		tokenParam.put("token", sdToken);
 		Result tokenResult = Common.getUserByToken(tokenParam);
-		if (!"0".equals(tokenResult.getResultCode()))
-		{
+		if (!"0".equals(tokenResult.getResultCode())) {
 			throw new LogicException(tokenResult.getResultMsg());
 		}
-		//用户手机号码-msisdn
+		// 用户手机号码-msisdn
 		String tel = tokenResult.getResultPojo().toString();
 
 		User user = new User();
@@ -235,11 +236,9 @@ public class UserServiceImpl implements IUserService {
 		user.setType(User.USER_TYPE_SDMOBILE);
 		List<User> userList = userDao.queryUserListByLogin(user);
 
-		if (userList.size() != 0)
-		{
+		if (userList.size() != 0) {
 			return userList.get(0);
-		}else
-		{
+		} else {
 			User userDb = new User();
 			userDb.setUserId(PrimaryKeyUtil.generateKey());
 			userDb.setUserLoginName(tel);
@@ -256,13 +255,13 @@ public class UserServiceImpl implements IUserService {
 			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
 			userService.createUser(userDb);
 
-			channel channel = new channel();
-			channel.setChannelKey(com.msy.travel.pojo.channel.SDYD);
+			Channel channel = new Channel();
+			channel.setChannelKey(Channel.SDYD);
 			channel = channelService.displaychannel(channel);
 			UserBindChannel userBindChannel = new UserBindChannel();
 			userBindChannel.setChannelId(channel.getChannelId());
 			userBindChannel.setUserId(userDb.getUserId());
-      userBindChannel.setCreateTime(DateTimeUtil.getDateTime19());
+			userBindChannel.setCreateTime(DateTimeUtil.getDateTime19());
 			userBindChannelService.createUserBindChannel(userBindChannel);
 			return userDb;
 		}
@@ -296,20 +295,21 @@ public class UserServiceImpl implements IUserService {
 		return userDao.getUserCountFromAdd(user);
 	}
 
-  /**
-   *
-   * 判断用户是否是山东用户
-   * @param userId 用户ID
-   * @return boolean 是否是山东用户
-   */
-  public boolean checkIsSdUser(String userId) throws Exception{
-    User user = new User();
-    user.setUserId(userId);
-    user = userDao.queryUser(user);
-    if (User.USER_TYPE_SDMOBILE.equals(user.getType()))
-    {
-      return true;
-    }
-    return false;
-  }
+	/**
+	 *
+	 * 判断用户是否是山东用户
+	 * 
+	 * @param userId
+	 *            用户ID
+	 * @return boolean 是否是山东用户
+	 */
+	public boolean checkIsSdUser(String userId) throws Exception {
+		User user = new User();
+		user.setUserId(userId);
+		user = userDao.queryUser(user);
+		if (User.USER_TYPE_SDMOBILE.equals(user.getType())) {
+			return true;
+		}
+		return false;
+	}
 }

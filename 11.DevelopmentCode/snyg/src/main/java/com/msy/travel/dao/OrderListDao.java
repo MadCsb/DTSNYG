@@ -121,4 +121,16 @@ public interface OrderListDao {
 	 * @return List<OrderList>
 	 */
 	List<OrderList> queryOrderListDetailList(OrderList orderList) throws Exception;
+
+	/**
+	 * 账单明细导出
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 下午4:53:51
+	 * @param orderList
+	 * @return
+	 * @throws Exception
+	 * @return List<OrderList>
+	 */
+	List<OrderList> queryOrderListDetailListExport(OrderList orderList) throws Exception;
 }

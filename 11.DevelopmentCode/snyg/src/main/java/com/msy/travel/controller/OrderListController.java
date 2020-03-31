@@ -435,7 +435,7 @@ public class OrderListController extends BaseController {
 			path = path + File.separator + tempName;
 			orderList.setPayTag("1");
 
-			List<OrderList> exportlist = orderListService.queryOrderListDetailList(orderList);
+			List<OrderList> exportlist = orderListService.queryOrderListDetailListExport(orderList);
 
 			List<Map<String, Object>> maps = new ArrayList<>();
 			for (OrderList t : exportlist) {
@@ -452,6 +452,17 @@ public class OrderListController extends BaseController {
 				map.put("createTime", t.getCreateTime());
 				map.put("money", t.getMoney());
 				map.put("orderListType", t.getOrderListType());
+
+				map.put("productName", t.getProductName());
+				map.put("childName", t.getChildName());
+				map.put("num", t.getNum());
+				map.put("price", t.getPrice());
+				map.put("money", t.getMoney());
+				map.put("userName", t.getUserName());
+				map.put("custName", t.getCustName());
+				map.put("recAddress", t.getRecAddress());
+				map.put("epmeOrdCode", t.getEpmeOrdCode());
+				map.put("epmeCompany", t.getEpmeCompany());
 				maps.add(map);
 
 			}

@@ -32,8 +32,8 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 	 */
 	public static final String[] EXPORT_HEADERS_DETAILLIST = {
 			// columns START
-			"orderCode:单据编号", "createTime:发生日期", "money:发生金额(¥)", "orderListType:发生类型" };
-
+			"orderCode:单据编号", "createTime:发生日期", "money:发生金额(¥)", "orderListType:发生类型", "productName:商品名称", "childName:商品规格", "num:数量", "price:单价", "money:总价", "userName:订货人", "custName:收货人",
+			"recAddress:收货地址", "epmeOrdCode:快递单号", "epmeCompany:快递公司" };
 	// columns START
 	/**
 	 * 订单产品明细编号 db_column: F_ORDERLISTID
@@ -120,8 +120,6 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 	 */
 	private String customerCouponId;
 
-
-
 	/**
 	 * 商品
 	 */
@@ -162,6 +160,56 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 	private String createTime;
 
 	private String orderCode;
+
+	private String userName;
+
+	private String custName;
+
+	private String recAddress;
+
+	private String epmeOrdCode;
+
+	private String epmeCompany;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+
+	public String getRecAddress() {
+		return recAddress;
+	}
+
+	public void setRecAddress(String recAddress) {
+		this.recAddress = recAddress;
+	}
+
+	public String getEpmeOrdCode() {
+		return epmeOrdCode;
+	}
+
+	public void setEpmeOrdCode(String epmeOrdCode) {
+		this.epmeOrdCode = epmeOrdCode;
+	}
+
+	public String getEpmeCompany() {
+		return epmeCompany;
+	}
+
+	public void setEpmeCompany(String epmeCompany) {
+		this.epmeCompany = epmeCompany;
+	}
 
 	public String getCreateTime() {
 		return createTime;
