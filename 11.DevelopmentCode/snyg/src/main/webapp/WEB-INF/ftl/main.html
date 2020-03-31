@@ -295,6 +295,11 @@ function subStr(str){
 //跳转页面
 function toMainFrame(menuId,url,obj){
 	
+	layer.load(2,{shade: [0.2, '#000']});
+	if($(obj).attr("menuurl")=="javascript:void();"){
+        layer.closeAll('loading');
+	}
+	
 	$(".dropdown ul li a").each(function(){
 		$(this).removeClass();
 	})
