@@ -2,7 +2,7 @@ package com.msy.travel.dao;
 
 import java.util.List;
 
-import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.channel;
 
 /**
  * channelDao接口
@@ -17,7 +17,7 @@ public interface channelDao {
 	 * @param channel
 	 *            channel对象
 	 */
-	void insertchannel(Channel channel) throws Exception;
+	void insertchannel(channel channel) throws Exception;
 
 	/**
 	 * 检查channel
@@ -25,7 +25,7 @@ public interface channelDao {
 	 * @param channel
 	 *            channel对象
 	 */
-	void mergechannel(Channel channel) throws Exception;
+	void mergechannel(channel channel) throws Exception;
 
 	/**
 	 * 删除channel
@@ -33,7 +33,7 @@ public interface channelDao {
 	 * @param channel
 	 *            成语对象
 	 */
-	void deletechannel(Channel channel) throws Exception;
+	void deletechannel(channel channel) throws Exception;
 
 	/**
 	 * 批量删除channel
@@ -41,7 +41,7 @@ public interface channelDao {
 	 * @param ids
 	 *            ids
 	 */
-	void deleteBatchchannel(Channel channel) throws Exception;
+	void deleteBatchchannel(channel channel) throws Exception;
 
 	/**
 	 * 修改channel
@@ -49,7 +49,7 @@ public interface channelDao {
 	 * @param channel
 	 *            channel对象
 	 */
-	void updatechannel(Channel channel) throws Exception;
+	void updatechannel(channel channel) throws Exception;
 
 	/**
 	 * 查询单个channel信息
@@ -59,7 +59,7 @@ public interface channelDao {
 	 * 
 	 * @return channel实体对象
 	 */
-	Channel querychannel(Channel channel) throws Exception;
+	channel querychannel(channel channel) throws Exception;
 
 	/**
 	 * 查询channel列表信息
@@ -69,7 +69,7 @@ public interface channelDao {
 	 * 
 	 * @return channel列表
 	 */
-	List<Channel> querychannelList(Channel channel) throws Exception;
+	List<channel> querychannelList(channel channel) throws Exception;
 
 	/**
 	 * 获取channelID
@@ -86,5 +86,5 @@ public interface channelDao {
 	 * @throws Exception
 	 * @return int
 	 */
-	int checkChannelKeyExis(Channel channel) throws Exception;
+	int checkChannelKeyExis(channel channel) throws Exception;
 }

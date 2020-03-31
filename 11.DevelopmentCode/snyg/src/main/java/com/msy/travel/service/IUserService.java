@@ -130,4 +130,13 @@ public interface IUserService {
 	 * @param sdToken 山东移动访问我方平台时附带的token
 	 */
 	User getOrCreateBySdToken(String sdToken) throws Exception;
+
+	/**
+	 *
+	 * 判断用户是否是山东用户
+	 * @param userId 用户ID
+	 * @return boolean 是否是山东用户
+	 */
+	public boolean checkIsSdUser(String userId) throws Exception;
+
 }

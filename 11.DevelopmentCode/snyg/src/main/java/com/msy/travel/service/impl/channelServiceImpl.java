@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.dao.channelDao;
-import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.channel;
 import com.msy.travel.service.channelService;
 
 /**
@@ -30,7 +30,7 @@ public class channelServiceImpl implements channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void createchannel(Channel channel) throws Exception {
+	public void createchannel(channel channel) throws Exception {
 		channelDao.insertchannel(channel);
 	}
 
@@ -40,7 +40,7 @@ public class channelServiceImpl implements channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void mergechannel(Channel channel) throws Exception {
+	public void mergechannel(channel channel) throws Exception {
 		channelDao.mergechannel(channel);
 	}
 
@@ -50,7 +50,7 @@ public class channelServiceImpl implements channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void deletechannel(Channel channel) throws Exception {
+	public void deletechannel(channel channel) throws Exception {
 		channelDao.deletechannel(channel);
 	}
 
@@ -60,7 +60,7 @@ public class channelServiceImpl implements channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void updatechannel(Channel channel) throws Exception {
+	public void updatechannel(channel channel) throws Exception {
 		channelDao.updatechannel(channel);
 	}
 
@@ -70,7 +70,7 @@ public class channelServiceImpl implements channelService {
 	 * @param channelIdList
 	 *            存放channel主键的list
 	 */
-	public void deleteBatchchannel(Channel channel) throws Exception {
+	public void deleteBatchchannel(channel channel) throws Exception {
 		channelDao.deleteBatchchannel(channel);
 	}
 
@@ -82,7 +82,7 @@ public class channelServiceImpl implements channelService {
 	 * 
 	 * @return 成员实体对象
 	 */
-	public Channel displaychannel(Channel channel) throws Exception {
+	public channel displaychannel(channel channel) throws Exception {
 		return channelDao.querychannel(channel);
 	}
 
@@ -94,7 +94,7 @@ public class channelServiceImpl implements channelService {
 	 * 
 	 * @return channel列表
 	 */
-	public List<Channel> querychannelList(Channel channel) throws Exception {
+	public List<channel> querychannelList(channel channel) throws Exception {
 		return channelDao.querychannelList(channel);
 	}
 
@@ -115,7 +115,7 @@ public class channelServiceImpl implements channelService {
 	 * @throws Exception
 	 * @return int
 	 */
-	public int checkChannelKeyExis(Channel channel) throws Exception {
+	public int checkChannelKeyExis(channel channel) throws Exception {
 		return channelDao.checkChannelKeyExis(channel);
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.Result;
 import com.msy.travel.dao.ChannelBindSaleTypeDao;
-import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.channel;
 import com.msy.travel.pojo.ChannelBindSaleType;
 import com.msy.travel.pojo.User;
 import com.msy.travel.pojo.UserBindChannel;
@@ -131,8 +131,8 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	public List<String> querySaleTypeByUser(User user) throws Exception {
 		List<String> saleTypeIdList = new ArrayList<String>();
 		if (user == null || user.getUserId().equals("")) {
-			Channel channel = new Channel();
-			channel.setChannelKey(Channel.SNYG);
+			channel channel = new channel();
+			channel.setChannelKey(com.msy.travel.pojo.channel.SNYG);
 			channel = channelService.displaychannel(channel);
 
 			ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
@@ -154,8 +154,8 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 					saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 				}
 			} else {
-				Channel channel = new Channel();
-				channel.setChannelKey(Channel.SNYG);
+				channel channel = new channel();
+				channel.setChannelKey(com.msy.travel.pojo.channel.SNYG);
 				channel = channelService.displaychannel(channel);
 
 				ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();

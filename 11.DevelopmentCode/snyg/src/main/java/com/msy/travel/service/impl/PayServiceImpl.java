@@ -645,7 +645,7 @@ public class PayServiceImpl implements PayService {
 		user = userService.displayUser(user);
 		if(user.getType().equals("2"))
 		{
-			return Common.url;
+			return Common.homeUrl;
 		}else
 		{
 			return null;
