@@ -424,4 +424,79 @@
 		</where>
 		ORDER BY createTime DESC 
 	</select>
+	
+	<!-- 按条件查询所有  账单明细导出-->
+	<select id="queryOrderListDetailListExport" parameterType="orderList" resultType="orderList">
+	select * from (
+		SELECT
+			ol.F_ORDERLISTTYPE as orderListType,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_PAYDATE
+				WHEN '1' THEN ob.F_APPLYTIME
+				WHEN '2' THEN otmp.F_CREATETIME
+				END
+			) AS createTime,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_ORDERCODE
+				WHEN '1' THEN ob.F_BACKCODE
+				WHEN '2' THEN o.F_ORDERCODE
+				END
+			) AS orderCode,
+			ol.F_VENID as venId,
+			ol.F_MONEY as money,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_ORDERID
+				WHEN '1' THEN ob.F_BACKID
+				WHEN '2' THEN o.F_ORDERID
+				END
+			) AS orderListId,
+			ol.F_PRODUCTNAME as productName,	/*名称*/
+			ol.F_CHILDNAME as childName,	/*规格*/
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_NUM
+				WHEN '1' THEN o.F_BACKNUM
+				WHEN '2' THEN o.F_NUM
+				END
+			) AS num,	/*数量*/
+			ol.F_PRICE as price,	/*单价*/
+			u.F_USER_NAME as userName,/*订货人*/
+			oc.F_CUSTNAME as custName, /*收货人*/
+			oc.F_RECADDRESS as recAddress,
+			group_concat(oe.F_EPMEORDCODE) AS epmeOrdCode,
+			group_concat(map.F_MAPVALUE) AS epmeCompany
+		FROM
+			t_sm_orderlist ol
+		LEFT JOIN t_sm_order o ON ol.F_ORDERID = o.F_ORDERID AND ol.F_ORDERLISTTYPE = '0'
+		LEFT JOIN t_sm_order otmp ON ol.F_ORDERID = otmp.F_ORDERID AND ol.F_ORDERLISTTYPE = '2'
+		LEFT JOIN t_sm_orderback ob ON ol.F_ORDERID = ob.F_ORDERID AND ol.F_ORDERLISTTYPE = '1'
+		LEFT JOIN t_sm_order od ON ol.F_ORDERID = od.F_ORDERID
+		LEFT JOIN t_pub_user u on o.F_USERID = u.F_USER_ID
+		LEFT JOIN t_sm_ordercustomer oc on ol.F_ORDERLISTID = oc.F_ORDERLISTID
+		LEFT JOIN t_sm_orderexpress oe on oe.F_ORDERLISTID = ol.F_ORDERLISTID
+		LEFT JOIN t_pub_map map on oe.F_EPMECOMPANY = map.F_MAPKEY and map.F_MAPTYPE='EXPRESS'
+		<where>
+			<if test="venId !=null and venId !=''">
+		    	AND ol.F_VENID = #{venId}
+			</if>
+			<if test="delFlag!=null and delFlag!=''">
+				AND ol.F_DELFLAG = #{delFlag}
+			</if>
+			<if test="payTag !=null and payTag !=''">
+				AND od.F_PAYTAG = #{payTag}
+			</if>
+		</where>)olTemp
+		<where>
+			<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+				AND createTime &gt;= concat(#{payDateTimeStart},' 00:00:00')
+			</if>
+			<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+				AND createTime &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+			</if>
+			<if test="orderListType !=null and orderListType !=''">
+				AND orderListType = #{orderListType}
+			</if>
+		</where>
+		group by ol.F_ORDERLISTID
+		ORDER BY createTime DESC 
+	</select>
 </mapper>	

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.msy.travel.common.Result;
 import com.msy.travel.dao.ChannelBindSaleTypeDao;
 import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.ChannelBindSaleType;
@@ -179,5 +180,40 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	 */
 	public List<String> queryChannelBindSaleTypeListByUserId(ChannelBindSaleType channelBindSaleType) throws Exception {
 		return channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
+	}
+
+	/**
+	 * 保存
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 下午3:00:53
+	 * @param channelId
+	 * @param saleTypeId
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result createChannelBindSaleType(String channelId, String saleTypeId) throws Exception {
+		Result result = new Result();
+		result.setResultCode("0");
+
+		ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
+		channelBindSaleType.setChannelId(channelId);
+		channelBindSaleTypeDao.deleteChannelBindSaleType(channelBindSaleType);
+
+		if (saleTypeId != null && !saleTypeId.trim().equals("")) {
+			String[] saleTypeIdList = saleTypeId.split(",");
+
+			for (String s : saleTypeIdList) {
+				channelBindSaleType = new ChannelBindSaleType();
+				channelBindSaleType.setChannelId(channelId);
+				channelBindSaleType.setSaleTypeId(s);
+
+				channelBindSaleTypeDao.insertChannelBindSaleType(channelBindSaleType);
+			}
+
+		}
+
+		return result;
 	}
 }

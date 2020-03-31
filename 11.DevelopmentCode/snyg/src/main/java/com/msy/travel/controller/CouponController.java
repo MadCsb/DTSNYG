@@ -27,7 +27,6 @@ import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
-import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
@@ -60,14 +59,6 @@ public class CouponController extends BaseController {
 	public ModelAndView toAddCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-			SaleType saleType = new SaleType();
-			saleType.setSpId(getLoginUser(request).getAccId());
-			saleType.setStatus("1");
-			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListForCoupon(saleType);
-			saleType = new SaleType();
-			saleType.setSaleTypeId(getLoginUser(request).getAccId());
-			saleType.setSaleTypeName("全部商品");
-			saleTypeList.add(0, saleType);
 
 			view = new ModelAndView("coupon/addCoupon");
 			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));

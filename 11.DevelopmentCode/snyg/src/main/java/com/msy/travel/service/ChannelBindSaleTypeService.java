@@ -2,6 +2,7 @@ package com.msy.travel.service;
 
 import java.util.List;
 
+import com.msy.travel.common.Result;
 import com.msy.travel.pojo.ChannelBindSaleType;
 import com.msy.travel.pojo.User;
 
@@ -100,4 +101,17 @@ public interface ChannelBindSaleTypeService {
 	 * @return List<ChannelBindSaleType>
 	 */
 	public List<String> queryChannelBindSaleTypeListByUserId(ChannelBindSaleType channelBindSaleType) throws Exception;
+
+	/**
+	 * 保存
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 下午3:00:53
+	 * @param channelId
+	 * @param saleTypeId
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result createChannelBindSaleType(String channelId, String saleTypeId) throws Exception;
 }

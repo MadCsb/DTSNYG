@@ -46,8 +46,12 @@
 		DELETE FROM
 			t_sm_channelbindsaletype 
 		<where>
-			F_SALETYPEID = #{saleTypeId}
-			
+			<if test="saleTypeId!=null and saleTypeId!=''">
+		    	F_SALETYPEID = #{saleTypeId}
+		    </if>
+			<if test="channelId !=null and channelId !=''">
+		    	and F_CHANNELID = #{channelId}
+		    </if>			
 		</where>
 	</delete>
 	<!-- 批量删除消息 -->
@@ -83,8 +87,10 @@
 		<where>
 			<if test="saleTypeId!=null and saleTypeId!=''">
 		    	t.F_SALETYPEID = #{saleTypeId}
-		     </if>
-			
+		    </if>
+			<if test="channelId !=null and channelId !=''">
+		    	and t.F_CHANNELID = #{channelId}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

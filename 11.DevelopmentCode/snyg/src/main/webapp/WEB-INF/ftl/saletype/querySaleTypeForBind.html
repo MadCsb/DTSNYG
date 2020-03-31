@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<meta charset="utf-8" />
+</head>
+<body>
+        <#if saleTypelist?? && (saleTypelist?size>0)>
+        	<#list saleTypelist as s>
+				<label><input id="saleType" name="saleTypeId" class="saleTypeCheck" type="checkbox" value="${s.saleTypeId!''}"  hidden /><label for="saleType${s_index}" class="check"></label>${s.saleTypeName!''}&nbsp;&nbsp;&nbsp;</label>
+			</#list>
+  	    </#if> 
+  	    <div class="footerbtn">
+				<input name="button4" type="button" onClick="javascript:parent.layer.closeAll();" class="cbtn2" id="button4" value="取消">
+				<input name="button3" onclick="beforeSubmit();" type="button" class="add-new" id="button3" value="保存">
+			</div>
+		<div class="page-div">
+ 			<#if saleTypelist?? && (saleTypelist?size>0)>   
+       			
+  			<#else>
+  				<div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+  			</#if>
+      	</div>
+	<form action="company?method=deleteBatch" id="deleteBatch"
+		method="post">
+		<input type="hidden" name="checkedCompanyIds"
+			id="checkedCompanyIds">
+	</form>
+<script type="text/javascript">
+
+var channelId = art.dialog.data("channelId");
+$(function(){
+	$.post("channelBindSaleType?method=queryForChannel",{
+		channelId:channelId
+	},function(data){
+		if(data!=null && data.length>0){
+			for(var i=0;i<data.length;i++){
+				$(".saleTypeCheck").each(function(){
+					if($(this).val() == data[i].saleTypeId){
+						$(this).attr("checked","checked");
+					}
+				});
+			}
+		}
+	},'json')
+});
+
+function beforeSubmit(){
+	var saleTypeId = "";
+	$("input[name='saleTypeId']:checked").each(function(i){
+		if(saleTypeId !=""){
+			saleTypeId +=",";
+		}
+		saleTypeId+=$(this).val();
+	})
+	
+	$.post("channelBindSaleType?method=createChannelBindSaleType",{
+		channelId:channelId,
+		saleTypeId:saleTypeId
+	},function(data){
+		if(data.resultCode=='0'){
+			parent.layer.alert("操作成功",function(){
+				parent.layer.closeAll();
+			})
+		}else{
+			parent.layer.alert(data.resultMsg,function(){
+				parent.layer.closeAll();
+			})
+		}
+	},'json')
+}
+</script>
+</body>
+</html>

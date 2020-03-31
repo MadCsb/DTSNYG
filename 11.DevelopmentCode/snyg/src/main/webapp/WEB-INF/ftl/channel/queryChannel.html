@@ -60,12 +60,13 @@
         		<td title=""> 
         			<#if li.isSys=='0'>
         			<#if li.status=='0'>
-        				<a href="javascript:void(0)" title="启用" onclick="changeStatus('${li.saleTypeId!''}','${li.status!''}')" class="ico_btn1">启用</a>
+        				<a href="javascript:void(0)" title="启用" onclick="changeStatus('${li.channelId!''}','${li.status!''}')" class="ico_btn1">启用</a>
         				<a href="saleType?method=toUpdate&saleTypeId=${li.saleTypeId!''}" title="编辑" class="ico_btn1">编辑</a>
         			<#else>
-        				<a href="javascript:void(0)" title="禁用" onclick="changeStatus('${li.saleTypeId!''}','${li.status!''}')" class="ico_btn1">禁用</a> 
+        				<a href="javascript:void(0)" title="禁用" onclick="changeStatus('${li.channelId!''}','${li.status!''}')" class="ico_btn1">禁用</a> 
         			</#if>    	
         			</#if>		
+        			<a href="javascript:void(0)" title="绑定活动" onclick="bindSaleType('${li.channelId!''}')" class="ico_btn1">绑定活动</a> 
   				</td>
         	</tr>
         </#list>
@@ -94,7 +95,6 @@ $(function(){
 
 function changeStatus(channelId,status){
 	var info = "";
-	
 	if(status=="0"){
 		info = "确认要启用这条记录吗？";
 		status = 1;
@@ -116,6 +116,20 @@ function changeStatus(channelId,status){
 		parent.layer.closeAll();
 	});
 	 
+}
+//绑定活动
+function bindSaleType(channelId){
+	art.dialog.data("channelId",channelId);
+	parent.layer.open({
+		type : 2,
+		title : '选择活动',
+		area : [ '500px', '300px' ],
+		fix : true,
+		content :"saleType?method=queryForBind",
+		end: function(){
+			
+		}
+	});
 }
 </script>
 </body>

@@ -288,4 +288,37 @@ public class SaleTypeController extends BaseController {
 		}
 	}
 
+	/**
+	 * 绑定
+	 * 
+	 * @author wzd
+	 * @date 2020年3月31日 下午2:03:56
+	 * @param saleType
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryForBind")
+	public ModelAndView queryForBind(SaleType saleType, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			if (saleType.getEntityPage() == null) {
+				saleType.setEntityPage(new EntityPage());
+			}
+			saleType.setSpId(getLoginUser(request).getAccId());
+
+			List<SaleType> saleTypelist = saleTypeService.querySaleTypeList(saleType);
+
+			view = new ModelAndView("saletype/querySaleTypeForBind");
+			view.addObject("saleTypelist", saleTypelist);
+			view.addObject("saleType", saleType);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
 }
