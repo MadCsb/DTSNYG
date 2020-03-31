@@ -2,7 +2,7 @@ package com.msy.travel.service;
 
 import java.util.List;
 
-import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.channel;
 
 /**
  * channelService接口
@@ -17,7 +17,7 @@ public interface channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void createchannel(Channel channel) throws Exception;
+	public void createchannel(channel channel) throws Exception;
 
 	/**
 	 * 检查channel
@@ -25,7 +25,7 @@ public interface channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void mergechannel(Channel channel) throws Exception;
+	public void mergechannel(channel channel) throws Exception;
 
 	/**
 	 * 删除channel
@@ -33,7 +33,7 @@ public interface channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void deletechannel(Channel channel) throws Exception;
+	public void deletechannel(channel channel) throws Exception;
 
 	/**
 	 * 批量删除channel
@@ -41,7 +41,7 @@ public interface channelService {
 	 * @param channelIdList
 	 *            存放channel主键的list
 	 */
-	public void deleteBatchchannel(Channel channel) throws Exception;
+	public void deleteBatchchannel(channel channel) throws Exception;
 
 	/**
 	 * 修改channel
@@ -49,7 +49,7 @@ public interface channelService {
 	 * @param channel
 	 *            channel对象
 	 */
-	public void updatechannel(Channel channel) throws Exception;
+	public void updatechannel(channel channel) throws Exception;
 
 	/**
 	 * 查询单个channel
@@ -59,7 +59,7 @@ public interface channelService {
 	 * 
 	 * @return channel实体对象
 	 */
-	public Channel displaychannel(Channel channel) throws Exception;
+	public channel displaychannel(channel channel) throws Exception;
 
 	/**
 	 * 查询channel列表
@@ -69,7 +69,7 @@ public interface channelService {
 	 * 
 	 * @return channel列表
 	 */
-	public List<Channel> querychannelList(Channel channel) throws Exception;
+	public List<channel> querychannelList(channel channel) throws Exception;
 
 	/**
 	 * 获取channel主键ID
@@ -86,5 +86,5 @@ public interface channelService {
 	 * @throws Exception
 	 * @return int
 	 */
-	public int checkChannelKeyExis(Channel channel) throws Exception;
+	public int checkChannelKeyExis(channel channel) throws Exception;
 }

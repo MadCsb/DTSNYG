@@ -4,11 +4,10 @@ import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.Result;
-import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.channel;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.UserBindChannelService;
-import com.msy.travel.service.channelService;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,10 +16,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -261,12 +256,13 @@ public class UserServiceImpl implements IUserService {
 			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
 			userService.createUser(userDb);
 
-			Channel channel = new Channel();
-			channel.setChannelKey(Channel.SDYD);
+			channel channel = new channel();
+			channel.setChannelKey(com.msy.travel.pojo.channel.SDYD);
 			channel = channelService.displaychannel(channel);
 			UserBindChannel userBindChannel = new UserBindChannel();
 			userBindChannel.setChannelId(channel.getChannelId());
 			userBindChannel.setUserId(userDb.getUserId());
+      userBindChannel.setCreateTime(DateTimeUtil.getDateTime19());
 			userBindChannelService.createUserBindChannel(userBindChannel);
 			return userDb;
 		}
@@ -299,4 +295,21 @@ public class UserServiceImpl implements IUserService {
 	public int getUserCountFromAdd(User user) throws Exception {
 		return userDao.getUserCountFromAdd(user);
 	}
+
+  /**
+   *
+   * 判断用户是否是山东用户
+   * @param userId 用户ID
+   * @return boolean 是否是山东用户
+   */
+  public boolean checkIsSdUser(String userId) throws Exception{
+    User user = new User();
+    user.setUserId(userId);
+    user = userDao.queryUser(user);
+    if (User.USER_TYPE_SDMOBILE.equals(user.getType()))
+    {
+      return true;
+    }
+    return false;
+  }
 }

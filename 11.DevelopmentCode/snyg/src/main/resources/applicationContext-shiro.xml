@@ -22,6 +22,7 @@
             <value>  
                 <!-- anon表示此地址不需要任何权限即可访问 -->
                 /=anon
+                /checkIsSdUser=anon
                 /login=anon
                 /tologin=anon
                 /relogin=anon

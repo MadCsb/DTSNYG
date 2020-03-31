@@ -129,9 +129,13 @@
 <iframe runat="server" id="ifa" src="" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" style="display: none;-webkit-overflow-scrolling: touch;-webkit-overflow:auto;"></iframe>
 <!--预订menu结束-->
 <script>
-  var consigneeObj = null;
-  var pay = null;
+  var pay = null; //支付信息
+  var isSdUser = false; //验证是否是山东用户
   $(function () {
+    var newPay = new Pay();
+    newPay.autoPayMethod()
+    alert(newPay.payMethod);
+    isSdUser = checkIsSdUser();
     var queryObject = new Object();
     queryObject.userId = $("#userId").val();
     queryObject.defaultFirst = "1"; //默认地址排前边
@@ -320,7 +324,6 @@
       var customerCouponParam = new Object(); //优惠券请求参数
       customerCouponParam.customerCouponId = $(customerCouponIdDiv).attr("customerCouponId");//客户优惠券关联ID
       customerCouponParam.sellPrice =sellPrice;
-      console.log(customerCouponParam);
       $.ajax({
         type: "POST",
         async: false,
@@ -328,7 +331,6 @@
         url: "waporder?method=ajaxCanUseCoupon",
         data:{param:JSON.stringify(customerCouponParam)},
         success: function (data) {
-          console.log(data);
           if(data.resultCode == '0')
           {
             $(customerCouponIdDiv).attr("canUse","0");
@@ -353,8 +355,10 @@
   }
 
   function createOrder() {
-    if(!sdCanOrder())
+    var isCanOrder = checkCanOrder(); //验证当前用户是否能预定上述产品
+    if(!isCanOrder)
     {
+      Alert.show3sMsg("当前用户不能预订!");
       return false;
     }
     if($("#consigneeId").val() == "")
@@ -363,7 +367,6 @@
       return false;
     }
     Alert.loading();
-//  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
     var param = new Object();
     param.consigneeId = $("#consigneeId").val();
     param.userId = $("#userId").val();
@@ -461,45 +464,42 @@
    }
 
   /**
-   * 山东移动验证是否能预订
+   * 验证能否预定
    * @returns {*}
    */
-  function sdCanOrder() {
-       var canOrder = true;
-       if($("#userType").val() == '2') //如果是山东移动用户，需要验证是否能下单
-       {
-           var priceIds = "";
-           $(".lics").each(function () {
-               if(priceIds != "")
-               {
-                   priceIds = priceIds + ","
-               }
-               priceIds = priceIds + $(this).attr("priceId");
-           });
+  function checkCanOrder() {
+    var canOrder = true;
+    if(isSdUser) //如果是山东用户，需要接口验证能否预定
+    {
+      var priceIds = "";
+      $(".lics").each(function () {
+        if(priceIds != "")
+        {
+          priceIds = priceIds + ","
+        }
+        priceIds = priceIds + $(this).attr("priceId");
+      });
 
-           $.ajax({
-               type: "POST",
-               async: false,
-               dataType: "json",
-               url: "waporder?method=sdCanOrder",
-               data: {
-                   priceIds: priceIds
-               },
-               success: function (data) {
-                 console.log("sdCanOrder--------");
-                 console.log(data);
-                   if(data.resultCode == "1") //创建订单失败
-                   {
-                       canOrder = false;
-                       Alert.show3sMsg("当前用户不能预订!");
-                   }else {
-                       canOrder = true;
-                   }
-               }
-           });
-       }
-       return canOrder;
-   }
+      $.ajax({
+        type: "POST",
+        async: false,
+        dataType: "json",
+        url: "waporder?method=sdCanOrder",
+        data: {
+          priceIds: priceIds
+        },
+        success: function (data) {
+          if(data.resultCode == "1")
+          {
+            canOrder = false;
+          }else {
+            canOrder = true;
+          }
+        }
+      });
+    }
+    return canOrder;
+  }
 </script>
 
 

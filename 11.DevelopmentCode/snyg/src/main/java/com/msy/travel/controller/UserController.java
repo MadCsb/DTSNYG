@@ -1078,4 +1078,35 @@ public class UserController extends BaseController {
 		}
 		return view;
 	}
+
+
+	/**
+	 * 验证是否山东用户
+	 *
+	 * @author chengsb
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(value = "/checkIsSdUser")
+	public void checkIsSdUser( HttpServletRequest request, HttpServletResponse response) {
+		boolean isSdUser = false;
+		try {
+			if (getLoginUser(request) != null)
+			{
+				isSdUser = userService.checkIsSdUser(getLoginUser(request).getUserId());
+			}
+		} catch (Exception e) {
+			log.error(e, e);
+		}finally {
+			try {
+				response.getWriter().write(String.valueOf(isSdUser));
+			}catch (Exception e)
+			{
+				log.error(e);
+			}
+		}
+	}
+
 }

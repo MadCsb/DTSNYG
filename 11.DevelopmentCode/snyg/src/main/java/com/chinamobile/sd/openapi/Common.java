@@ -30,12 +30,14 @@ import org.apache.http.entity.StringEntity;
 public class Common {
 
   public static String url = "http://t.sd.chinamobile.com:18380/dccp-portal/openapi";
+  public static String homeUrl = "http://t.sd.chinamobile.com:18380/dccp-portal/quanyihui/market.ajax";
   public static String portalType = Common.PORTALTYPE_WAP;
   public static String portalID = "QYDTDS";
   public static String key = "qLd8cG3^2mH%s#dU";
   public static final Log log = LogFactory.getLog(Common.class);
   public static String testToken = "abc";
 
+  public static String MSISDN_SEPARATOR = "-*-";
   /**
    * 接口返回值 成功 0
    */
@@ -180,7 +182,7 @@ public class Common {
       result.setResultCode("0");
       result.setResultMsg(httpResultObject.getString("message"));
       String tel=AESUtil.decrypt(AESUtil.md5Key(Common.key),httpResultObject.getString("msisdn"));
-      result.setResultPojo(tel+"-*-"+httpResultObject.getString("msisdn")); //防止国际电话，所以设置特殊的分隔符
+      result.setResultPojo(tel+Common.MSISDN_SEPARATOR+httpResultObject.getString("msisdn")); //防止国际电话，所以设置特殊的分隔符
     }else if(Common.CODE_ERROR.equals(code))
     {
       result.setResultCode("1");
@@ -209,8 +211,8 @@ public class Common {
   public static Result validMemberMbr(Map<String, String> param) {
     Result result = new Result();
     String telMsisdn = param.get("msisdn");
-    String tel = telMsisdn.substring(0,telMsisdn.indexOf("-*-"));
-    String msisdn = telMsisdn.substring(telMsisdn.indexOf("-*-")+3);
+    String tel = telMsisdn.substring(0,telMsisdn.indexOf(Common.MSISDN_SEPARATOR));
+    String msisdn = telMsisdn.substring(telMsisdn.indexOf(Common.MSISDN_SEPARATOR)+3);
 
     Map<String, String> signMap = new HashMap<>();
     signMap.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
@@ -263,8 +265,8 @@ public class Common {
   public static Result syncMemberMbrOrder(Map<String, String> param) {
     Result result = new Result();
     String telMsisdn = param.get("msisdn");
-    String tel = telMsisdn.substring(0,telMsisdn.indexOf("-*-"));
-    String msisdn = telMsisdn.substring(telMsisdn.indexOf("-*-")+3);
+    String tel = telMsisdn.substring(0,telMsisdn.indexOf(Common.MSISDN_SEPARATOR));
+    String msisdn = telMsisdn.substring(telMsisdn.indexOf(Common.MSISDN_SEPARATOR)+Common.MSISDN_SEPARATOR.length());
 
     Map<String, String> signMap = new HashMap<>();
     signMap.put("portalType",Common.PORTALTYPE_WAP); //请求方门户类型
