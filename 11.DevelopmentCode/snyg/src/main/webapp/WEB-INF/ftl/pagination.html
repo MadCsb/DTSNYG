@@ -61,6 +61,7 @@ function gotoPageByNumber()
         
         return false;
     }
+    parent.layer.load(2,{shade: [0.2, '#000']});
 
     document.getElementById("entityPage.currentPage").value=pageNumber;
 
@@ -70,6 +71,8 @@ function gotoPageByNumber()
 function getSelectPage(currentPage)
 {
 
+	parent.layer.load(2,{shade: [0.2, '#000']});
+	
 	document.getElementById("entityPage.currentPage").value=currentPage;
 
     onSubmit();
@@ -77,6 +80,8 @@ function getSelectPage(currentPage)
 
 function onSubmit()
 {
+	parent.layer.load(2,{shade: [0.2, '#000']});
+	
 	document.forms[0].submit();
 }
 

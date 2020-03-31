@@ -296,7 +296,7 @@ function subStr(str){
 function toMainFrame(menuId,url,obj){
 	
 	layer.load(2,{shade: [0.2, '#000']});
-	if($(obj).attr("menuurl")=="javascript:void();"){
+	if(url=="javascript:void();"){
         layer.closeAll('loading');
 	}
 	
