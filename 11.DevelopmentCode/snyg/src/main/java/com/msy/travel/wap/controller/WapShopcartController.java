@@ -158,6 +158,7 @@ public class WapShopcartController extends BaseController {
 			en.setSortOrder("DESC");
 			en.setSortField("t.F_UPDATETIME");
 			shopcart.setEntityPage(en);
+			shopcart.setState("1");
 			List<Shopcart> shopCartList = shopcartService.queryShopcartList(shopcart);
 			response.getWriter().print(shopCartList.size());
 		} catch (Exception e) {
