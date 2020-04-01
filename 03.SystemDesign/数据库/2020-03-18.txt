@@ -14,6 +14,7 @@ ALTER TABLE t_pub_user MODIFY column  F_USER_LOGINNAME varchar(50) not null comm
 ALTER TABLE t_sm_order ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
 ALTER TABLE t_sm_orderlist ADD F_COUPON_MONEY decimal(10,2) COMMENT '优惠金额';
 ALTER TABLE t_sm_orderlist ADD F_CUSTOMERCOUPONID VARCHAR(50) COMMENT '客户优惠券关联ID';
+ALTER TABLE t_sm_order ADD F_CHANNELID varchar(50) null comment '渠道ID';
 
 t_sm_saletype    	数据同步
 t_sm_channel	数据同步
