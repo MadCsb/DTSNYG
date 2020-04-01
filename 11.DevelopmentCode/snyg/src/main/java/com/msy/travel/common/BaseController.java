@@ -276,7 +276,7 @@ public class BaseController {
 				u = userService.displayUser(u);
 				view.addObject("user", u);
 			} else {
-				User u = userService.getOrCreateByUserLoginName(Destsp.currentSpId, code);
+				User u = userService.getOrCreateByUserLoginName(Destsp.currentSpId, code,getLoginUser(request));
 				view.addObject("user", u);
 				PrimaryKeyUtil.setUserIdByCode(code, u.getUserId());
 			}

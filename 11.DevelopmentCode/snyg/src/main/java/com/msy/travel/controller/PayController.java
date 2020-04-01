@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -298,4 +299,15 @@ public class PayController extends BaseController {
 		}
 	}
 
+	/**
+	 * 跳转支付结束页面
+	 * @return
+	 */
+	@RequestMapping(value = "/toPayReturn")
+	public ModelAndView toPayReturn(HttpServletRequest request)
+	{
+		ModelAndView view = new ModelAndView("/pay/payReturn");
+		view.addObject("sdHomeUrl", Common.homeUrl);
+		return view;
+	}
 }

@@ -416,16 +416,7 @@ public class PayServiceImpl implements PayService {
 			signParamMap.put("signType", "MD5");
 			sign = WxPayUtil.createSign(signParamMap, serviceCode.getTenPayPartnerKey());
 			Map<String,String> payInfo = new HashMap<String,String>();
-			String sdReturnUrl = getSdReturnUrl(thirdPayFlow.getPlatformFlowCode());
-			if (sdReturnUrl == null)
-			{
-				payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
-						.encode(configParameter.getWxpayWapReturnUrl(), "UTF-8"));
-			}else
-			{
-				payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder
-						.encode(sdReturnUrl, "UTF-8"));
-			}
+			payInfo.put("mweb_url", httpResponseResultMap.get("mweb_url")+"&redirect_url="+ URLEncoder.encode(configParameter.getWxpayWapReturnUrl(), "UTF-8"));
 			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
 			result.setResultCode("0");
 			result.setResultMsg("获取微信支付订单信息成功");
@@ -571,14 +562,7 @@ public class PayServiceImpl implements PayService {
 
 		AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
 		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
-		String sdReturnUrl = getSdReturnUrl(thirdPayFlow.getPlatformFlowCode());
-		if (sdReturnUrl == null)
-		{
-			alipayRequest.setReturnUrl(alipayConfigParameter.getWapReturnUrl()	);
-		}else
-		{
-			alipayRequest.setNotifyUrl(sdReturnUrl);
-		}
+		alipayRequest.setReturnUrl(alipayConfigParameter.getWapReturnUrl()	);
 
 		String body = param.get("body");
 		if (body.length()>128) //支付宝支付body最长128
@@ -627,28 +611,6 @@ public class PayServiceImpl implements PayService {
 			return flag;
 		} catch (Exception e) {
 			return false;
-		}
-	}
-
-	private String getSdReturnUrl(String platformFlowCode) throws Exception
-	{
-		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
-		thirdPayFlow.setPlatformFlowCode(platformFlowCode);
-		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
-		String orderIds = thirdPayFlow.getPlatformOrders();
-		String[] orderIdArray = orderIds.split(",");
-		Order order = new Order();
-		order.setOrderId(orderIdArray[0]);
-		order = orderService.displayOrder(order);
-		User user = new User();
-		user.setUserId(order.getUserId());
-		user = userService.displayUser(user);
-		if(user.getType().equals("2"))
-		{
-			return Common.homeUrl;
-		}else
-		{
-			return null;
 		}
 	}
 }

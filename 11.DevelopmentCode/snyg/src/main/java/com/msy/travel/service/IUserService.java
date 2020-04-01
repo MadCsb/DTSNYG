@@ -88,17 +88,12 @@ public interface IUserService {
 
 	User getUserByUserLoginName(User user) throws Exception;
 
+
 	/**
-	 * 获取或新增
-	 * 
-	 * @author wzd
-	 * @date 2019年10月15日 下午1:04:04
-	 * @param user
-	 * @return
-	 * @throws Exception
-	 * @return User
+	 * 获取或新增 微信端
+	 * 历史登录用户，用于其他平台已登录，跳转到微信时
 	 */
-	User getOrCreateByUserLoginName(String spId, String code) throws Exception;
+	public User getOrCreateByUserLoginName(String spId, String code,User oldLoginUser) throws Exception ;
 
 	/**
 	 * 查询微商城或pC用户
