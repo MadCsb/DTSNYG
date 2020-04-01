@@ -87,10 +87,10 @@
 		t_sm_userbindchannel t
 		<where>
 			<if test="channelId!=null and channelId!=''">
-		    	t.F_CHANNELID = #{channelId}
+		    AND	t.F_CHANNELID = #{channelId}
 		    </if>
 			<if test="userId !=null and userId !=''">
-		    	t.F_USERID = #{userId}
+		    AND 	t.F_USERID = #{userId}
 		    </if>
 		</where>
 		order by t.F_CREATETIME ASC

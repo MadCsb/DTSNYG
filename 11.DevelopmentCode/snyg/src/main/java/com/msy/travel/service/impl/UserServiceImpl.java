@@ -155,8 +155,9 @@ public class UserServiceImpl implements IUserService {
 
 	/**
 	 * 获取或新增 微信端
+	 * 历史登录用户，用于其他平台已登录，跳转到微信时
 	 */
-	public User getOrCreateByUserLoginName(String spId, String code) throws Exception {
+	public User getOrCreateByUserLoginName(String spId, String code,User oldLoginUser) throws Exception {
 		User u = new User();
 
 		if (code != null && !"".equals(code)) {
@@ -204,6 +205,17 @@ public class UserServiceImpl implements IUserService {
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					userDao.insertUser(user);
 
+					if(oldLoginUser != null)
+					{
+						UserBindChannel userBindChannel = new UserBindChannel();
+						userBindChannel.setUserId(oldLoginUser.getUserId());
+						List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+						for (UserBindChannel userBindChannelTmp : userBindChannelList)
+						{
+							userBindChannelTmp.setUserId(oldLoginUser.getUserId());
+							userBindChannelService.createUserBindChannel(userBindChannelTmp);
+						}
+					}
 					u = user;
 				}
 			}

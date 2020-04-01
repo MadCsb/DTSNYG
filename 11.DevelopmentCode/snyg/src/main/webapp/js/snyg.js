@@ -5,10 +5,6 @@
 
 var currentSpId = "da14b98e-cb26-4169-9b58-babe98b98047";
 
-/**
- * 判断当前用户是否是snyg的山东移动用户
- * @returns {boolean}
- */
 function checkIsSdUser() {
   var isSdUser = false;
   var url = "checkIsSdUser";
@@ -22,5 +18,5 @@ function checkIsSdUser() {
       }
     }
   });
-  return true;
+  return isSdUser;
 }

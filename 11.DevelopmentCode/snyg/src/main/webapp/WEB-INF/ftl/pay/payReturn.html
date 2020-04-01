@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+  var openApi = new OpenApi();
+  openApi.resetDefaultPageType();
+  var spId = "${spId!''}";
+  var detailUrl = null;
+  if(checkIsSdUser()) //如果是山东移动需要特殊处理
+  {
+    detailUrl = "${sdHomeUrl!''}";
+  }else {
+    detailUrl = "${rc.contextPath}/open/xx/orderList";
+  }
+  window.location.replace(detailUrl);
+</script>
+</html>

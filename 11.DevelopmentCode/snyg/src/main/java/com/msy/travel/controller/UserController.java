@@ -112,6 +112,17 @@ public class UserController extends BaseController {
 		}
 		return view;
 	}
+	/**
+	 * ceshi
+	 * @param loginPage
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/tologinTest")
+	public ModelAndView tologinTest(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+		ModelAndView view = new ModelAndView("web/login");
+		return view;
+	}
 
 
 	/**

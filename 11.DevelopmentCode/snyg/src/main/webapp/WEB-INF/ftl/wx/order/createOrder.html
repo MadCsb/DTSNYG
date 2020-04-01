@@ -55,7 +55,7 @@
 
 <div class="snyg_contentb">
   <div class="ddbt_title">
-    <a href="">费用合计<span class="hjjg" id="total">&yen;0.00</span></a>
+    <a>费用合计<span class="hjjg" id="total">&yen;0.00</span></a>
   </div>
   <div class="zfbtx">
     商品合计<span id="totalPrice">&yen;0.00</span>
@@ -80,7 +80,7 @@
 <!--</div>-->
 <div class="snyg_contentb">
   <div class="ddbt_title">
-    <a href="">买家留言</a>
+    <a>买家留言</a>
   </div>
   <div class="zfbtcon">
     <textarea id="memo" cols="" rows="" class="txt-textarea" placeholder="请填写备注"></textarea>
@@ -353,7 +353,14 @@
      if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
      {
        pay.havePayed = function(){
-         toOrderList("0");
+         if(checkIsSdUser()) //如果是山东移动需要特殊处理
+         {
+
+           window.location.href="toPayReturn";
+         }else
+         {
+           toOrderList("0");
+         }
        }
        pay.checkPayed();
        pay.toPay();

@@ -93,6 +93,9 @@ public class OrderServiceImpl implements OrderService
     @Resource(name = "customerCouponServiceImpl")
     private CustomerCouponService customerCouponService;
 
+    @Resource(name = "userBindChannelServiceImpl")
+    private UserBindChannelService userBindChannelService;
+
 	  @Resource(name="orderDao")
     private OrderDao orderDao;
 
@@ -409,6 +412,14 @@ public class OrderServiceImpl implements OrderService
         operatorUser.setUserId(param.getString("userId"));
         operatorUser = userService.displayUser(operatorUser);
         //下单用户渠道ID
+        String channelId = null;
+        UserBindChannel userBindChannel = new UserBindChannel();
+        userBindChannel.setUserId(param.getString("userId"));
+        List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+        if (userBindChannelList.size()>0)
+        {
+            channelId = userBindChannelList.get(0).getChannelId();
+        }
 
         //收货地址
         Consignee consignee = new Consignee();
@@ -459,6 +470,7 @@ public class OrderServiceImpl implements OrderService
             order.setUpdateTime(createTime);
             order.setUpdater(operatorUser.getUserName());
             order.setUpdateUid(operatorUser.getUserId());
+            order.setChannelId(channelId);
 
             //新增订单明细
             for (int j=0;j<orderListListJSONArray.size();j++)

@@ -36,7 +36,8 @@
 			F_CREATOR ,
 			F_UPDATETIME ,
 			F_UPDATERUID ,
-			F_UPDATER 
+			F_UPDATER ,
+			F_CHANNELID
 		) VALUES (
 			#{orderId} ,
 			#{orderCode} ,
@@ -65,7 +66,8 @@
 			#{creator} ,
 			#{updateTime} ,
 			#{updateUid} ,
-			#{updater} 
+			#{updater} ,
+			#{channelId}
 		)
 	</insert>
 
@@ -165,6 +167,7 @@
 			<if test="updateUid !=null">F_UPDATERUID = #{updateUid} ,</if>
 			<if test="updater !=null">F_UPDATER = #{updater}   ,</if>
 			<if test="companyRemark !=null">F_COMPANYREMARK = #{companyRemark}   ,</if>
+			<if test="channelId !=null">F_CHANNELID = #{channelId}   ,</if>
 		</set>
 		<where>
 			F_ORDERID = #{orderId}
@@ -222,6 +225,7 @@
 			t.F_UPDATERUID as updateUid ,
 			t.F_UPDATER as updater ,
 			t.F_COMPANYREMARK as companyRemark ,
+			t.F_CHANNELID as channelId,
 			oc.F_CUSTPHONE  as custPhone ,
 			oc.F_CUSTNAME  as custName ,
 			oc.F_RECADDRESS  as recAddress ,
@@ -266,6 +270,7 @@
 			t.F_UPDATETIME as updateTime ,
 			t.F_UPDATERUID as updateUid ,
 			t.F_UPDATER as updater ,
+			t.F_CHANNELID as channelId,
 		  IFNULL(orderBack.F_BACKTIMES,0) as backTimes ,
 		  oc.F_CUSTPHONE  as custPhone ,
 		  oc.F_CUSTNAME  as custName ,

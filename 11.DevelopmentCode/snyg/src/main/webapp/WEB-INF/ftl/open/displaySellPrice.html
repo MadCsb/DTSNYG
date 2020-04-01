@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script type="text/javascript" src="${rc.contextPath}/js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 </head>
@@ -12,7 +13,8 @@
   var spId = "${spId!''}";
   var priceId = "${sellPrice.priceId!''}";
   var detailUrl = null;
-  if(checkIsSdUser()) //如果是山东移动需要特殊处理
+  var isSdUser = checkIsSdUser();
+  if(isSdUser) //如果是山东移动需要特殊处理
 	{
     if (openApi.pageType == openApi.WX)
     {
