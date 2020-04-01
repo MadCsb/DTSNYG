@@ -150,14 +150,15 @@ public class WxCommproductController extends BaseController {
 			ol = orderListService.queryGoodPriceCount(ol);
 
 			User user = (User) view.getModel().get("user");
-
-			Accessrecord accessrecord = new Accessrecord();
-			accessrecord.setSpId(commproduct.getSpId());
-			accessrecord.setUserId(user.getUserId());
-			accessrecord.setAccessTime(DateTimeUtil.getDateTime19());
-			accessrecord.setPdcId(commproduct.getProductId());
-			accessrecord.setType("1");
-			accessrecordService.createAccessrecord(accessrecord);
+			if (user != null && user.getUserId() != null && !"".equals(user.getUserId())) {
+				Accessrecord accessrecord = new Accessrecord();
+				accessrecord.setSpId(commproduct.getSpId());
+				accessrecord.setUserId(user.getUserId());
+				accessrecord.setAccessTime(DateTimeUtil.getDateTime19());
+				accessrecord.setPdcId(commproduct.getProductId());
+				accessrecord.setType("1");
+				accessrecordService.createAccessrecord(accessrecord);
+			}
 
 			if (commproduct.getSaleNum() != null && !"".equals(commproduct.getSaleNum())) {
 				int saleNum = Integer.parseInt(commproduct.getSaleNum()) + Integer.parseInt(ol.getNum());
