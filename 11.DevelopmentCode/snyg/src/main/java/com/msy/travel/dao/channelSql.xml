@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.msy.travel.dao.channelDao" >
+<mapper namespace="com.msy.travel.dao.ChannelDao" >
 
 	<!-- 新增信息 -->
 	<insert id="insertchannel" parameterType="channel">
