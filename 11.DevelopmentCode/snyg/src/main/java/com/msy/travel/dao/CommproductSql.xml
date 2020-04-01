@@ -382,11 +382,12 @@
 			t.F_PRODUCTCODE as productCode,
 			p.F_TYPENAME as typeName,
 			tem.F_PRICEID as priceId,
-			t.F_REFERENCEPRICE as referencePrice
+			t.F_REFERENCEPRICE as referencePrice,
+			tem.F_PRICECODE as priceCode
 		FROM
 		t_sm_commproduct t
 		LEFT JOIN t_sm_pdctype p on t.F_TYPE = p.F_PDCTYPEID
-		LEFT JOIN (select F_PRODUCTID,F_PRICEID FROM t_sm_sellprice s where s.F_PRICETYPE=0 group By s.F_PRODUCTID) tem on tem.F_PRODUCTID = t.F_PRODUCTID
+		LEFT JOIN (select F_PRODUCTID,F_PRICEID,F_PRICECODE FROM t_sm_sellprice s where s.F_PRICETYPE=0 group By s.F_PRODUCTID) tem on tem.F_PRODUCTID = t.F_PRODUCTID
 		<where>
 			<if test="productId !=null and productId !=''">
 		    	and t.F_PRODUCTID = #{productId}

@@ -20,3 +20,13 @@ function checkIsSdUser() {
   });
   return isSdUser;
 }
+
+
+function copyUrlChannel(priceCode){
+	var url = $("#domainName").val()+"/open/"+currentSpId+"/"+priceCode;
+	$("#copyHidden").val(url);
+	var copyText = $("#copyHidden");//获取对象
+    copyText.select();//选择
+    document.execCommand("Copy");//执行复制
+　　parent.layer.alert("复制成功！");
+}

@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 <script type="text/javascript">
 	function deleteBatch() {
 
@@ -18,6 +19,7 @@
 
 </head>
 <body>
+<input type="text" style="border:0px;width:1px;" id="copyHidden" value="" ></input>
 	<form id="queryFrm" action="commproduct?method=query"
 		method="post">
        	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
@@ -162,9 +164,7 @@
 	                	<a href="javascript:void(0);" title="下架" class="ico_btn1"  onclick="changeState('${li.productId!''}',0)">下架</a>
 					</#if>
 					
-					<a href="javascript:void(0)" onclick="copyUrl('${li.productId!''}','${li.priceId!''}')" title="复制链接" class="ico_btn1">复制链接</a>
-						
-					<input type="text" style="border:0px;width:1px;" id="productIdHidden${li.productId!''}" value="" ></input>
+					<a href="javascript:void(0)" onclick="copyUrlChannel('${li.priceCode!''}')" title="链接" class="ico_btn1">链接</a>
 
 				</td>
 			</tr>
