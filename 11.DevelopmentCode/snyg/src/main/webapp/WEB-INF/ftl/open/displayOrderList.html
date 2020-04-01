@@ -2,23 +2,32 @@
 <html>
 <head>
 	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 </head>
 <body>
 </body>
 <script type="text/javascript">
   var openApi = new OpenApi();
-  openApi.resetDefaultPageType("${detailPage!''}");
+  openApi.resetDefaultPageType();
   var spId = "${spId!''}";
   var detailUrl = null;
-  if (openApi.pageType == openApi.WX)
+  if(checkIsSdUser()) //如果是山东移动需要特殊处理
   {
-    detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
-  }else if (openApi.pageType == openApi.WEB)
-  {
-    detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
-  }else if (openApi.pageType == openApi.WAP)
-  {
-    detailUrl ="${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
+    if (openApi.pageType == openApi.WX)
+    {
+      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
+    }else
+    {
+      detailUrl = "${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
+    }
+  }else {
+    if (openApi.pageType == openApi.WX) {
+      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
+    } else if (openApi.pageType == openApi.WEB) {
+      detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
+    } else if (openApi.pageType == openApi.WAP) {
+      detailUrl = "${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
+    }
   }
   window.location.replace(detailUrl);
 

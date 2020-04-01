@@ -25,6 +25,7 @@
                 /checkIsSdUser=anon
                 /login=anon
                 /tologin=anon
+                /tologinTest=anon
                 /relogin=anon
                 /verify_code.jsp=anon
                 /css/**=anon

@@ -2,25 +2,38 @@
 <html>
 <head>
 	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 </head>
 <body>
 </body>
 <script type="text/javascript">
   var openApi = new OpenApi();
-  openApi.resetDefaultPageType("${detailPage!''}");
+  openApi.resetDefaultPageType();
   var spId = "${spId!''}";
   var priceId = "${sellPrice.priceId!''}";
   var detailUrl = null;
-  if (openApi.pageType == openApi.WX)
-  {
-    detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
-  }else if (openApi.pageType == openApi.WEB)
-  {
-    detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
-  }else if (openApi.pageType == openApi.WAP)
-  {
-    detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
-  }
+  if(checkIsSdUser()) //如果是山东移动需要特殊处理
+	{
+    if (openApi.pageType == openApi.WX)
+    {
+      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+    }else
+    {
+      detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+    }
+	}else
+	{
+    if (openApi.pageType == openApi.WX)
+    {
+      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+    }else if (openApi.pageType == openApi.WEB)
+    {
+      detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+    }else if (openApi.pageType == openApi.WAP)
+    {
+      detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+    }
+	}
   window.location.replace(detailUrl);
 </script>
 </html>

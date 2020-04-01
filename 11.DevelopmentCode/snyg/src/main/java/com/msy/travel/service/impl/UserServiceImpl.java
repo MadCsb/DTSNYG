@@ -309,6 +309,19 @@ public class UserServiceImpl implements IUserService {
 		user = userDao.queryUser(user);
 		if (User.USER_TYPE_SDMOBILE.equals(user.getType())) {
 			return true;
+		}else
+		{
+			Channel channel = new Channel();
+			channel.setChannelKey(Channel.SDYD);
+			channel = channelService.displaychannel(channel);
+			UserBindChannel userBindChannel = new UserBindChannel();
+			userBindChannel.setChannelId(channel.getChannelId());
+			userBindChannel.setUserId(userId);
+			List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+			if (userBindChannelList.size() > 0)
+			{
+				return true;
+			}
 		}
 		return false;
 	}

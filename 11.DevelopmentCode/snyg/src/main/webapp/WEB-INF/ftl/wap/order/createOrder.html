@@ -134,7 +134,6 @@
   $(function () {
     var newPay = new Pay();
     newPay.autoPayMethod()
-    alert(newPay.payMethod);
     isSdUser = checkIsSdUser();
     var queryObject = new Object();
     queryObject.userId = $("#userId").val();
@@ -422,7 +421,6 @@
           }
           pay.getPayInfo(payInfoParam);
           Alert.closedLoading();
-          alert(JSON.stringify(pay));
           doPay();
         }
       }

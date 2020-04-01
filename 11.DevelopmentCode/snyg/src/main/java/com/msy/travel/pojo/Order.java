@@ -190,6 +190,10 @@ public class Order extends BaseEntity implements java.io.Serializable
 	 * 0优惠金额 db_column: F_COUPON_MONEY
 	 */
 	private String couponMoney;
+	/**
+	 * 渠道ID db_column: F_CHANNELID
+	 */
+	private String channelId;
 
 	/**
 	 * 已申请退货次数
@@ -682,6 +686,14 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setCouponMoney(String couponMoney) {
 		this.couponMoney = couponMoney;
+	}
+
+	public String getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 }
 

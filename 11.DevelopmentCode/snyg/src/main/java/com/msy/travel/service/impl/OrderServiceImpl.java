@@ -408,6 +408,7 @@ public class OrderServiceImpl implements OrderService
         User operatorUser = new User();
         operatorUser.setUserId(param.getString("userId"));
         operatorUser = userService.displayUser(operatorUser);
+        //下单用户渠道ID
 
         //收货地址
         Consignee consignee = new Consignee();
