@@ -205,7 +205,6 @@ var alertHtml = "";
 	function addShopCart(){
 		if(showType == "1"){
 			$.post("wapIndex?method=checkLogin",{
-				
 			},function(data){
 				if(data.resultCode=='0'){
 					$.post("wapShopCart?method=toAddOrUpdateShopCart",{
