@@ -152,10 +152,6 @@ public class SaleTypeServiceImpl implements SaleTypeService {
 		saleType.setSpId(spId);
 		saleType.setStatus("1");
 		saleTypeList = saleTypeDao.querySaleTypeListForCoupon(saleType);
-		saleType = new SaleType();
-		saleType.setSaleTypeId(spId);
-		saleType.setSaleTypeName("全部商品");
-		saleTypeList.add(0, saleType);
 
 		return saleTypeList;
 	}
