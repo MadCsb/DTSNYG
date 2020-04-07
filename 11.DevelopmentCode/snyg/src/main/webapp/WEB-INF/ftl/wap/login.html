@@ -53,26 +53,6 @@
         document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
     };
 
-    function beforeSubmit() {
-      console.log(1)
-      if($("#userLoginName").val() == '')
-      {
-        $("#errorMsg").html("请输入用户名");
-        return false;
-      }else if($("#userPwd").val() == '')
-      {
-        $("#errorMsg").html("请输入密码");
-        return false;
-      }else if($("#securityCode").val() == '')
-      {
-        $("#errorMsg").html("请输入验证码");
-        return false;
-      }
-      console.log(2);
-      return false;
-//      $("#syslogin").submit();
-    }
-
     function doLogin() {
         var userLoginName = $("#userLoginName").val();
         var userPwd = $("#userPwd").val();

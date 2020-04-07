@@ -168,7 +168,6 @@ public class PayController extends BaseController {
 			while (iter.hasNext()) {
 				Element recordEle = (Element) iter.next();
 				resMap.put(recordEle.getName(),recordEle.getText());
-				log.error(recordEle.getName()+"========"+recordEle.getText());
 			}
 
 			if(resMap.get("return_code")!=null&&resMap.get("result_code")!=null
@@ -248,20 +247,14 @@ public class PayController extends BaseController {
 				returnMap.put(item.getKey(), item.getValue()[0]);
 				requSb.append(item.getKey()).append(":").append(item.getValue()[0]).append(";");
 			}
-			log.error("***********************************************");
-			log.error("11111111111");
-			log.error(requSb.toString());
 			String signType = returnMap.get("sign_type");
 			boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getZfbPublicKey(), "UTF-8");
 			if (true) //如果签名验证通过
 			{
-				log.error("签名通过");
 				//交易状态
 				String trade_status = returnMap.get("trade_status");
-				log.error("trade_status="+trade_status);
 				if ("TRADE_SUCCESS".equals(trade_status)) //如果交易支付成功
 				{
-					log.error("TRADE_SUCCESS");
 					//商户网站唯一订单号
 					String out_trade_no = returnMap.get("out_trade_no");
 					//该交易在支付宝系统中的交易流水号。最长64位。
@@ -276,11 +269,9 @@ public class PayController extends BaseController {
 					ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
 					thirdPayFlow.setPlatformFlowCode(out_trade_no);
 					thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
-					log.error("thirdPayFlow.getFlowMoney()="+thirdPayFlow.getFlowMoney()+";total_amount="+total_amount);
 					//支付验证
 					if (thirdPayFlow.getFlowMoney().equals(total_amount))  // 返回的订单金额是否与商户侧的订单金额一致
 					{
-						log.error("thirdPayFlow.getFlowState().="+thirdPayFlow.getFlowState());
 						if (thirdPayFlow.getFlowState().equals("0"))
 						{
 							thirdPayFlow.setFlowState("1"); //流水成功
@@ -307,7 +298,6 @@ public class PayController extends BaseController {
 	public ModelAndView toPayReturn(HttpServletRequest request)
 	{
 		ModelAndView view = new ModelAndView("/pay/payReturn");
-		view.addObject("sdHomeUrl", Common.homeUrl);
 		return view;
 	}
 }

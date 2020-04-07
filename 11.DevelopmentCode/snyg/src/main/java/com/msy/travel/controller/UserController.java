@@ -1101,12 +1101,18 @@ public class UserController extends BaseController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(value = "/checkIsSdUser")
-	public void checkIsSdUser( HttpServletRequest request, HttpServletResponse response) {
+	public void checkIsSdUser(String userId,HttpServletRequest request, HttpServletResponse response) {
 		boolean isSdUser = false;
 		try {
-			if (getLoginUser(request) != null)
+			if(userId != null && !userId.trim().equals("")) //如果参数中有userId
 			{
-				isSdUser = userService.checkIsSdUser(getLoginUser(request).getUserId());
+				isSdUser = userService.checkIsSdUser(userId);
+			}else
+			{
+				if (getLoginUser(request) != null)
+				{
+					isSdUser = userService.checkIsSdUser(getLoginUser(request).getUserId());
+				}
 			}
 		} catch (Exception e) {
 			log.error(e, e);

@@ -2,6 +2,7 @@ package com.msy.travel.service.impl;
 
 import static com.alipay.api.AlipayConstants.APP_ID;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -200,6 +201,9 @@ public class PayServiceImpl implements PayService {
 		}else if (PAY_METHOD_ALIPAY_WAP.equals(payMethod)) //支付宝 wap支付
 		{
 			result = getPayInfoByAlipayWAP(payInfoParam);
+		}else
+		{
+			throw new LogicException("不支持的支付方式");
 		}
 		if (result.getResultCode().equals("1"))
 		{
@@ -276,11 +280,10 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WX 参数 xml:"+ document.getRootElement().asXML());
+
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WX 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -315,6 +318,8 @@ public class PayServiceImpl implements PayService {
 			result.setResultPojo(payInfo);
 		}else
 		{
+			log.error(this.PAY_METHOD_WX+" 支付参数 xml:"+ document.getRootElement().asXML());
+			log.error(this.PAY_METHOD_WX + " 支付接口响应:"+res);
 			result.setResultCode("1");
 			result.setResultMsg("获取微信支付信息失败");
 		}
@@ -389,11 +394,10 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WXWAP 参数 xml:"+ document.getRootElement().asXML());
+
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WXWAP 统一支付接口响应:"+res);
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -423,6 +427,8 @@ public class PayServiceImpl implements PayService {
 			result.setResultPojo(payInfo);
 		}else
 		{
+			log.error(this.PAY_METHOD_WX_WAP+" 支付参数 xml:"+ document.getRootElement().asXML());
+			log.error(this.PAY_METHOD_WX_WAP + " 支付接口响应:"+res);
 			result.setResultCode("1");
 			result.setResultMsg("获取微信支付信息失败");
 		}
@@ -499,11 +505,11 @@ public class PayServiceImpl implements PayService {
 		for (Entry<String , String> entry : httpRequestParamMap.entrySet()) {
 			elementXml.addElement(entry.getKey()).addCDATA(entry.getValue());
 		}
-		log.error("微信支付 WXPC 参数 xml:"+ document.getRootElement().asXML());
+
 		//请求统一支付接口
 		String res = WxPayUtil.httpRequest(WxPayUtil.WX_PAY_URL, "POST", document.asXML());
 
-		log.error("微信支付 WXPC 统一支付接口响应:"+res);
+
 		document = DocumentHelper.parseText(res);
 		Element root = document.getRootElement();
 		List<Element> list = root.elements();
@@ -533,6 +539,8 @@ public class PayServiceImpl implements PayService {
 			result.setResultPojo(payInfo);
 		}else
 		{
+			log.error(this.PAY_METHOD_WX_PC+" 支付参数 xml:"+ document.getRootElement().asXML());
+			log.error(this.PAY_METHOD_WX_PC + " 支付接口响应:"+res);
 			result.setResultCode("1");
 			result.setResultMsg("获取微信支付信息失败");
 		}
@@ -579,11 +587,6 @@ public class PayServiceImpl implements PayService {
 				"\"product_code\":\""+param.get("productId")+"\""+
 				" }");
 		AlipayTradeWapPayResponse alipayResponse = alipayClient.pageExecute(alipayRequest);
-		log.error("alipayResponse.isSuccess() = "+alipayResponse.isSuccess());
-		log.error("alipayResponse.getBody() = "+alipayResponse.getBody());
-		log.error("alipayResponse.getCode() = "+alipayResponse.getCode());
-		log.error("alipayResponse.getSubCode() = "+alipayResponse.getSubCode());
-
 		if(alipayResponse.isSuccess()){
 			result.setResultCode("0");
 			Map<String,String> payInfo = new HashMap<String,String>();
@@ -592,6 +595,8 @@ public class PayServiceImpl implements PayService {
 			result.setResultPojo(payInfo);
 			result.setResultMsg(alipayResponse.getMsg());
 		} else {
+			log.error(this.PAY_METHOD_ALIPAY_WAP+" 支付参数 xml:"+ JSON.toJSONString(alipayRequest));
+			log.error(this.PAY_METHOD_ALIPAY_WAP + " 支付接口响应:"+JSON.toJSONString(alipayResponse));
 			result.setResultCode("1");
 			result.setResultMsg(alipayResponse.getMsg());
 		}

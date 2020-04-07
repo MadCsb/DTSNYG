@@ -297,6 +297,8 @@ public class WapOrderController extends BaseController {
 			view.addObject("orderListType",orderListType);
 			view.addObject("searchKey",searchKey);
 			view.addObject("user",getLoginUser(request));
+			//山东移动
+			view.addObject("sdHomeUrl", Common.homeUrl);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

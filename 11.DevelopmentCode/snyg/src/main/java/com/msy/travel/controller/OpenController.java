@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope(value = "prototype")
-@RequestMapping(value = "/open/{spId}")
+@RequestMapping(value = "/open")
 public class OpenController extends BaseController {
 	public static final Log log = LogFactory.getLog(OpenController.class);
 
@@ -46,11 +46,10 @@ public class OpenController extends BaseController {
 	/**
 	 * 跳转到产品详情
 	 */
-	@RequestMapping(value = "/{priceCode}")
+	@RequestMapping(value = "/{spId}/{priceCode}")
 	public ModelAndView toSellPriceDetail(@PathVariable("spId") String spId,@PathVariable("priceCode") String priceCode, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-
 
 			SellPrice sellPrice = new SellPrice();
 			sellPrice.setPriceCode(priceCode);
@@ -92,12 +91,10 @@ public class OpenController extends BaseController {
 	 * 跳转到订单列表
 	 */
 	@RequestMapping(value = "/orderList")
-	public ModelAndView toOrderListDetail(@PathVariable("spId") String spId,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView toOrderListDetail(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("open/displayOrderList");
-			view.addObject("spId",spId);
-
 			User user = null;
 			//判断是否通过山东移动进入
 			String sdToken = request.getParameter("token");
@@ -108,12 +105,6 @@ public class OpenController extends BaseController {
 				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(userPwd));
 				Subject subject = SecurityUtils.getSubject();
 				subject.login(token);
-				view.addObject("detailPage","wap");
-			}
-
-			if (user == null)
-			{
-				throw new LogicException("当前用户未登录，请先登录");
 			}
 		}catch (Exception e)
 		{

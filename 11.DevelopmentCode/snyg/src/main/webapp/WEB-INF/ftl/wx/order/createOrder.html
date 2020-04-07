@@ -353,14 +353,7 @@
      if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
      {
        pay.havePayed = function(){
-         if(checkIsSdUser()) //如果是山东移动需要特殊处理
-         {
-
-           window.location.href="toPayReturn";
-         }else
-         {
-           toOrderList("0");
-         }
+         toOrderList("0");
        }
        pay.checkPayed();
        pay.toPay();

@@ -2,6 +2,7 @@
 <html>
 <head>
 	<#include "WAP_INC_HEAD.html">
+		<script type="text/javascript" src="${rc.contextPath}/js/layer.js"></script>
 		<style>
 			.snyg_xccon p { margin-bottom:6px;}
 		</style>
@@ -76,7 +77,14 @@
 		function openArticle() {
       var articleId = "4ff9d989845b4fddaf3200dcd01e5367";
       var url = 'webArticle?method=toArticleContext&articleId=' + articleId;
-      window.open(url);
+      layer.open({
+        type : 2,
+        title : '三农壹购平台注册协议',
+        fix : true,
+        content :url,
+        end: function(){
+        }
+      });
     }
 	</script>
 </div>

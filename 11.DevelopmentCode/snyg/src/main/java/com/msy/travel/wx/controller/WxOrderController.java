@@ -3,6 +3,7 @@ package com.msy.travel.wx.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -250,6 +251,8 @@ public class WxOrderController extends BaseController {
 			view.addObject("searchKey",searchKey);
 			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
 			wxSetViewObjects(view, request,serviceCode,userService);
+			//山东移动
+			view.addObject("sdHomeUrl", Common.homeUrl);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

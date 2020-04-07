@@ -161,7 +161,6 @@ public class UserServiceImpl implements IUserService {
 		User u = new User();
 
 		if (code != null && !"".equals(code)) {
-
 			// 支撑商ID
 			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(spId);
 
@@ -204,19 +203,40 @@ public class UserServiceImpl implements IUserService {
 					user.setCity(wxuser.getCity());
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					userDao.insertUser(user);
+					u = user;
+				}
+				if(oldLoginUser != null)
+				{
+					//老用户的渠道信息
+					UserBindChannel userBindChannel = new UserBindChannel();
+					userBindChannel.setUserId(oldLoginUser.getUserId());
+					List<UserBindChannel> oldUserBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
 
-					if(oldLoginUser != null)
+					//微信用户的渠道信息
+					userBindChannel = new UserBindChannel();
+					userBindChannel.setUserId(u.getUserId());
+					List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+
+					for(int i=0;i<oldUserBindChannelList.size();i++)
 					{
-						UserBindChannel userBindChannel = new UserBindChannel();
-						userBindChannel.setUserId(oldLoginUser.getUserId());
-						List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-						for (UserBindChannel userBindChannelTmp : userBindChannelList)
+						boolean isHave = false; //微信用户是否已经有oldLoginUser的渠道信息
+						for(int j=0;j<userBindChannelList.size();j++)
 						{
-							userBindChannelTmp.setUserId(oldLoginUser.getUserId());
+							if (oldUserBindChannelList.get(i).getChannelId().equals(userBindChannelList.get(j).getChannelId()))
+							{
+								isHave = true;
+								break;
+							}
+						}
+						if(!isHave) //如果不存在渠道，则新增渠道
+						{
+							UserBindChannel userBindChannelTmp = new UserBindChannel();
+							userBindChannelTmp.setUserId(u.getUserId());
+							userBindChannelTmp.setChannelId(oldUserBindChannelList.get(i).getChannelId());
+							userBindChannelTmp.setCreateTime(DateTimeUtil.getDateTime19());
 							userBindChannelService.createUserBindChannel(userBindChannelTmp);
 						}
 					}
-					u = user;
 				}
 			}
 		}
