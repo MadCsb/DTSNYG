@@ -43,15 +43,15 @@
     <a href="toNewUser?loginPage=${loginPage!'wap'}"><div align="center">立即注册</div></a>
 </body>
 <script type="text/javascript">
-    $( function() {
-        replaceCode();
-    });
     //点击更换验证码
     function replaceCode()
     {
         d = new Date().getTime();
         document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
-    };
+    }
+    window.onload=function(){
+      setTimeout("replaceCode()", 100);
+    }
 
     function doLogin() {
         var userLoginName = $("#userLoginName").val();

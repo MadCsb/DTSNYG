@@ -83,7 +83,6 @@
 </body>
 <script type="text/javascript">
     $( function() {
-        replaceCode();
         $("#syslogin").validationEngine({
             validationEventTrigger : "blur"
         });
@@ -99,7 +98,9 @@
         d = new Date().getTime();
         document.getElementById('picsss').src = '${rc.contextPath}/verify_code.jsp?a=' + d;
     };
-
+    window.onload=function(){
+      setTimeout("replaceCode()", 100);
+    }
     function doLogin() {
       var userLoginName = $("#userLoginName").val();
       var userPwd = $("#userPwd").val();
