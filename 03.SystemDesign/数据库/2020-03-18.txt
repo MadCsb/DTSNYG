@@ -23,3 +23,4 @@ t_sm_userbindchannel
 t_sm_coupon
 t_sm_couponproduction
 t_sm_customercoupon
+t_pub_roledata

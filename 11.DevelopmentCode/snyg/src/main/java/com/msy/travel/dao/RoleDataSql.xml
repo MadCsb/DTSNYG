@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.RoleDataDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertRoleData" parameterType="roleData">
+		INSERT INTO 
+			t_pub_roledata  
+		(
+			F_USEROLEDATAID ,
+			F_ROLETYPE ,
+			F_ACCID ,
+			F_USERCHANNELID ,
+			F_USERID ,
+			F_ISDEFAULT 
+		) VALUES (
+			#{userRoleDataId} ,
+			#{roleType} ,
+			#{accId} ,
+			#{userChannelId} ,
+			#{userId} ,
+			#{isDefault} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeRoleData" parameterType="roleData">
+		REPLACE INTO 
+			t_pub_roledata 
+		(
+			F_USEROLEDATAID ,
+			F_ROLETYPE ,
+			F_ACCID ,
+			F_USERCHANNELID ,
+			F_USERID ,
+			F_ISDEFAULT 
+		) VALUES (
+			#{userRoleDataId} ,
+			#{roleType} ,
+			#{accId} ,
+			#{userChannelId} ,
+			#{userId} ,
+			#{isDefault} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateRoleData" parameterType="roleData">
+		UPDATE
+			t_pub_roledata 
+		SET
+			F_ROLETYPE = #{roleType} ,
+			F_ACCID = #{accId} ,
+			F_USERCHANNELID = #{userChannelId} ,
+			F_USERID = #{userId} ,
+			F_ISDEFAULT = #{isDefault} 
+		<where>
+			F_USEROLEDATAID = #{userRoleDataId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteRoleData" parameterType="roleData">
+		DELETE FROM
+			t_pub_roledata 
+		<where>
+			F_USEROLEDATAID = #{userRoleDataId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchRoleData" parameterType="roleData">
+		DELETE FROM 
+			t_pub_roledata 
+		<where>
+			F_USEROLEDATAID in
+			<foreach collection="roleDataIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryRoleData" parameterType="String" resultType="roleData">
+		SELECT
+			t.F_USEROLEDATAID as userRoleDataId ,
+			t.F_ROLETYPE as roleType ,
+			t.F_ACCID as accId ,
+			t.F_USERCHANNELID as userChannelId ,
+			t.F_USERID as userId ,
+			t.F_ISDEFAULT as isDefault 
+		FROM
+			t_pub_roledata t
+		<where>
+			t.F_USEROLEDATAID = #{userRoleDataId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryRoleDataList" parameterType="roleData" resultType="roleData">
+		SELECT
+			t.F_USEROLEDATAID as userRoleDataId ,
+			t.F_ROLETYPE as roleType ,
+			t.F_ACCID as accId ,
+			t.F_USERCHANNELID as userChannelId ,
+			t.F_USERID as userId ,
+			t.F_ISDEFAULT as isDefault 
+		FROM
+		t_pub_roledata t
+		<where>
+			<if test="userRoleDataId!=null and userRoleDataId!=''">
+		    	t.F_USEROLEDATAID = #{userRoleDataId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	
