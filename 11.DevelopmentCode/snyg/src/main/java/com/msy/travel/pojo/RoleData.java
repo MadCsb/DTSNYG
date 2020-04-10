@@ -14,7 +14,7 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 	 */
 	public static final String[] EXPORT_HEADERS = {
 			// columns START
-			"userRoleDataId:用户角色Id", "roleType:用户角色类型 1:管理员 2:运营商 3:渠道 ", "accId:目前保存SPID", "userChannelId:用户渠道ID", "userId:用户ID", "isDefault:是否默认角色 0否1是"
+			"userRoleDataId:用户角色Id", "roleType:用户角色类型 1:管理员 2:运营商 3:渠道 ", "accId:目前保存SPID", "unitId:用户UNITID", "userId:用户ID", "isDefault:是否默认角色 0否1是"
 
 	};
 
@@ -38,9 +38,9 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 	 */
 	private String accId;
 	/**
-	 * 用户渠道ID db_column: F_USERCHANNELID
+	 * 用户渠道ID db_column: F_UNITID
 	 */
-	private String userChannelId;
+	private String unitId;
 	/**
 	 * 用户ID db_column: F_USERID
 	 */
@@ -76,12 +76,12 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 		return this.accId;
 	}
 
-	public void setUserChannelId(String userChannelId) {
-		this.userChannelId = userChannelId;
+	public String getUnitId() {
+		return unitId;
 	}
 
-	public String getUserChannelId() {
-		return this.userChannelId;
+	public void setUnitId(String unitId) {
+		this.unitId = unitId;
 	}
 
 	public void setUserId(String userId) {
