@@ -87,4 +87,16 @@ public interface ChannelService {
 	 * @return int
 	 */
 	public int checkChannelKeyExis(Channel channel) throws Exception;
+
+	/**
+	 * 通过标识获取渠道
+	 * 
+	 * @author wzd
+	 * @date 2020年4月10日 下午12:59:08
+	 * @param channel
+	 * @return
+	 * @throws Exception
+	 * @return Channel
+	 */
+	public Channel getChannelByChannelKey(String channelKey) throws Exception;
 }

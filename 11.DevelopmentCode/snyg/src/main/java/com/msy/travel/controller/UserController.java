@@ -1001,7 +1001,7 @@ public class UserController extends BaseController {
 
 	/**
 	 * 无权限访问跳转
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -1015,7 +1015,7 @@ public class UserController extends BaseController {
 
 	/**
 	 * 重新登陆跳转
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -1042,7 +1042,7 @@ public class UserController extends BaseController {
 
 	/**
 	 * 非平台用户管理
-	 * 
+	 *
 	 * @author wzd
 	 * @date 2019年11月16日 下午7:27:03
 	 * @param user

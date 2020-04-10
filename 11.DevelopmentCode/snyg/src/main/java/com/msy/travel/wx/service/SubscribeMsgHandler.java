@@ -37,14 +37,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.Feedback;
+import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IFeedbackService;
 import com.msy.travel.service.IMsgNewsService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
+import com.msy.travel.service.RoleDataService;
 import com.msy.travel.wx.pojo.WxUser;
 import com.msy.travel.wx.resp.BaseMessage;
 import com.msy.travel.wx.resp.TextMessage;
@@ -75,6 +79,12 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
 
 	@Override
 	protected String handle(Map<String, String> requestMap, BaseMessage msg, HttpServletRequest request) {
@@ -107,6 +117,17 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setAccId(Destsp.currentSpId);
 					user.setUnitId(Destsp.currentSpId);
 					userService.createUser(user);
+
+					// 用户角色
+					Channel channel = channelService.getChannelByChannelKey(Channel.SNYG);
+					RoleData roleData = new RoleData();
+					roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+					roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+					roleData.setAccId(Destsp.currentSpId);
+					roleData.setUnitId(channel.getChannelId());
+					roleData.setUserId(user.getUserId());
+					roleData.setIsDefault("1");
+					roleDataService.createRoleData(roleData);
 				} else {
 					// user.setUserState("-2");
 					userService.updateUser(user);

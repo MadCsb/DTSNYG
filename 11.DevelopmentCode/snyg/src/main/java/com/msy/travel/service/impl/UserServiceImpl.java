@@ -22,12 +22,14 @@ import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.dao.UserDao;
 import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
+import com.msy.travel.service.RoleDataService;
 import com.msy.travel.service.UserBindChannelService;
 import com.msy.travel.wx.pojo.WxUser;
 import com.msy.travel.wx.utils.WeixinService;
@@ -62,6 +64,9 @@ public class UserServiceImpl implements IUserService {
 
 	@Resource(name = "channelServiceImpl")
 	private ChannelService channelService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
 
 	/**
 	 * 新增User
@@ -154,10 +159,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	/**
-	 * 获取或新增 微信端
-	 * 历史登录用户，用于其他平台已登录，跳转到微信时
+	 * 获取或新增 微信端 历史登录用户，用于其他平台已登录，跳转到微信时
 	 */
-	public User getOrCreateByUserLoginName(String spId, String code,User oldLoginUser) throws Exception {
+	public User getOrCreateByUserLoginName(String spId, String code, User oldLoginUser) throws Exception {
 		User u = new User();
 
 		if (code != null && !"".equals(code)) {
@@ -204,31 +208,38 @@ public class UserServiceImpl implements IUserService {
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					userDao.insertUser(user);
 					u = user;
+
+					Channel channel = channelService.getChannelByChannelKey(Channel.SNYG);
+					// 用户角色
+					RoleData roleData = new RoleData();
+					roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+					roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+					roleData.setAccId(Destsp.currentSpId);
+					roleData.setUnitId(channel.getChannelId());
+					roleData.setUserId(user.getUserId());
+					roleData.setIsDefault("1");
+					roleDataService.createRoleData(roleData);
 				}
-				if(oldLoginUser != null)
-				{
-					//老用户的渠道信息
+				if (oldLoginUser != null) {
+					// 老用户的渠道信息
 					UserBindChannel userBindChannel = new UserBindChannel();
 					userBindChannel.setUserId(oldLoginUser.getUserId());
 					List<UserBindChannel> oldUserBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
 
-					//微信用户的渠道信息
+					// 微信用户的渠道信息
 					userBindChannel = new UserBindChannel();
 					userBindChannel.setUserId(u.getUserId());
 					List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
 
-					for(int i=0;i<oldUserBindChannelList.size();i++)
-					{
-						boolean isHave = false; //微信用户是否已经有oldLoginUser的渠道信息
-						for(int j=0;j<userBindChannelList.size();j++)
-						{
-							if (oldUserBindChannelList.get(i).getChannelId().equals(userBindChannelList.get(j).getChannelId()))
-							{
+					for (int i = 0; i < oldUserBindChannelList.size(); i++) {
+						boolean isHave = false; // 微信用户是否已经有oldLoginUser的渠道信息
+						for (int j = 0; j < userBindChannelList.size(); j++) {
+							if (oldUserBindChannelList.get(i).getChannelId().equals(userBindChannelList.get(j).getChannelId())) {
 								isHave = true;
 								break;
 							}
 						}
-						if(!isHave) //如果不存在渠道，则新增渠道
+						if (!isHave) // 如果不存在渠道，则新增渠道
 						{
 							UserBindChannel userBindChannelTmp = new UserBindChannel();
 							userBindChannelTmp.setUserId(u.getUserId());
@@ -287,14 +298,23 @@ public class UserServiceImpl implements IUserService {
 			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
 			userService.createUser(userDb);
 
-			Channel channel = new Channel();
-			channel.setChannelKey(Channel.SDYD);
-			channel = channelService.displaychannel(channel);
+			Channel channel = channelService.getChannelByChannelKey(Channel.SDYD);
+
 			UserBindChannel userBindChannel = new UserBindChannel();
 			userBindChannel.setChannelId(channel.getChannelId());
 			userBindChannel.setUserId(userDb.getUserId());
 			userBindChannel.setCreateTime(DateTimeUtil.getDateTime19());
 			userBindChannelService.createUserBindChannel(userBindChannel);
+
+			// 用户角色
+			RoleData roleData = new RoleData();
+			roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+			roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+			roleData.setAccId(Destsp.currentSpId);
+			roleData.setUnitId(channel.getChannelId());
+			roleData.setUserId(user.getUserId());
+			roleData.setIsDefault("1");
+			roleDataService.createRoleData(roleData);
 			return userDb;
 		}
 	}
@@ -341,8 +361,7 @@ public class UserServiceImpl implements IUserService {
 		user = userDao.queryUser(user);
 		if (User.USER_TYPE_SDMOBILE.equals(user.getType())) {
 			return true;
-		}else
-		{
+		} else {
 			Channel channel = new Channel();
 			channel.setChannelKey(Channel.SDYD);
 			channel = channelService.displaychannel(channel);
@@ -350,8 +369,7 @@ public class UserServiceImpl implements IUserService {
 			userBindChannel.setChannelId(channel.getChannelId());
 			userBindChannel.setUserId(userId);
 			List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-			if (userBindChannelList.size() > 0)
-			{
+			if (userBindChannelList.size() > 0) {
 				return true;
 			}
 		}
