@@ -118,4 +118,21 @@ public class ChannelServiceImpl implements ChannelService {
 	public int checkChannelKeyExis(Channel channel) throws Exception {
 		return channelDao.checkChannelKeyExis(channel);
 	}
+
+	/**
+	 * 通过标识获取渠道
+	 * 
+	 * @author wzd
+	 * @date 2020年4月10日 下午12:59:08
+	 * @param channel
+	 * @return
+	 * @throws Exception
+	 * @return Channel
+	 */
+	public Channel getChannelByChannelKey(String channelKey) throws Exception {
+		Channel channel = new Channel();
+		channel.setChannelKey(channelKey);
+		channel = channelDao.querychannel(channel);
+		return channel;
+	}
 }

@@ -1,11 +1,5 @@
 package com.msy.travel.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.msy.travel.common.Consts;
-import com.msy.travel.common.LogicException;
-import com.msy.travel.common.Result;
-import com.msy.travel.pojo.*;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +11,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.msy.travel.service.*;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.logging.Log;
@@ -26,22 +19,41 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
 import com.msy.travel.common.ComparePojo;
+import com.msy.travel.common.Consts;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.LogicException;
 import com.msy.travel.common.MD5;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.RedisUtil;
 import com.msy.travel.common.ResourceCommon;
+import com.msy.travel.common.Result;
+import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.Menu;
+import com.msy.travel.pojo.Role;
+import com.msy.travel.pojo.RoleData;
+import com.msy.travel.pojo.User;
+import com.msy.travel.pojo.UserGroup;
+import com.msy.travel.service.ChannelService;
+import com.msy.travel.service.IArticleService;
+import com.msy.travel.service.IMenuButtonService;
+import com.msy.travel.service.IMenuService;
+import com.msy.travel.service.IPubUserLogService;
+import com.msy.travel.service.IRoleService;
+import com.msy.travel.service.IUserGroupService;
+import com.msy.travel.service.IUserService;
+import com.msy.travel.service.RoleDataService;
 import com.msy.travel.task.Scheduled;
 
 @Controller
@@ -78,33 +90,39 @@ public class UserController extends BaseController {
 	@Resource(name = "redisUtil")
 	private RedisUtil redisUtil;
 
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
+
 	/**
 	 * 跳转登陆页面
+	 * 
 	 * @param loginPage
 	 * @param user
 	 * @return
 	 */
 	@RequestMapping(value = "/tologin")
-	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user, String loginPage) {
 		ModelAndView view = null;
 		try {
-			if (loginPage == null || loginPage.trim().equals(""))
-			{
+			if (loginPage == null || loginPage.trim().equals("")) {
 				loginPage = Consts.LOGIN_PAGE_MP;
 			}
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage)) //跳转web登录
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage)) // 跳转web登录
 			{
 				view = new ModelAndView("web/login");
-				view.addObject("loginPage",Consts.LOGIN_PAGE_WEB);
+				view.addObject("loginPage", Consts.LOGIN_PAGE_WEB);
 
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) //跳转wap登录
+			} else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) // 跳转wap登录
 			{
 				view = new ModelAndView("wap/login");
-				view.addObject("loginPage",Consts.LOGIN_PAGE_WAP);
-			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage)) //跳转管理后台登录
+				view.addObject("loginPage", Consts.LOGIN_PAGE_WAP);
+			} else if (Consts.LOGIN_PAGE_MP.equals(loginPage)) // 跳转管理后台登录
 			{
 				view = new ModelAndView("login");
-				view.addObject("loginPage",Consts.LOGIN_PAGE_MP);
+				view.addObject("loginPage", Consts.LOGIN_PAGE_MP);
 			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -112,37 +130,36 @@ public class UserController extends BaseController {
 		}
 		return view;
 	}
+
 	/**
 	 * ceshi
+	 * 
 	 * @param loginPage
 	 * @param user
 	 * @return
 	 */
 	@RequestMapping(value = "/tologinTest")
-	public ModelAndView tologinTest(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+	public ModelAndView tologinTest(HttpServletRequest request, HttpServletResponse response, User user, String loginPage) {
 		ModelAndView view = new ModelAndView("web/login");
 		return view;
 	}
 
-
 	/**
 	 * 跳转注册用户
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/toNewUser")
-	public ModelAndView toNewUser(HttpServletRequest request,String loginPage) {
+	public ModelAndView toNewUser(HttpServletRequest request, String loginPage) {
 		ModelAndView view = null;
 		try {
-			if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-			{
+			if (Consts.LOGIN_PAGE_WEB.equals(loginPage)) {
 				view = new ModelAndView("web/zhuce");
-				view.addObject("loginPage",Consts.LOGIN_PAGE_WEB);
-			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-			{
+				view.addObject("loginPage", Consts.LOGIN_PAGE_WEB);
+			} else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) {
 				view = new ModelAndView("wap/zhuce");
-				view.addObject("loginPage",Consts.LOGIN_PAGE_WAP);
-			}else
-			{
+				view.addObject("loginPage", Consts.LOGIN_PAGE_WAP);
+			} else {
 				throw new Exception("不支持注册");
 			}
 		} catch (Exception e) {
@@ -159,7 +176,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/newUser")
-	public void newUser(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+	public void newUser(HttpServletRequest request, HttpServletResponse response, User user, String loginPage) {
 		Result result = new Result();
 		try {
 
@@ -171,9 +188,7 @@ public class UserController extends BaseController {
 				throw new LogicException("请输入确认密码");
 			} else if (!user.getUserPwd().trim().equals(user.getUserNewPwd().trim())) {
 				throw new LogicException("两次输入密码不一致");
-			}else	if (null == user.getSecurityCode()
-					|| user.getSecurityCode().equals("")
-					|| request.getSession().getAttribute("rand") == null) {
+			} else if (null == user.getSecurityCode() || user.getSecurityCode().equals("") || request.getSession().getAttribute("rand") == null) {
 				throw new LogicException("请输入验证码");
 			} else if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
 				throw new LogicException("验证码错误");
@@ -181,11 +196,9 @@ public class UserController extends BaseController {
 				User userTmp = new User();
 				userTmp.setUserLoginName(user.getUserLoginName().trim());
 				List<User> userList = userService.queryUserList(userTmp);
-				if(userList.size()!=0)
-				{
+				if (userList.size() != 0) {
 					throw new LogicException("登录名已存在，请修改后重试!");
-				}else
-				{
+				} else {
 					String time = DateTimeUtil.getDateTime19();
 					User userDb = new User();
 					userDb.setUserId(PrimaryKeyUtil.generateKey());
@@ -206,29 +219,35 @@ public class UserController extends BaseController {
 					subject.login(token);
 					result.setResultCode("0");
 					result.setResultMsg("新增用户成功");
+
+					Channel channel = channelService.getChannelByChannelKey(Channel.SNYG);
+					// 用户角色
+					RoleData roleData = new RoleData();
+					roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+					roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+					roleData.setAccId(Destsp.currentSpId);
+					roleData.setUnitId(channel.getChannelId());
+					roleData.setUserId(user.getUserId());
+					roleData.setIsDefault("1");
+					roleDataService.createRoleData(roleData);
 				}
 			}
-		}catch (LogicException le)
-		{
+		} catch (LogicException le) {
 			result.setResultCode("1");
 			result.setResultMsg(le.getMessage());
-		}catch (AuthenticationException ae)
-		{
+		} catch (AuthenticationException ae) {
 			result.setResultCode("1");
 			result.setResultMsg(ae.getMessage());
-		}	catch (Exception e)
-		{
+		} catch (Exception e) {
 			result.setResultCode("1");
 			result.setResultMsg("系统错误");
 		}
 		try {
 			response.getWriter().write(JSON.toJSONString(result));
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error(e);
 		}
 	}
-
 
 	/**
 	 * 用户登陆
@@ -237,13 +256,13 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login")
-	public void login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+	public void login(HttpServletRequest request, HttpServletResponse response, User user, String loginPage) {
 		Result result = new Result();
 		try {
-			if (null == user.getUserLoginName() ||user.getUserLoginName().equals("")) {
+			if (null == user.getUserLoginName() || user.getUserLoginName().equals("")) {
 				throw new LogicException("请输入用户名");
 			}
-			if (null == user.getUserPwd() ||user.getUserPwd().equals("")) {
+			if (null == user.getUserPwd() || user.getUserPwd().equals("")) {
 				throw new LogicException("请输入密码");
 			}
 
@@ -259,24 +278,19 @@ public class UserController extends BaseController {
 			subject.login(token);
 			result.setResultCode("0");
 			result.setResultMsg("登录成功");
-		}catch (LogicException le)
-		{
+		} catch (LogicException le) {
 			result.setResultCode("1");
 			result.setResultMsg(le.getMessage());
-		}catch (AuthenticationException ae)
-		{
+		} catch (AuthenticationException ae) {
 			result.setResultCode("1");
 			result.setResultMsg(ae.getMessage());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			result.setResultCode("1");
 			result.setResultMsg("系统错误");
 		}
 		try {
 			response.getWriter().write(JSON.toJSONString(result));
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error(e);
 		}
 	}
@@ -315,17 +329,14 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/logout")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String loginPage) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, String loginPage) {
 		ModelAndView view = null;
-		if (Consts.LOGIN_PAGE_MP.equals(loginPage))
-		{
-			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
-		}else if (Consts.LOGIN_PAGE_WEB.equals(loginPage))
-		{
-			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
-		}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage))
-		{
-			view = new ModelAndView("redirect:/tologin?loginPage="+loginPage);
+		if (Consts.LOGIN_PAGE_MP.equals(loginPage)) {
+			view = new ModelAndView("redirect:/tologin?loginPage=" + loginPage);
+		} else if (Consts.LOGIN_PAGE_WEB.equals(loginPage)) {
+			view = new ModelAndView("redirect:/tologin?loginPage=" + loginPage);
+		} else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) {
+			view = new ModelAndView("redirect:/tologin?loginPage=" + loginPage);
 		}
 		request.getSession().removeAttribute(ResourceCommon.LOGIN_USER);
 		request.getSession().invalidate();
@@ -654,6 +665,15 @@ public class UserController extends BaseController {
 			userService.createUser(user);
 
 			pubUserLogService.createUserLog(request, "新增管理员", "1", "新增用户:登录名为" + user.getUserLoginName() + "  成功");
+
+			RoleData roleData = new RoleData();
+			roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+			roleData.setRoleType(RoleData.ROLE_TYPE_YYS);
+			roleData.setAccId(getLoginUser(request).getAccId());
+			roleData.setUnitId(getLoginUser(request).getUnitId());
+			roleData.setUserId(user.getUserId());
+			roleData.setIsDefault("1");
+			roleDataService.createRoleData(roleData);
 
 			view = new ModelAndView("success");
 		} catch (Exception e) {
@@ -1024,9 +1044,9 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/relogin")
-	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response,String loginPage) {
+	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response, String loginPage) {
 		ModelAndView view = new ModelAndView("relogin");
-		view.addObject("loginPage",loginPage);
+		view.addObject("loginPage", loginPage);
 		return view;
 	}
 
@@ -1090,7 +1110,6 @@ public class UserController extends BaseController {
 		return view;
 	}
 
-
 	/**
 	 * 验证是否山东用户
 	 *
@@ -1101,26 +1120,23 @@ public class UserController extends BaseController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(value = "/checkIsSdUser")
-	public void checkIsSdUser(String userId,HttpServletRequest request, HttpServletResponse response) {
+	public void checkIsSdUser(String userId, HttpServletRequest request, HttpServletResponse response) {
 		boolean isSdUser = false;
 		try {
-			if(userId != null && !userId.trim().equals("")) //如果参数中有userId
+			if (userId != null && !userId.trim().equals("")) // 如果参数中有userId
 			{
 				isSdUser = userService.checkIsSdUser(userId);
-			}else
-			{
-				if (getLoginUser(request) != null)
-				{
+			} else {
+				if (getLoginUser(request) != null) {
 					isSdUser = userService.checkIsSdUser(getLoginUser(request).getUserId());
 				}
 			}
 		} catch (Exception e) {
 			log.error(e, e);
-		}finally {
+		} finally {
 			try {
 				response.getWriter().write(String.valueOf(isSdUser));
-			}catch (Exception e)
-			{
+			} catch (Exception e) {
 				log.error(e);
 			}
 		}
