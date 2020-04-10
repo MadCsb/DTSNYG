@@ -212,6 +212,16 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	private RoleData roleData;
 
+	private String roleType;
+
+	public String getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+
 	public String getHeadPic() {
 		return headPic;
 	}

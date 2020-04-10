@@ -118,4 +118,16 @@ public interface UserDao {
 	 */
 	int getUserCountFromAdd(User user) throws Exception;
 
+	/**
+	 * 查询用户新方法
+	 * 
+	 * @author wzd
+	 * @date 2020年4月10日 下午7:23:20
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return List<User>
+	 */
+	List<User> queryUserListAndRoleData(User user) throws Exception;
+
 }

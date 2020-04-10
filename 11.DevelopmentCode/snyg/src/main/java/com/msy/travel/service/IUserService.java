@@ -1,9 +1,8 @@
 package com.msy.travel.service;
 
-import com.msy.travel.common.Result;
-import com.msy.travel.pojo.RoleData;
 import java.util.List;
 
+import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.User;
 
 /**
@@ -90,12 +89,10 @@ public interface IUserService {
 
 	User getUserByUserLoginName(User user) throws Exception;
 
-
 	/**
-	 * 获取或新增 微信端
-	 * 历史登录用户，用于其他平台已登录，跳转到微信时
+	 * 获取或新增 微信端 历史登录用户，用于其他平台已登录，跳转到微信时
 	 */
-	public User getOrCreateByUserLoginName(String spId, String code,User oldLoginUser) throws Exception ;
+	public User getOrCreateByUserLoginName(String spId, String code, User oldLoginUser) throws Exception;
 
 	/**
 	 * 查询微商城或pC用户
@@ -124,14 +121,18 @@ public interface IUserService {
 	/**
 	 *
 	 * 获取或新增 山东移动用户
-	 * @param sdToken 山东移动访问我方平台时附带的token
+	 * 
+	 * @param sdToken
+	 *            山东移动访问我方平台时附带的token
 	 */
 	User getOrCreateBySdToken(String sdToken) throws Exception;
 
 	/**
 	 *
 	 * 判断用户是否是山东用户
-	 * @param userId 用户ID
+	 * 
+	 * @param userId
+	 *            用户ID
 	 * @return boolean 是否是山东用户
 	 */
 	public boolean checkIsSdUser(String userId) throws Exception;
@@ -140,6 +141,18 @@ public interface IUserService {
 	 * 新增用戶- 用戶角色信息
 	 *
 	 */
-	public User createUserAndRoledata(User user,List<RoleData> roleDataList) throws Exception;
+	public User createUserAndRoledata(User user, List<RoleData> roleDataList) throws Exception;
+
+	/**
+	 * 查询用户新方法
+	 * 
+	 * @author wzd
+	 * @date 2020年4月10日 下午7:23:20
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return List<User>
+	 */
+	public List<User> queryUserListAndRoleData(User user) throws Exception;
 
 }

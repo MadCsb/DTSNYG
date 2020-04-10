@@ -457,4 +457,78 @@
 			</if>
 		</where>
 	</select>
+	
+	<!-- 根据roledata查询  -->
+	<select id="queryUserListAndRoleData" parameterType="User" resultType="User">
+	SELECT
+		u.F_USER_ID AS userId,
+		u.F_USER_LOGINNAME AS userLoginName,
+		u.F_USER_NAME AS userName,
+		u.F_USER_DESC AS userDesc,
+		u.F_USER_PWD AS userPwd,
+		u.F_USER_TEL AS userTel,
+		u.F_USER_MOBILE AS userMobile,
+		u.F_USER_EMAIL AS userEmail,
+		u.F_USER_ADDR AS userAddr,
+		u.F_USER_REG_DATE AS userRegDate,
+		u.F_USER_STATE AS userState,
+		u.F_USER_IP AS userIp,
+		u.F_USER_LOCKED AS userLocked,
+		u.F_USER_LOCKTIME AS userLockTime,
+		u.F_STOREID AS storeId,
+		u.F_WXSERVICEID AS wxServiceId,
+		u.F_TYPE AS type,
+		u.F_COUNTRY AS country,
+		u.F_CITY AS city,
+		u.F_PROVINCE AS province,
+		u.F_SEX AS sex,
+		u.F_UPDATETIME AS updateTime,
+		u.F_HEADPIC AS headPic
+	FROM
+		t_pub_roledata r 
+	LEFT JOIN 
+		t_pub_user u on u.F_USER_ID = r.F_USERID
+		<where>
+			<if test="userName!=null and userName!='' ">
+				u.F_USER_NAME like concat('%',#{userName},'%') 
+			</if>
+			<if test="userLoginName!=null and userLoginName!='' ">
+				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%')
+			</if>
+			<if test="city != null and city != ''">
+				and (u.F_CITY like concat('%',#{city},'%') or u.F_PROVINCE like concat('%',#{city},'%') or u.F_COUNTRY like concat('%',#{city},'%'))
+			</if>
+			<if test="type != null and type != ''">
+				and u.F_TYPE = #{type}
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.F_SEX = #{sex}
+			</if>
+			<if test="updateTimeStart != null and updateTimeStart != ''">
+				and u.F_UPDATETIME &gt;= concat(#{updateTimeStart},' 00:00:00')
+			</if>
+			<if test="updateTimeEnd != null and updateTimeEnd != ''">
+				and u.F_UPDATETIME &lt;= concat(#{updateTimeEnd},' 23:59:59')
+			</if>
+			<if test="userMobile !=null and userMobile !='' ">
+				and u.F_USER_MOBILE like concat('%',#{userMobile},'%') 
+			</if>
+			<if test="userEmail !=null and userEmail !='' ">
+				and u.F_USER_EMAIL like concat('%',#{userEmail},'%') 
+			</if>
+			<if test="roleType != null and roleType != ''">
+				and r.F_ROLETYPE = #{roleType}
+			</if>
+		</where>
+		<if test="entityPage!=null">
+			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
+				ORDER BY ${entityPage.sortField}
+			</if>
+		</if>
+		<if test="entityPage!=null">
+			<if test="entityPage!=null and entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+				 ${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
 </mapper>
