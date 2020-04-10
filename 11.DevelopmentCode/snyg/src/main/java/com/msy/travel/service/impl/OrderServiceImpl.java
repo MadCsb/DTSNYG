@@ -7,6 +7,7 @@ import com.chinamobile.sd.openapi.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
@@ -46,6 +47,9 @@ import com.msy.travel.dao.OrderDao;
 public class OrderServiceImpl implements OrderService
 {
     public static final Log log = LogFactory.getLog(OrderServiceImpl.class);
+
+    @Resource(name = "roleDataServiceImpl")
+    private RoleDataService roleDataService;
 
     @Resource(name = "userServiceImpl")
     private IUserService userService;
@@ -176,6 +180,38 @@ public class OrderServiceImpl implements OrderService
             result.setResultMsg("当前用户不存在");
             return result;
         }
+
+        //下单用户渠道ID
+        String channelId = null;
+        //如果当前用户有角色内容，切角色内容是渠道
+        if(user.getRoleData() != null && RoleData.ROLE_TYPE_CHANNEL.equals(user.getRoleData().getRoleType()))
+        {
+            channelId = user.getRoleData().getUnitId();
+        }else //否则，需要查询当前用户的默认渠道id
+        {
+            RoleData roleData = new RoleData();
+            roleData.setUserId(user.getUserId());
+            roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+            EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
+            entityPage.setSortField("t.F_ISDEFAULT");
+            entityPage.setSortOrder("DESC");
+            roleData.setEntityPage(entityPage);
+            List<RoleData> roleDataList = roleDataService.queryRoleDataList(roleData);
+            if (roleDataList.size() == 0)
+            {
+                result.setResultCode("1");
+                result.setResultMsg("当前用户非正常渠道用户");
+                return result;
+            }
+        }
+        UserBindChannel userBindChannel = new UserBindChannel();
+        userBindChannel.setUserId(param.getString("userId"));
+        List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+        if (userBindChannelList.size()>0)
+        {
+            channelId = userBindChannelList.get(0).getChannelId();
+        }
+
 
         //需删除的购物车
         List<Shopcart> deleteShopcartList = new ArrayList<>();
@@ -411,15 +447,7 @@ public class OrderServiceImpl implements OrderService
         User operatorUser = new User();
         operatorUser.setUserId(param.getString("userId"));
         operatorUser = userService.displayUser(operatorUser);
-        //下单用户渠道ID
-        String channelId = null;
-        UserBindChannel userBindChannel = new UserBindChannel();
-        userBindChannel.setUserId(param.getString("userId"));
-        List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-        if (userBindChannelList.size()>0)
-        {
-            channelId = userBindChannelList.get(0).getChannelId();
-        }
+
 
         //收货地址
         Consignee consignee = new Consignee();

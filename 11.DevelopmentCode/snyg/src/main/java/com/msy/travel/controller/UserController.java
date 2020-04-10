@@ -55,6 +55,12 @@ public class UserController extends BaseController {
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
+
 	@Resource(name = "articleServiceImpl")
 	private IArticleService articleService;
 
@@ -177,6 +183,7 @@ public class UserController extends BaseController {
 			} else {
 				User userTmp = new User();
 				userTmp.setUserLoginName(user.getUserLoginName().trim());
+				userTmp.setType(User.USER_TYPE_USERNAME_PASSWORD);
 				List<User> userList = userService.queryUserList(userTmp);
 				if(userList.size()!=0)
 				{
@@ -184,6 +191,7 @@ public class UserController extends BaseController {
 				}else
 				{
 					String time = DateTimeUtil.getDateTime19();
+					//新增的用户信息
 					User userDb = new User();
 					userDb.setUserId(PrimaryKeyUtil.generateKey());
 					userDb.setUserLoginName(user.getUserLoginName().trim());
@@ -192,13 +200,30 @@ public class UserController extends BaseController {
 					userDb.setUserRegDate(time);
 					userDb.setUserState("1");
 					userDb.setUserLocked("0");
-					userDb.setUserRoleType(null);
-					userDb.setAccId(Destsp.currentSpId);
-					userDb.setUnitId(Destsp.currentSpId);
-					userDb.setType("1");
+					userDb.setType(User.USER_TYPE_USERNAME_PASSWORD);
 					userDb.setUpdateTime(DateTimeUtil.getDateTime19());
-					userService.createUser(userDb);
-					UsernamePasswordToken token = new UsernamePasswordToken(userDb.getUserLoginName(), userDb.getUserPwd());
+
+					//新增的用户的角色信息
+					String accId = Destsp.currentSpId;
+					Channel channel = channelService.getChannelByChannelKey(Channel.SNYG);
+					String unitId = channel.getChannelId();
+
+					List<RoleData> roleDataList = new ArrayList<>();//角色信息
+					RoleData roleData = new RoleData();
+					roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+					roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+					roleData.setAccId(accId);
+					roleData.setUnitId(unitId);
+					roleData.setUserId(userDb.getUserId());
+					roleData.setIsDefault("1");
+					roleDataList.add(roleData);
+					userService.createUserAndRoledata(userDb,roleDataList);
+
+					RoleData loginRoleData = new RoleData();
+					loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+					loginRoleData.setAccId(accId);
+					loginRoleData.setUnitId(unitId);
+					UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(),MD5.encode(user.getUserPwd()),loginRoleData);
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
 					result.setResultCode("0");
@@ -215,6 +240,7 @@ public class UserController extends BaseController {
 			result.setResultMsg(ae.getMessage());
 		}	catch (Exception e)
 		{
+			log.error(e,e);
 			result.setResultCode("1");
 			result.setResultMsg("系统错误");
 		}
@@ -639,17 +665,37 @@ public class UserController extends BaseController {
 				return view;
 			}
 
-			user.setAccId(u.getAccId());
 			user.setUserState("1");// 1:有效
 			user.setUserPwd(MD5.encode(user.getUserPwd()));
 			user.setUserLocked("0");
 			user.setUserRegDate(DateTimeUtil.getDateTime19());
 			user.setUserId(PrimaryKeyUtil.generateKey());
-			user.setUnitId(u.getAccId());
-			user.setUserRoleType("2");
 
-			userService.createUser(user);
-
+			//新增的用户的角色信息
+			String accId = getLoginUser(request).getAccId();
+			Channel snygChannel = channelService.getChannelByChannelKey(Channel.SNYG);
+			//山农易购渠道角色
+			String unitId = snygChannel.getChannelId();
+			List<RoleData> roleDataList = new ArrayList<>();//角色信息
+			RoleData roleData = new RoleData();
+			roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+			roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+			roleData.setAccId(accId);
+			roleData.setUnitId(unitId);
+			roleData.setUserId(user.getUserId());
+			roleData.setIsDefault("1");
+			roleDataList.add(roleData);
+			//运营商角色
+			unitId = accId;
+			roleData = new RoleData();
+			roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+			roleData.setRoleType(RoleData.ROLE_TYPE_YYS);
+			roleData.setAccId(accId);
+			roleData.setUnitId(unitId);
+			roleData.setUserId(user.getUserId());
+			roleData.setIsDefault("1");
+			roleDataList.add(roleData);
+			userService.createUserAndRoledata(user,roleDataList);
 			pubUserLogService.createUserLog(request, "新增管理员", "1", "新增用户:登录名为" + user.getUserLoginName() + "  成功");
 
 			view = new ModelAndView("success");

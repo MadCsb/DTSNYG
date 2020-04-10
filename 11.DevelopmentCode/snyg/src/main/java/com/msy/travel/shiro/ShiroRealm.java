@@ -180,6 +180,7 @@ public class ShiroRealm extends AuthorizingRealm {
 			user = userService.displayUser(user);
 			user.setAccId(roleData.getAccId());
 			user.setUnitId(roleData.getUnitId());
+			user.setUserRoleType(roleData.getRoleType());
 			user.setRoleData(roleData);
 		} catch (Exception e) {
 			e.printStackTrace();

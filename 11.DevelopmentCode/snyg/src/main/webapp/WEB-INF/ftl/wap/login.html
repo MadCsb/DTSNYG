@@ -57,6 +57,8 @@
         var userLoginName = $("#userLoginName").val();
         var userPwd = $("#userPwd").val();
         var securityCode = $("#securityCode").val();
+        var userType = "${userType}";
+        var roleType = "${roleType}";
         $.ajax({
           type: "POST",
           url: "login",
@@ -64,7 +66,9 @@
           data: {
             userLoginName: userLoginName,
             userPwd: userPwd,
-            securityCode: securityCode
+            securityCode: securityCode,
+            userType:userType,
+            roleType:roleType
           },
           success: function (data) {
             if(data.resultCode == '0')

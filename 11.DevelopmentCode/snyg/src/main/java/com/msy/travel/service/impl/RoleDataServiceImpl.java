@@ -1,5 +1,6 @@
 package com.msy.travel.service.impl;
 
+import com.msy.travel.common.PrimaryKeyUtil;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class RoleDataServiceImpl implements RoleDataService
      */
     public void createRoleData(RoleData roleData) throws Exception
     {
+        if(roleData.getUserRoleDataId() == null || roleData.getUserRoleDataId().equals(""))
+        {
+            roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+        }
         roleDataDao.insertRoleData(roleData);
     }
     /**

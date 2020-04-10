@@ -1,5 +1,7 @@
 package com.msy.travel.service;
 
+import com.msy.travel.common.Result;
+import com.msy.travel.pojo.RoleData;
 import java.util.List;
 
 import com.msy.travel.pojo.User;
@@ -133,5 +135,11 @@ public interface IUserService {
 	 * @return boolean 是否是山东用户
 	 */
 	public boolean checkIsSdUser(String userId) throws Exception;
+
+	/**
+	 * 新增用戶- 用戶角色信息
+	 *
+	 */
+	public User createUserAndRoledata(User user,List<RoleData> roleDataList) throws Exception;
 
 }

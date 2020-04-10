@@ -375,4 +375,24 @@ public class UserServiceImpl implements IUserService {
 		}
 		return false;
 	}
+	/**
+	 * 新增用戶- 用戶角色信息
+	 *
+	 */
+	public User createUserAndRoledata(User user,List<RoleData> roleDataList) throws Exception
+	{
+		if(user.getUserId() == null || user.getUserId().equals(""))
+		{
+			user.setUserId(PrimaryKeyUtil.generateKey());
+		}
+		user.setUserRegDate(DateTimeUtil.getDateTime19());
+		userService.createUser(user);
+		for (int i=0;i<roleDataList.size();i++)
+		{
+			RoleData roleData = roleDataList.get(i);
+			roleData.setUserId(user.getUserId());
+			roleDataService.createRoleData(roleData);
+		}
+		return user;
+	}
 }

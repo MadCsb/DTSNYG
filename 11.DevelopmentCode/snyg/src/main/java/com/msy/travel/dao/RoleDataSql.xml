@@ -121,8 +121,17 @@
 			<if test="userType!=null and userType!='' ">
 				and u.F_TYPE = #{userType}
 			</if>
+			<if test="userId!=null and userId!='' ">
+				and t.F_USERID = #{userId}
+			</if>
 			<if test="roleType!=null and roleType!='' ">
 				and t.F_ROLETYPE = #{roleType}
+			</if>
+			<if test="accId!=null and accId!='' ">
+				and t.F_ACCID = #{accId}
+			</if>
+			<if test="unitId!=null and unitId!='' ">
+				and t.F_UNITID = #{unitId}
 			</if>
 		</where>
 		<if test="entityPage != null">

@@ -1,5 +1,6 @@
 package com.msy.travel.service;
 
+import com.msy.travel.pojo.User;
 import java.util.List;
 import com.msy.travel.pojo.RoleData;
 
@@ -68,5 +69,6 @@ public interface RoleDataService
      * 获取RoleData主键ID
      */
     public String getRoleDataId() throws Exception;
+
 }
 
