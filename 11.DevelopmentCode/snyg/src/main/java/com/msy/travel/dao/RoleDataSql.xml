@@ -105,14 +105,25 @@
 			t.F_ACCID as accId ,
 			t.F_UNITID as unitId ,
 			t.F_USERID as userId ,
-			t.F_ISDEFAULT as isDefault 
+			t.F_ISDEFAULT as isDefault ,
+			u.F_USER_LOGINNAME as userLoginName ,
+			u.F_TYPE as userType ,
+			u.F_USER_STATE as userState ,
+			u.F_USER_LOCKED as userLocked ,
+			u.F_USER_PWD as userPwd
 		FROM
 		t_pub_roledata t
+		LEFT JOIN t_pub_user u on t.F_USERID = u.F_USER_ID
 		<where>
-			<if test="userRoleDataId!=null and userRoleDataId!=''">
-		    	t.F_USEROLEDATAID = #{userRoleDataId}
-		     </if>
-			
+			<if test="userLoginName!=null and userLoginName!='' ">
+				and u.F_USER_LOGINNAME = #{userLoginName} AND LENGTH(u.F_USER_LOGINNAME) = LENGTH(#{userLoginName})
+			</if>
+			<if test="userType!=null and userType!='' ">
+				and u.F_TYPE = #{userType}
+			</if>
+			<if test="roleType!=null and roleType!='' ">
+				and t.F_ROLETYPE = #{roleType}
+			</if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

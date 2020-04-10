@@ -1,5 +1,8 @@
 package com.msy.travel.shiro;
 
+import com.msy.travel.common.EntityPage;
+import com.msy.travel.pojo.RoleData;
+import com.msy.travel.service.RoleDataService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,6 +44,9 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
+
 	@Resource(name = "menuServiceImpl")
 	private IMenuService menuService;
 
@@ -57,8 +63,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-
-		String username = (String) principals.getPrimaryPrincipal();
+		RoleData roleData = (RoleData) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
 		// 暂不使用用户组权限
@@ -67,15 +72,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		List<MenuButton> menuButtonList = new ArrayList<MenuButton>();
 		try {
-			// 获取用户信息
-			User user = new User();
-			user.setUserLoginName(username);
-			List<User> userList = userService.queryUserListByLogin(user);
-			if (userList != null && userList.size() > 0) {
-				user = userList.get(0);
-				// 获取用户菜单按妞 并设置单一权限集合
-				menuButtonList = menuButtonService.queryMenubuttonListByUserId(user.getUserId());
-			}
+			menuButtonList = menuButtonService.queryMenubuttonListByUserId(roleData.getUserId());
 		} catch (Exception e) {
 
 		}
@@ -97,37 +94,38 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		String username = (String) token.getPrincipal();
+		UsernamePasswordRoledataToken usernamePasswordRoledataToken = (UsernamePasswordRoledataToken)token;
+		RoleData roleData = usernamePasswordRoledataToken.getRoleData();
+		roleData.setUserPwd(null);
 
-		// 判断用户名密码
-		User user = new User();
-		user.setUserLoginName(username);
-
-		List<User> userList = null;
+		// 判断 登录方式/角色类型/用户名 是否存在
+		List<RoleData> roleDataList = null;
 		try {
-			userList = userService.queryUserListByLogin(user);
+			EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
+			entityPage.setSortField("t.F_ISDEFAULT");
+			entityPage.setSortOrder("DESC");
+			roleData.setEntityPage(entityPage);
+			roleDataList = roleDataService.queryRoleDataList(roleData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		if (userList != null && userList.size() > 0) {
-			user = userList.get(0);
+		if (roleDataList != null && roleDataList.size() > 0) {
+			roleData = roleDataList.get(0);
 		} else {
-			user = null;
+			roleData = null;
 		}
-		if (user == null) {
+		if (roleData == null) {
 			throw new AuthenticationException("用户不存在");
-		} else if ("1".equals(user.getUserRoleType())) {// 系统管理员
-			throw new AuthenticationException("系统管理员不能登录该系统");
-		} else if (!"1".equals(user.getUserState())) {
+		}else if (!"1".equals(roleData.getUserState())) {
 			throw new AuthenticationException("帐号已失效");
-		} else if (!"0".equals(user.getUserLocked())) {
+		} else if (!"0".equals(roleData.getUserLocked())) {
 			throw new AuthenticationException("帐号已锁定");
 		}
 
 		// 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUserLoginName(), // 用户名
-				user.getUserPwd().toCharArray(), getName() // realm name
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(roleData,
+				roleData.getUserPwd().toCharArray(), getName() // realm name
 		);
 
 		return authenticationInfo;
@@ -145,12 +143,13 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (passwordRetryCache == null) {
 			passwordRetryCache = cacheManager.getCache("passwordRetryCache");
 		}
-		String username = (String) token.getPrincipal();
-		AtomicInteger retryCount = passwordRetryCache.get(username);
+		RoleData roleData = (RoleData) info.getPrincipals().getPrimaryPrincipal();
+		String userLoginName = roleData.getUserLoginName();
+		AtomicInteger retryCount = passwordRetryCache.get(userLoginName);
 
 		if (retryCount == null) {
 			retryCount = new AtomicInteger(1);
-			passwordRetryCache.put(username, retryCount);
+			passwordRetryCache.put(userLoginName, retryCount);
 		}
 		if (retryCount.get() > 5) {
 			// if retry count > 5 throw
@@ -162,35 +161,29 @@ public class ShiroRealm extends AuthorizingRealm {
 		}
 
 		if (passwordRetryCache != null) {
-			passwordRetryCache.remove(username);
+			passwordRetryCache.remove(userLoginName);
 		}
-
-		// 判断用户名密码
-		User user = new User();
-		user.setUserLoginName(username);
-
-		List<User> userList = null;
-		try {
-			userList = userService.queryUserListByLogin(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		user = userList.get(0);
-
-		String isAdmin = "-1"; // 用户菜单编号
-		isAdmin = user.getUserRoleType();
 
 		// 获取用户菜单
 		Menu menu = new Menu();
-		menu.setUserId(user.getUserId());
-		menu.setRoleType(isAdmin);
+		menu.setUserId(roleData.getUserId());
+		menu.setRoleType(roleData.getRoleType());
 		try {
 			List<Menu> menuList = menuService.getListByUserIdAndRoletype(menu);
 			setSession(ResourceCommon.LOGIN_USER_MENU, menuList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		User user = new User();
+		try {
+			user.setUserId(roleData.getUserId());
+			user = userService.displayUser(user);
+			user.setAccId(roleData.getAccId());
+			user.setUnitId(roleData.getUnitId());
+			user.setRoleData(roleData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setSession(ResourceCommon.LOGIN_USER, user);
 	}
 

@@ -210,6 +210,8 @@ public class User extends BaseEntity implements java.io.Serializable {
 	// F_HEADPIC
 	private String headPic;
 
+	private RoleData roleData;
+
 	public String getHeadPic() {
 		return headPic;
 	}
@@ -578,4 +580,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 		this.userPicUrl = userPicUrl;
 	}
 
+	public RoleData getRoleData() {
+		return roleData;
+	}
+
+	public void setRoleData(RoleData roleData) {
+		this.roleData = roleData;
+	}
 }

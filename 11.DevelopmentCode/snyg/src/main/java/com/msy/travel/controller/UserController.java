@@ -6,6 +6,7 @@ import com.msy.travel.common.LogicException;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.*;
 
+import com.msy.travel.shiro.UsernamePasswordRoledataToken;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,31 +97,27 @@ public class UserController extends BaseController {
 			{
 				view = new ModelAndView("web/login");
 				view.addObject("loginPage",Consts.LOGIN_PAGE_WEB);
+				view.addObject("userType",User.USER_TYPE_USERNAME_PASSWORD);
+				view.addObject("roleType",RoleData.ROLE_TYPE_CHANNEL);
 
 			}else if (Consts.LOGIN_PAGE_WAP.equals(loginPage)) //跳转wap登录
 			{
 				view = new ModelAndView("wap/login");
 				view.addObject("loginPage",Consts.LOGIN_PAGE_WAP);
+				view.addObject("userType",User.USER_TYPE_USERNAME_PASSWORD);
+				view.addObject("roleType",RoleData.ROLE_TYPE_CHANNEL);
 			}else if (Consts.LOGIN_PAGE_MP.equals(loginPage)) //跳转管理后台登录
 			{
 				view = new ModelAndView("login");
 				view.addObject("loginPage",Consts.LOGIN_PAGE_MP);
+				view.addObject("userType",User.USER_TYPE_USERNAME_PASSWORD);
+				view.addObject("roleType",RoleData.ROLE_TYPE_YYS);
 			}
+
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);
 		}
-		return view;
-	}
-	/**
-	 * ceshi
-	 * @param loginPage
-	 * @param user
-	 * @return
-	 */
-	@RequestMapping(value = "/tologinTest")
-	public ModelAndView tologinTest(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
-		ModelAndView view = new ModelAndView("web/login");
 		return view;
 	}
 
@@ -233,11 +230,12 @@ public class UserController extends BaseController {
 	/**
 	 * 用户登陆
 	 *
-	 * @param user
+	 * @param user {user.userLoginName:,user.userPwd:,user.securityCode}
+	 * @param roleData {roleData.userLoginName:,roleData.roleType}
 	 * @return
 	 */
 	@RequestMapping(value = "/login")
-	public void login(HttpServletRequest request, HttpServletResponse response, User user,String loginPage) {
+	public void login(HttpServletRequest request, HttpServletResponse response, User user,RoleData roleData) {
 		Result result = new Result();
 		try {
 			if (null == user.getUserLoginName() ||user.getUserLoginName().equals("")) {
@@ -253,8 +251,7 @@ public class UserController extends BaseController {
 			if (!request.getSession().getAttribute("rand").equals(user.getSecurityCode())) {
 				throw new LogicException("验证码错误");
 			}
-
-			UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()));
+			UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(),MD5.encode(user.getUserPwd()),roleData);
 			Subject subject = SecurityUtils.getSubject();
 			subject.login(token);
 			result.setResultCode("0");

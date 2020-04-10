@@ -8,7 +8,7 @@ import com.msy.travel.common.BaseEntity;
 
 @Alias(value = "roleData")
 public class RoleData extends BaseEntity implements java.io.Serializable {
-
+	private static final long serialVersionUID = -6849794470754667710L;
 	/**
 	 * 用于确定导出EXCEL的列
 	 */
@@ -58,6 +58,27 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 	 * 是否默认角色 0否1是 db_column: F_ISDEFAULT
 	 */
 	private String isDefault;
+
+	/**
+	 * 用户登录名
+	 */
+	private String userLoginName;
+	/**
+	 * 用户类型
+	 */
+	private String userType;
+	/**
+	 * 用户状态：1：有效；0：无效，不允许登录；-1：已删除
+	 */
+	private String userState;
+	/**
+	 * 用户是否被锁定0-没有1-锁定
+	 */
+	private String userLocked;
+	/**
+	 * 用户密码
+	 */
+	private String userPwd;
 	// columns END
 	private List<String> roleDataIdList;
 
@@ -117,4 +138,43 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 		return this.roleDataIdList;
 	}
 
+	public String getUserLoginName() {
+		return userLoginName;
+	}
+
+	public void setUserLoginName(String userLoginName) {
+		this.userLoginName = userLoginName;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getUserState() {
+		return userState;
+	}
+
+	public void setUserState(String userState) {
+		this.userState = userState;
+	}
+
+	public String getUserLocked() {
+		return userLocked;
+	}
+
+	public void setUserLocked(String userLocked) {
+		this.userLocked = userLocked;
+	}
+
+	public String getUserPwd() {
+		return userPwd;
+	}
+
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
+	}
 }
