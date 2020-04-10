@@ -18,11 +18,20 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 
 	};
 
-	public static String ADMIN = "1";
+	/**
+	 * 用户角色类型-管理员：1
+	 */
+	public static final String ROLE_TYPE_ADMIN = "1";
 
-	public static String YYS = "2";
+	/**
+	 * 用户角色类型-运营商：2
+	 */
+	public static final String ROLE_TYPE_YYS = "2";
 
-	public static String CHANNEL = "3";
+	/**
+	 * 用户角色类型-渠道：3
+	 */
+	public static final String ROLE_TYPE_CHANNEL = "3";
 
 	// columns START
 	/**
