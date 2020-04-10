@@ -22,9 +22,9 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public static final String USER_TYPE_WEIXIN = "0";
 
 	/**
-	 * 用户类型 PC 1
+	 * 用户类型 账号密码登录 1
 	 */
-	public static final String USER_TYPE_PC = "1";
+	public static final String USER_TYPE_USERNAME_PASSWORD = "1";
 
 	/**
 	 * 用户类型 山东移动 2
