@@ -60,12 +60,13 @@
 
 <!--整点秒杀-->
 <a href="javascript:void(0)"><div class="snyg_details_title">整点秒杀</div></a>
+<!-- 
 <ul class="mssjlist">
 	<li><a href="javascript:void(0)" onclick="changePriceType2('1',this)"><span id="priceTypeChange1" class="msbtn_on"><i class="ico_z"></i>早市抢鲜<br>09:00-10:00</span></a></li>
 	<li><a href="javascript:void(0)" onclick="changePriceType2('2',this)"><span id="priceTypeChange2" class="msbtn"><i class="ico_w"></i>午市抢鲜<br>12:00-13:00</span></a></li>
 	<li style="margin-right:0;"><a href="javascript:void(0)"  onclick="changePriceType2('3',this)"><span  id="priceTypeChange3" class="msbtn"><i class="ico_ws"></i>晚市抢鲜<br>21:00-22:00</span></a></li>
-</ul>
-<ul class="snyg_data_details" id="dataList2">
+</ul> -->
+<ul class="snyg_data_tglist" id="dataList2">
 </ul>
 <div style="clear:both;"></div>
 <a href="javascript:void(0)" onclick="changePriceType('2')"><div class="ckgd"><span class="morebtn">更多产品</span></div></a>
@@ -75,6 +76,7 @@
 <a href="javascript:void(0)"><div class="snyg_details_title">拼团专区</div></a>
 <ul class="snyg_data_tglist" id="dataList1">
 </ul>
+<div style="clear:both;"></div>
 <a href="javascript:void(0)" onclick="changePriceType('1')"><div class="ckgd"><span class="morebtn">更多产品</span></div></a>
 <div class="snyg_flbanner"></div>
 
@@ -95,7 +97,7 @@
 var currentPage = 1;
 $(function(){
 	changeBottomClass('1');
-	getDataList('2','4','','','1','');
+	getDataList('2','3','','','1','');
 	getDataList('1','12','ASC','p.F_SORTNUM','1','');
 	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
 
