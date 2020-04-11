@@ -17,6 +17,7 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
+import com.msy.travel.common.ResourceCommon;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Accessrecord;
@@ -24,6 +25,7 @@ import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
+import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.RsPic;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
@@ -37,6 +39,7 @@ import com.msy.travel.service.IRsPicService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.OrderListService;
+import com.msy.travel.service.RoleDataService;
 import com.msy.travel.service.SellPriceService;
 
 @Controller
@@ -80,6 +83,9 @@ public class WxCommproductController extends BaseController {
 
 	@Resource(name = "couponServiceImpl")
 	private CouponService couponService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
 
 	/**
 	 * 跳转到列表
@@ -127,6 +133,21 @@ public class WxCommproductController extends BaseController {
 				view = new ModelAndView("wx/commproduct/commproductDetail3");
 			} else {// 其他进普通页
 				view = new ModelAndView("wx/commproduct/commproductDetail0");
+			}
+
+			String userRoleDataId = request.getParameter("userRoleDataId");// 微信回调获取
+			if (userRoleDataId != null && !"".equals(userRoleDataId)) {
+				RoleData roleData = new RoleData();
+				roleData.setUserRoleDataId(userRoleDataId);
+				roleData = roleDataService.displayRoleData(roleData);
+
+				User user = new User();
+				user.setUserId(roleData.getUserId());
+				user = userService.displayUser(user);
+
+				user.setRoleData(roleData);
+
+				request.getSession().setAttribute(ResourceCommon.LOGIN_USER, user);
 			}
 
 			// view.addObject("user", new User());
