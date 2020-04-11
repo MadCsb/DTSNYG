@@ -724,15 +724,15 @@
       var trTotalPrice = price*num;
 
       var transFee = getPriceExpress($(this).attr("priceId"),num);
+      alert(transFee);
       if(transFee == null)
       {
         isTransFeeOk = false;
         $(this).find("td").eq(-2).html("未知")
       }else
       {
-        trTotalPrice = trTotalPrice + parseFloat(transFee);
         $(this).find("td").eq(-2).html("&yen;<em>" + trTotalPrice+ "</em>");
-        totalTransFee = parseFloat(transFee);
+        totalTransFee = totalTransFee +  parseFloat(transFee);
       }
       totalPrice = totalPrice + trTotalPrice;
     });

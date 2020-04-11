@@ -98,7 +98,7 @@ public class OpenController extends BaseController {
 	@RequestMapping(value = "/orderList")
 	public ModelAndView toOrderListDetail(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
-		try {	
+		try {
 			view = new ModelAndView("open/displayOrderList");
 			User user = null;
 			//判断是否通过山东移动进入
