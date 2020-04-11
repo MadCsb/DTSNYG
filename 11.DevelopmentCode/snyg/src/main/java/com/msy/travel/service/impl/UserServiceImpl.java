@@ -224,6 +224,9 @@ public class UserServiceImpl implements IUserService {
 					user.setProvince(wxuser.getProvince());
 					user.setCity(wxuser.getCity());
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
+					user.setUserState("1");
+					user.setUserLocked("0");
+					user.setUserRegDate(DateTimeUtil.getDateTime19());
 					userDao.insertUser(user);
 					u = user;
 				}
