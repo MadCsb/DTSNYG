@@ -272,6 +272,7 @@ public class UserController extends BaseController {
 					loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
 					loginRoleData.setAccId(accId);
 					loginRoleData.setUnitId(unitId);
+					loginRoleData.setUserId(userDb.getUserId());
 					UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(), MD5.encode(user.getUserPwd()), loginRoleData);
 					Subject subject = SecurityUtils.getSubject();
 					subject.login(token);
