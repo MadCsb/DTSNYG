@@ -8,15 +8,16 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.Result;
 import com.msy.travel.dao.ChannelBindSaleTypeDao;
 import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.ChannelBindSaleType;
+import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.User;
-import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelBindSaleTypeService;
 import com.msy.travel.service.ChannelService;
-import com.msy.travel.service.UserBindChannelService;
+import com.msy.travel.service.RoleDataService;
 
 /**
  * ChannelBindSaleTypeService接口实现类
@@ -31,11 +32,11 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	@Resource(name = "channelBindSaleTypeDao")
 	private ChannelBindSaleTypeDao channelBindSaleTypeDao;
 
-	@Resource(name = "userBindChannelServiceImpl")
-	private UserBindChannelService userBindChannelService;
-
 	@Resource(name = "channelServiceImpl")
 	private ChannelService channelService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
 
 	/**
 	 * 新增ChannelBindSaleType
@@ -130,40 +131,36 @@ public class ChannelBindSaleTypeServiceImpl implements ChannelBindSaleTypeServic
 	 */
 	public List<String> querySaleTypeByUser(User user) throws Exception {
 		List<String> saleTypeIdList = new ArrayList<String>();
+		Channel channel = new Channel();
 		if (user == null || user.getUserId().equals("")) {
-			Channel channel = new Channel();
 			channel.setChannelKey(Channel.SNYG);
-			channel = channelService.displaychannel(channel);
-
-			ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
-			channelBindSaleType.setChannelId(channel.getChannelId());
-			channelBindSaleType.setStatus("1");
-			saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 		} else {
-			if (!user.getType().equals("0") && !user.getType().equals("1")) {
-				// 判断用户绑定渠道
-				UserBindChannel userBindChannel = new UserBindChannel();
-				userBindChannel.setUserId(user.getUserId());
-				List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-				if (userBindChannelList != null && userBindChannelList.size() > 0) {
-					userBindChannel = userBindChannelList.get(0);
-					// 渠道绑定活动类型
-					ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
-					channelBindSaleType.setChannelId(userBindChannel.getChannelId());
-					channelBindSaleType.setStatus("1");
-					saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
-				}
-			} else {
-				Channel channel = new Channel();
-				channel.setChannelKey(Channel.SNYG);
-				channel = channelService.displaychannel(channel);
 
-				ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
-				channelBindSaleType.setChannelId(channel.getChannelId());
-				channelBindSaleType.setStatus("1");
-				saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
+			if (user.getRoleData() != null && RoleData.ROLE_TYPE_CHANNEL.equals(user.getRoleData().getRoleType())) {
+				channel.setChannelId(user.getRoleData().getUnitId());
+			} else {
+				RoleData roleData = new RoleData();
+				roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				roleData.setUserId(user.getUserId());
+				EntityPage entityPage = new EntityPage(); // 相同用户 相同角色类型 相同unit下
+															// 排序
+				entityPage.setSortField("t.F_ISDEFAULT");
+				entityPage.setSortOrder("DESC");
+				roleData.setEntityPage(entityPage);
+				List<RoleData> roleDataList = roleDataService.queryRoleDataList(roleData); // 用户所有的渠道角色信息
+				if (roleDataList.size() > 0) {
+					channel.setChannelId(roleDataList.get(0).getUnitId());
+				} else {
+					channel.setChannelKey(Channel.SNYG);
+				}
 			}
 		}
+
+		channel = channelService.displaychannel(channel);
+		ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
+		channelBindSaleType.setChannelId(channel.getChannelId());
+		channelBindSaleType.setStatus("1");
+		saleTypeIdList = channelBindSaleTypeDao.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
 
 		return saleTypeIdList;
 	}

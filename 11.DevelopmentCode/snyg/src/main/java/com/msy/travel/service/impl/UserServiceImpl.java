@@ -25,12 +25,10 @@ import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
-import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.RoleDataService;
-import com.msy.travel.service.UserBindChannelService;
 import com.msy.travel.wx.pojo.WxUser;
 import com.msy.travel.wx.utils.WeixinService;
 import com.msy.travel.wx.utils.WeixinUtil;
@@ -58,9 +56,6 @@ public class UserServiceImpl implements IUserService {
 
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
-
-	@Resource(name = "userBindChannelServiceImpl")
-	private UserBindChannelService userBindChannelService;
 
 	@Resource(name = "channelServiceImpl")
 	private ChannelService channelService;
@@ -373,35 +368,6 @@ public class UserServiceImpl implements IUserService {
 	 */
 	public int getUserCountFromAdd(User user) throws Exception {
 		return userDao.getUserCountFromAdd(user);
-	}
-
-	/**
-	 *
-	 * 判断用户是否是山东用户
-	 * 
-	 * @param userId
-	 *            用户ID
-	 * @return boolean 是否是山东用户
-	 */
-	public boolean checkIsSdUser(String userId) throws Exception {
-		User user = new User();
-		user.setUserId(userId);
-		user = userDao.queryUser(user);
-		if (User.USER_TYPE_SDMOBILE.equals(user.getType())) {
-			return true;
-		} else {
-			Channel channel = new Channel();
-			channel.setChannelKey(Channel.SDYD);
-			channel = channelService.displaychannel(channel);
-			UserBindChannel userBindChannel = new UserBindChannel();
-			userBindChannel.setChannelId(channel.getChannelId());
-			userBindChannel.setUserId(userId);
-			List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-			if (userBindChannelList.size() > 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

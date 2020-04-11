@@ -128,16 +128,6 @@ public interface IUserService {
 	User getOrCreateBySdToken(String sdToken) throws Exception;
 
 	/**
-	 *
-	 * 判断用户是否是山东用户
-	 * 
-	 * @param userId
-	 *            用户ID
-	 * @return boolean 是否是山东用户
-	 */
-	public boolean checkIsSdUser(String userId) throws Exception;
-
-	/**
 	 * 新增用戶- 用戶角色信息
 	 *
 	 */
@@ -166,10 +156,10 @@ public interface IUserService {
 	/**
 	 * 合并用户 userIdTwo合并到userIdOne
 	 */
-	public void unionUser(String userIdOne,String userIdTwo) throws Exception;
+	public void unionUser(String userIdOne, String userIdTwo) throws Exception;
 
 	/**
-	 *  分开已合并用户 userIdTwo分开
+	 * 分开已合并用户 userIdTwo分开
 	 */
-	public void unUnionUser(String userIdOne,String userIdTwo) throws Exception;
+	public void unUnionUser(String userIdOne, String userIdTwo) throws Exception;
 }
