@@ -110,7 +110,8 @@
 	function beforeSub()
 	{ 
 		if($("#createUser").validationEngine('validate'))
-	  	{   
+	  	{
+			$("#btnSave").attr("disabled", "disabled");
 			var userLoginName = $("#userLoginName").val();
 			userLoginName = $.trim(userLoginName);
 			$.getJSON('checkUserLoginName.do?userLoginName='+userLoginName ,function(data){
@@ -118,6 +119,7 @@
 				{
 					document.getElementById("msg").innerHTML = data[0].msg;
 					document.getElementById("userLoginName").value="";
+					$("#btnSave").removeAttr("disabled");
 					return false;
 				}else
 			    {

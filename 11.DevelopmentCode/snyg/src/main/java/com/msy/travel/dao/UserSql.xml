@@ -524,6 +524,9 @@
 			<if test="roleType != null and roleType != ''">
 				and r.F_ROLETYPE = #{roleType}
 			</if>
+			<if test='delFlag != null and delFlag =="0" '>
+				and u.f_user_state != '-1'
+			</if>
 		</where>
 		<if test="entityPage!=null">
 			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">
