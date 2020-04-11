@@ -13,38 +13,8 @@ import com.msy.travel.common.LogicException;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
-import com.msy.travel.pojo.Commproduct;
-import com.msy.travel.pojo.Consignee;
-import com.msy.travel.pojo.CustomerCoupon;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.GoodsPrice;
-import com.msy.travel.pojo.Order;
-import com.msy.travel.pojo.OrderBack;
-import com.msy.travel.pojo.OrderCustomer;
-import com.msy.travel.pojo.OrderExpress;
-import com.msy.travel.pojo.OrderList;
-import com.msy.travel.pojo.Pubmap;
-import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.SellPrice;
-import com.msy.travel.pojo.ServiceCode;
-import com.msy.travel.pojo.User;
-import com.msy.travel.service.CommproductService;
-import com.msy.travel.service.CompanyExpressService;
-import com.msy.travel.service.ConsigneeService;
-import com.msy.travel.service.CouponService;
-import com.msy.travel.service.CustomerCouponService;
-import com.msy.travel.service.GoodsPriceService;
-import com.msy.travel.service.IDestspService;
-import com.msy.travel.service.IPubmapService;
-import com.msy.travel.service.IRsPicService;
-import com.msy.travel.service.IServiceCodeService;
-import com.msy.travel.service.IUserService;
-import com.msy.travel.service.OrderBackService;
-import com.msy.travel.service.OrderCustomerService;
-import com.msy.travel.service.OrderExpressService;
-import com.msy.travel.service.OrderListService;
-import com.msy.travel.service.OrderService;
-import com.msy.travel.service.SellPriceService;
+import com.msy.travel.pojo.*;
+import com.msy.travel.service.*;
 import com.msy.travel.wx.utils.WeixinService;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -108,6 +78,12 @@ public class WapOrderController extends BaseController {
 
   @Resource(name = "serviceCodeServiceImpl")
   private IServiceCodeService serviceCodeService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
 
   @Resource(name = "orderBackServiceImpl")
   private OrderBackService orderBackService;
@@ -208,7 +184,32 @@ public class WapOrderController extends BaseController {
 			{
 				view.addObject("price",prepareOrderJsonObject.getJSONObject("price").toJSONString());
 			}
-			view.addObject("user",getLoginUser(request));
+			User loginUser = getLoginUser(request);
+			view.addObject("user",loginUser);
+
+			//下单前获取当前用户的渠道信息
+			Channel channel = null; //当前用户的渠道信息
+			if (RoleData.ROLE_TYPE_CHANNEL.equals(loginUser.getRoleData().getRoleType())) //如果当前用户是已渠道用户登录
+			{
+				channel.setChannelId(loginUser.getRoleData().getUnitId());
+				channel = channelService.displaychannel(channel);
+			}else
+			{
+				RoleData roleData = new RoleData();
+				roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				roleData.setUserId(loginUser.getUserId());
+				EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
+				entityPage.setSortField("t.F_ISDEFAULT");
+				entityPage.setSortOrder("DESC");
+				roleData.setEntityPage(entityPage);
+				List<RoleData>  roleDataList = roleDataService.queryRoleDataList(roleData); //用户所有的渠道角色信息
+				if (roleDataList.size()>0)
+				{
+					channel.setChannelId(roleDataList.get(0).getUnitId());
+					channel = channelService.displaychannel(channel);
+				}
+			}
+			view.addObject("channel",channel);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -248,7 +249,7 @@ public class WapOrderController extends BaseController {
 	/**
 	 * ajax 创建订单
 	 * param
-	 * {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
+	 * {consigneeId:收货地址Id,userId:用户Id,channelId:渠道ID,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}]}
 	 */
 	@RequestMapping(params = "method=createOrders")
 	public void createOrders(String param,HttpServletRequest request,HttpServletResponse response) {

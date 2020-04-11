@@ -97,8 +97,12 @@
 		FROM
 			t_sm_saletype t
 		<where>
-			t.F_SALETYPEID = #{saleTypeId} 
-			
+			<if test="saleTypeId!=null and saleTypeId!=''">
+				t.F_SALETYPEID = #{saleTypeId}
+			</if>
+			<if test="saleTypeKey!=null and saleTypeKey!=''">
+				t.F_SALETYPEKEY = #{saleTypeKey}
+			</if>
 		</where>
 	</select>
 	<!-- 按条件查询所有 -->

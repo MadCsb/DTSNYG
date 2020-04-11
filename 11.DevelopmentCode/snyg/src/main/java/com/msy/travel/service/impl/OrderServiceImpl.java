@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService
 
     /**
      * 创建订单前验证
-     * @param param  {consigneeId:收货地址Id,userId:用户Id,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],customerCouponId:优惠券ID}
+     * @param param  {consigneeId:收货地址Id,userId:用户Id,channelId:渠道ID,memo:备注,price:{priceType:销售类型,其他字段},orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],customerCouponId:优惠券ID}
      * @return
      * @throws Exception
      */
@@ -179,37 +179,6 @@ public class OrderServiceImpl implements OrderService
             result.setResultCode("1");
             result.setResultMsg("当前用户不存在");
             return result;
-        }
-
-        //下单用户渠道ID
-        String channelId = null;
-        //如果当前用户有角色内容，切角色内容是渠道
-        if(user.getRoleData() != null && RoleData.ROLE_TYPE_CHANNEL.equals(user.getRoleData().getRoleType()))
-        {
-            channelId = user.getRoleData().getUnitId();
-        }else //否则，需要查询当前用户的默认渠道id
-        {
-            RoleData roleData = new RoleData();
-            roleData.setUserId(user.getUserId());
-            roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
-            EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
-            entityPage.setSortField("t.F_ISDEFAULT");
-            entityPage.setSortOrder("DESC");
-            roleData.setEntityPage(entityPage);
-            List<RoleData> roleDataList = roleDataService.queryRoleDataList(roleData);
-            if (roleDataList.size() == 0)
-            {
-                result.setResultCode("1");
-                result.setResultMsg("当前用户非正常渠道用户");
-                return result;
-            }
-        }
-        UserBindChannel userBindChannel = new UserBindChannel();
-        userBindChannel.setUserId(param.getString("userId"));
-        List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-        if (userBindChannelList.size()>0)
-        {
-            channelId = userBindChannelList.get(0).getChannelId();
         }
 
 
@@ -435,7 +404,7 @@ public class OrderServiceImpl implements OrderService
 
     /**
      * 创建订单
-     * @param {consigneeId:收货地址Id,userId:用户Id,memo:备注,orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],
+     * @param {consigneeId:收货地址Id,userId:用户Id,channelId:渠道ID,memo:备注,orderListList[{priceId:销售id,num:数量,cartId:购物车Id}],
      * customerCoupon:{customerCouponId:使用优惠券ID,couponMoney:优惠券金额,userId:优惠券使用人,sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',isUse:'1能使用'}] }
      * }
      * @return Order
@@ -498,7 +467,7 @@ public class OrderServiceImpl implements OrderService
             order.setUpdateTime(createTime);
             order.setUpdater(operatorUser.getUserName());
             order.setUpdateUid(operatorUser.getUserId());
-            order.setChannelId(channelId);
+            order.setChannelId(param.getString("channelId"));
 
             //新增订单明细
             for (int j=0;j<orderListListJSONArray.size();j++)

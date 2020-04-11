@@ -42,6 +42,9 @@ public class WebOrderController extends BaseController {
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
+
 	@Resource(name = "orderExpressServiceImpl")
 	private OrderExpressService orderExpressService;
 
@@ -77,6 +80,9 @@ public class WebOrderController extends BaseController {
 
 	@Resource(name = "rsPicServiceImpl")
 	private IRsPicService rsPicService;
+
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
 
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
@@ -153,7 +159,35 @@ public class WebOrderController extends BaseController {
 			{
 				view.addObject("price",prepareOrderJsonObject.getJSONObject("price").toJSONString());
 			}
-			view.addObject("user",getLoginUser(request));
+
+
+			User loginUser = getLoginUser(request);
+			view.addObject("user",loginUser);
+
+			//下单前获取当前用户的渠道信息
+			Channel channel = null; //当前用户的渠道信息
+			if (RoleData.ROLE_TYPE_CHANNEL.equals(loginUser.getRoleData().getRoleType())) //如果当前用户是已渠道用户登录
+			{
+				channel.setChannelId(loginUser.getRoleData().getUnitId());
+				channel = channelService.displaychannel(channel);
+			}else
+			{
+				RoleData roleData = new RoleData();
+				roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				roleData.setUserId(loginUser.getUserId());
+				EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
+				entityPage.setSortField("t.F_ISDEFAULT");
+				entityPage.setSortOrder("DESC");
+				roleData.setEntityPage(entityPage);
+				List<RoleData>  roleDataList = roleDataService.queryRoleDataList(roleData); //用户所有的渠道角色信息
+				if (roleDataList.size()>0)
+				{
+					channel.setChannelId(roleDataList.get(0).getUnitId());
+					channel = channelService.displaychannel(channel);
+				}
+			}
+			view.addObject("channel",channel);
+
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

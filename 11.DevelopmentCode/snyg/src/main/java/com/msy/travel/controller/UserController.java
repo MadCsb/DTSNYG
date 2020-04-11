@@ -659,7 +659,7 @@ public class UserController extends BaseController {
 			user.setUserLocked("0");
 			user.setUserRegDate(DateTimeUtil.getDateTime19());
 			user.setUserId(PrimaryKeyUtil.generateKey());
-			user.setType("1");
+			user.setType(User.USER_TYPE_USERNAME_PASSWORD);
 
 			// 新增的用户的角色信息
 			String accId = getLoginUser(request).getAccId();

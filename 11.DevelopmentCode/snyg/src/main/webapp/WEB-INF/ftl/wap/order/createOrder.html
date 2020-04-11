@@ -9,6 +9,9 @@
 
 <input type="hidden" id="userId" value="${user.userId!''}">
 <input type="hidden" id="userType" value="${user.type!''}">
+<input type="hidden" id="channelKey" value="${(channel.channelKey)!''}">
+<input type="hidden" id="channelId" value="${(channel.channelId)!''}">
+
 
 <input type="hidden" id="userLoginName" value="${user.userLoginName!''}">
 <div id="price" style="display: none">${price!''}</div>
@@ -133,8 +136,11 @@
   var isSdUser = false; //验证是否是山东用户
   $(function () {
     var newPay = new Pay();
-    newPay.autoPayMethod()
-    isSdUser = checkIsSdUser();
+    newPay.autoPayMethod();
+    if($("#channelKey").val() == "SDYD")
+    {
+      isSdUser = true;
+    }
     var queryObject = new Object();
     queryObject.userId = $("#userId").val();
     queryObject.defaultFirst = "1"; //默认地址排前边
@@ -369,6 +375,7 @@
     var param = new Object();
     param.consigneeId = $("#consigneeId").val();
     param.userId = $("#userId").val();
+    param.channelId = $("#channelId").val();
     param.memo = $("#memo").val();
     var priceHtml = $("#price").html();
     if(priceHtml != "")

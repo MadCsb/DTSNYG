@@ -205,6 +205,8 @@
 </head>
 <body>
 <input type="hidden" id="userId" value="${user.userId!''}">
+<input type="hidden" id="channelKey" value="${(channel.channelKey)!''}">
+<input type="hidden" id="channelId" value="${(channel.channelId)!''}">
 <div id="price" style="display: none">${price!''}</div>
 
 <style>
@@ -805,6 +807,7 @@
     }
     param.consigneeId = $(addr).val();
     param.userId = $("#userId").val();
+    param.channelId = $("#channelId").val();
     param.memo = $("#memo").val();
     var priceHtml = $("#price").html();
     if(priceHtml != "")

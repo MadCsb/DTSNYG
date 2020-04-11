@@ -86,7 +86,7 @@
 		t_sm_channelbindsaletype t
 		<where>
 			<if test="saleTypeId!=null and saleTypeId!=''">
-		    	t.F_SALETYPEID = #{saleTypeId}
+				and t.F_SALETYPEID = #{saleTypeId}
 		    </if>
 			<if test="channelId !=null and channelId !=''">
 		    	and t.F_CHANNELID = #{channelId}

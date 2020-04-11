@@ -14,37 +14,8 @@ import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.common.wx.Sha1Util;
-import com.msy.travel.pojo.Commproduct;
-import com.msy.travel.pojo.CompanyExpress;
-import com.msy.travel.pojo.Consignee;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.GoodsPrice;
-import com.msy.travel.pojo.Order;
-import com.msy.travel.pojo.OrderBack;
-import com.msy.travel.pojo.OrderCustomer;
-import com.msy.travel.pojo.OrderExpress;
-import com.msy.travel.pojo.OrderList;
-import com.msy.travel.pojo.Pubmap;
-import com.msy.travel.pojo.RsPic;
-import com.msy.travel.pojo.SellPrice;
-import com.msy.travel.pojo.ServiceCode;
-import com.msy.travel.pojo.User;
-import com.msy.travel.service.CommproductService;
-import com.msy.travel.service.CompanyExpressService;
-import com.msy.travel.service.CompanyService;
-import com.msy.travel.service.ConsigneeService;
-import com.msy.travel.service.GoodsPriceService;
-import com.msy.travel.service.IDestspService;
-import com.msy.travel.service.IPubmapService;
-import com.msy.travel.service.IRsPicService;
-import com.msy.travel.service.IServiceCodeService;
-import com.msy.travel.service.IUserService;
-import com.msy.travel.service.OrderBackService;
-import com.msy.travel.service.OrderCustomerService;
-import com.msy.travel.service.OrderExpressService;
-import com.msy.travel.service.OrderListService;
-import com.msy.travel.service.OrderService;
-import com.msy.travel.service.SellPriceService;
+import com.msy.travel.pojo.*;
+import com.msy.travel.service.*;
 import com.msy.travel.wx.utils.WeixinService;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -86,6 +57,13 @@ public class WxOrderController extends BaseController {
 	@Resource(name = "orderExpressServiceImpl")
 	private OrderExpressService orderExpressService;
 
+	@Resource(name = "channelBindSaleTypeServiceImpl")
+	private ChannelBindSaleTypeService channelBindSaleTypeService;
+
+
+	@Resource(name = "saleTypeServiceImpl")
+	private SaleTypeService saleTypeService;
+
 	@Resource(name = "consigneeServiceImpl")
 	private ConsigneeService consigneeService;
 
@@ -112,6 +90,9 @@ public class WxOrderController extends BaseController {
 
   @Resource(name = "orderBackServiceImpl")
   private OrderBackService orderBackService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
 
 	@Resource(name = "companyExpressServiceImpl")
 	private CompanyExpressService companyExpressService;
@@ -149,7 +130,7 @@ public class WxOrderController extends BaseController {
 		ModelAndView view = null;
 		try {
 			JSONObject prepareOrderJsonObject = JSON.parseObject(prepareOrderJson);
-
+			Channel channel = null;
 			List<OrderList> orderListList = new ArrayList<>();
 			JSONArray orderListListJSONArray = prepareOrderJsonObject.getJSONArray("orderListList");
 			for (int i=0;i<orderListListJSONArray.size();i++)
@@ -164,6 +145,23 @@ public class WxOrderController extends BaseController {
 				sellPrice.setPriceId(orderList.getPriceId());
 				sellPrice = sellPriceService.displaySellPrice(sellPrice);
 				orderList.setSellPrice(sellPrice);
+				if (i ==0) //根据商品判断是哪个渠道的
+				{
+					//根据key获取活动
+					SaleType saleType = new SaleType();
+					saleType.setSaleTypeKey(sellPrice.getPriceType());
+					saleType = saleTypeService.displaySaleType(saleType);
+					//根据活动获取渠道ID
+					ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
+					channelBindSaleType.setSaleTypeId(saleType.getSaleTypeId());
+					List<ChannelBindSaleType> channelBindSaleTypeList = channelBindSaleTypeService.queryChannelBindSaleTypeList(channelBindSaleType);
+					if (channelBindSaleTypeList.size()>0)
+					{
+						channel = new Channel();
+						channel.setChannelId(channelBindSaleTypeList.get(0).getChannelId());
+						channel = channelService.displaychannel(channel);
+					}
+				}
 
 				GoodsPrice goodsPrice = new GoodsPrice();//规格
 				goodsPrice.setGoodsPriceId(sellPrice.getGoodsPriceId());
@@ -187,6 +185,9 @@ public class WxOrderController extends BaseController {
 			user.setUserId(userId);
 			user = userService.displayUser(user);
 			view.addObject("user",user);
+
+			view.addObject("channel",channel);
+
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -738,6 +739,62 @@ public class WxOrderController extends BaseController {
 		}catch (Exception e)
 		{
 
+		}
+	}
+
+
+	/**
+	 * ajax 验证山东移动用户能否下单
+	 * param priceIds
+	 */
+	@RequestMapping(params = "method=sdCanOrder")
+	public void sdCanOrder(String priceIds,HttpServletRequest request,HttpServletResponse response) {
+		Result result = new Result();
+		try
+		{
+			String[] priceIdArray = priceIds.split(",");
+			User user = getLoginUser(request);
+			if (user.getType().equals("2"))
+			{
+				Map<String ,String> param = new HashMap<>();
+
+				for(int i=0;i<priceIdArray.length;i++)
+				{
+					SellPrice sellPrice = new SellPrice();
+					sellPrice.setPriceId(priceIdArray[i]);
+					sellPrice = sellPriceService.displaySellPrice(sellPrice);
+					param.put("priceCode",sellPrice.getPriceCode());
+					Map<String,String> map = new HashMap();
+					map.put("msisdn",user.getUserLoginName());
+					map.put("priceCode",param.get("priceCode"));
+					Result sdResult =  Common.validMemberMbr(map);
+					if (!"0".equals(sdResult.getResultCode()))
+					{
+						throw new LogicException(sdResult.getResultMsg());
+					}
+				}
+				result.setResultCode("0");
+				result.setResultMsg("可以预定");
+			}
+		}catch (LogicException le)
+		{
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}
+		catch (Exception e)
+		{
+			log.error(e,e);
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg("系统异常");
+		}
+		try
+		{
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
 		}
 	}
 }

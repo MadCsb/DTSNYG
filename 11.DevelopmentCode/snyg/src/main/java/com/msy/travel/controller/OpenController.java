@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.*;
-import com.msy.travel.pojo.City;
-import com.msy.travel.pojo.SellPrice;
-import com.msy.travel.pojo.User;
+import com.msy.travel.pojo.*;
 import com.msy.travel.service.ICityService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.SellPriceService;
@@ -17,6 +15,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.msy.travel.shiro.UsernamePasswordRoledataToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
@@ -70,8 +70,12 @@ public class OpenController extends BaseController {
 			if (sdToken != null && !sdToken.equals("")) //如果存在token，表示是山东进来的
 			{
 				User user = userService.getOrCreateBySdToken(sdToken);
-				String userPwd = user.getUserLoginName();
-				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(userPwd));
+
+				RoleData loginRoleData = new RoleData();
+				loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				loginRoleData.setAccId(Destsp.currentSpId);
+				UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(), MD5.encode(user.getUserLoginName()), loginRoleData); //山东移动登录名=密码
+
 				Subject subject = SecurityUtils.getSubject();
 				subject.login(token);
 

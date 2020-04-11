@@ -1,11 +1,13 @@
 package com.msy.travel.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.msy.travel.pojo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,6 @@ import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.dao.UserDao;
-import com.msy.travel.pojo.Channel;
-import com.msy.travel.pojo.Destsp;
-import com.msy.travel.pojo.RoleData;
-import com.msy.travel.pojo.ServiceCode;
-import com.msy.travel.pojo.User;
-import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
@@ -184,17 +180,14 @@ public class UserServiceImpl implements IUserService {
 				} else {
 
 					WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
-					log.error(JSON.toJSONString(wxuser));
 					user = new User();
 					String userId = PrimaryKeyUtil.generateKey();
 					user.setUserId(userId);
-					user.setType("0");
-					user.setAccId(spId);
+					user.setType(User.USER_TYPE_WEIXIN);
 					user.setUserLoginName(openId);
 					user.setWxServiceId(serviceCode.getServiceId());
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
 					user.setHeadPic(wxuser.getHeadimgurl());
-					user.setUnitId(spId);
 
 					try {
 						user.setUserName(wxuser.getNickname());
@@ -208,46 +201,58 @@ public class UserServiceImpl implements IUserService {
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					userDao.insertUser(user);
 					u = user;
-
-					Channel channel = channelService.getChannelByChannelKey(Channel.SNYG);
-					// 用户角色
-					RoleData roleData = new RoleData();
-					roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
-					roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
-					roleData.setAccId(Destsp.currentSpId);
-					roleData.setUnitId(channel.getChannelId());
-					roleData.setUserId(user.getUserId());
-					roleData.setIsDefault("1");
-					roleDataService.createRoleData(roleData);
 				}
-				if (oldLoginUser != null) {
-					// 老用户的渠道信息
-					UserBindChannel userBindChannel = new UserBindChannel();
-					userBindChannel.setUserId(oldLoginUser.getUserId());
-					List<UserBindChannel> oldUserBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
+				//添加老用户角色信息
+				if (oldLoginUser != null) { //需要把老用户的角色信息放在微信用户中
+					// 老用户的角色信息
+					RoleData roleData = new RoleData();
+					roleData.setUserId(oldLoginUser.getUserId());
+					List<RoleData> oldRoleDataList = roleDataService.queryRoleDataList(roleData);
 
-					// 微信用户的渠道信息
-					userBindChannel = new UserBindChannel();
-					userBindChannel.setUserId(u.getUserId());
-					List<UserBindChannel> userBindChannelList = userBindChannelService.queryUserBindChannelList(userBindChannel);
-
-					for (int i = 0; i < oldUserBindChannelList.size(); i++) {
+					// 微信用户的角色信息
+					roleData = new RoleData();
+					roleData.setUserId(u.getUserId());
+					List<RoleData> userRoleDataList = roleDataService.queryRoleDataList(roleData);
+					for (int i = 0; i < oldRoleDataList.size(); i++) {
 						boolean isHave = false; // 微信用户是否已经有oldLoginUser的渠道信息
-						for (int j = 0; j < userBindChannelList.size(); j++) {
-							if (oldUserBindChannelList.get(i).getChannelId().equals(userBindChannelList.get(j).getChannelId())) {
+						for (int j = 0; j < userRoleDataList.size(); j++) { //如果角色类型，accid，unitId相同则是已有角色
+							if (oldRoleDataList.get(i).getRoleType().equals(userRoleDataList.get(j).getRoleType())
+							&& oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())
+									&& oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())
+							) {
 								isHave = true;
 								break;
 							}
 						}
 						if (!isHave) // 如果不存在渠道，则新增渠道
 						{
-							UserBindChannel userBindChannelTmp = new UserBindChannel();
-							userBindChannelTmp.setUserId(u.getUserId());
-							userBindChannelTmp.setChannelId(oldUserBindChannelList.get(i).getChannelId());
-							userBindChannelTmp.setCreateTime(DateTimeUtil.getDateTime19());
-							userBindChannelService.createUserBindChannel(userBindChannelTmp);
+							RoleData roleDataDb = new RoleData();
+							roleDataDb.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+							roleDataDb.setRoleType(oldRoleDataList.get(i).getRoleType());
+							roleDataDb.setAccId(oldRoleDataList.get(i).getAccId());
+							roleDataDb.setUnitId(oldRoleDataList.get(i).getUnitId());
+							roleDataDb.setUserId(u.getUserId());
+							roleDataDb.setIsDefault("0");
+							roleDataService.createRoleData(roleDataDb);
+							log.error("微信用户"+u.getUserLoginName()+":添加roleData="+roleDataDb.getUserRoleDataId());
 						}
 					}
+				}
+
+				//添加三农易购角色信息
+				Channel snygChannel = channelService.getChannelByChannelKey(Channel.SNYG);
+				RoleData snygRoleData = new RoleData();
+				snygRoleData.setUserId(u.getUserId());
+				snygRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				snygRoleData.setAccId(Destsp.currentSpId);
+				snygRoleData.setUnitId(snygChannel.getChannelId());
+				List<RoleData> userRoleDataList = roleDataService.queryRoleDataList(snygRoleData);
+				if (userRoleDataList.size() == 0)
+				{
+					snygRoleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
+					snygRoleData.setIsDefault("1");
+					roleDataService.createRoleData(snygRoleData);
+					log.error("微信用户"+u.getUserLoginName()+":添加roleData="+snygRoleData.getUserRoleDataId());
 				}
 			}
 		}
@@ -276,45 +281,41 @@ public class UserServiceImpl implements IUserService {
 
 		User user = new User();
 		user.setUserLoginName(tel);
+		user.setDelFlag("0");
 		user.setType(User.USER_TYPE_SDMOBILE);
-		List<User> userList = userDao.queryUserListByLogin(user);
+		List<User> userList = userService.queryUserList(user);
 
 		if (userList.size() != 0) {
 			return userList.get(0);
 		} else {
 			User userDb = new User();
-			userDb.setUserId(PrimaryKeyUtil.generateKey());
 			userDb.setUserLoginName(tel);
-			userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+			userDb.setDelFlag("0");
+			userDb.setUserState("1");
 			String userPwd = tel;
 			userDb.setUserPwd(MD5.encode(userPwd));
-			userDb.setUserRegDate(DateTimeUtil.getDateTime19());
-			userDb.setUserState("1");
 			userDb.setUserLocked("0");
-			userDb.setUserRoleType(null);
-			userDb.setAccId(Destsp.currentSpId);
-			userDb.setUnitId(Destsp.currentSpId);
+			userDb.setUserRegDate(DateTimeUtil.getDateTime19());
+			userDb.setUserId(PrimaryKeyUtil.generateKey());
 			userDb.setType(User.USER_TYPE_SDMOBILE);
+			userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
 			userDb.setUpdateTime(DateTimeUtil.getDateTime19());
-			userService.createUser(userDb);
 
-			Channel channel = channelService.getChannelByChannelKey(Channel.SDYD);
-
-			UserBindChannel userBindChannel = new UserBindChannel();
-			userBindChannel.setChannelId(channel.getChannelId());
-			userBindChannel.setUserId(userDb.getUserId());
-			userBindChannel.setCreateTime(DateTimeUtil.getDateTime19());
-			userBindChannelService.createUserBindChannel(userBindChannel);
-
-			// 用户角色
+			// 新增的用户的角色信息
+			String accId = Destsp.currentSpId;
+			Channel sdyhChannel = channelService.getChannelByChannelKey(Channel.SDYD);
+			// 山农易购渠道角色
+			String unitId = sdyhChannel.getChannelId();
+			List<RoleData> roleDataList = new ArrayList<>();// 角色信息
 			RoleData roleData = new RoleData();
 			roleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
 			roleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
-			roleData.setAccId(Destsp.currentSpId);
-			roleData.setUnitId(channel.getChannelId());
+			roleData.setAccId(accId);
+			roleData.setUnitId(unitId);
 			roleData.setUserId(user.getUserId());
 			roleData.setIsDefault("1");
-			roleDataService.createRoleData(roleData);
+			roleDataList.add(roleData);
+			userService.createUserAndRoledata(user, roleDataList);
 			return userDb;
 		}
 	}
