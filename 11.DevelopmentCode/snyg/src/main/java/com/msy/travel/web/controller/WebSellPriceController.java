@@ -23,6 +23,7 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.ChannelBindSaleTypeService;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.IDestspService;
@@ -49,6 +50,9 @@ public class WebSellPriceController extends BaseController {
 
 	@Resource(name = "companyExpressServiceImpl")
 	private CompanyExpressService companyExpressService;
+
+	@Resource(name = "channelBindSaleTypeServiceImpl")
+	private ChannelBindSaleTypeService channelBindSaleTypeService;
 
 	/**
 	 * 微信端获取规格列表
@@ -118,6 +122,8 @@ public class WebSellPriceController extends BaseController {
 			map.put("pageSize", super.getPageSize(sellPrice.getEntityPage()));
 			map.put("reasonable", false);
 			PageHelper.startPage(map);
+
+			sellPrice.setPriceTypeList(channelBindSaleTypeService.querySaleTypeByUser(null));
 			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
 
 			if (sellPricelist != null && sellPricelist.size() > 0) {
@@ -164,6 +170,7 @@ public class WebSellPriceController extends BaseController {
 
 			sellPrice.setDelFlag("0");
 			sellPrice.setState("1");
+			sellPrice.setPriceTypeList(channelBindSaleTypeService.querySaleTypeByUser(null));
 
 			PageHelper.startPage(super.getPageNum(sellPrice.getEntityPage()), super.getPageSize(sellPrice.getEntityPage()));
 			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListForWx(sellPrice);
