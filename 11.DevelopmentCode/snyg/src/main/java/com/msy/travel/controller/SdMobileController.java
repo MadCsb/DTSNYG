@@ -43,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope(value = "prototype")
+@RequestMapping(value = "/sdmobile")
 public class SdMobileController extends BaseController {
 	public static final Log log = LogFactory.getLog(SdMobileController.class);
 
@@ -55,8 +56,8 @@ public class SdMobileController extends BaseController {
 	 * param
 	 * {customerCouponId:客户优惠券关联ID,sellPrice[{priceId:销售id,num:数量}]}
 	 */
-	@RequestMapping(params = "method=sdMobileCanOrder")
-	public void sdMobileCanOrder(String priceIds,String userId,HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(params = "method=canOrder")
+	public void canOrder(String priceIds,String userId,HttpServletRequest request,HttpServletResponse response) {
 		Result result = new Result();
 		try
 		{

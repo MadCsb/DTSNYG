@@ -163,4 +163,13 @@ public interface IUserService {
 	 */
 	public void updateColNull(User user) throws Exception;
 
+	/**
+	 * 合并用户 userIdTwo合并到userIdOne
+	 */
+	public void unionUser(String userIdOne,String userIdTwo) throws Exception;
+
+	/**
+	 *  分开已合并用户 userIdTwo分开
+	 */
+	public void unUnionUser(String userIdOne,String userIdTwo) throws Exception;
 }

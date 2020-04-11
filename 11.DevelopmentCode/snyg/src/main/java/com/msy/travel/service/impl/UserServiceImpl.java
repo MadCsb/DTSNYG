@@ -237,6 +237,8 @@ public class UserServiceImpl implements IUserService {
 							log.error("微信用户"+u.getUserLoginName()+":添加roleData="+roleDataDb.getUserRoleDataId());
 						}
 					}
+					//新老用户合并
+					unionUser(u.getUserId(),oldLoginUser.getUserId());
 				}
 
 				//添加三农易购角色信息
@@ -424,7 +426,7 @@ public class UserServiceImpl implements IUserService {
 		//如果userOne是单用户,则为userOne设置unionId
 		if (userOne.getUnionId() == null || userOne.getUnionId().trim().equals(""))
 		{
-			userOne.setUnitId(PrimaryKeyUtil.generateKey());
+			userOne.setUnionId(PrimaryKeyUtil.generateKey());
 			userDao.updateUser(userOne);
 		}
 

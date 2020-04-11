@@ -8,6 +8,7 @@
 <body>
 
 <input type="hidden" id="userId" value="${user.userId!''}">
+<input type="hidden" id="sdUserId" value="${(sdUser.userId)!''}">
 <input type="hidden" id="channelKey" value="${(channel.channelKey)!''}">
 <input type="hidden" id="channelId" value="${(channel.channelId)!''}">
 <input type="hidden" id="userLoginName" value="${user.userLoginName!''}">
@@ -398,9 +399,10 @@
         type: "POST",
         async: false,
         dataType: "json",
-        url: "waporder?method=sdCanOrder",
+        url: "sdmobile?method=canOrder",
         data: {
-          priceIds: priceIds
+          priceIds: priceIds,
+          userId:$("#sdUserId").val()
         },
         success: function (data) {
           if(data.resultCode == "1")

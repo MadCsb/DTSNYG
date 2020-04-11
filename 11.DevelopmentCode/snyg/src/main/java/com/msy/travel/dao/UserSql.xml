@@ -39,8 +39,11 @@
 			<if test="userLoginName!=null and userLoginName!='' ">
 				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%')
 			</if>
-			<if test="userId!=null and userId!='' ">
-				and u.F_USER_ID = #{userId}
+			<if test="type!=null and type!='' ">
+				and u.F_TYPE = #{type}
+			</if>
+			<if test="unionId!=null and unionId!='' ">
+				and u.F_UNIONID = #{unionId}
 			</if>
 			<if test="unionId!=null and unionId!='' ">
 				and u.F_UNIONID = #{unionId}

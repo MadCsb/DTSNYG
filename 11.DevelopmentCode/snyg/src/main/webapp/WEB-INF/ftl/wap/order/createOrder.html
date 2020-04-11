@@ -491,7 +491,8 @@
         dataType: "json",
         url: "waporder?method=sdCanOrder",
         data: {
-          priceIds: priceIds
+          priceIds: priceIds,
+          userId:$("#userId").val()
         },
         success: function (data) {
           if(data.resultCode == "1")

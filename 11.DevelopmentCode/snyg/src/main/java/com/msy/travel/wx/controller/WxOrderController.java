@@ -187,7 +187,14 @@ public class WxOrderController extends BaseController {
 			view.addObject("user",user);
 
 			view.addObject("channel",channel);
-
+			if (Channel.SDYD.equals(channel.getChannelKey()))
+			{
+				User sdUser = new User();
+				sdUser.setUnionId(user.getUnionId());
+				sdUser.setType(User.USER_TYPE_SDMOBILE);
+				List<User> sdUserList = userService.queryUserList(sdUser);
+				view.addObject("sdUser",sdUserList.get(0));
+			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
