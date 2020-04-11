@@ -408,4 +408,84 @@ public class UserServiceImpl implements IUserService {
 	public List<User> queryUserListAndRoleData(User user) throws Exception {
 		return userDao.queryUserListAndRoleData(user);
 	}
+
+	/**
+	 * 合并用户 userIdTwo合并到userIdOne
+	 */
+	public void unionUser(String userIdOne,String userIdTwo) throws Exception
+	{
+		User userOne = new User();
+		userOne.setUserId(userIdOne);
+		userOne = userDao.queryUser(userOne);
+
+		User userTwo = new User();
+		userTwo.setUserId(userIdTwo);
+		userTwo = userDao.queryUser(userTwo);
+		//如果userOne是单用户,则为userOne设置unionId
+		if (userOne.getUnionId() == null || userOne.getUnionId().trim().equals(""))
+		{
+			userOne.setUnitId(PrimaryKeyUtil.generateKey());
+			userDao.updateUser(userOne);
+		}
+
+		List<User> userTwoList = new ArrayList<>();//用户userTwo 所在union下所有用户
+		//如果userTwo是新用户
+		if (userTwo.getUnionId() == null || userTwo.getUnionId().trim().equals(""))
+		{
+			userTwoList.add(userTwo);
+		}else
+		{
+			User userTwoUnion = new User();
+			userTwoUnion.setUnionId(userIdTwo);
+			userTwoList = userDao.queryUserList(userTwoUnion);
+		}
+		//更新userTwoList的unionId
+		for(int i=0;i<userTwoList.size();i++)
+		{
+			userTwoList.get(i).setUnionId(userOne.getUnionId());
+			userDao.updateUser(userTwoList.get(i));
+		}
+	}
+
+	/**
+	 *  分开已合并用户 userIdTwo分开
+	 */
+	public void unUnionUser(String userIdOne,String userIdTwo) throws Exception
+	{
+		User userOne = new User();
+		userOne.setUserId(userIdOne);
+		userOne = userDao.queryUser(userOne);
+
+		User userTwo = new User();
+		userTwo.setUserId(userIdTwo);
+		userTwo = userDao.queryUser(userTwo);
+
+		//如果userOne与userTwo的UnionId，相同，则把userTwo的union清空
+		if (userOne.getUnionId() != null
+				&& !userOne.getUnionId().trim().equals("")
+				&& userTwo.getUnionId() != null
+				&& !userTwo.getUnionId().trim().equals("")
+				&& userOne.getUnionId().equals(userTwo.getUnionId())
+				)
+		{
+			userTwo.setUnionId(null);
+			List<String> colList = new ArrayList<>();
+			colList.add("unionId");
+			User updateColNullUser = new User();
+			updateColNullUser.setUserId(userTwo.getUserId());
+			updateColNullUser.setColList(colList);
+			updateColNull(updateColNullUser);
+		}
+	}
+
+	/**
+	 * 修改User字段为null
+	 *
+	 * @param user
+	 *            User对象
+	 */
+	public void updateColNull(User user) throws Exception
+	{
+		userDao.updateColNull(user);
+	}
 }

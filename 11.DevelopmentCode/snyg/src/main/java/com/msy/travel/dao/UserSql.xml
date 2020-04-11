@@ -39,21 +39,14 @@
 			<if test="userLoginName!=null and userLoginName!='' ">
 				and u.F_USER_LOGINNAME like concat('%',#{userLoginName},'%')
 			</if>
-			<if test="unitId!=null and unitId!='' ">
-				and u.F_UNIT_ID = #{unitId}
-			</if>
 			<if test="userId!=null and userId!='' ">
 				and u.F_USER_ID = #{userId}
 			</if>
+			<if test="unionId!=null and unionId!='' ">
+				and u.F_UNIONID = #{unionId}
+			</if>
 			<if test='delFlag != null and delFlag =="0" '>
 				and u.f_user_state != '-1'
-			</if>
-			<if test="userRoleType!=null and userRoleType!='' ">
-				and u.F_USER_ROLETYPE = #{userRoleType}
-			</if>
-			
-			<if test="accId != null and accId != ''">
-				and u.F_ACCID = #{accId}
 			</if>
 		</where>
 		<if test="entityPage!=null">
@@ -93,17 +86,30 @@
 			<if test="updateTime !=null">F_UPDATETIME  = #{updateTime} ,</if>
 			<if test="headPic !=null">F_HEADPIC  = #{headPic} ,</if>
 			<if test="unionId !=null">F_UNIONID  = #{unionId} ,</if>
-			F_USER_ID = #{userId}
 		</set>
 		WHERE
 		F_USER_ID = #{userId}
 	</update>
 
+
+	<!-- 修改属性为null -->
+	<update id="updateColNull" parameterType="User">
+		UPDATE
+		t_pub_user
+		<set>
+			<foreach collection="colList" item="param">
+				<if test="param == 'unionId'">F_UNIONID  = NULL ,</if>
+			</foreach>
+		</set>
+		WHERE
+		F_USER_ID = #{userId}
+	</update>
+
+
 	<select id="getUserCount" resultType="int" parameterType="User">
 		SELECT
 		COUNT(*)
 		from t_pub_user u
-		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
 		<where>
 			<if test="delFlag != null and delFlag =='0' ">
 				and u.f_user_state != '-1'
@@ -130,7 +136,6 @@
 		f_user_email as userEmail,
 		f_user_reg_date as userRegDate,
 		f_user_state as userState,
-		f_unit_id as unitId,
 		f_storeid as storeId,
 		F_USER_LOCKED as userLocked ,
 		F_UNIT_NAME as unitName ,
@@ -147,14 +152,12 @@
 		u.f_user_email,
 		u.f_user_reg_date,
 		u.f_user_state,
-		u.f_unit_id,
 		u.f_storeid,
 		u.F_USER_LOCKED,
-		tg.F_UNIT_NAME,
 		u.F_WXSERVICEID as wxServiceId ,
 		u.F_TYPE as type
 		from t_pub_user u
-		left join v_pub_roledata tg on tg.F_UNIT_ID=u.f_unit_id and tg.F_ROLETYPE=u.f_user_roletype
+
 
 		<where>
 			<if test=" delFlag != null and delFlag == '0' ">

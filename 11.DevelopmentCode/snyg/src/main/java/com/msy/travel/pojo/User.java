@@ -127,6 +127,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	 * 用户IDList db_column: F_USER_ID
 	 */
 	private List userIdList;
+
+	/**
+	 * 属性List
+	 */
+	private List colList;
 	/**
 	 * 当前登录用的 userId
 	 * 
@@ -607,5 +612,13 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setRoleData(RoleData roleData) {
 		this.roleData = roleData;
+	}
+
+	public List getColList() {
+		return colList;
+	}
+
+	public void setColList(List colList) {
+		this.colList = colList;
 	}
 }

@@ -309,62 +309,6 @@ public class WapOrderController extends BaseController {
 	}
 
 	/**
-	 * ajax 验证山东移动用户能否下单
-	 * param
-	 * {customerCouponId:客户优惠券关联ID,sellPrice[{priceId:销售id,num:数量}]}
-	 */
-	@RequestMapping(params = "method=sdCanOrder")
-	public void sdCanOrder(String priceIds,HttpServletRequest request,HttpServletResponse response) {
-		Result result = new Result();
-		try
-		{
-			String[] priceIdArray = priceIds.split(",");
-			User user = getLoginUser(request);
-			if (user.getType().equals("2"))
-			{
-				Map<String ,String> param = new HashMap<>();
-
-				for(int i=0;i<priceIdArray.length;i++)
-				{
-					SellPrice sellPrice = new SellPrice();
-					sellPrice.setPriceId(priceIdArray[i]);
-					sellPrice = sellPriceService.displaySellPrice(sellPrice);
-					param.put("priceCode",sellPrice.getPriceCode());
-					Map<String,String> map = new HashMap();
-					map.put("msisdn",user.getUserLoginName());
-					map.put("priceCode",param.get("priceCode"));
-					Result sdResult =  Common.validMemberMbr(map);
-					if (!"0".equals(sdResult.getResultCode()))
-					{
-						throw new LogicException(sdResult.getResultMsg());
-					}
-				}
-				result.setResultCode("0");
-				result.setResultMsg("可以预定");
-			}
-		}catch (LogicException le)
-		{
-			result = new Result();
-			result.setResultCode("1");
-			result.setResultMsg(le.getMessage());
-		}
-		catch (Exception e)
-		{
-			log.error(e,e);
-			result = new Result();
-			result.setResultCode("1");
-			result.setResultMsg("系统异常");
-		}
-		try
-		{
-			response.getWriter().write(JSON.toJSONString(result));
-		}catch (Exception e)
-		{
-			log.error(e);
-		}
-	}
-
-	/**
 	 * 去订单详情
 	 */
 	@RequestMapping(params = "method=toOrderDetail")

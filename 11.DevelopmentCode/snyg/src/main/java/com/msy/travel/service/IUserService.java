@@ -155,4 +155,12 @@ public interface IUserService {
 	 */
 	public List<User> queryUserListAndRoleData(User user) throws Exception;
 
+	/**
+	 * 修改User字段为null
+	 *
+	 * @param user
+	 *            User对象
+	 */
+	public void updateColNull(User user) throws Exception;
+
 }

@@ -18,7 +18,7 @@
 	{
     if (openApi.pageType == openApi.WX)
     {
-      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId+"&userRoleDataId=${Session.LOGIN_USER.roleData.!userRoleDataId''}";
     }else
     {
       detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
