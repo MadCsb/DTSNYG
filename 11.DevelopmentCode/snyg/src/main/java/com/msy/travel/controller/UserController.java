@@ -96,7 +96,6 @@ public class UserController extends BaseController {
 	@Resource(name = "redisUtil")
 	private RedisUtil redisUtil;
 
-
 	/**
 	 * 跳转注册用户
 	 *
@@ -105,10 +104,10 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/testUnion")
 	public void testUnion(HttpServletRequest request, String loginPage) {
 		try {
-			String userIdOne = "2199d0bde4e2402f86384456ddb33e92"; //cheng_c
-			String userIdTwo = "98ebc5fd45f54ef79df1d79186982c70"; //cheng_d
-			//合并用户
-			userService.unionUser(userIdOne,userIdTwo);
+			String userIdOne = "2199d0bde4e2402f86384456ddb33e92"; // cheng_c
+			String userIdTwo = "98ebc5fd45f54ef79df1d79186982c70"; // cheng_d
+			// 合并用户
+			userService.unionUser(userIdOne, userIdTwo);
 			User userOne = new User();
 			userOne.setUserId(userIdOne);
 			userOne = userService.displayUser(userOne);
@@ -118,14 +117,14 @@ public class UserController extends BaseController {
 			userTwo = userService.displayUser(userTwo);
 			log.error(JSON.toJSONString(userTwo));
 
-			//分开用户
-			userService.unUnionUser(userIdOne,userIdTwo);
+			// 分开用户
+			userService.unUnionUser(userIdOne, userIdTwo);
 			userOne = userService.displayUser(userOne);
 			log.error(JSON.toJSONString(userOne));
 			userTwo = userService.displayUser(userTwo);
 			log.error(JSON.toJSONString(userTwo));
 
-			//设置null
+			// 设置null
 			userOne.setUnionId("sssssssssssssss");
 			userService.updateUser(userOne);
 			List<String> colList = new ArrayList<>();
@@ -134,7 +133,6 @@ public class UserController extends BaseController {
 			userService.updateColNull(userOne);
 			userOne = userService.displayUser(userOne);
 			log.error(JSON.toJSONString(userOne));
-
 
 		} catch (Exception e) {
 			log.error(e, e);
@@ -1222,12 +1220,12 @@ public class UserController extends BaseController {
 				user.getEntityPage().setSortField("F_USER_REG_DATE");
 				user.getEntityPage().setSortOrder("DESC");
 			}
-			// 未删除
-			user.setDelFlag("0");
 			user.setAccId(u.getAccId());
 
-			if (user.getRoleType() == null || "".equals(user.getRoleType())) {
+			if (user.getRoleType() == null || "".equals(user.getRoleType()) || "2".equals(user.getRoleType())) {
 				user.setRoleType("2");
+				// 未删除
+				user.setDelFlag("0");
 			}
 
 			super.saveBackUrl(request);

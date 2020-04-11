@@ -7,13 +7,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.msy.travel.pojo.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
 import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
@@ -22,6 +20,12 @@ import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.dao.UserDao;
+import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.RoleData;
+import com.msy.travel.pojo.ServiceCode;
+import com.msy.travel.pojo.User;
+import com.msy.travel.pojo.UserBindChannel;
 import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
@@ -177,6 +181,27 @@ public class UserServiceImpl implements IUserService {
 				user = userDao.selectUserByUserLoginName(user);
 				if (user != null && user.getUserId() != null) {
 					u = user;
+
+					if (u.getUserName() == null || u.getUserName().equals("")) {
+						WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
+						log.info("用户关注获取用户信息详情wxuser[" + wxuser + "]");
+						// 值为0时，代表此用户没有关注该公众号，拉取不到其余信息
+						if (wxuser != null && !"0".equals(wxuser.getSubscribe())) {
+							try {
+								u.setUserName(wxuser.getNickname());
+							} catch (Exception e) {
+								user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+							}
+							u.setUserState("1");
+							u.setCountry(wxuser.getCountry());
+							u.setProvince(wxuser.getProvince());
+							u.setCity(wxuser.getCity());
+							u.setSex(wxuser.getSex());// 1男 2女 3未知
+							u.setUpdateTime(DateTimeUtil.getDateTime19());
+							u.setHeadPic(wxuser.getHeadimgurl());
+							userService.updateUser(u);
+						}
+					}
 				} else {
 
 					WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
@@ -202,8 +227,8 @@ public class UserServiceImpl implements IUserService {
 					userDao.insertUser(user);
 					u = user;
 				}
-				//添加老用户角色信息
-				if (oldLoginUser != null) { //需要把老用户的角色信息放在微信用户中
+				// 添加老用户角色信息
+				if (oldLoginUser != null) { // 需要把老用户的角色信息放在微信用户中
 					// 老用户的角色信息
 					RoleData roleData = new RoleData();
 					roleData.setUserId(oldLoginUser.getUserId());
@@ -215,11 +240,9 @@ public class UserServiceImpl implements IUserService {
 					List<RoleData> userRoleDataList = roleDataService.queryRoleDataList(roleData);
 					for (int i = 0; i < oldRoleDataList.size(); i++) {
 						boolean isHave = false; // 微信用户是否已经有oldLoginUser的渠道信息
-						for (int j = 0; j < userRoleDataList.size(); j++) { //如果角色类型，accid，unitId相同则是已有角色
-							if (oldRoleDataList.get(i).getRoleType().equals(userRoleDataList.get(j).getRoleType())
-							&& oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())
-									&& oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())
-							) {
+						for (int j = 0; j < userRoleDataList.size(); j++) { // 如果角色类型，accid，unitId相同则是已有角色
+							if (oldRoleDataList.get(i).getRoleType().equals(userRoleDataList.get(j).getRoleType()) && oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())
+									&& oldRoleDataList.get(i).getAccId().equals(userRoleDataList.get(j).getAccId())) {
 								isHave = true;
 								break;
 							}
@@ -234,14 +257,14 @@ public class UserServiceImpl implements IUserService {
 							roleDataDb.setUserId(u.getUserId());
 							roleDataDb.setIsDefault("0");
 							roleDataService.createRoleData(roleDataDb);
-							log.error("微信用户"+u.getUserLoginName()+":添加roleData="+roleDataDb.getUserRoleDataId());
+							log.error("微信用户" + u.getUserLoginName() + ":添加roleData=" + roleDataDb.getUserRoleDataId());
 						}
 					}
-					//新老用户合并
-					unionUser(u.getUserId(),oldLoginUser.getUserId());
+					// 新老用户合并
+					unionUser(u.getUserId(), oldLoginUser.getUserId());
 				}
 
-				//添加三农易购角色信息
+				// 添加三农易购角色信息
 				Channel snygChannel = channelService.getChannelByChannelKey(Channel.SNYG);
 				RoleData snygRoleData = new RoleData();
 				snygRoleData.setUserId(u.getUserId());
@@ -249,12 +272,11 @@ public class UserServiceImpl implements IUserService {
 				snygRoleData.setAccId(Destsp.currentSpId);
 				snygRoleData.setUnitId(snygChannel.getChannelId());
 				List<RoleData> userRoleDataList = roleDataService.queryRoleDataList(snygRoleData);
-				if (userRoleDataList.size() == 0)
-				{
+				if (userRoleDataList.size() == 0) {
 					snygRoleData.setUserRoleDataId(PrimaryKeyUtil.generateKey());
 					snygRoleData.setIsDefault("1");
 					roleDataService.createRoleData(snygRoleData);
-					log.error("微信用户"+u.getUserLoginName()+":添加roleData="+snygRoleData.getUserRoleDataId());
+					log.error("微信用户" + u.getUserLoginName() + ":添加roleData=" + snygRoleData.getUserRoleDataId());
 				}
 			}
 		}
@@ -414,8 +436,7 @@ public class UserServiceImpl implements IUserService {
 	/**
 	 * 合并用户 userIdTwo合并到userIdOne
 	 */
-	public void unionUser(String userIdOne,String userIdTwo) throws Exception
-	{
+	public void unionUser(String userIdOne, String userIdTwo) throws Exception {
 		User userOne = new User();
 		userOne.setUserId(userIdOne);
 		userOne = userDao.queryUser(userOne);
@@ -423,37 +444,32 @@ public class UserServiceImpl implements IUserService {
 		User userTwo = new User();
 		userTwo.setUserId(userIdTwo);
 		userTwo = userDao.queryUser(userTwo);
-		//如果userOne是单用户,则为userOne设置unionId
-		if (userOne.getUnionId() == null || userOne.getUnionId().trim().equals(""))
-		{
+		// 如果userOne是单用户,则为userOne设置unionId
+		if (userOne.getUnionId() == null || userOne.getUnionId().trim().equals("")) {
 			userOne.setUnionId(PrimaryKeyUtil.generateKey());
 			userDao.updateUser(userOne);
 		}
 
-		List<User> userTwoList = new ArrayList<>();//用户userTwo 所在union下所有用户
-		//如果userTwo是新用户
-		if (userTwo.getUnionId() == null || userTwo.getUnionId().trim().equals(""))
-		{
+		List<User> userTwoList = new ArrayList<>();// 用户userTwo 所在union下所有用户
+		// 如果userTwo是新用户
+		if (userTwo.getUnionId() == null || userTwo.getUnionId().trim().equals("")) {
 			userTwoList.add(userTwo);
-		}else
-		{
+		} else {
 			User userTwoUnion = new User();
 			userTwoUnion.setUnionId(userIdTwo);
 			userTwoList = userDao.queryUserList(userTwoUnion);
 		}
-		//更新userTwoList的unionId
-		for(int i=0;i<userTwoList.size();i++)
-		{
+		// 更新userTwoList的unionId
+		for (int i = 0; i < userTwoList.size(); i++) {
 			userTwoList.get(i).setUnionId(userOne.getUnionId());
 			userDao.updateUser(userTwoList.get(i));
 		}
 	}
 
 	/**
-	 *  分开已合并用户 userIdTwo分开
+	 * 分开已合并用户 userIdTwo分开
 	 */
-	public void unUnionUser(String userIdOne,String userIdTwo) throws Exception
-	{
+	public void unUnionUser(String userIdOne, String userIdTwo) throws Exception {
 		User userOne = new User();
 		userOne.setUserId(userIdOne);
 		userOne = userDao.queryUser(userOne);
@@ -462,14 +478,9 @@ public class UserServiceImpl implements IUserService {
 		userTwo.setUserId(userIdTwo);
 		userTwo = userDao.queryUser(userTwo);
 
-		//如果userOne与userTwo的UnionId，相同，则把userTwo的union清空
-		if (userOne.getUnionId() != null
-				&& !userOne.getUnionId().trim().equals("")
-				&& userTwo.getUnionId() != null
-				&& !userTwo.getUnionId().trim().equals("")
-				&& userOne.getUnionId().equals(userTwo.getUnionId())
-				)
-		{
+		// 如果userOne与userTwo的UnionId，相同，则把userTwo的union清空
+		if (userOne.getUnionId() != null && !userOne.getUnionId().trim().equals("") && userTwo.getUnionId() != null && !userTwo.getUnionId().trim().equals("")
+				&& userOne.getUnionId().equals(userTwo.getUnionId())) {
 			userTwo.setUnionId(null);
 			List<String> colList = new ArrayList<>();
 			colList.add("unionId");
@@ -486,8 +497,7 @@ public class UserServiceImpl implements IUserService {
 	 * @param user
 	 *            User对象
 	 */
-	public void updateColNull(User user) throws Exception
-	{
+	public void updateColNull(User user) throws Exception {
 		userDao.updateColNull(user);
 	}
 }
