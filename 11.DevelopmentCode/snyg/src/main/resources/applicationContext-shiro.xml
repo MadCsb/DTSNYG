@@ -36,7 +36,6 @@
                 /upload/**=anon
                 /wx**=anon
                 /sdmobile**=anon
-                /open/**/**=anon
                 /open/**=anon
                 /web/css/**=anon
                 /web/js/**=anon

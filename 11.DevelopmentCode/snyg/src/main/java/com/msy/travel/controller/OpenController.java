@@ -81,6 +81,7 @@ public class OpenController extends BaseController {
 
 				//进入详情具体的页面类型
 				view.addObject("detailPage","WAP");
+				view.addObject("userRoleDataId",getLoginUser(request).getRoleData().getUserRoleDataId());
 			}
 
 		}catch (Exception e)

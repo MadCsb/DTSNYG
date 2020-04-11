@@ -191,6 +191,7 @@ public class WapOrderController extends BaseController {
 			Channel channel = null; //当前用户的渠道信息
 			if (RoleData.ROLE_TYPE_CHANNEL.equals(loginUser.getRoleData().getRoleType())) //如果当前用户是已渠道用户登录
 			{
+				channel = new Channel();
 				channel.setChannelId(loginUser.getRoleData().getUnitId());
 				channel = channelService.displaychannel(channel);
 			}else
@@ -205,6 +206,7 @@ public class WapOrderController extends BaseController {
 				List<RoleData>  roleDataList = roleDataService.queryRoleDataList(roleData); //用户所有的渠道角色信息
 				if (roleDataList.size()>0)
 				{
+					channel = new Channel();
 					channel.setChannelId(roleDataList.get(0).getUnitId());
 					channel = channelService.displaychannel(channel);
 				}

@@ -446,7 +446,7 @@ public class OrderServiceImpl implements OrderService
             Order order = new Order();
             order.setOrderId(PrimaryKeyUtil.generateKey());
             order.setOrderCode(PrimaryKeyUtil.getOnlyOrderCode());
-            order.setSpId(operatorUser.getAccId());
+            order.setSpId(Destsp.currentSpId);
             order.setUserId(operatorUser.getUserId());
             order.setBackNum("0");
             int giftNum = 0;

@@ -1,11 +1,14 @@
 package com.msy.travel.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.Result;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Order;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.OrderService;
@@ -40,6 +43,9 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
 
     @Resource(name = "orderServiceImpl")
     private OrderService orderService;
+
+    @Resource(name = "channelServiceImpl")
+    private ChannelService channelService;
 
     @Resource(name = "orderListServiceImpl")
     private OrderListService orderListService;
@@ -157,28 +163,51 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
             orderService.payOrder(thirdPayFlowDb);
         }
         try {
+            Channel sdydChannel = channelService.getChannelByChannelKey(Channel.SDYD);
             String[] orderIdArray = orderIds.split(",");
             for(int i=0;i<orderIdArray.length;i++)
             {
                 Order order = new Order();
                 order.setOrderId(orderIdArray[i]);
                 order = orderService.displayOrder(order);
-                User user = new User();
-                user.setUserId(order.getUserId());
-                user = userService.displayUser(user);
-                if("2".equals(user.getType()))
+                if(sdydChannel.getChannelId().equals(order.getChannelId()))//如果是山东移动的订单，需要同步山东移动
                 {
-                    OrderList orderListTmp = new OrderList();
-                    orderListTmp.setOrderId(order.getOrderId());
-                    List<OrderList> orderListList = orderListService.queryOrderListList(orderListTmp);
+                    User user = new User();
+                    user.setUserId(order.getUserId());
+                    user = userService.displayUser(user);
+                    if (!User.USER_TYPE_SDMOBILE.equals(user.getType()))
+                    {
+                        User sdUser = new User();
+                        sdUser.setType(User.USER_TYPE_SDMOBILE);
+                        sdUser.setUnionId(user.getUnionId());
+                        List<User> sdUserList = userService.queryUserList(sdUser);
+                        if(sdUserList.size()>0)
+                        {
+                            user = sdUserList.get(0);
+                        }else
+                        {
+                            user = null;
+                        }
+                    }
+                    if(user == null)
+                    {
+                        log.error("同步山东移动订单失败：查询山东移动用户失败");
+                    }else
+                    {
+                        OrderList orderListTmp = new OrderList();
+                        orderListTmp.setOrderId(order.getOrderId());
+                        List<OrderList> orderListList = orderListService.queryOrderListList(orderListTmp);
 
-                    SellPrice sellPrice = new SellPrice();
-                    sellPrice.setPriceId(orderListList.get(0).getPriceId());
-                    sellPrice = sellPriceService.displaySellPrice(sellPrice);
-                    Map<String ,String> sdParam = new HashMap<>(); //param.priceCode = 销售code param.orderId = 订单ID
-                    sdParam.put("orderId",order.getOrderId());
-                    sdParam.put("priceCode",sellPrice.getPriceCode());
-                    Result sdResult = orderService.sdMobileSyncOrder(sdParam,user);
+                        SellPrice sellPrice = new SellPrice();
+                        sellPrice.setPriceId(orderListList.get(0).getPriceId());
+                        sellPrice = sellPriceService.displaySellPrice(sellPrice);
+                        Map<String ,String> sdParam = new HashMap<>(); //param.priceCode = 销售code param.orderId = 订单ID
+                        sdParam.put("orderId",order.getOrderId());
+                        sdParam.put("priceCode",sellPrice.getPriceCode());
+                        log.error("同步山东移动订单开始："+ JSON.toJSONString(sdParam));
+                        Result sdResult = orderService.sdMobileSyncOrder(sdParam,user);
+                        log.error("同步山东移动订单结果："+ JSON.toJSONString(sdResult));
+                    }
                 }
             }
         }catch (Exception e)

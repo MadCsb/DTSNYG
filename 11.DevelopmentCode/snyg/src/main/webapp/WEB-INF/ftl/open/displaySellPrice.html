@@ -6,10 +6,12 @@
 	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 </head>
 <body>
+<input type="hidden" id="userRoleDataId" value="${userRoleDataId!''}">
 </body>
 <script type="text/javascript">
   var openApi = new OpenApi();
   openApi.resetDefaultPageType();
+  openApi.pageType = openApi.WAP;
   var spId = "${spId!''}";
   var priceId = "${sellPrice.priceId!''}";
   var detailUrl = null;
@@ -18,7 +20,7 @@
 	{
     if (openApi.pageType == openApi.WX)
     {
-      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId+"&userRoleDataId=${Session.LOGIN_USER.roleData.!userRoleDataId''}";
+      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId+"&userRoleDataId="+$("#userRoleDataId").val();
     }else
     {
       detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
