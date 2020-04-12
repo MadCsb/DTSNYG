@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Company;
 import com.msy.travel.pojo.OrderBack;
@@ -12,6 +13,7 @@ import com.msy.travel.pojo.OrderCustomer;
 import com.msy.travel.pojo.OrderExpress;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.Pubmap;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.IPubmapService;
 import com.msy.travel.service.OrderBackService;
@@ -61,6 +63,9 @@ public class OrderController extends BaseController{
 
 	@Resource(name = "orderServiceImpl")	
 	private OrderService orderService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
 
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
@@ -242,6 +247,7 @@ public class OrderController extends BaseController{
 					searchOrder.setMoneyE(order.getMoneyE());
 					searchOrder.setCreateTimeS(order.getCreateTimeS());
 					searchOrder.setCreateTimeE(order.getCreateTimeE());
+					searchOrder.setChannelId(order.getChannelId());
 
 					//订单状态(0，未支付，1待确认，2已发货，3确认拒绝，4已收货，6已退货，7已关闭)
 					if (queryOrderStatus != null && !queryOrderStatus.trim().equals("")) //如果商户选择了自己的状态
@@ -307,6 +313,9 @@ public class OrderController extends BaseController{
 						orderList.get(i).setBackId(orderBackList.get(0).getBackId());
 					}
 				}
+				Channel channel = new Channel();
+	      channel.setSpId(getLoginUser(request).getAccId());
+	      List<Channel> channelList = channelService.querychannelList(new Channel());
 				view = new ModelAndView("order/queryOrder");
 				view.addObject("orderList", orderList);
 				view.addObject("entityPage", searchOrder.getEntityPage());
@@ -315,6 +324,7 @@ public class OrderController extends BaseController{
 				view.addObject("queryOrderStatus", queryOrderStatus);
 				view.addObject("shortCuts", shortCuts);
 				view.addObject("staticOrder", staticOrder);
+				view.addObject("channelList", channelList);
 			} catch (Exception e) {
 					view = new ModelAndView("error");
 					view.addObject("e", getExceptionInfo(e));

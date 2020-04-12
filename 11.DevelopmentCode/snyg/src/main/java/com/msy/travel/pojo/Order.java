@@ -208,7 +208,10 @@ public class Order extends BaseEntity implements java.io.Serializable
 	 * 缩略图文件名称 db_column: F_THUMBPIC
 	 */
 	private String thumbPic;
-
+	/**
+	 * 渠道名称 db_column: F_CHANNELNAME
+	 */
+	private String channelName;
 
 	//搜索类型
 
@@ -694,6 +697,14 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setChannelId(String channelId) {
 		this.channelId = channelId;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
 	}
 }
 

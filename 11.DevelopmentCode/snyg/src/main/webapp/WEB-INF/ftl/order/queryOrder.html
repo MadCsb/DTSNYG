@@ -81,6 +81,19 @@
 					<option value="2" <#if order.priceType?? && order.priceType =="2">selected</#if>>秒杀活动</option>
 				</select>
 			</td>
+			<td>渠道类型：</td>
+			<td>
+				<select id="channelId" name="channelId" class="data-searchtxt-select">
+					<option value="">请选择</option>
+					<#list channelList as cl>
+						<#if cl.channelId == order.channelId!''>
+							<option value="${cl.channelId}" selected="selected">${cl.channelName!""}</option>
+							<#else>
+								<option value="${cl.channelId}">${cl.channelName!""}</option>
+						</#if>
+					</#list>
+				</select>
+			</td>
 		</tr>
 		</table>
         <input type="button" class="data-searchbtn" onClick="search()" value="查询"/>
