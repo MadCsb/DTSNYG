@@ -11,6 +11,9 @@
 <input type="hidden" id="sdUserId" value="${(sdUser.userId)!''}">
 <input type="hidden" id="channelKey" value="${(channel.channelKey)!''}">
 <input type="hidden" id="channelId" value="${(channel.channelId)!''}">
+<input type="hidden" id="userRoleDataId" value="${userRoleDataId!''}">
+
+
 <input type="hidden" id="userLoginName" value="${user.userLoginName!''}">
 <div id="price" style="display: none">${price!''}</div>
 <input type="hidden" id="consigneeId" value="">
@@ -369,7 +372,7 @@
      if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
      {
        pay.havePayed = function(){
-         toOrderList("0");
+         toOrderList("0",$("#userRoleDataId").val());
        }
        pay.checkPayed();
        pay.toPay();

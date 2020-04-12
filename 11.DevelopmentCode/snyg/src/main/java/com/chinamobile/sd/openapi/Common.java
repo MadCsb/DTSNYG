@@ -164,16 +164,19 @@ public class Common {
     {
       return signResult;
     }
-
     param.put("sign",signResult.getResultPojo().toString());
 
+
     HttpPost httpPost = new HttpPost(getCompleteUrl(param));
+
     Result httpResult = HttpClientTool.doHttpPost(httpPost);
+
     if (!"0".equals(httpResult.getResultCode()))
     {
+      log.error("山东移动获取登录手机号请求post="+JSON.toJSONString(httpPost));
+      log.error("山东移动获取登录手机号请求post结果="+JSON.toJSONString(httpResult));
       return httpResult;
     }
-    System.out.println(httpResult.getResultPojo().toString());
     JSONObject httpResultObject = JSON.parseObject(httpResult.getResultPojo().toString());
 
     String code = httpResultObject.getString("code");

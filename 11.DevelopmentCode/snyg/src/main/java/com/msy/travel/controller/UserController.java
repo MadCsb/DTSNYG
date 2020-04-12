@@ -97,49 +97,6 @@ public class UserController extends BaseController {
 	private RedisUtil redisUtil;
 
 	/**
-	 * 跳转注册用户
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "/testUnion")
-	public void testUnion(HttpServletRequest request, String loginPage) {
-		try {
-			String userIdOne = "2199d0bde4e2402f86384456ddb33e92"; // cheng_c
-			String userIdTwo = "98ebc5fd45f54ef79df1d79186982c70"; // cheng_d
-			// 合并用户
-			userService.unionUser(userIdOne, userIdTwo);
-			User userOne = new User();
-			userOne.setUserId(userIdOne);
-			userOne = userService.displayUser(userOne);
-			log.error(JSON.toJSONString(userOne));
-			User userTwo = new User();
-			userTwo.setUserId(userIdTwo);
-			userTwo = userService.displayUser(userTwo);
-			log.error(JSON.toJSONString(userTwo));
-
-			// 分开用户
-			userService.unUnionUser(userIdOne, userIdTwo);
-			userOne = userService.displayUser(userOne);
-			log.error(JSON.toJSONString(userOne));
-			userTwo = userService.displayUser(userTwo);
-			log.error(JSON.toJSONString(userTwo));
-
-			// 设置null
-			userOne.setUnionId("sssssssssssssss");
-			userService.updateUser(userOne);
-			List<String> colList = new ArrayList<>();
-			colList.add("unionId");
-			userOne.setColList(colList);
-			userService.updateColNull(userOne);
-			userOne = userService.displayUser(userOne);
-			log.error(JSON.toJSONString(userOne));
-
-		} catch (Exception e) {
-			log.error(e, e);
-		}
-	}
-
-	/**
 	 * 跳转登陆页面
 	 * 
 	 * @param loginPage

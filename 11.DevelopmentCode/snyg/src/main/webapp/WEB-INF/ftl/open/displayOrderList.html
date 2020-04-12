@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="${rc.contextPath}/js/open-api.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
 </head>
+<input type="hidden" id="userRoleDataId" value="${userRoleDataId!''}">
 <body>
 </body>
 <script type="text/javascript">
@@ -22,7 +23,7 @@
     }
   }else {
     if (openApi.pageType == openApi.WX) {
-      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
+      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0&userRoleDataId="+$("#userRoleDataId").val();
     } else if (openApi.pageType == openApi.WEB) {
       detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
     } else if (openApi.pageType == openApi.WAP) {

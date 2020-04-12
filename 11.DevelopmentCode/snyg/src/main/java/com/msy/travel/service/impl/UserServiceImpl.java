@@ -303,7 +303,6 @@ public class UserServiceImpl implements IUserService {
 
 		User user = new User();
 		user.setUserLoginName(tel);
-		user.setDelFlag("0");
 		user.setType(User.USER_TYPE_SDMOBILE);
 		List<User> userList = userService.queryUserList(user);
 
@@ -311,6 +310,7 @@ public class UserServiceImpl implements IUserService {
 			return userList.get(0);
 		} else {
 			User userDb = new User();
+			userDb.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
 			userDb.setUserLoginName(tel);
 			userDb.setDelFlag("0");
 			userDb.setUserState("1");
@@ -337,7 +337,7 @@ public class UserServiceImpl implements IUserService {
 			roleData.setUserId(user.getUserId());
 			roleData.setIsDefault("1");
 			roleDataList.add(roleData);
-			userService.createUserAndRoledata(user, roleDataList);
+			userService.createUserAndRoledata(userDb, roleDataList);
 			return userDb;
 		}
 	}

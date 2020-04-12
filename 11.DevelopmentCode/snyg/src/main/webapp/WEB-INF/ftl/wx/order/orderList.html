@@ -59,6 +59,8 @@
 <!--<#include "/wx/WX_FOOTER.html">-->
 
 <input type="hidden" id="userId" value="${(user.userId)!''}">
+<input type="hidden" id="userType" value="${(userType)!''}">
+<input type="hidden" id="sdUserType" value="${sdUserType!''}">
 <input type="hidden" id="orderListType" value="${orderListType!''}">
 <script>
   var searchObject = new Object(); //查询对象
@@ -97,8 +99,7 @@
    */
   function sdUserSpace()
   {
-    var userId = $("#userId").val();
-    if(checkIsSdUser(userId)) //如果是山东移动需要特殊处理
+    if($("#userType").val() == $("#sdUserType").val())  //如果是山东移动需要特殊处理
     {
       $(".snyg_topserch").attr("style","left:12px;width:82%;");
       $(".snyg_topserch").after('<span class="ico_home" style="margin-top:10px;"><a href="${sdHomeUrl!''}"><img src="${rc.contextPath}/wx/images/home.png"></a></span>');

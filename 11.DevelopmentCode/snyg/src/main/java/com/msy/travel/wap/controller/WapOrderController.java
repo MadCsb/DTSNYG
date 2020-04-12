@@ -302,6 +302,7 @@ public class WapOrderController extends BaseController {
 			view.addObject("user",getLoginUser(request));
 			//山东移动
 			view.addObject("sdHomeUrl", Common.homeUrl);
+			view.addObject("sdUserType", User.USER_TYPE_SDMOBILE);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

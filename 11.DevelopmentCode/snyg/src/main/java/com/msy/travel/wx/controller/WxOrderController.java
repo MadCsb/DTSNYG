@@ -51,6 +51,9 @@ public class WxOrderController extends BaseController {
 	@Resource(name = "orderListServiceImpl")
 	private OrderListService orderListService;
 
+	@Resource(name = "roleDataServiceImpl")
+	private RoleDataService roleDataService;
+
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
@@ -193,7 +196,15 @@ public class WxOrderController extends BaseController {
 				sdUser.setUnionId(user.getUnionId());
 				sdUser.setType(User.USER_TYPE_SDMOBILE);
 				List<User> sdUserList = userService.queryUserList(sdUser);
+				RoleData roleData = new RoleData();
+				roleData.setUserId(sdUserList.get(0).getUserId());
+				EntityPage entityPage = new EntityPage(); //相同用户 相同角色类型 相同unit下 排序
+				entityPage.setSortField("t.F_ISDEFAULT");
+				entityPage.setSortOrder("DESC");
+				roleData.setEntityPage(entityPage);
+				List<RoleData> roleDataList = roleDataService.queryRoleDataList(roleData);
 				view.addObject("sdUser",sdUserList.get(0));
+				view.addObject("userRoleDataId",roleDataList.get(0).getUserRoleDataId());
 			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -251,7 +262,7 @@ public class WxOrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(params = "method=toOrderList")
-	public ModelAndView toOrderList(String orderListType,String searchKey,HttpServletRequest request) {
+	public ModelAndView toOrderList(String orderListType,String searchKey,String userRoleDataId,HttpServletRequest request) {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("/wx/order/orderList");
@@ -261,6 +272,17 @@ public class WxOrderController extends BaseController {
 			wxSetViewObjects(view, request,serviceCode,userService);
 			//山东移动
 			view.addObject("sdHomeUrl", Common.homeUrl);
+			view.addObject("sdUserType", User.USER_TYPE_SDMOBILE);
+			if(userRoleDataId!=null && !userRoleDataId.equals(""))
+			{
+				RoleData roleData = new RoleData();
+				roleData.setUserRoleDataId(userRoleDataId);
+				roleData = roleDataService.displayRoleData(roleData);
+				User user = new User();
+				user.setUserId(roleData.getUserId());
+				user = userService.displayUser(user);
+				view.addObject("userType",user.getType());
+			}
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

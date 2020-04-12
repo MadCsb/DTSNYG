@@ -37,12 +37,16 @@ function toPersonal(){
  * orderListType = 3 待收货
  * orderListType = 4 退换货
  */
-function toOrderList(orderListType){
+function toOrderList(orderListType,userRoleDataId){
   if(typeof(orderListType) == "undefined")
   {
     orderListType = "0";
   }
-  wxAuthorizeBase("wxorder.do?method=toOrderList&orderListType="+orderListType);
+  if(typeof(userRoleDataId) == "undefined")
+  {
+    userRoleDataId = "";
+  }
+  wxAuthorizeBase("wxorder.do?method=toOrderList&orderListType="+orderListType+"&userRoleDataId="+userRoleDataId);
 }
 
 /**

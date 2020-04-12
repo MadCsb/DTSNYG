@@ -50,21 +50,7 @@ public class OpenController extends BaseController {
 	public ModelAndView toSellPriceDetail(@PathVariable("spId") String spId,@PathVariable("priceCode") String priceCode, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
-
-			SellPrice sellPrice = new SellPrice();
-			sellPrice.setPriceCode(priceCode);
-			sellPrice = sellPriceService.displaySellPrice(sellPrice);
-
-			if (sellPrice == null)
-			{
-				throw new LogicException("未找到销售产品");
-			}
-
 			view = new ModelAndView("open/displaySellPrice");
-			view.addObject("sellPrice",sellPrice);
-			view.addObject("spId",spId);
-
-
 			//判断是否通过山东移动进入
 			String sdToken = request.getParameter("token");
 			if (sdToken != null && !sdToken.equals("")) //如果存在token，表示是山东进来的
@@ -74,6 +60,7 @@ public class OpenController extends BaseController {
 				RoleData loginRoleData = new RoleData();
 				loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
 				loginRoleData.setAccId(Destsp.currentSpId);
+				loginRoleData.setUserId(user.getUserId());
 				UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(), MD5.encode(user.getUserLoginName()), loginRoleData); //山东移动登录名=密码
 
 				Subject subject = SecurityUtils.getSubject();
@@ -84,6 +71,19 @@ public class OpenController extends BaseController {
 				view.addObject("userRoleDataId",getLoginUser(request).getRoleData().getUserRoleDataId());
 			}
 
+			//priceCode = "178";//正式需要注释
+
+			SellPrice sellPrice = new SellPrice();
+			sellPrice.setPriceCode(priceCode);
+			sellPrice = sellPriceService.displaySellPrice(sellPrice);
+
+			if (sellPrice == null)
+			{
+				throw new LogicException("未找到销售产品");
+			}
+
+			view.addObject("sellPrice",sellPrice);
+			view.addObject("spId",spId);
 		}catch (Exception e)
 		{
 			view = new ModelAndView("error");
@@ -106,10 +106,16 @@ public class OpenController extends BaseController {
 			if (sdToken != null && !sdToken.equals("")) //如果存在token，表示是山东进来的
 			{
 				user = userService.getOrCreateBySdToken(sdToken);
-				String userPwd = user.getUserLoginName();
-				UsernamePasswordToken token = new UsernamePasswordToken(user.getUserLoginName(), MD5.encode(userPwd));
+
+				RoleData loginRoleData = new RoleData();
+				loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+				loginRoleData.setAccId(Destsp.currentSpId);
+				loginRoleData.setUserId(user.getUserId());
+				UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(), MD5.encode(user.getUserLoginName()), loginRoleData); //山东移动登录名=密码
+
 				Subject subject = SecurityUtils.getSubject();
 				subject.login(token);
+				view.addObject("userRoleDataId",getLoginUser(request).getRoleData().getUserRoleDataId());
 			}
 		}catch (Exception e)
 		{
