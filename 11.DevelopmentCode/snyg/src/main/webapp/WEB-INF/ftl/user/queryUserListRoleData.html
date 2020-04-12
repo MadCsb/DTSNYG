@@ -6,11 +6,13 @@
 </head>
 <body>
  <form id="queryFrm" action="queryUserListByRoleData"  method="post" >
- 	   <input type="hidden" id="userRoleType" name="userRoleType" value="${user.userRoleType!''}">
+ 	   <input type="hidden" id="userRoleType" name="roleType" value="${user.roleType!''}">
        <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum}" />
 	   <input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total}" />
 	   <input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!""}" />
 	   <input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!""}" />
+	   
+	   <input type="hidden" id="channelKey" name="channelKey"  value="${channelKey!''}" />
 	<div class="data-requry">
 	<table border="0" align="left" cellpadding="0" cellspacing="0">
         <tr>
@@ -23,7 +25,7 @@
  		  <td>手机号码：</td>
             <td>
 				<input  name="userMobile" type="text" class="data-searchtxt" id="userMobile" value="${user.userMobile!''}">
-			</td>
+			</td> <!-- 
 		<td>用户类型：</td>
             <td>
        		 <span class="tdleft">
@@ -42,7 +44,7 @@
             		</#if>
          		 </select>
         	</span></td>
-        <!-- 
+       
  		  <td>用户性别：</td>
             <td>
        		 <span class="tdleft">
@@ -81,8 +83,9 @@
 	</div>
 <div class="tab-nav">
 	<ul class="nav">
-		<li><a href="javascript:void(0)" onclick="quickSearch(2)" <#if user.roleType?? && user.roleType == '2'>class="active"<#else>class=""</#if>>管理员</a></li>
-		<li><a href="javascript:void(0)" onclick="quickSearch(3)" <#if user.roleType?? && user.roleType == '3'>class="active"<#else>class=""</#if>>商城用户</a></li>
+		<li><a href="javascript:void(0)" onclick="quickSearch('2','')" <#if user.roleType?? && user.roleType == '2'>class="active"<#else>class=""</#if>>管理员</a></li>
+		<li><a href="javascript:void(0)" onclick="quickSearch('3','SNYG')" <#if user.roleType?? && user.roleType == '3' && channelKey?? && channelKey=='SNYG'>class="active"<#else>class=""</#if>>商城用户</a></li>
+		<li><a href="javascript:void(0)" onclick="quickSearch('3','SDYD')" <#if user.roleType?? && user.roleType == '3' && channelKey?? && channelKey=='SDYD'>class="active"<#else>class=""</#if>>山东移动用户</a></li>
 	</ul>
 	<div style="clear:both"></div>
 </div>
@@ -164,8 +167,9 @@ $(function(){
 	$("#userGroupId").combobox();
 });
 
-function quickSearch(type){
-	$("#roleType").val(type);
+function quickSearch(type,channelKey){
+	$("#userRoleType").val(type);
+	$("#channelKey").val(channelKey);
 	$("#queryFrm").submit();
 }
 	function selectTrUser(obj,userId,userState,userLocked){
