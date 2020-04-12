@@ -229,11 +229,13 @@
 			oc.F_CUSTPHONE  as custPhone ,
 			oc.F_CUSTNAME  as custName ,
 			oc.F_RECADDRESS  as recAddress ,
-			IFNULL(orderBack.F_BACKTIMES,0) as backTimes
+			IFNULL(orderBack.F_BACKTIMES,0) as backTimes ,
+			c.F_CHANNELNAME as channelName
 		FROM
 			t_sm_order t
 		  LEFT JOIN t_sm_ordercustomer oc on t.F_ORDERID = oc.F_ORDERID
 			LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
+			LEFT JOIN t_sm_channel c on c.F_CHANNELID = t.F_CHANNELID
 		<where>
 			t.F_ORDERID = #{orderId}
 
@@ -335,6 +337,9 @@
 			<if test="createTimeE!=null and createTimeE!=''">
 				and t.F_CREATETIME &lt;= #{createTimeE}
 			</if>
+			<if test="channelId!=null and channelId!=''">
+				and t.F_CHANNELID = #{channelId}
+			</if>
 			<if test="priceType!=null and priceType!=''">
 				and old.F_PRICETYPE = #{priceType}
 			</if>
@@ -414,6 +419,9 @@
 			</if>
 			<if test="createTimeE!=null and createTimeE!=''">
 				and t.F_CREATETIME &lt;= #{createTimeE}
+			</if>
+			<if test="channelId!=null and channelId!=''">
+				and t.F_CHANNELID = #{channelId}
 			</if>
 			<if test="priceType!=null and priceType!=''">
 				and old.F_PRICETYPE = #{priceType}
