@@ -56,37 +56,51 @@ td img {
 						-
 		           		<input name="payDateTimeEnd" id="payDateTimeEnd" value="${orderList.payDateTimeEnd!''}" type="text" style="width:130px" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'payDateTimeStart\')}'})" readonly="readonly">
 					</td>
+					<td>发生类型：</td>
+					<td>
+						<select name="orderListType" id="orderListType" class="data-searchtxt-select">
+			         		<option value="">请选择</option>
+							<option value="0" <#if orderList.orderListType?? && orderList.orderListType=='0'>selected</#if> >收益(订单)</option>
+							<option value="1" <#if orderList.orderListType?? && orderList.orderListType=='1'>selected</#if> >支出(退订单)</option>
+						</select>
+					</td>
 				</tr>
 				</table>
 				<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
 			</div>
 			
-			<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+			<table   border="0" cellspacing="0" cellpadding="0" class="datalist" style="min-width:2000px;" id="changecolor" >
 				<tr>
-					<th width="25%">单据编号</th>
-					<th width="25%">发生日期</th>
-					<th width="25%">发生金额（&yen;）</th>
-					<th width="25%">发生类型</th>
+					<th width="8%">单据编号</th>
+					<th width="8%">发生日期</th>
+					<th width="12%">商品名称</th>
+					<th width="8%">商品规格</th>
+					<th width="4%">数量</th>
+					<th width="4%">单价</th>
+					<th width="8%">总价/退货金额</th>
+					<th width="4%">订货人</th>
+					<th width="8%">手机号</th>
+					<th width="4%">收货人</th>
+					<th width="12%">收货地址</th>
+					<th width="8%">快递公司</th>
+					<th width="8%">快递单号</th>
 				</tr>
 				<#if orderListlist??>
 				<#list orderListlist as item>
 				<tr onClick="selectTr(this)">
-					<td title="${item.orderCode!''}">
-					<a href="javascript:void(0)" onclick="toShowDetail('${item.orderListType!''}','${item.orderListId!''}')">${item.orderCode!''}</a>
-					</td>
-					<td title="${item.createTime!''}">
-						${item.createTime!''}
-					</td>
-					<td align="right" title="${item.money!''}">
-						${item.money!'0.00'}
-					</td>
-					<td align="right" title="">
-						<#if item.orderListType?? && item.orderListType=="0">
-							订单
-						<#elseif item.orderListType?? && item.orderListType=="1">
-							退订单
-						</#if>
-					</td>
+					<td title="${item.orderCode!''}">${item.orderCode!''}</td>
+					<td title="${item.createTime!''}">${item.createTime!''}</td>
+					<td title="${item.productName!''}">${item.productName!''}</td>
+					<td title="${item.childName!''}">${item.childName!''}</td>
+					<td title="${item.num!''}">${item.num!''}</td>
+					<td title="${item.price!''}">${item.price!''}</td>
+					<td title="${item.money!''}">${item.money!''}</td>
+					<td title="${item.userName!''}">${item.userName!''}</td>
+					<td title="${item.custPhone!''}">${item.custPhone!''}</td>
+					<td title="${item.custName!''}">${item.custName!''}</td>
+					<td title="${item.recAddress!''}">${item.recAddress!''}</td>
+					<td title="${item.epmeCompany!''}">${item.epmeCompany!''}</td>
+					<td title="${item.epmeOrdCode!''}">${item.epmeOrdCode!''}</td>
 				</tr>
 				</#list>
 				

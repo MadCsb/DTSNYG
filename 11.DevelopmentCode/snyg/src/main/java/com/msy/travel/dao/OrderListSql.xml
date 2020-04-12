@@ -179,52 +179,85 @@
 	</select>
 	<!-- 按条件查询所有 -->
 	<select id="queryOrderListList" parameterType="orderList" resultType="orderList">
+		select * from (
 		SELECT
-			t.F_ORDERLISTID as orderListId ,
-			t.F_ORDERID as orderId ,
-			t.F_SPID as spId ,
-			t.F_VENID as venId ,
-			t.F_VENNAME as venName ,
-			t.F_PRICEID as priceId ,
-		  	t.F_PRODUCTID as productId ,
-			t.F_PRODUCTNAME as productName ,
-			t.F_PRICE as price ,
-			t.F_NUM as num ,
-			t.F_COUPON_MONEY as couponMoney ,
-			t.F_CUSTOMERCOUPONID as customerCouponId ,
-			t.F_MONEY as money ,
-			t.F_PAYMONEY as payMoney ,
-			t.F_BACKNUM as backNum ,
-			t.F_GOODSPRICEID as goodsPriceId ,
-			t.F_CHILDNAME as childName ,
-			t.F_TRANSFEE as transFee ,
-			t.F_DELFLAG as delFlag ,
-			t.F_ORDERLISTTYPE as orderListType ,
-		  	gs.F_THUMBPIC as thumbPic
+			ol.F_ORDERLISTTYPE as orderListType,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_PAYDATE
+				WHEN '1' THEN ob.F_APPLYTIME
+				WHEN '2' THEN otmp.F_CREATETIME
+				END
+			) AS createTime,/*支付时间*/
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_ORDERCODE
+				WHEN '1' THEN ob.F_BACKCODE
+				WHEN '2' THEN o.F_ORDERCODE
+				END
+			) AS orderCode,/*订单编号*/
+			ol.F_PRODUCTNAME as productName,	/*名称*/
+			ol.F_CHILDNAME as childName,	/*规格*/
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN ol.F_NUM
+				WHEN '1' THEN ''
+				WHEN '2' THEN ol.F_NUM
+				END
+			) AS num,	/*数量*/
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN ol.F_PRICE
+				WHEN '1' THEN ''
+				WHEN '2' THEN ol.F_PRICE
+				END
+			) AS price,/*单价*/
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN o.F_MONEY
+				WHEN '1' THEN ob.F_BACKMONEY
+				WHEN '2' THEN o.F_MONEY
+				END
+			) AS money,/*总价*/
+			u.F_USER_NAME as userName,/*订货人*/
+			oc.F_CUSTNAME as custName, /*收货人*/
+			oc.F_RECADDRESS as recAddress,
+			oe.F_EPMEORDCODE AS epmeOrdCode,
+			map.F_MAPVALUE AS epmeCompany,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN oc.F_CUSTPHONE
+				WHEN '1' THEN ''
+				WHEN '2' THEN oc.F_CUSTPHONE
+				END
+			) AS custPhone
 		FROM
-		t_sm_orderlist t
-		LEFT JOIN t_sm_goodsprice gs on t.F_GOODSPRICEID = gs.F_GOODSPRICEID
+			t_sm_orderlist ol
+		LEFT JOIN t_sm_order o ON ol.F_ORDERID = o.F_ORDERID AND ol.F_ORDERLISTTYPE = '0'
+		LEFT JOIN t_sm_order otmp ON ol.F_ORDERID = otmp.F_ORDERID AND ol.F_ORDERLISTTYPE = '2'
+		LEFT JOIN t_sm_orderback ob ON ol.F_ORDERID = ob.F_ORDERID AND ol.F_ORDERLISTTYPE = '1'
+		LEFT JOIN t_sm_order od ON ol.F_ORDERID = od.F_ORDERID
+		LEFT JOIN t_pub_user u on o.F_USERID = u.F_USER_ID
+		LEFT JOIN t_sm_ordercustomer oc ON ol.F_ORDERID = oc.F_ORDERID
+		LEFT JOIN t_sm_orderexpress oe on oe.F_ORDERLISTID = ol.F_ORDERLISTID
+		LEFT JOIN t_pub_map map on oe.F_EPMECOMPANY = map.F_MAPKEY and map.F_MAPTYPE='EXPRESS'
 		<where>
-			<if test="orderId!=null and orderId!=''">
-		    	AND t.F_ORDERID = #{orderId}
+			<if test="venId !=null and venId !=''">
+		    	AND ol.F_VENID = #{venId}
 			</if>
 			<if test="delFlag!=null and delFlag!=''">
-				AND t.F_DELFLAG = #{delFlag}
+				AND ol.F_DELFLAG = #{delFlag}
 			</if>
-			<if test="orderListType!=null and orderListType!=''">
-				AND t.F_ORDERLISTTYPE = #{orderListType}
+			<if test="payTag !=null and payTag !=''">
+				AND od.F_PAYTAG = #{payTag}
+			</if>
+		</where>)olTemp
+		<where>
+			<if test="payDateTimeStart !=null and payDateTimeStart !=''">
+				AND createTime &gt;= concat(#{payDateTimeStart},' 00:00:00')
+			</if>
+			<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
+				AND createTime &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+			</if>
+			<if test="orderListType !=null and orderListType !=''">
+				AND orderListType = #{orderListType}
 			</if>
 		</where>
-		<if test="entityPage != null">
-			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
-		    	ORDER BY ${entityPage.sortField}
-			</if>
-		</if>	
-		<if test="entityPage != null">	
-			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
-		    	${entityPage.sortOrder}
-			</if>
-		</if>
+		ORDER BY createTime DESC
 	</select>
 
 	<!-- 按条件查询规格 统计 -->
