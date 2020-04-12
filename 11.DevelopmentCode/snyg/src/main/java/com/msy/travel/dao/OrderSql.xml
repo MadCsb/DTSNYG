@@ -278,12 +278,14 @@
 		  oc.F_CUSTNAME  as custName ,
 		  oc.F_RECADDRESS  as recAddress ,
 			old.F_PRICETYPE as priceType ,
-		  old.F_THUMBPIC as thumbPic
+		  old.F_THUMBPIC as thumbPic ,
+			st.F_SALETYPENAME as saleTypeName
 		FROM
 		t_sm_order t
 		LEFT JOIN (SELECT ol.F_ORDERID,sp.F_PRICETYPE,cp.F_THUMBPIC FROM t_sm_orderlist ol LEFT JOIN t_sm_sellprice sp on ol.F_PRICEID = sp.F_PRICEID LEFT JOIN t_sm_commproduct cp on ol.F_PRODUCTID = cp.F_PRODUCTID WHERE ol.F_ORDERLISTTYPE='0' GROUP BY ol.F_ORDERID) old on old.F_ORDERID = t.F_ORDERID
 		LEFT JOIN (SELECT F_ORDERID,count(1) as F_BACKTIMES from t_sm_orderback GROUP BY F_ORDERID) orderBack on orderBack.F_ORDERID = t.F_ORDERID
 		LEFT JOIN t_sm_ordercustomer oc on t.F_ORDERID = oc.F_ORDERID
+		LEFT JOIN t_sm_saletype st on st.F_SALETYPEKEY = old.F_PRICETYPE
 		<where>
 			<if test="userId!=null and userId!=''">
 		  	and t.F_USERID = #{userId}

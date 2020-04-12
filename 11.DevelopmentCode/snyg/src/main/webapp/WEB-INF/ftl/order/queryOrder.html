@@ -154,14 +154,8 @@
 								</#if>
 							</td>
 							<td title="${orderMain.createTime!''}" align="center" style="white-space: inherit;">${orderMain.createTime!""}</td>
-							<td title="${orderMain.custNameLike!''}">
-								<#if orderMain.priceType?? && orderMain.priceType =="0">
-									普通销售
-									<#elseif orderMain.priceType?? && orderMain.priceType =="1">
-										团购活动
-										<#elseif orderMain.priceType?? && orderMain.priceType =="2">
-											秒杀活动
-								</#if>
+							<td title="${orderMain.saleTypeName!''}">
+								${orderMain.saleTypeName!''}
 							</td>
 							<td custTd="true" style="overflow:visible;white-space:inherit;" title="收货人：${orderMain.custName!''}&#13;收货地址：${orderMain.recAddress!''}&#13;联系电话：${orderMain.custPhone!''}">
 								<span custSpan="true">${orderMain.custName!''}</span>

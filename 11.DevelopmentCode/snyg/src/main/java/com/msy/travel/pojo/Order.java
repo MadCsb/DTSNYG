@@ -244,6 +244,11 @@ public class Order extends BaseEntity implements java.io.Serializable
 	private String outTicketTimeE;
 	private String backId;
 	private String priceType; //销售类型
+
+	/**
+	 * 活动名称 db_column: F_SALETYPENAME
+	 */
+	private String saleTypeName;
 	//columns END
 	private List<String> orderIdList;
 	public void setOrderId(String orderId) {
@@ -705,6 +710,14 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setChannelName(String channelName) {
 		this.channelName = channelName;
+	}
+
+	public String getSaleTypeName() {
+		return saleTypeName;
+	}
+
+	public void setSaleTypeName(String saleTypeName) {
+		this.saleTypeName = saleTypeName;
 	}
 }
 
