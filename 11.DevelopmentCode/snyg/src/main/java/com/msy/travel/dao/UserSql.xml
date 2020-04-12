@@ -524,6 +524,9 @@
 			<if test='delFlag != null and delFlag =="0" '>
 				and u.f_user_state != '-1'
 			</if>
+			<if test="unitId != null and unitId != ''">
+				and r.F_UNITID = #{unitId}
+			</if>
 		</where>
 		<if test="entityPage!=null">
 			<if test="entityPage.sortField !=null and entityPage.sortField != '' ">

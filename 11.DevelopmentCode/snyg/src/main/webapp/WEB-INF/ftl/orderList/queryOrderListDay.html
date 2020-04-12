@@ -72,6 +72,19 @@ td img {
 							</#list>
 						</select>
 					</td>
+					<td>渠道名称：</td>
+                    <td>
+						<select name="channelId" class="data-searchtxt-select" id="channelId">
+							<option value="">请选择</option>
+							<#list channelList as li>
+							<#if  orderList.channelId?? &&  li.channelId==orderList.channelId>
+								<option value="${li.channelId!''}" selected>${li.channelName!""}</option>
+							<#else>
+								<option value="${li.channelId!''}">${li.channelName!""}</option>
+							</#if>
+							</#list>
+						</select>
+					</td>
 					<td>日期：</td>
                     <td>
 						<input name="payDateTimeStart" id="payDateTimeStart" value="${orderList.payDateTimeStart!''}" type="text" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'payDateTimeEnd\')}'})" readonly="readonly" style="width:130px;">

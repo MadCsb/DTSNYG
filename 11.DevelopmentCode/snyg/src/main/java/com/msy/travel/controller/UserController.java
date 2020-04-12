@@ -1136,7 +1136,7 @@ public class UserController extends BaseController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(value = "/queryUserListByRoleData")
-	public ModelAndView queryUserListByRoleData(User user, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView queryUserListByRoleData(User user, HttpServletRequest request, HttpServletResponse response, String channelKey) {
 		ModelAndView view = null;
 		try {
 			User u = this.getLoginUser(request);
@@ -1152,6 +1152,11 @@ public class UserController extends BaseController {
 				// 未删除
 				user.setDelFlag("0");
 			}
+			if (channelKey != null && !"".equals(channelKey)) {
+
+				Channel channel = channelService.getChannelByChannelKey(channelKey);
+				user.setUnitId(channel.getChannelId());
+			}
 
 			super.saveBackUrl(request);
 			// 设置分页
@@ -1165,6 +1170,7 @@ public class UserController extends BaseController {
 			view.addObject("userList", userList);
 			view.addObject("entityPage", user.getEntityPage());
 			view.addObject("pageInfo", pageInfo);
+			view.addObject("channelKey", channelKey);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			log.error(e, e);

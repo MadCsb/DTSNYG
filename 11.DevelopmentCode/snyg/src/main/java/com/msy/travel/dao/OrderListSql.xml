@@ -287,6 +287,9 @@
 				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
 					AND o.F_PAYDATE &lt;= #{payDateTimeEnd}
 				</if>
+				<if test="channelId !=null and channelId !=''">
+					AND o.F_CHANNELID = #{channelId}
+				</if>
 				GROUP BY F_PAYDATEMONTH ) orderTemp
 		LEFT JOIN (
 			SELECT
@@ -311,6 +314,9 @@
 				</if>
 				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
 					AND b.F_APPLYTIME &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+				</if>
+				<if test="channelId !=null and channelId !=''">
+					AND o.F_CHANNELID = #{channelId}
 				</if>
 				GROUP BY F_PAYDATEMONTH ) backTemp 
 		on orderTemp.F_PAYDATEMONTH = backTemp.F_PAYDATEMONTH
@@ -343,6 +349,9 @@
 				<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
 					AND o.F_PAYDATE &lt;= concat(#{payDateTimeEnd},' 23:59:59')
 				</if>
+				<if test="channelId !=null and channelId !=''">
+					AND o.F_CHANNELID = #{channelId}
+				</if>
 		UNION ALL 
 			SELECT
 				0 as F_MONEY,
@@ -364,6 +373,9 @@
 			</if>
 			<if test="payDateTimeEnd !=null and payDateTimeEnd !=''">
 				AND o.F_PAYDATE &lt;= concat(#{payDateTimeEnd},' 23:59:59')
+			</if>
+			<if test="channelId !=null and channelId !=''">
+				AND o.F_CHANNELID = #{channelId}
 			</if>
 		)a  
 	</select>
@@ -409,6 +421,9 @@
 			</if>
 			<if test="payTag !=null and payTag !=''">
 				AND od.F_PAYTAG = #{payTag}
+			</if>
+			<if test="channelId !=null and channelId !=''">
+				AND o.F_CHANNELID = #{channelId}
 			</if>
 		</where>)olTemp
 		<where>
@@ -486,6 +501,9 @@
 			</if>
 			<if test="payTag !=null and payTag !=''">
 				AND od.F_PAYTAG = #{payTag}
+			</if>
+			<if test="channelId !=null and channelId !=''">
+				AND o.F_CHANNELID = #{channelId}
 			</if>
 		</where>
 		)olTemp
@@ -570,6 +588,9 @@
 			</if>
 			<if test="payTag !=null and payTag !=''">
 				AND od.F_PAYTAG = #{payTag}
+			</if>
+			<if test="channelId !=null and channelId !=''">
+				AND o.F_CHANNELID = #{channelId}
 			</if>
 		</where>)olTemp
 		<where>

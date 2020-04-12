@@ -24,8 +24,10 @@ import com.msy.travel.common.BaseController;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
+import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Company;
 import com.msy.travel.pojo.OrderList;
+import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.IPubmapService;
 import com.msy.travel.service.OrderListService;
@@ -44,6 +46,9 @@ public class OrderListController extends BaseController {
 
 	@Resource(name = "companyServiceImpl")
 	private CompanyService companyService;
+
+	@Resource(name = "channelServiceImpl")
+	private ChannelService channelService;
 
 	/**
 	 * 跳转到新增页面
@@ -279,12 +284,15 @@ public class OrderListController extends BaseController {
 			}
 			OrderList orderListSum = orderListService.queryOrderListBillSum(orderList);
 
+			List<Channel> channelList = channelService.querychannelListAll();
+
 			view.addObject("orderListlist", orderListlist);
 			view.addObject("entityPage", orderList.getEntityPage());
 			view.addObject("pageInfo", pageInfo);
 			view.addObject("orderList", orderList);
 			view.addObject("companyList", companyList);
 			view.addObject("orderListSum", orderListSum);
+			view.addObject("channelList", channelList);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -305,7 +313,7 @@ public class OrderListController extends BaseController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(params = "method=queryOrderListDetailList")
-	public ModelAndView queryOrderListDetailList(OrderList orderList, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView queryOrderListDetailList(OrderList orderList, HttpServletRequest request, HttpServletResponse response, String openFlag) {
 		ModelAndView view = null;
 		try {
 			if (orderList.getEntityPage() == null) {
@@ -334,12 +342,16 @@ public class OrderListController extends BaseController {
 			c.setSpId(getLoginUser(request).getAccId());
 			List<Company> companyList = companyService.queryCompanyList(c);
 
+			List<Channel> channelList = channelService.querychannelListAll();
+
 			view = new ModelAndView("orderList/queryOrderListDetailList");
 			view.addObject("orderListlist", orderListlist);
 			view.addObject("entityPage", orderList.getEntityPage());
 			view.addObject("pageInfo", pageInfo);
 			view.addObject("orderList", orderList);
 			view.addObject("companyList", companyList);
+			view.addObject("channelList", channelList);
+			view.addObject("openFlag", openFlag);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -513,6 +525,50 @@ public class OrderListController extends BaseController {
 			// 设置分页
 			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
 			List<OrderList> orderListlist = orderListService.queryOrderListList(orderList);
+			PageInfo<OrderList> pageInfo = new PageInfo<OrderList>(orderListlist);
+
+			view = new ModelAndView("orderList/queryOrderList");
+			view.addObject("orderListlist", orderListlist);
+			view.addObject("entityPage", orderList.getEntityPage());
+			view.addObject("pageInfo", pageInfo);
+			view.addObject("orderList", orderList);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
+	/**
+	 * 对账单
+	 * 
+	 * @author wzd
+	 * @date 2020年4月12日 下午6:57:26
+	 * @param orderList
+	 * @param request
+	 * @param response
+	 * @param flag
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryOrderListListForMonthDetail")
+	public ModelAndView queryOrderListListForMonthDetail(OrderList orderList, HttpServletRequest request, HttpServletResponse response, String flag) {
+		ModelAndView view = null;
+		try {
+			if (orderList.getEntityPage() == null) {
+				orderList.setEntityPage(new EntityPage());
+			}
+			super.saveBackUrl(request);
+
+			if ("1".equals(flag)) {
+				orderList.setPayDateTimeStart(orderList.getPayDateTimeStart() + "-01");
+				orderList.setPayDateTimeEnd(DateTimeUtil.getMonthDateEnd(orderList.getPayDateTimeStart()));
+			}
+
+			// 设置分页
+			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
+			List<OrderList> orderListlist = orderListService.queryOrderListListForMonth(orderList);
 			PageInfo<OrderList> pageInfo = new PageInfo<OrderList>(orderListlist);
 
 			view = new ModelAndView("orderList/queryOrderList");

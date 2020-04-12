@@ -162,7 +162,7 @@
 					$("#priceList").html("");
 
 					var str = "<table id=\"priceTable\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"datalist\">";
-					str += "<tr><th width=\"15%\">商品规格名称</th><th width=\"15%\">缩略图</th><th width=\"11%\">销售价</th><th width=\"11%\">最多购买数量</th><th width=\"11%\">最少购买数量</th><th width=\"11%\">库存</th><th width=\"13%\">操作</th></tr>";
+					str += "<tr><th width=\"15%\">商品规格名称</th><th width=\"15%\">缩略图</th><th width=\"11%\">销售价</th><th width=\"8%\">最多购买数量</th><th width=\"8%\">最少购买数量</th><th width=\"9%\">库存</th><th width=\"9%\">运费</th><th width=\"6%\">操作</th></tr>";
 
 					for ( var i = 0; i < ret.length; i++) {
 							str += "<tr id='price"+ret[i].goodsPriceId+"'><td width=\"15%\" class=\"tdleft\">"
@@ -186,6 +186,9 @@
 							+ "</td>"
 							+ "<td width=\"15%\">"
 							+ ret[i].storeCount
+							+ "</td>"
+							+ "<td width=\"15%\">"
+							+ ret[i].feeName
 							+ "</td>"
 							+ "<td width=\"15%\"><a href=\"javascript:void(0)\" onclick=\"detailGoodsPrice('"
 							+ ret[i].priceId

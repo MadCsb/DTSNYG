@@ -99,4 +99,16 @@ public interface ChannelService {
 	 * @return Channel
 	 */
 	public Channel getChannelByChannelKey(String channelKey) throws Exception;
+
+	/**
+	 * 获取所有渠道
+	 * 
+	 * @author wzd
+	 * @date 2020年4月12日 下午7:37:13
+	 * @param channel
+	 * @return
+	 * @throws Exception
+	 * @return List<Channel>
+	 */
+	public List<Channel> querychannelListAll() throws Exception;
 }

@@ -172,6 +172,16 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 
 	private String custPhone;
 
+	private String channelId;
+
+	public String getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
+
 	public String getCustPhone() {
 		return custPhone;
 	}
