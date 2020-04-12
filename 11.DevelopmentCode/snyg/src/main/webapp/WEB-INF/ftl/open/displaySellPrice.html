@@ -14,29 +14,16 @@
   var spId = "${spId!''}";
   var priceId = "${sellPrice.priceId!''}";
   var detailUrl = null;
-  var isSdUser = checkIsSdUser();
-  if(isSdUser) //如果是山东移动需要特殊处理
-	{
-    if (openApi.pageType == openApi.WX)
-    {
-      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId+"&userRoleDataId="+$("#userRoleDataId").val();
-    }else
-    {
-      detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
-    }
-	}else
-	{
-    if (openApi.pageType == openApi.WX)
-    {
-      detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
-    }else if (openApi.pageType == openApi.WEB)
-    {
-      detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
-    }else if (openApi.pageType == openApi.WAP)
-    {
-      detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
-    }
-	}
+  if (openApi.pageType == openApi.WX)
+  {
+    detailUrl = "${rc.contextPath}/wx?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+  }else if (openApi.pageType == openApi.WEB)
+  {
+    detailUrl = "${rc.contextPath}/webCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
+  }else if (openApi.pageType == openApi.WAP)
+  {
+    detailUrl ="${rc.contextPath}/wapCommproduct?method=toQueryCommproductDetailByPriceId&priceId="+priceId+"&spId="+spId;
+  }
   window.location.replace(detailUrl);
 </script>
 </html>
