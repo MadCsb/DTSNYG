@@ -1,0 +1,28 @@
+	<!doctype html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+<link href="${rc.contextPath}/css/validationEngine.jquery.css" rel="stylesheet"/>
+<script type="text/javascript" src="${rc.contextPath}/js/yanue.pop.js"></script>
+<link rel="stylesheet" href="${rc.contextPath}/css/pop.css" type="text/css"></link>
+
+<iframe width="100%" height="100%" scrolling="yes" frameborder="0" src="wapIndex?method=wxIndex" />
+</iframe>
+</body>
+
+<script type="text/javascript" language="javascript">
+//IFRAME自适应大小
+function reinitIframe(){
+    var iframe = document.getElementById("mainContent");
+    try{
+	    var bHeight = iframe.contentWindow.document.body == null?0:iframe.contentWindow.document.body.scrollHeight;
+	    var dHeight = iframe.contentWindow.document.documentElement==null?0:iframe.contentWindow.document.documentElement.scrollHeight;
+	    var height = Math.max(bHeight, dHeight);
+		var s=document.body.clientHeight;
+	    iframe.height =s-155+"px";
+    }catch (ex){}
+}
+reinitIframe();
+window.setInterval("reinitIframe()", 200);
+</script>
+</html>

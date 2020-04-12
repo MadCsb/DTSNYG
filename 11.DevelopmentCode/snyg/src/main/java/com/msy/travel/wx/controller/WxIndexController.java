@@ -108,4 +108,26 @@ public class WxIndexController extends BaseController {
 		}
 	}
 
+	@RequestMapping(params = "method=wxIframe")
+	public ModelAndView wxIframe(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
+
+			String currentDay = DateTimeUtil.getDateTime10();
+			view = new ModelAndView("wx/indexIframe");
+
+			// wxSetViewObjects(view, request, serviceCode, userService);
+
+			view.addObject("spId", Destsp.currentSpId);
+			view.addObject("serviceCode", serviceCode);
+			view.addObject("currentDay", currentDay);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
+
 }
