@@ -43,7 +43,7 @@ public class ChannelController extends BaseController {
 	@RequestMapping(params = "method=toAdd")
 	public ModelAndView toAddchannel(Channel channel, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
-		view = new ModelAndView("channel/addchannel");
+		view = new ModelAndView("channel/addChannel");
 		return view;
 	}
 
@@ -76,7 +76,7 @@ public class ChannelController extends BaseController {
 		ModelAndView view = null;
 		try {
 			Channel objchannel = channelService.displaychannel(channel);
-			view = new ModelAndView("channel/updatechannel");
+			view = new ModelAndView("channel/updateChannel");
 			view.addObject("channel", objchannel);
 
 		} catch (Exception e) {
@@ -162,7 +162,7 @@ public class ChannelController extends BaseController {
 			List<Channel> channellist = channelService.querychannelList(channel);
 			PageInfo<Channel> pageInfo = new PageInfo<Channel>(channellist);
 
-			view = new ModelAndView("channel/querychannel");
+			view = new ModelAndView("channel/queryChannel");
 			view.addObject("channellist", channellist);
 			view.addObject("entityPage", channel.getEntityPage());
 			view.addObject("pageInfo", pageInfo);
