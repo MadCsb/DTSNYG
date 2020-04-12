@@ -455,14 +455,9 @@ public class OrderListController extends BaseController {
 
 				map.put("productName", t.getProductName());
 				map.put("childName", t.getChildName());
-				map.put("num", t.getNum());
-				map.put("price", t.getPrice());
-				map.put("money", t.getMoney());
-				map.put("userName", t.getUserName());
 				map.put("custName", t.getCustName());
+				map.put("custPhone", t.getCustPhone());
 				map.put("recAddress", t.getRecAddress());
-				map.put("epmeOrdCode", t.getEpmeOrdCode());
-				map.put("epmeCompany", t.getEpmeCompany());
 				maps.add(map);
 
 			}

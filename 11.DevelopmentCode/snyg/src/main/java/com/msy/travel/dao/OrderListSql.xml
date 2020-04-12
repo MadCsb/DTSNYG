@@ -428,7 +428,7 @@
 	<!-- 按条件查询所有  账单明细导出-->
 	<select id="queryOrderListDetailListExport" parameterType="orderList" resultType="orderList">
 	select * from (
-		SELECT
+			SELECT
 			ol.F_ORDERLISTTYPE as orderListType,
 			(CASE ol.F_ORDERLISTTYPE
 				WHEN '0' THEN o.F_PAYDATE
@@ -453,28 +453,30 @@
 			ol.F_PRODUCTNAME as productName,	/*名称*/
 			ol.F_CHILDNAME as childName,	/*规格*/
 			(CASE ol.F_ORDERLISTTYPE
-				WHEN '0' THEN o.F_NUM
-				WHEN '1' THEN o.F_BACKNUM
-				WHEN '2' THEN o.F_NUM
+				WHEN '0' THEN oc.F_CUSTNAME
+				WHEN '1' THEN ''
+				WHEN '2' THEN oc.F_CUSTNAME
 				END
-			) AS num,	/*数量*/
-			ol.F_PRICE as price,	/*单价*/
-			u.F_USER_NAME as userName,/*订货人*/
-			oc.F_CUSTNAME as custName, /*收货人*/
-			oc.F_RECADDRESS as recAddress,
-			group_concat(oe.F_EPMEORDCODE) AS epmeOrdCode,
-			group_concat(map.F_MAPVALUE) AS epmeCompany
+			) AS custName,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN oc.F_RECADDRESS
+				WHEN '1' THEN ''
+				WHEN '2' THEN oc.F_RECADDRESS
+				END
+			) AS recAddress,
+			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN oc.F_CUSTPHONE
+				WHEN '1' THEN ''
+				WHEN '2' THEN oc.F_CUSTPHONE
+				END
+			) AS custPhone
 		FROM
 			t_sm_orderlist ol
 		LEFT JOIN t_sm_order o ON ol.F_ORDERID = o.F_ORDERID AND ol.F_ORDERLISTTYPE = '0'
 		LEFT JOIN t_sm_order otmp ON ol.F_ORDERID = otmp.F_ORDERID AND ol.F_ORDERLISTTYPE = '2'
 		LEFT JOIN t_sm_orderback ob ON ol.F_ORDERID = ob.F_ORDERID AND ol.F_ORDERLISTTYPE = '1'
 		LEFT JOIN t_sm_order od ON ol.F_ORDERID = od.F_ORDERID
-		LEFT JOIN t_pub_user u on o.F_USERID = u.F_USER_ID
 		LEFT JOIN t_sm_ordercustomer oc ON ol.F_ORDERID = oc.F_ORDERID
-		LEFT JOIN t_sm_orderexpress oe on oe.F_ORDERLISTID = ol.F_ORDERLISTID
-		LEFT JOIN t_pub_map map on oe.F_EPMECOMPANY = map.F_MAPKEY and map.F_MAPTYPE='EXPRESS'
-		AND map.F_MAPTYPE = 'EXPRESS'
 		<where>
 			<if test="venId !=null and venId !=''">
 		    	AND ol.F_VENID = #{venId}
@@ -486,8 +488,6 @@
 				AND od.F_PAYTAG = #{payTag}
 			</if>
 		</where>
-		
-		group by ol.F_ORDERLISTID
 		)olTemp
 		<where>
 			<if test="payDateTimeStart !=null and payDateTimeStart !=''">
