@@ -186,12 +186,12 @@
 			t.F_VENID as venId ,
 			t.F_VENNAME as venName ,
 			t.F_PRICEID as priceId ,
-		  t.F_PRODUCTID as productId ,
+		  	t.F_PRODUCTID as productId ,
 			t.F_PRODUCTNAME as productName ,
 			t.F_PRICE as price ,
 			t.F_NUM as num ,
 			t.F_COUPON_MONEY as couponMoney ,
-		t.F_CUSTOMERCOUPONID as customerCouponId ,
+			t.F_CUSTOMERCOUPONID as customerCouponId ,
 			t.F_MONEY as money ,
 			t.F_PAYMONEY as payMoney ,
 			t.F_BACKNUM as backNum ,
@@ -200,7 +200,7 @@
 			t.F_TRANSFEE as transFee ,
 			t.F_DELFLAG as delFlag ,
 			t.F_ORDERLISTTYPE as orderListType ,
-		  gs.F_THUMBPIC as thumbPic
+		  	gs.F_THUMBPIC as thumbPic
 		FROM
 		t_sm_orderlist t
 		LEFT JOIN t_sm_goodsprice gs on t.F_GOODSPRICEID = gs.F_GOODSPRICEID

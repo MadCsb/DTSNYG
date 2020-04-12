@@ -154,13 +154,19 @@ public class OrderListController extends BaseController {
 	 * 分页查询
 	 */
 	@RequestMapping(params = "method=query")
-	public ModelAndView queryOrderListList(OrderList orderList, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView queryOrderListList(OrderList orderList, HttpServletRequest request, HttpServletResponse response, String flag) {
 		ModelAndView view = null;
 		try {
 			if (orderList.getEntityPage() == null) {
 				orderList.setEntityPage(new EntityPage());
 			}
 			super.saveBackUrl(request);
+
+			if ("1".equals(flag)) {
+				orderList.setPayDateTimeStart(orderList.getPayDateTimeStart() + "-01");
+				orderList.setPayDateTimeEnd(DateTimeUtil.getMonthDateEnd(orderList.getPayDateTimeStart()));
+			}
+
 			// 设置分页
 			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
 			List<OrderList> orderListlist = orderListService.queryOrderListList(orderList);
@@ -485,4 +491,40 @@ public class OrderListController extends BaseController {
 		}
 	}
 
+	/**
+	 * 订单对账单
+	 * 
+	 * @author wzd
+	 * @date 2020年4月12日 下午5:19:53
+	 * @param orderList
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=queryOrderListAccount")
+	public ModelAndView queryOrderListAccount(OrderList orderList, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			if (orderList.getEntityPage() == null) {
+				orderList.setEntityPage(new EntityPage());
+			}
+			super.saveBackUrl(request);
+			// 设置分页
+			PageHelper.startPage(super.getPageNum(orderList.getEntityPage()), super.getPageSize(orderList.getEntityPage()));
+			List<OrderList> orderListlist = orderListService.queryOrderListList(orderList);
+			PageInfo<OrderList> pageInfo = new PageInfo<OrderList>(orderListlist);
+
+			view = new ModelAndView("orderList/queryOrderList");
+			view.addObject("orderListlist", orderListlist);
+			view.addObject("entityPage", orderList.getEntityPage());
+			view.addObject("pageInfo", pageInfo);
+			view.addObject("orderList", orderList);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
 }

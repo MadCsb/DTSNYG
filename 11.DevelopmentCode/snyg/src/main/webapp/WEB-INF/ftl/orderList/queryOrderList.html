@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/INC_HEAD.html">
+
+<style type="text/css">
+
+td img {
+	width : 80px;
+	height : 50px;
+	float : left;
+	margin-right:5px;
+}
+
+.quickMenuOn {
+	width:127px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	cursor: pointer;
+	background-color: #0d6fb8;
+	color:#fff;
+	float:left;
+	border-right: 1px solid #fff;
+}
+
+.quickMenuOff {
+	width:127px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	cursor: pointer;
+	background-color: #e6e6e6;
+	float:left;
+	border-right: 1px solid #fff;
+}
+
+</style>
+
+</head>
+<body>
+
+	<form id="queryFrm" action="orderList.do?method=query" method="post">
+       	<input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+		<input type="hidden" id="entityPage.sortField" name="entityPage.sortField" value="${entityPage.sortField!''}" /> 
+		<input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder" value="${entityPage.sortOrder!''}" />
+
+		<div class="cont-div">
+		
+			<div class="data-requry">
+				<table border="0" align="left" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>日期：</td>
+                    <td>
+						<input name="payDateTimeStart" id="payDateTimeStart" value="${orderList.payDateTimeStart!''}" type="text" style="width:130px" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'payDateTimeEnd\')}'})" readonly="readonly">
+						-
+		           		<input name="payDateTimeEnd" id="payDateTimeEnd" value="${orderList.payDateTimeEnd!''}" type="text" style="width:130px" class="data-searchtxt-time" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'payDateTimeStart\')}'})" readonly="readonly">
+					</td>
+				</tr>
+				</table>
+				<input name="button" type="submit" class="data-searchbtn" id="button" value="查询"/>
+			</div>
+			
+			<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
+				<tr>
+					<th width="25%">单据编号</th>
+					<th width="25%">发生日期</th>
+					<th width="25%">发生金额（&yen;）</th>
+					<th width="25%">发生类型</th>
+				</tr>
+				<#if orderListlist??>
+				<#list orderListlist as item>
+				<tr onClick="selectTr(this)">
+					<td title="${item.orderCode!''}">
+					<a href="javascript:void(0)" onclick="toShowDetail('${item.orderListType!''}','${item.orderListId!''}')">${item.orderCode!''}</a>
+					</td>
+					<td title="${item.createTime!''}">
+						${item.createTime!''}
+					</td>
+					<td align="right" title="${item.money!''}">
+						${item.money!'0.00'}
+					</td>
+					<td align="right" title="">
+						<#if item.orderListType?? && item.orderListType=="0">
+							订单
+						<#elseif item.orderListType?? && item.orderListType=="1">
+							退订单
+						</#if>
+					</td>
+				</tr>
+				</#list>
+				
+				</#if>
+			</table>
+			<div class="page-div">
+				<#if orderListlist?? && (orderListlist?size>0)>
+					<#include "/pagination.html">
+				<#else>
+					<div id='ListIsNullMsg' style="font-size:17px;color:red">
+						<script type="text/javascript">
+							showListIsNullMsg();
+						</script>
+					</div>
+				</#if>
+			</div>
+		</div>
+		
+	</form>
+</body>
+
+<script type="text/javascript">
+
+$(function(){
+	
+});
+
+function exportList(){
+//	if(checkSubmit()){
+		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailListExport");
+		$("#queryFrm").submit();
+		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailList");
+//	}
+}
+
+function toShowDetail(orderListType,id){
+	var url = "";
+	if(orderListType=="0" || orderListType=="2"){
+		url = "order?method=toDetail&readOnly=1&orderId="+id;
+	}else{
+		url = "orderBack?method=detailOrderBack&readOnly=1&backId="+id;
+	}
+	parent.layer.open({
+		type : 2,
+		title : '订单详情',
+		area : [ '750px', '550px' ],
+		fix : true,
+		content :url,
+		end: function(){
+			parent.layer.closeAll();
+		}
+	});
+}
+
+function checkSubmit(){
+	var dateStart = $("#dateStart").val();
+	if(dateStart == null || dateStart == ""){
+		art.dialog.alert("开始日期未选择，请重新选择");
+		return false;
+	}
+	var dateEnd = $("#dateEnd").val();
+	if(dateEnd == null || dateEnd == ""){
+		art.dialog.alert("结束日期未选择，请重新选择");
+		return false;
+	}
+	dateStart = new Date(dateStart+"-01");
+	dateEnd = new Date(dateEnd+"-01");
+	dateEnd = new Date(dateEnd.getFullYear(), dateEnd.getMonth()+1, 0);
+	var dateDiff = dateEnd.getTime() - dateStart.getTime();//时间差的毫秒数
+	if(dateDiff < 0){
+		art.dialog.alert("开始日期大于结束日期，请重新选择");
+		return false;
+	} else {
+		var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+		if(dayDiff > 367){
+			art.dialog.alert("开始日期与结束日期超过1年，请重新选择");
+			return false;
+		} else {
+			return true;
+		}
+	} 
+}
+
+</script>
+</html>

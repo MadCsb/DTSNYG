@@ -89,10 +89,11 @@ td img {
 			
 			<table  width="100%" border="0" cellspacing="0" cellpadding="0" class="datalist" id="changecolor" >
 				<tr>
-					<th width="25%">日期</th>
-					<th width="25%">收益总额（&yen;）</th>
-					<th width="25%">支出总额（&yen;）</th>
-					<th width="25%">当月结余（&yen;）</th>
+					<th width="20%">日期</th>
+					<th width="20%">收益总额（&yen;）</th>
+					<th width="20%">支出总额（&yen;）</th>
+					<th width="20%">当月结余（&yen;）</th>
+					<th width="20%">操作</th>
 				</tr>
 				<#if orderListlist??>
 				<#list orderListlist as item>
@@ -109,6 +110,9 @@ td img {
 						</a>
 					</td>
 					<td align="right" title="${item.surplusMoney!''}">${item.surplusMoney!'0.00'}</td>
+					<td>
+					<a href="orderList?method=query&payDateTimeStart=${item.payDateTime!''}&flag=1" title="对账单">对账单</a>
+					</td>
 				</tr>
 				</#list>
 				<tr onClick="selectTr(this)">
@@ -124,6 +128,7 @@ td img {
 						</a>
 					</td>
 					<td align="right" title="${orderListSum.surplusMoney!''}">${orderListSum.surplusMoney!'0.00'}</td>
+					<td></td>
 				</tr>
 				</#if>
 			</table>
