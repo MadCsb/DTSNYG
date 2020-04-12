@@ -12,23 +12,12 @@
   var openApi = new OpenApi();
   openApi.resetDefaultPageType();
   var detailUrl = null;
-  if(checkIsSdUser()) //如果是山东移动需要特殊处理
-  {
-    if (openApi.pageType == openApi.WX)
-    {
-      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0";
-    }else
-    {
-      detailUrl = "${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
-    }
-  }else {
-    if (openApi.pageType == openApi.WX) {
-      detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0&userRoleDataId="+$("#userRoleDataId").val();
-    } else if (openApi.pageType == openApi.WEB) {
-      detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
-    } else if (openApi.pageType == openApi.WAP) {
-      detailUrl = "${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
-    }
+  if (openApi.pageType == openApi.WX) {
+    detailUrl = "${rc.contextPath}/wxorder.do?method=toOrderList&orderListType=0&userRoleDataId="+$("#userRoleDataId").val();
+  } else if (openApi.pageType == openApi.WEB) {
+    detailUrl = "${rc.contextPath}/webPersonal?method=toOrderList&orderListType=0";
+  } else if (openApi.pageType == openApi.WAP) {
+    detailUrl = "${rc.contextPath}/waporder.do?method=toOrderList&orderListType=0";
   }
   window.location.replace(detailUrl);
 
