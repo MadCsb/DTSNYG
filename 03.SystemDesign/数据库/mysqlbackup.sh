@@ -2,7 +2,7 @@
 source /etc/profile
 
 #define mysql variables.if not install mysqldump :  yum -y install holland-mysqldump.noarch
-#vi /etc/crontab 23 59 * * 0 root /snyg_back/mysqlbackup.sh
+#vi /etc/crontab 59 23 * * 0 root /snyg_back/mysqlbackup.sh
 db_user=""
 db_passwd=""
 db_host=""

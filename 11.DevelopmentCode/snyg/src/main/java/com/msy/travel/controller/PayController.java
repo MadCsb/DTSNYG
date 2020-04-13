@@ -248,7 +248,7 @@ public class PayController extends BaseController {
 				requSb.append(item.getKey()).append(":").append(item.getValue()[0]).append(";");
 			}
 			String signType = returnMap.get("sign_type");
-			boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getZfbPublicKey(), "UTF-8");
+			//boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getZfbPublicKey(), "UTF-8");
 			if (true) //如果签名验证通过
 			{
 				//交易状态
