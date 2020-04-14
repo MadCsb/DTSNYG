@@ -104,8 +104,10 @@
   {
     if($("#userType").val() == $("#sdUserType").val()) //如果是山东移动需要特殊处理
     {
-      $(".snyg_topserch").attr("style","left:12px;width:82%;");
+      $(".snyg_topserch").attr("style","left:15%;width:70%;");
       $(".snyg_topserch").after('<span class="ico_home" style="margin-top:5px;"><a href="${sdHomeUrl!''}"><img src="${rc.contextPath}/wx/images/home.png"></a></span>');
+      $(".snyg_topserch").before('<span class="ico_ret" style="top:15px;"><a href="${sdHomeUrl!''}"><img src="${rc.contextPath}/wx/images/return.png"></a></span>');
+
     }
   }
 
