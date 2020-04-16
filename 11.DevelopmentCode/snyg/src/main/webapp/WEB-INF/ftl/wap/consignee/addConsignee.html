@@ -20,8 +20,8 @@
 				value="${province!''}" />
 	<div class="snyg_xccon">
      <p>
-     	<input id="name" class="txt-input xm" type="text" placeholder="收货人姓名"
-						value="" name="name">
+     	<input id="consigneeName" class="txt-input xm" type="text" placeholder="收货人姓名"
+						value="" name="consigneeName">
      </p>
           
      <p>
@@ -46,6 +46,11 @@
 	<div align="center"><button class="btn-big" type="button" onclick="beforeSubmit()">保存</button></div>
 </form>
 <script>
+  $(function(){
+    $("input").on('keydown', function() {
+      window.focus();
+    });
+  })
 function beforeSubmit() {
 	var item = $("input[type='radio']").is(':checked');
 	if (item == true) {

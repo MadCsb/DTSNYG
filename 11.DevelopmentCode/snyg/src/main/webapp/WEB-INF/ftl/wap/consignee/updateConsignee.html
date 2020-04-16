@@ -47,6 +47,12 @@
 	<div align="center"><button class="btn-big" type="button" onclick="beforeSubmit()">保存</button></div>
 </form>
 <script>
+  $(function(){
+    $("input").on('keydown', function() {
+      window.focus();
+    });
+  })
+
 function beforeSubmit() {
 	var item = $("input[type='radio']").is(':checked');
 	if (item == true) {

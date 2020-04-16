@@ -320,19 +320,20 @@ public class Common {
 
   public static void main(String[] args)
   {
-    //String s = "dateTime=20200330113344&mbrProdNo=QYDTDS178&mbrProdType=1&mbrSource=yryp&method=validMemberMbr&msisdn=13969062325&portalID=QYDTDS&portalType=WAP&signType=MD5&transactionID=2020033011334499999996qLd8cG3^2mH%s#dU";
-    ////
-    //if (MD5.encode(s,"utf-8").toUpperCase().equals("F518E225AADA56BEC126680FBCD7F72F"))
-    //{
-    //  System.out.println(112);
-    //}
-    String ss = "18912-*823345-*-abcd";
-
-    String tel = ss.substring(0,ss.indexOf("-*-"));
-    String msisdn = ss.substring(ss.indexOf("-*-")+3);
-    System.out.println(tel);
-    System.out.println(msisdn);
-
+    String url = "www.baidu.com?";
+    if(url.indexOf("?")>0) //如果请求中已存在?
+    {
+      if(url.indexOf("?") == url.length()-1) //如果最后一个参数是?
+      {
+        System.out.println("最后一个参数是?");
+      }else
+      {
+        System.out.println("包含参数?");
+      }
+    }else
+    {
+      System.out.println("不包含参数");
+    }
 
   }
 }
