@@ -495,7 +495,9 @@
     <tr>
       <td colspan="20">
         <div class="slds-all-account">订单总金额：￥<em id="totalPay">0.00</em>元</div>
-        <a id="btn_submit" class="slds-btn slds-btn-acidblue fr" onclick="createOrder()">预定</a></td>
+        <a id="wxPayBtn" class="slds-btn slds-btn-acidblue fr" style="border-left:1px solid #fff;">使用微信支付</a>
+        <a id="zfbPayBtn" class="slds-btn slds-btn-acidblue fr">使用支付宝支付</a>
+      </td>
     </tr>
     </tfoot>
   </table>
@@ -559,8 +561,20 @@
 
 <script>
   var dateTimeUtil = new DateTimeUtil(); //计算日期js
-  var pay = null;
+  var wxPay = null; //微信支付
+  var zfbPay = null; //支付宝支付
+  var PAY_METHOD_WX_PC = new Pay().PAY_METHOD_WX_PC;
+  var PAY_METHOD_ALIPAY_PC = new Pay().PAY_METHOD_ALIPAY_PC;
+  var payInfoParam = new Object();//获取支付信息的参数
   $(document).ready(function(){
+    wxPay = null;
+    zfbPay = null;
+    console.log(wxPay);
+    console.log(zfbPay);
+
+    payInfoParam = new Object();
+    $("#wxPayBtn").attr("onclick","createOrder('"+PAY_METHOD_WX_PC+"')");
+    $("#zfbPayBtn").attr("onclick","createOrder('"+PAY_METHOD_ALIPAY_PC+"')");
     $("input[name='addr']").each(function () {
       if($(this).attr("isDefault") == '1')
       {
@@ -754,7 +768,7 @@
   }
 
 
-  function createOrder() {
+  function createOrder(payMethod) {
     var addr = $("input[name='addr']:checked");
     if($(addr).val() == null)
     {
@@ -825,6 +839,7 @@
       orderListList.push(orderList);
     });
     param.orderListList = orderListList;
+    var createOrdersResult = null; //创建订单结果
     $.ajax({
       type: "POST",
       async: false,
@@ -834,45 +849,75 @@
         param:JSON.stringify(param)
       },
       success: function (data) {
-        if(data.resultCode == "1") //创建订单失败
-        {
-          alert(data.resultMsg);
-        }else {
-          createOrderSuccess(data.resultPojo);
-          pay = new Pay();
-          pay.payMethod =pay.PAY_METHOD_WX_PC;
-          var payInfoParam = new Object();
-          payInfoParam.spId = currentSpId;
-          payInfoParam.platformOrders = data.resultPojo[0].orderId;
-          for (var i = 1; i < data.resultPojo.length; i++) {
-            payInfoParam.platformOrders = payInfoParam.platformOrders + ","
-                    + data.resultPojo[i].orderId;
-          }
-          pay.getPayInfo(payInfoParam);
-          // Alert.closedLoading();
-          doPay();
-        }
+        createOrdersResult = data;
       }
     });
+    if(createOrdersResult.resultCode == "1") //创建订单失败
+    {
+      alert(createOrdersResult.resultMsg);
+      return false;
+    }else {
+      createOrderSuccess(createOrdersResult.resultPojo);
+
+      payInfoParam = new Object();
+      payInfoParam.spId = currentSpId;
+      payInfoParam.platformOrders = createOrdersResult.resultPojo[0].orderId;
+      for (var i = 1; i < createOrdersResult.resultPojo.length; i++) {
+        payInfoParam.platformOrders = payInfoParam.platformOrders + ","
+            + createOrdersResult.resultPojo[i].orderId;
+      }
+      doPay(payMethod);
+    }
   }
 
-  function doPay()
+  function doPay(payMethod)
   {
-    if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+    if(payMethod == PAY_METHOD_WX_PC) //微信支付
     {
-      pay.havePayed = function(){
-        window.location.href="webPersonal?method=toOrderList&orderListType=2";
-      }
-      pay.checkPayed();
-      if ($("#qrCode").html().trim() == "")
+      if(wxPay == null)
       {
-        jQuery('#qrCode').qrcode({width: 140,height: 140,correctLevel:0,render: "table",text: pay.toPay()});
+        wxPay = new Pay();
+        wxPay.payMethod = wxPay.PAY_METHOD_WX_PC;
+        wxPay.getPayInfo(payInfoParam);
+        $("#payDiv").show();
       }
-      location.href = "#payA";
-      // $('#qrCode').qrcode({render:"table",width: 160,height: 160,text: url});
-    }else
+      if(wxPay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+      {
+        if ($("#qrCode").html().trim() == "")
+        {
+          jQuery('#qrCode').qrcode({width: 140,height: 140,correctLevel:0,render: "table",text: wxPay.toPay()});
+        }
+        location.href = "#payA";
+
+        wxPay.havePayed = function(){
+          window.location.href="webPersonal?method=toOrderList&orderListType=2";
+        }
+        wxPay.checkPayed();
+        wxPay.toPay();//直接打开支付宝支付页面
+      }else
+      {
+        Alert.show3sMsg(wxPay.payInfo.resultMsg);
+      }
+
+    }else if(payMethod == PAY_METHOD_ALIPAY_PC) //支付宝支付
     {
-      Alert.show3sMsg(pay.payInfo.resultMsg);
+      if(zfbPay == null)
+      {
+        zfbPay = new Pay();
+        zfbPay.payMethod = zfbPay.PAY_METHOD_ALIPAY_PC;
+        zfbPay.getPayInfo(payInfoParam);
+      }
+      if(zfbPay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+      {
+        zfbPay.havePayed = function(){
+          window.location.href="webPersonal?method=toOrderList&orderListType=2";
+        }
+        zfbPay.checkPayed();
+        zfbPay.toPay();//直接打开支付宝支付页面
+      }else
+      {
+        Alert.show3sMsg(zfbPay.payInfo.resultMsg);
+      }
     }
   }
 
@@ -891,18 +936,14 @@
     $(".btnadd").parent().removeAttr("onclick");
     //不能编辑备注
     $("#memo").attr("readonly","readonly");
-    //按钮修改为支付
-    $("#btn_submit").html("支付");
-    $("#btn_submit").attr("onclick","doPay()");
+    //按钮修改为支付按钮
+    $("#wxPayBtn").attr("onclick","doPay('"+PAY_METHOD_WX_PC+"')");
+    $("#zfbPayBtn").attr("onclick","doPay('"+PAY_METHOD_ALIPAY_PC+"')");
 
-    $("#payDiv").show();
     var orderCodeHtml = '';
     for (var i=0;i<orders.length;i++)
     {
       orderCodeHtml += '<span class="bt">订单号：</span>'+orders[i].orderCode+'<br>';
-      // var stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,orders[i].createTime);
-      // stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
-      // orderCodeHtml += '<span class="bt" stopTime="'+stopTime+'">1:2:30</span><br>';
     }
     $("#orderCode").html(orderCodeHtml);
   }

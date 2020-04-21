@@ -24,7 +24,5 @@
         <property name="alipayPublicKey" value="${alipay.alipayPublicKey}" />
         <property name="charset" value="${alipay.charset}" />
         <property name="signType" value="${alipay.signType}" />
-        <property name="zfbPublicKey" value="${alipay.zfbPublicKey}" />
-
     </bean>
 </beans>

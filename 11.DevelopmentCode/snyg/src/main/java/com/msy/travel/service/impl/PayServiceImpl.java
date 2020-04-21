@@ -4,9 +4,11 @@ import static com.alipay.api.AlipayConstants.APP_ID;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.alipay.config.AlipayConfig;
@@ -114,9 +116,14 @@ public class PayServiceImpl implements PayService {
 	private static String PAY_METHOD_WX_PC = "WX_PC";
 
 	/**
-	 * 支付宝 wap方式
+	 * 支付宝支付方式-wap方式
 	 */
 	private static String PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
+
+	/**
+	 * 支付宝支付方式-PC方式
+	 */
+	private static String PAY_METHOD_ALIPAY_PC = "ALIPAY_PC";
 
 	/**
 	 * 获取 支付 信息
@@ -201,7 +208,11 @@ public class PayServiceImpl implements PayService {
 		}else if (PAY_METHOD_ALIPAY_WAP.equals(payMethod)) //支付宝 wap支付
 		{
 			result = getPayInfoByAlipayWAP(payInfoParam);
-		}else
+		}else if (PAY_METHOD_ALIPAY_PC.equals(payMethod)) //支付宝 PC支付
+		{
+			result = getPayInfoByAlipayPC(payInfoParam);
+		}
+		else
 		{
 			throw new LogicException("不支持的支付方式");
 		}
@@ -599,6 +610,60 @@ public class PayServiceImpl implements PayService {
 			log.error(this.PAY_METHOD_ALIPAY_WAP + " 支付接口响应:"+JSON.toJSONString(alipayResponse));
 			result.setResultCode("1");
 			result.setResultMsg(alipayResponse.getMsg());
+		}
+		return result;
+	}
+
+
+	/**
+	 * 获取 阿里支付方式-pc 页面document.write内容
+	 * @param param 参数信息
+	 * param.spId 运营商ID
+	 * param.body 支付内容
+	 * param.platformFlowCode 本系统支付流水ID
+	 * param.remoteAddr 创建订单的用户ID
+	 * param.timeExpire 订单失效时间 2016-12-31 10:05:00
+	 * param.openId 微信用户OpenId
+	 * param.productId 订单的商品ID
+	 * param.orderId 订单ID
+	 * @return
+	 */
+	private Result getPayInfoByAlipayPC(Map<String,String> param) throws Exception {
+		Result result = new Result();
+
+		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
+		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+
+		AlipayTradePagePayRequest alipayRequest =  new  AlipayTradePagePayRequest(); //创建API对应的request
+		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
+		alipayRequest.setReturnUrl(alipayConfigParameter.getWapReturnUrl());
+
+		String body = param.get("body");
+		if (body.length()>128) //支付宝支付body最长128
+		{
+			body = body.substring(0,128);
+		}
+		JSONObject bizContent = new JSONObject();
+		bizContent.put("out_trade_no",thirdPayFlow.getPlatformFlowCode());
+		bizContent.put("product_code",param.get("productId"));
+		bizContent.put("total_amount",thirdPayFlow.getFlowMoney());
+		bizContent.put("subject",body);
+		bizContent.put("body",body);
+		bizContent.put("time_expire",param.get("timeExpire").substring(0,16));
+		alipayRequest.setBizContent(bizContent.toJSONString());
+		Map<String,String> payInfo = new HashMap<String,String>();
+		try  {
+			result.setResultCode("0");
+			result.setResultMsg("PAY_METHOD_ALIPAY_PC 获取支付内容成功");
+			payInfo.put("body",alipayClient.pageExecute(alipayRequest).getBody());
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
+			result.setResultPojo(payInfo);
+		}  catch  (AlipayApiException e) {
+			log.error(this.PAY_METHOD_ALIPAY_PC+" 支付参数 xml:"+ JSON.toJSONString(alipayRequest));
+			log.error(this.PAY_METHOD_ALIPAY_PC + " 支付接口响应:"+JSON.toJSONString(e));
+			result.setResultCode("1");
+			result.setResultCode(e.getErrMsg());
 		}
 		return result;
 	}

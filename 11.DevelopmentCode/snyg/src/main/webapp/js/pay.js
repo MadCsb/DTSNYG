@@ -27,10 +27,14 @@ function Pay(){
   Pay.prototype.PAY_METHOD_WX_PC = "WX_PC";
 
   /**
-   * 微信支付方式-支付宝
+   * 支付宝支付方式-移动系统
    */
   Pay.prototype.PAY_METHOD_ALIPAY_WAP = "ALIPAY_WAP";
 
+  /**
+   * 支付宝支付方式-PC系统
+   */
+  Pay.prototype.PAY_METHOD_ALIPAY_PC = "ALIPAY_PC";
 
   /**
    * 验证支付成功定时器
@@ -133,9 +137,12 @@ Pay.prototype.toPay = function()
     }else if(this.payMethod == this.PAY_METHOD_WX_PC) //payMethod=pc非移动浏览器打开，二维码
     {
     	return this.payInfo.code_url; //返回微信二维码地址
-    }else if(this.payMethod == this.PAY_METHOD_ALIPAY_WAP) //payMethod=ALIPAY_
+    }else if(this.payMethod == this.PAY_METHOD_ALIPAY_WAP) //payMethod=ALIPAY_WAP
     {
       document.write(this.payInfo.body); //支付宝wap支付，body就是当前页面具体内容
+    }else if(this.payMethod == this.PAY_METHOD_ALIPAY_PC) //payMethod=ALIPAY_PC
+    {
+      document.write(this.payInfo.body); //支付宝pc支付，body就是当前页面具体内容
     }
 }
 

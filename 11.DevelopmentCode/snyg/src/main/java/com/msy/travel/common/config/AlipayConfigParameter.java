@@ -11,8 +11,6 @@ public class AlipayConfigParameter {
 
 	private String signType;
 
-	private String zfbPublicKey;
-
 	public String getNotifyUrl() {
 		return notifyUrl;
 	}
@@ -51,13 +49,5 @@ public class AlipayConfigParameter {
 
 	public void setWapReturnUrl(String wapReturnUrl) {
 		this.wapReturnUrl = wapReturnUrl;
-	}
-
-	public String getZfbPublicKey() {
-		return zfbPublicKey;
-	}
-
-	public void setZfbPublicKey(String zfbPublicKey) {
-		this.zfbPublicKey = zfbPublicKey;
 	}
 }

@@ -211,7 +211,7 @@ public class PayController extends BaseController {
 							thirdPayFlowList.get(0).setFlowState("1"); //流水成功
 							thirdPayFlowList.get(0).setThirdFlowCode(transaction_id);
 							thirdPayFlowList.get(0).setThirdCreateTime(DateTimeUtil.getDateTime19());
-							thirdPayFlowList.get(0).setThirdType(ThirdPayFlow.THIRD_TYPE_ZFB);
+							thirdPayFlowList.get(0).setThirdType(ThirdPayFlow.THIRD_TYPE_WX);
 							thirdPayFlowService.flowReturn(thirdPayFlowList.get(0));
 						}else
 						{
@@ -240,16 +240,19 @@ public class PayController extends BaseController {
 			Map<String, String> returnMap = new HashMap<>();
 			//获取支付宝POST过来反馈信息转换为Entry
 			Map<String, String[]> parameters = request.getParameterMap();
-			// 遍历
-			StringBuffer requSb = new StringBuffer();
-			for (Object v : parameters.entrySet()) {
-				Map.Entry<String, String[]> item = (Map.Entry<String, String[]>) v;
-				returnMap.put(item.getKey(), item.getValue()[0]);
-				requSb.append(item.getKey()).append(":").append(item.getValue()[0]).append(";");
+			for (Iterator iter = parameters.keySet().iterator(); iter.hasNext();) {
+				String name = (String) iter.next();
+				String[] values = (String[]) parameters.get(name);
+				String valueStr = "";
+				for (int i = 0; i < values.length; i++) {
+					valueStr = (i == values.length - 1) ? valueStr + values[i]
+							: valueStr + values[i] + ",";
+				}
+				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+				returnMap.put(name, valueStr);
 			}
-			String signType = returnMap.get("sign_type");
-			//boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getZfbPublicKey(), "UTF-8");
-			if (true) //如果签名验证通过
+			boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getAlipayPublicKey(), "UTF-8",alipayConfigParameter.getSignType());
+			if (signCheck) //如果签名验证通过
 			{
 				//交易状态
 				String trade_status = returnMap.get("trade_status");
@@ -283,6 +286,9 @@ public class PayController extends BaseController {
 						response.getWriter().write("success");
 					}
 				}
+			}else
+			{
+				log.error("支付宝签名验证失败");
 			}
 		}catch (Exception e)
 		{
