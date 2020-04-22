@@ -1,5 +1,7 @@
 package com.msy.travel.service.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -424,7 +426,7 @@ public class OrderServiceImpl implements OrderService {
 		JSONObject customerCouponJSONObject = param.getJSONObject("customerCoupon");
 		// 使用优惠券临时保存Array
 		JSONArray useCustomerCouponJSONArray = new JSONArray();
-		double useCustomerCouponTotalMoney = 0;// 总共使用优惠券的订单明细总产品价格
+		BigDecimal useCustomerCouponTotalMoney = new BigDecimal("0");// 总共使用优惠券的订单明细总产品价格
 
 		// 根据orderListList分订单，目前一个orderList=一个订单
 		JSONArray orders = separateOrder(param.getJSONArray("orderListList"));
@@ -438,11 +440,11 @@ public class OrderServiceImpl implements OrderService {
 			order.setSpId(Destsp.currentSpId);
 			order.setUserId(operatorUser.getUserId());
 			order.setBackNum("0");
-			int giftNum = 0;
-			int num = 0;
-			double money = 0;
-			double productPrice = 0;
-			double transFee = 0;
+			BigInteger giftNum = new BigInteger("0");
+			BigInteger num =  new BigInteger("0");
+			BigDecimal money = new BigDecimal("0");
+			BigDecimal productPrice = new BigDecimal("0");
+			BigDecimal transFee = new BigDecimal("0");
 			StringBuffer productNameStringBuffer = new StringBuffer();
 			order.setOrderDate(createTime); // 默认下单时间=创建时间
 			order.setMemo(memo);
@@ -514,9 +516,9 @@ public class OrderServiceImpl implements OrderService {
 				orderListTransFee = Double.valueOf(expressResultPojo.getString("expressFee"));
 				orderList.setTransFee(df.format(orderListTransFee));
 
-				double price = Double.valueOf(sellPrice.getPrice());
-				double orderListProductPrice = orderListNum * price;
-				double orderListMoney = orderListProductPrice + orderListTransFee;
+				BigDecimal price = new BigDecimal(sellPrice.getPrice());
+				BigDecimal orderListProductPrice = new BigDecimal(orderListNum).multiply(price);
+				BigDecimal orderListMoney = orderListProductPrice.add(new BigDecimal(orderListTransFee));
 				orderList.setMoney(df.format(orderListMoney));
 				orderList.setDelFlag("0");
 				orderList.setOrderListType("0");
@@ -525,10 +527,10 @@ public class OrderServiceImpl implements OrderService {
 				orderListService.createOrderList(orderList);
 
 				// 修改订单费用信息
-				productPrice = productPrice + orderListProductPrice;
-				num = num + Integer.valueOf(orderListNum);
-				transFee = transFee + orderListTransFee;
-				money = money + productPrice + transFee;
+				productPrice = productPrice.add(orderListProductPrice);
+				num = num.add(new BigInteger(String.valueOf(orderListNum)));
+				transFee = transFee.add(new BigDecimal(orderListTransFee));
+				money = money.add(productPrice).add(transFee);
 				if (customerCouponJSONObject != null) // 如果存在优惠券
 				{
 					for (int m = 0; m < customerCouponJSONObject.getJSONArray("sellPrice").size(); m++) {
@@ -542,7 +544,7 @@ public class OrderServiceImpl implements OrderService {
 								useCustomerCouponJSONObject.put("orderId", orderList.getOrderId());
 								useCustomerCouponJSONObject.put("orderListProductPrice", orderListProductPrice);
 								useCustomerCouponJSONArray.add(useCustomerCouponJSONObject);
-								useCustomerCouponTotalMoney = useCustomerCouponTotalMoney + orderListProductPrice;
+								useCustomerCouponTotalMoney = useCustomerCouponTotalMoney.add(orderListProductPrice);
 							}
 							break;
 						}
@@ -555,11 +557,11 @@ public class OrderServiceImpl implements OrderService {
 				order.setProductName(productNameStringBuffer.toString());
 			}
 
-			order.setGiftNum(String.valueOf(giftNum));
-			order.setNum(String.valueOf(num));
-			order.setMoney(df.format(money));
-			order.setProductPrice(df.format(productPrice));
-			order.setTransFee(df.format(transFee));
+			order.setGiftNum(giftNum.toString());
+			order.setNum(num.toString());
+			order.setMoney(String.valueOf(money.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()));
+			order.setProductPrice(String.valueOf(productPrice.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()));
+			order.setTransFee(String.valueOf(transFee.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()));
 			orderDao.insertOrder(order);
 
 			// 新增订单收货地址
@@ -623,7 +625,7 @@ public class OrderServiceImpl implements OrderService {
 							} else // 如果不是最后一个,则订单明细优惠金额
 									// 当前订单明细产品金额/所有优惠产品的产品总金额*总优惠金额
 							{
-								orderListCouponMoney = orderListProductPrice / useCustomerCouponTotalMoney * couponMoney;
+								orderListCouponMoney = orderListProductPrice / useCustomerCouponTotalMoney.doubleValue() * couponMoney;
 							}
 							String orderListCouponMoneyDf = df.format(orderListCouponMoney);
 							reCouponMoney = reCouponMoney - Double.parseDouble(orderListCouponMoneyDf);

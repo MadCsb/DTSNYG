@@ -239,27 +239,16 @@ public class PayController extends BaseController {
 	public void pay_zfbPayedNotify(HttpServletRequest request,HttpServletResponse response)
 	{
 		try {
-			request.setCharacterEncoding("UTF-8");
-			response.setCharacterEncoding("UTF-8");
 
-			String subject = request.getParameter("")
 			Map<String, String> returnMap = new HashMap<>();
 			//获取支付宝POST过来反馈信息转换为Entry
 			Map<String, String[]> parameters = request.getParameterMap();
 			for (Iterator iter = parameters.keySet().iterator(); iter.hasNext();) {
 				String name = (String) iter.next();
-				String[] values = (String[]) parameters.get(name);
-				String valueStr = "";
-				for (int i = 0; i < values.length; i++) {
-					valueStr = (i == values.length - 1) ? valueStr + values[i]
-							: valueStr + values[i] + ",";
-				}
-				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+				String valueStr =request.getParameter(name);
 				returnMap.put(name, valueStr);
-				log.error(name+"==="+valueStr);
 			}
 			boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getAlipayPublicKey(), "UTF-8",alipayConfigParameter.getSignType());
-			log.error("signCheck==="+signCheck);
 			if (signCheck) //如果签名验证通过
 			{
 				//交易状态
@@ -297,6 +286,11 @@ public class PayController extends BaseController {
 			}else
 			{
 				log.error("支付宝签名验证失败");
+				for (Iterator iter = returnMap.keySet().iterator(); iter.hasNext();) {
+					String name = (String) iter.next();
+					String valueStr =returnMap.get(name);
+					log.error(name+"==="+valueStr);
+				}
 			}
 		}catch (Exception e)
 		{

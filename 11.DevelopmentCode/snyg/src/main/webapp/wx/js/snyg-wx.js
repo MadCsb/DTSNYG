@@ -221,7 +221,7 @@ function toWebPayOrder(orderId) {
   layer.open({
     type : 2,
     title : '支付订单',
-    area : [ '500px', '550px'],
+    area : [ '500px', '590px'],
     fix : true,
     content :url,
     end: function(){

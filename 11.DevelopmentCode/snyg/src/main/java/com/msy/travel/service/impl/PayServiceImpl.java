@@ -40,6 +40,9 @@ import com.msy.travel.service.PayService;
 import com.msy.travel.service.ThirdPayFlowService;
 import com.msy.travel.wx.utils.MD5Util;
 import com.sun.org.apache.bcel.internal.generic.IUSHR;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -268,7 +271,9 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("attach", null); //附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
-		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
+		BigDecimal total_fee = new BigDecimal(thirdPayFlow.getFlowMoney());
+		total_fee = total_fee.multiply(new BigDecimal(100));
+		httpRequestParamMap.put("total_fee", String.valueOf(total_fee.intValue()));//金额 单位分
 		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
@@ -382,7 +387,10 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("attach", null); //附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
-		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
+		BigDecimal total_fee = new BigDecimal(thirdPayFlow.getFlowMoney());
+		total_fee = total_fee.multiply(new BigDecimal(100));
+		httpRequestParamMap.put("total_fee", String.valueOf(total_fee.intValue()));//金额 单位分
+
 		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
@@ -492,7 +500,9 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("attach", null); //附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
 		httpRequestParamMap.put("out_trade_no", thirdPayFlow.getPlatformFlowCode());//商户系统内部订单号
 		//httpRequestParamMap.put("fee_type", "CNY");//符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见
-		httpRequestParamMap.put("total_fee", String.valueOf((int)(Double.valueOf(thirdPayFlow.getFlowMoney())*100)));//金额 单位分
+		BigDecimal total_fee = new BigDecimal(thirdPayFlow.getFlowMoney());
+		total_fee = total_fee.multiply(new BigDecimal(100));
+		httpRequestParamMap.put("total_fee", String.valueOf(total_fee.intValue()));//金额 单位分
 		httpRequestParamMap.put("spbill_create_ip", param.get("remoteAddr"));//终端IP
 		//httpRequestParamMap.put("time_start", null); //订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
 		if (param.get("timeExpire")!=null && !param.get("timeExpire").equals(""))
@@ -684,5 +694,11 @@ public class PayServiceImpl implements PayService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public static void main(String[] args)
+	{
+		BigDecimal b = new BigDecimal("1210");
+		System.out.println(b.toString());
 	}
 }

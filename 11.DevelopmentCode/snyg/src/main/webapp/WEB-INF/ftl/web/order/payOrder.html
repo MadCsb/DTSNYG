@@ -32,6 +32,12 @@
 
 					</td>
 				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="button" onClick="closeDialog()" class="cbtn2" id="wxPayBtn" value="微信支付">
+						<input type="button" onClick="closeDialog()" class="cbtn2" id="zfbPayBtn" value="支付宝支付">
+					</td>
+				</tr>
 				<tr class="cs">
 					<td colspan="2">
 						<div id="qrCode">
@@ -52,53 +58,97 @@
   var stopTime = null; //订单支付截止时间
   var remainPay = null; //订单支付截止定时器
   var dateTimeUtil = new DateTimeUtil(); //计算日期js
+  var wxPay = null; //微信支付
+  var zfbPay = null; //支付宝支付
+  var PAY_METHOD_WX_PC = new Pay().PAY_METHOD_WX_PC;
+  var PAY_METHOD_ALIPAY_PC = new Pay().PAY_METHOD_ALIPAY_PC;
+  var payInfoParam = new Object();//获取支付信息的参数
+
+  function doPay(payMethod)
+  {
+	  if(payMethod == PAY_METHOD_WX_PC) //微信支付
+	  {
+		  if(wxPay == null)
+		  {
+			  wxPay = new Pay();
+			  wxPay.payMethod = wxPay.PAY_METHOD_WX_PC;
+			  wxPay.getPayInfo(payInfoParam);
+			  $("#payDiv").show();
+		  }
+		  if(wxPay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+		  {
+			  wxPay.havePayed = function(){
+				  closeDialog();
+			  }
+			  wxPay.checkPayed();
+			  $('#qrCode').qrcode({width: 128,
+				  height: 128,correctLevel:0,
+				  render: "table",
+				  text: wxPay.toPay()});
+		  }else
+		  {
+			  parent.layer.alert(wxPay.payInfo.resultMsg, function () {
+				  closeDialog();
+			  });
+		  }
+
+	  }else if(payMethod == PAY_METHOD_ALIPAY_PC) //支付宝支付
+	  {
+		  if(zfbPay == null)
+		  {
+			  zfbPay = new Pay();
+			  zfbPay.payMethod = zfbPay.PAY_METHOD_ALIPAY_PC;
+			  zfbPay.getPayInfo(payInfoParam);
+		  }
+		  if(zfbPay.payInfo.resultCode == "0") //如果获取到正确的payInfo
+		  {
+			  zfbPay.havePayed = function(){
+				  closeDialog();
+			  }
+			  zfbPay.checkPayed();
+
+			  parent.document.write(zfbPay.toPay());
+		  }else
+		  {
+			  parent.layer.alert(zfbPay.payInfo.resultMsg, function () {
+				  closeDialog();
+			  });
+		  }
+	  }
+  }
 
 	$(function () {
 		if("${order.beforePayStatus}" == "0" && "${order.payTag}" == "0")
 		{
-      if($("#wxpayValidateTime").val() != '')
-      {
-        stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,"${order.createTime!''}");
-        stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
-        remainPay = window.setInterval(payRemainTime,500);
-      }
-		  //可以支付流程
-      pay = new Pay();
-      pay.payMethod =pay.PAY_METHOD_WX_PC;
-      var payInfoParam = new Object();
-      payInfoParam.spId = currentSpId;
-      payInfoParam.platformOrders = $("#orderId").val();
-      pay.getPayInfo(payInfoParam);
-      if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
-      {
-        pay.havePayed = function(){
-          closeDialog();
-        }
-        pay.checkPayed();
-        $('#qrCode').qrcode({width: 128,
-					height: 128,correctLevel:0,
-					render: "table",
-					text: pay.toPay()});
-      }else {
-        parent.layer.alert(pay.payInfo.resultMsg, function () {
-          closeDialog();
-        });
-      }
+			wxPay = null;
+			zfbPay = null;
+			payInfoParam = new Object();
+			payInfoParam.spId = currentSpId;
+			payInfoParam.platformOrders = $("#orderId").val();
+
+			$("#wxPayBtn").attr("onclick","doPay('"+PAY_METHOD_WX_PC+"')");
+			$("#zfbPayBtn").attr("onclick","doPay('"+PAY_METHOD_ALIPAY_PC+"')");
+
+		  if($("#wxpayValidateTime").val() != '')
+		  {
+			stopTime = dateTimeUtil.getDateTime(dateTimeUtil.sdf19,"${order.createTime!''}");
+			stopTime.setSeconds(stopTime.getSeconds()+parseInt($("#wxpayValidateTime").val()));
+			remainPay = window.setInterval(payRemainTime,500);
+		  }
 		}else if("${order.payTag}" == "1")
-    {
-      //已支付
-      parent.layer.alert("订单已支付",function () {
-        closeDialog();
-      });
-    }
-		else if("${order.beforePayStatus}" == "1" || "${order.beforePayStatus}" == "2")
-    {
-      //时间过期
-      parent.layer.alert("订单已超过支付时间",function () {
-        closeDialog();
-      });
-    }
-  });
+		{
+		  //已支付
+		  parent.layer.alert("订单已支付",function () {
+			closeDialog();
+		  });
+		}else if("${order.beforePayStatus}" == "1" || "${order.beforePayStatus}" == "2")
+		{
+		  //时间过期
+		  parent.layer.alert("订单已超过支付时间",function () {
+			closeDialog();
+		  });
+		}
+	  });
 
 	function closeDialog()
 	{

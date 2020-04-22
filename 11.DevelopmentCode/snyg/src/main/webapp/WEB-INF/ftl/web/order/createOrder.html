@@ -569,8 +569,6 @@
   $(document).ready(function(){
     wxPay = null;
     zfbPay = null;
-    console.log(wxPay);
-    console.log(zfbPay);
 
     payInfoParam = new Object();
     $("#wxPayBtn").attr("onclick","createOrder('"+PAY_METHOD_WX_PC+"')");
@@ -746,7 +744,7 @@
       }else
       {
         //trTotalPrice = trTotalPrice + parseFloat(transFee);
-        $(this).find("td").eq(-2).html("&yen;<em>" + trTotalPrice+ "</em>");
+        $(this).find("td").eq(-2).html("&yen;<em>" + trTotalPrice.toFixed(2)+ "</em>");
         totalTransFee = totalTransFee + parseFloat(transFee);
       }
       totalPrice = totalPrice + trTotalPrice;
@@ -913,7 +911,7 @@
           window.location.href="webPersonal?method=toOrderList&orderListType=2";
         }
         zfbPay.checkPayed();
-        zfbPay.toPay();//直接打开支付宝支付页面
+        document.write(zfbPay.toPay());//直接打开支付宝支付页面
       }else
       {
         Alert.show3sMsg(zfbPay.payInfo.resultMsg);

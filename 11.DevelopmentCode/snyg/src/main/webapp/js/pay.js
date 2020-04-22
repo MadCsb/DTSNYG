@@ -142,7 +142,7 @@ Pay.prototype.toPay = function()
       document.write(this.payInfo.body); //支付宝wap支付，body就是当前页面具体内容
     }else if(this.payMethod == this.PAY_METHOD_ALIPAY_PC) //payMethod=ALIPAY_PC
     {
-      document.write(this.payInfo.body); //支付宝pc支付，body就是当前页面具体内容
+      return this.payInfo.body; //支付宝pc支付，body就是当前页面具体内容
     }
 }
 
