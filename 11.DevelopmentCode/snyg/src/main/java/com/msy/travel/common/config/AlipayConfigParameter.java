@@ -7,6 +7,8 @@ public class AlipayConfigParameter {
 
 	private String alipayPublicKey;
 
+	private String pcReturnUrl;
+
 	private String charset;
 
 	private String signType;
@@ -49,5 +51,13 @@ public class AlipayConfigParameter {
 
 	public void setWapReturnUrl(String wapReturnUrl) {
 		this.wapReturnUrl = wapReturnUrl;
+	}
+
+	public String getPcReturnUrl() {
+		return pcReturnUrl;
+	}
+
+	public void setPcReturnUrl(String pcReturnUrl) {
+		this.pcReturnUrl = pcReturnUrl;
 	}
 }

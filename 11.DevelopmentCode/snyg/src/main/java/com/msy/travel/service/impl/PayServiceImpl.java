@@ -588,6 +588,7 @@ public class PayServiceImpl implements PayService {
 		{
 			body = body.substring(0,128);
 		}
+//		body = "1";
 		alipayRequest.setBizContent("{" +
 				"\"body\":\""+body+"\"," +
 				"\"subject\":\""+body+"\"," +
@@ -637,20 +638,21 @@ public class PayServiceImpl implements PayService {
 
 		AlipayTradePagePayRequest alipayRequest =  new  AlipayTradePagePayRequest(); //创建API对应的request
 		alipayRequest.setNotifyUrl(alipayConfigParameter.getNotifyUrl());
-		alipayRequest.setReturnUrl(alipayConfigParameter.getWapReturnUrl());
+		alipayRequest.setReturnUrl(alipayConfigParameter.getPcReturnUrl());
 
 		String body = param.get("body");
 		if (body.length()>128) //支付宝支付body最长128
 		{
 			body = body.substring(0,128);
 		}
+//		body = "1";
 		JSONObject bizContent = new JSONObject();
 		bizContent.put("out_trade_no",thirdPayFlow.getPlatformFlowCode());
-		bizContent.put("product_code",param.get("productId"));
-		bizContent.put("total_amount",thirdPayFlow.getFlowMoney());
+		bizContent.put("product_code","FAST_INSTANT_TRADE_PAY");
+		bizContent.put("total_amount",0.01);//Double.parseDouble(thirdPayFlow.getFlowMoney()));
 		bizContent.put("subject",body);
 		bizContent.put("body",body);
-		bizContent.put("time_expire",param.get("timeExpire").substring(0,16));
+		bizContent.put("time_expire",param.get("timeExpire"));
 		alipayRequest.setBizContent(bizContent.toJSONString());
 		Map<String,String> payInfo = new HashMap<String,String>();
 		try  {

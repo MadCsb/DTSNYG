@@ -125,7 +125,9 @@ public class PayController extends BaseController {
 
 		}
 		try {
-			response.getWriter().write(JSON.toJSONString(payInfo).toString());
+			response.setContentType("text/json;charset=utf-8");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(JSON.toJSONString(payInfo));
 		}catch (Exception e)
 		{
 			log.error(e);
@@ -237,6 +239,10 @@ public class PayController extends BaseController {
 	public void pay_zfbPayedNotify(HttpServletRequest request,HttpServletResponse response)
 	{
 		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+
+			String subject = request.getParameter("")
 			Map<String, String> returnMap = new HashMap<>();
 			//获取支付宝POST过来反馈信息转换为Entry
 			Map<String, String[]> parameters = request.getParameterMap();
@@ -250,8 +256,10 @@ public class PayController extends BaseController {
 				}
 				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 				returnMap.put(name, valueStr);
+				log.error(name+"==="+valueStr);
 			}
 			boolean signCheck = AlipaySignature.rsaCheckV1(returnMap, alipayConfigParameter.getAlipayPublicKey(), "UTF-8",alipayConfigParameter.getSignType());
+			log.error("signCheck==="+signCheck);
 			if (signCheck) //如果签名验证通过
 			{
 				//交易状态
