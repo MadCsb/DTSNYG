@@ -185,7 +185,7 @@ public class UserServiceImpl implements IUserService {
 							try {
 								u.setUserName(wxuser.getNickname());
 							} catch (Exception e) {
-								user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+								u.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
 							}
 							u.setUserState("1");
 							u.setCountry(wxuser.getCountry());
