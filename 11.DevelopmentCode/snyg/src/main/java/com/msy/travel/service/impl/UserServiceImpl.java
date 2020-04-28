@@ -187,6 +187,8 @@ public class UserServiceImpl implements IUserService {
 							} catch (Exception e) {
 								u.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
 							}
+
+							log.info("用户关注获取用户信息姓名[" + u.getUserName() + "]");
 							u.setUserState("1");
 							u.setCountry(wxuser.getCountry());
 							u.setProvince(wxuser.getProvince());
@@ -194,7 +196,7 @@ public class UserServiceImpl implements IUserService {
 							u.setSex(wxuser.getSex());// 1男 2女 3未知
 							u.setUpdateTime(DateTimeUtil.getDateTime19());
 							u.setHeadPic(wxuser.getHeadimgurl());
-							userService.updateUser(u);
+							// userService.updateUser(u);
 						}
 					}
 				} else {
