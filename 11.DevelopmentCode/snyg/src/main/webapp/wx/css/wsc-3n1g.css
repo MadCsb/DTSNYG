@@ -1863,3 +1863,7 @@ input[type="checkbox"]:checked + .check{
 	background:url(../images/check.png) no-repeat right;vertical-align: middle;
 	margin:0 20px;
 }
+.ddlist .txt{	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;}
