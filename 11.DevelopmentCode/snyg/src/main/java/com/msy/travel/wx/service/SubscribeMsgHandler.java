@@ -119,6 +119,7 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setUserState("1");
 					user.setUserLocked("0");
 					user.setUserRegDate(DateTimeUtil.getDateTime19());
+					user.setUpdateTime(DateTimeUtil.getDateTime19());
 					userService.createUser(user);
 
 					// 用户角色

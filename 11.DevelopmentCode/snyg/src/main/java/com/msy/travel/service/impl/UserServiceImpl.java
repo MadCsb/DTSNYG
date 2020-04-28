@@ -224,6 +224,7 @@ public class UserServiceImpl implements IUserService {
 					user.setUserState("1");
 					user.setUserLocked("0");
 					user.setUserRegDate(DateTimeUtil.getDateTime19());
+					user.setUpdateTime(DateTimeUtil.getDateTime19());
 					userDao.insertUser(user);
 					u = user;
 				}
