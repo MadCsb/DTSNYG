@@ -177,7 +177,7 @@ public class UserServiceImpl implements IUserService {
 				if (user != null && user.getUserId() != null) {
 					u = user;
 
-					if (u.getUserName() == null || u.getUserName().equals("")) {
+					if (u.getUserName() == null || u.getUserName().equals("") || u.getUserName().indexOf("用户") == 0) {
 						WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
 						log.info("用户关注获取用户信息详情wxuser[" + wxuser + "]");
 						// 值为0时，代表此用户没有关注该公众号，拉取不到其余信息
@@ -196,7 +196,7 @@ public class UserServiceImpl implements IUserService {
 							u.setSex(wxuser.getSex());// 1男 2女 3未知
 							u.setUpdateTime(DateTimeUtil.getDateTime19());
 							u.setHeadPic(wxuser.getHeadimgurl());
-							// userService.updateUser(u);
+							userService.updateUser(u);
 						}
 					}
 				} else {
@@ -472,4 +472,5 @@ public class UserServiceImpl implements IUserService {
 	public void updateColNull(User user) throws Exception {
 		userDao.updateColNull(user);
 	}
+
 }

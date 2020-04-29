@@ -39,6 +39,7 @@
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">
+		<property name="connectionInitSqls" value="set names utf8mb4;" />
 		<property name="driverClassName">
 			<value>${jdbc.driver}</value>
 		</property>
