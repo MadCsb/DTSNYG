@@ -14,14 +14,18 @@
 			F_ACCID ,
 			F_UNITID ,
 			F_USERID ,
-			F_ISDEFAULT 
+			F_ISDEFAULT ,
+			F_NOLOGINID ,
+			F_VALIDTIME
 		) VALUES (
 			#{userRoleDataId} ,
 			#{roleType} ,
 			#{accId} ,
 			#{unitId} ,
 			#{userId} ,
-			#{isDefault} 
+			#{isDefault} ,
+			#{noLoginId} ,
+			#{validTime} 
 		)
 	</insert>
 
@@ -35,14 +39,18 @@
 			F_ACCID ,
 			F_UNITID ,
 			F_USERID ,
-			F_ISDEFAULT 
+			F_ISDEFAULT  ,
+			F_NOLOGINID ,
+			F_VALIDTIME
 		) VALUES (
 			#{userRoleDataId} ,
 			#{roleType} ,
 			#{accId} ,
 			#{unitId} ,
 			#{userId} ,
-			#{isDefault} 
+			#{isDefault} ,
+			#{noLoginId} ,
+			#{validTime} 
 		)
 	</insert>
 
@@ -55,7 +63,9 @@
 			F_ACCID = #{accId} ,
 			F_UNITID = #{unitId} ,
 			F_USERID = #{userId} ,
-			F_ISDEFAULT = #{isDefault} 
+			F_ISDEFAULT = #{isDefault} ,
+			F_NOLOGINID = #{noLoginId} ,
+			F_VALIDTIME = #{validTime} 
 		<where>
 			F_USEROLEDATAID = #{userRoleDataId} 
 			
@@ -89,7 +99,9 @@
 			t.F_ACCID as accId ,
 			t.F_UNITID as unitId ,
 			t.F_USERID as userId ,
-			t.F_ISDEFAULT as isDefault 
+			t.F_ISDEFAULT as isDefault ,
+			t.F_NOLOGINID as noLoginId ,
+			t.F_VALIDTIME as validTime
 		FROM
 			t_pub_roledata t
 		<where>
@@ -110,7 +122,9 @@
 			u.F_TYPE as userType ,
 			u.F_USER_STATE as userState ,
 			u.F_USER_LOCKED as userLocked ,
-			u.F_USER_PWD as userPwd
+			u.F_USER_PWD as userPwd,
+			t.F_NOLOGINID as noLoginId ,
+			t.F_VALIDTIME as validTime
 		FROM
 		t_pub_roledata t
 		LEFT JOIN t_pub_user u on t.F_USERID = u.F_USER_ID

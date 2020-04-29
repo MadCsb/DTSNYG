@@ -79,8 +79,31 @@ public class RoleData extends BaseEntity implements java.io.Serializable {
 	 * 用户密码
 	 */
 	private String userPwd;
+
+	// F_NOLOGINID 非登陆id
+	private String noLoginId;
+
+	// F_VALIDTIME 有效时长
+	private String validTime;
+
 	// columns END
 	private List<String> roleDataIdList;
+
+	public String getNoLoginId() {
+		return noLoginId;
+	}
+
+	public void setNoLoginId(String noLoginId) {
+		this.noLoginId = noLoginId;
+	}
+
+	public String getValidTime() {
+		return validTime;
+	}
+
+	public void setValidTime(String validTime) {
+		this.validTime = validTime;
+	}
 
 	public void setUserRoleDataId(String userRoleDataId) {
 		this.userRoleDataId = userRoleDataId;
