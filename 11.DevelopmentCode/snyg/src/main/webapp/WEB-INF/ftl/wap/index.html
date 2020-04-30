@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "WAP_INC_HEAD.html">   
-
+<#include "WAP_INC_HEAD.html">
+	<script type="text/javascript" src="${rc.contextPath}/js/layer.js"></script>
 <style>
 
 #navbar.navbar_fixed {
@@ -94,6 +94,7 @@
 
 var currentPage = 1;
 $(function(){
+  openFollowMediaPlatform();
 	changeBottomClass('1');
 	getDataList('2','3','','','1','');
 	getDataList('1','12','ASC','p.F_SORTNUM','1','');
@@ -103,6 +104,23 @@ $(function(){
   
   getPdcTypeData('2','9833f5329c74467ca987a543d4cba9d1');  
 });
+
+
+/**
+ * 打开关注公众号
+ */
+function openFollowMediaPlatform() {
+  var width = document.documentElement.clientWidth;
+  width = width/2;
+  width = width+'px';
+  layer.open({
+    title: false,
+    area : width,
+    content :'<img width="100%" src="${rc.contextPath}/images/sy2wm.jpg" alt="三农壹购">',
+    time: 5000,
+    btn:[]
+  });
+}
 
 
 function getPdcTypeData(level,ppdcTypeId){
