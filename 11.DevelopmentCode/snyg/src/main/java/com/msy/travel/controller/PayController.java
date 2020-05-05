@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -164,12 +165,13 @@ public class PayController extends BaseController {
 
 			org.dom4j.Document doc = DocumentHelper.parseText(xmlStr.toString());
 			Element rootElt = doc.getRootElement();
-			System.out.println("根节点：" + rootElt.getName());
 			Iterator iter = rootElt.elementIterator();
 			Map<String,String> resMap = new HashMap<>();
+			log.error("微信支付通知:");
 			while (iter.hasNext()) {
 				Element recordEle = (Element) iter.next();
 				resMap.put(recordEle.getName(),recordEle.getText());
+				log.error(recordEle.getName()+"="+recordEle.getText());
 			}
 
 			if(resMap.get("return_code")!=null&&resMap.get("result_code")!=null
@@ -191,9 +193,11 @@ public class PayController extends BaseController {
 				ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
 				thirdPayFlow.setPlatformFlowCode(out_trade_no);
 				List<ThirdPayFlow> thirdPayFlowList = thirdPayFlowService.queryThirdPayFlowList(thirdPayFlow);
+				BigDecimal localTotalFee = new BigDecimal(thirdPayFlowList.get(0).getFlowMoney());
+				localTotalFee = localTotalFee.multiply(new BigDecimal(100));
 
 				//支付验证
-				if ((int) (Double.valueOf(thirdPayFlowList.get(0).getFlowMoney()) * 100) ==Integer.valueOf(total_fee))  // 返回的订单金额是否与商户侧的订单金额一致
+				if (localTotalFee.intValue() == Integer.valueOf(total_fee))  // 返回的订单金额是否与商户侧的订单金额一致
 				{
 
 					Destsp destsp = new Destsp();
