@@ -41,8 +41,37 @@
     </div>
     <a><div align="center"><button class="btn-big"  style="width:80%; margin-top:0;" onclick="doLogin()">登录</button></div></a>
     <a href="toNewUser?loginPage=${loginPage!'wap'}"><div align="center">立即注册</div></a>
+    <p id="redictUrl" style="display: none">${redictUrl!''}</p>
+    <form id="redictForm" action="" method="post"></form>
 </body>
 <script type="text/javascript">
+  function doRedictForm()
+  {
+    $("#redictForm").html(""); //清空redictForm
+    var redictUrl =$("#redictUrl").text(); //必须使用隐藏的p标签，通过text获取，才不会因为双引号或特殊字符转义造成信息丢失
+    if (redictUrl.indexOf("/") == 0) //如果链接首个字符是/，则去掉
+    {
+      redictUrl = redictUrl.substring(1);
+    }
+    var paramIndex = redictUrl.indexOf("?"); //根据问号区分是否有参数
+    if(paramIndex != -1) //如果有参数
+    {
+      $("#redictForm").attr("action",redictUrl.substring(0,paramIndex)); //设置action，method在后通过参数设置也可以
+      var paramStr = redictUrl.substring(paramIndex+1);
+      var paramArr = paramStr.split("&"); //分割所有参数
+
+      for(var i=0;i<paramArr.length;i++)
+      {
+        var param = paramArr[i].split("="); //假设内容中没有等于号，分割参数的值和内容
+        $("#redictForm").append('<input type=\'hidden\' name=\'' +param[0]+ '\' value=\'' +param[1]+ '\'>'); //保存参数和值
+      }
+    }else //如果没有参数
+    {
+      $("#redictForm").attr("action",redictUrl);
+    }
+    $("#redictForm").submit();
+  }
+
     //点击更换验证码
     function replaceCode()
     {
@@ -73,7 +102,13 @@
           success: function (data) {
             if(data.resultCode == '0')
             {
-              window.location.href = "wappersonal.do?method=toPersonal";
+              if($("#redictUrl").text() == "")
+              {
+                window.location.href = "${rc.contextPath}/wappersonal.do?method=toPersonal";
+              }else
+              {
+                doRedictForm();
+              }
             }else
             {
               $("#errorMsg").html(data.resultMsg);

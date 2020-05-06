@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +20,27 @@ import com.msy.travel.service.IUserService;
 import com.msy.travel.wx.utils.WeixinUtil;
 
 public class BaseController {
+
+
+	/**
+	 * ?
+	 */
+	private static final String SIGN_1 = "?";
+
+	/**
+	 * &
+	 */
+	private static final String SIGN_2 = "&";
+
+	/**
+	 * =
+	 */
+	private static final String SIGN_3 = "=";
+
+	/**
+	 * "/"
+	 */
+	private static final String SIGN_4 = "/";
 
 	public static final Log log = LogFactory.getLog(BaseController.class);
 
@@ -294,5 +316,91 @@ public class BaseController {
 			url = url.substring(replace.length());
 		}
 		return url;
+	}
+
+
+	/**
+	 * 获取当前完整URL地址
+	 *
+	 * @return
+	 */
+	public static String getCurrentUrlStr(HttpServletRequest request) {
+
+		StringBuffer url = new StringBuffer();
+
+		request.getRequestURI().toLowerCase();
+
+		// getServletPath与getRequestURI 区别在于项目名
+		// /toWxJsApi.action
+		// /qner/toWxJsApi.action
+		url.append(request.getServletPath());
+
+		Map<String, String[]> tm = request.getParameterMap();
+		TreeMap<String, String> paramMap = new TreeMap<String, String>();
+
+		if (tm != null && tm.size() > 0) {
+
+			for (Map.Entry<String, String[]> entry : tm.entrySet()) {
+
+				paramMap.put(entry.getKey(), request.getParameter(entry.getKey()));
+			}
+		}
+
+		if (null != paramMap && paramMap.size() > 0) {
+			url.append(SIGN_1);
+
+			int index = 0;
+
+			for (String paramName : paramMap.keySet()) {
+
+				if ("CODE".equals(paramName.toUpperCase()) || "STATE".equals(paramName.toUpperCase()) || "FROM".equals(paramName.toUpperCase()) || "ISAPPINSTALLED".equals(paramName.toUpperCase())) {
+					continue;
+				} else {
+					if (index == 0) {
+						index = 1;
+					} else {
+						url.append(SIGN_2);
+					}
+				}
+				url.append(paramName + SIGN_3 + request.getParameter(paramName));
+			}
+		}
+
+		String reurl = url.toString();
+		String append = "&";
+
+		if (null != request.getParameter("code") && !"".equals(request.getParameter("code"))) {
+			if ("?".equals(reurl.substring(reurl.length() - 1))) {
+				reurl += "code=" + request.getParameter("code");
+			} else {
+				reurl += append + "code=" + request.getParameter("code");
+			}
+		}
+
+		if (null != request.getParameter("state") && !"".equals(request.getParameter("state"))) {
+			if ("?".equals(reurl.substring(reurl.length() - 1))) {
+				reurl += "state=" + request.getParameter("state");
+			} else {
+				reurl += append + "state=" + request.getParameter("state");
+			}
+		}
+
+		if (null != request.getParameter("from") && !"".equals(request.getParameter("from"))) {
+			if ("?".equals(reurl.substring(reurl.length() - 1))) {
+				reurl += "from=" + request.getParameter("from");
+			} else {
+				reurl += append + "from=" + request.getParameter("from");
+			}
+		}
+
+		if (null != request.getParameter("isappinstalled") && !"".equals(request.getParameter("isappinstalled"))) {
+			if ("?".equals(reurl.substring(reurl.length() - 1))) {
+				reurl += "isappinstalled=" + request.getParameter("isappinstalled");
+			} else {
+				reurl += append + "isappinstalled=" + request.getParameter("isappinstalled");
+			}
+		}
+
+		return reurl;
 	}
 }

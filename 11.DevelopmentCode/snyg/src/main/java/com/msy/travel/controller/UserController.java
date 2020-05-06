@@ -1,6 +1,8 @@
 package com.msy.travel.controller;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -104,7 +106,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/tologin")
-	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user, String loginPage) {
+	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user, String loginPage,String redictUrl) {
 		ModelAndView view = null;
 		try {
 			if (loginPage == null || loginPage.trim().equals("")) {
@@ -130,6 +132,11 @@ public class UserController extends BaseController {
 				view.addObject("userType", User.USER_TYPE_USERNAME_PASSWORD);
 				view.addObject("roleType", RoleData.ROLE_TYPE_YYS);
 			}
+			if(redictUrl!=null)
+			{
+				view.addObject("redictUrl", URLDecoder.decode(redictUrl,"UTF-8"));
+			}
+
 
 		} catch (Exception e) {
 			view = new ModelAndView("error");
@@ -1058,9 +1065,15 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/relogin")
-	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response, String loginPage) {
+	public ModelAndView relogin(HttpServletRequest request, HttpServletResponse response, String loginPage,String redictUrl) throws Exception {
 		ModelAndView view = new ModelAndView("relogin");
 		view.addObject("loginPage", loginPage);
+		if(redictUrl!=null)
+		{
+			view.addObject("redictUrl",
+					URLEncoder.encode(redictUrl, "UTF-8"));
+		}
+
 		return view;
 	}
 

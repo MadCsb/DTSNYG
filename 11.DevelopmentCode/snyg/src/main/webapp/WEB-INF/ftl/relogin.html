@@ -2,10 +2,16 @@
 <html>
 <head>
     <#include "/INC_HEAD.html">
-<script type="text/javascript">
-	top.location.href = "${rc.contextPath}/tologin?loginPage=${loginPage!''}";
-</script>
 </head>
 <body>
+<form id="toLogin" action="tologin" method="post">
+<input type="hidden" id="loginPage" name="loginPage" value="${loginPage!''}">
+<input type="hidden" id="redictUrl" name="redictUrl" value="${redictUrl!''}">
+</form>
+<script type="text/javascript">
+    $(function () {
+      $("#toLogin").submit();
+    });
+</script>
 </body>
 </html>

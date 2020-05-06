@@ -1,5 +1,7 @@
 package com.msy.travel.shiro;
 
+import com.msy.travel.common.BaseController;
+import java.net.URLEncoder;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -57,15 +59,16 @@ public class SessionFilter extends AccessControlFilter {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;application/json");
 
+		String redictUrl = URLEncoder.encode(BaseController.getCurrentUrlStr(httpRequest), "UTF-8");
 		// 先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
 		if (url.indexOf("/" + Consts.LOGIN_PAGE_WEB) != -1) {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WEB);
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WEB+"&redictUrl="+redictUrl);
 		} else if (url.indexOf("/" + Consts.LOGIN_PAGE_WAP) != -1) {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WAP);
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_WAP+"&redictUrl="+redictUrl);
 		} else {
-			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_MP);
+			WebUtils.issueRedirect(request, response, "/relogin?loginPage=" + Consts.LOGIN_PAGE_MP+"&redictUrl="+redictUrl);
 		}
 		// 再重定向
 
