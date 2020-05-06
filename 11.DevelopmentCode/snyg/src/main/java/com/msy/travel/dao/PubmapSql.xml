@@ -20,4 +20,109 @@
 		</where>
 		ORDER BY (F_MAPKEY+0),F_MAPKEY
 	</select>
+	
+	<!--  新增信息 -->
+	<insert id="insertPubmap" parameterType="Pubmap" >
+		INSERT INTO T_PUB_MAP (
+		F_MAPID ,
+		F_MAPTYPE ,
+		F_MAPKEY ,
+		F_MAPVALUE ,
+		F_MAPDESC ,
+		F_SYS
+		) VALUES (
+		#{mapId} ,
+		#{mapType} ,
+		#{mapKey} ,
+		#{mapValue} ,
+		#{mapDesc} ,
+		#{sys}
+		)
+	</insert>
+	<!-- 修改信息 -->
+	<update id="updatePubmap" parameterType="Pubmap">
+		UPDATE T_PUB_MAP
+		SET
+		F_MAPTYPE = #{mapType} ,
+		F_MAPKEY = #{mapKey} ,
+		F_MAPVALUE = #{mapValue} ,
+		F_MAPDESC = #{mapDesc} ,
+		F_SYS =#{sys}
+		<where>
+		F_MAPID = #{mapId}
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deletePubmap" parameterType="Pubmap">
+		DELETE FROM T_PUB_MAP
+		<where>
+		F_MAPID = #{mapId}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatchPubmap" parameterType="Pubmap">
+		DELETE FROM T_PUB_MAP
+		<where>
+			F_MAPID in
+			<foreach collection="pubMapIdList" item="param" separator="," open="(" close=")">
+				#{param}
+			</foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryPubmap" parameterType="String" resultType="Pubmap">
+		SELECT
+		F_MAPID as mapId ,
+		F_MAPTYPE as mapType ,
+		F_MAPKEY as mapKey ,
+		F_MAPVALUE as mapValue ,
+		F_MAPDESC as mapDesc,
+		F_SYS as sys
+		FROM
+		T_PUB_MAP
+		<where>
+		F_MAPID = #{mapId}
+		</where>
+	</select>
+
+	<!-- 按条件分页查询 -->
+	<select id="queryPubmapList" parameterType="Pubmap" resultType="Pubmap">
+		SELECT
+		F_MAPID as mapId ,
+		F_MAPTYPE as mapType ,
+		F_MAPKEY as mapKey ,
+		F_MAPVALUE as mapValue ,
+		F_MAPDESC as mapDesc ,
+		F_SYS as sys
+		FROM
+		t_pub_map
+		<where>
+			<if test="mapId!=null and mapId!=''">
+				and F_MAPID = #{mapId}
+			</if>
+
+			<if test="mapDesc!=null and mapDesc!=''">
+				and F_MAPDESC LIKE CONCAT('%', #{mapDesc}, '%')
+			</if>
+
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+				ORDER BY ${entityPage.sortField}
+			</if>
+		</if>
+		<if test="entityPage != null">
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+				${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+
+    <select id="getAllDesc" resultType="Pubmap">
+        SELECT
+        F_MAPDESC as mapDesc
+	    FROM
+	      T_PUB_MAP group by F_MAPDESC
+    </select>
 </mapper>

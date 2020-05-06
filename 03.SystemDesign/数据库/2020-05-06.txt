@@ -1,0 +1,21 @@
+drop table if exists t_sm_event;
+
+/*==============================================================*/
+/* Table: t_sm_event                                            */
+/*==============================================================*/
+create table t_sm_event
+(
+   F_EVENTID            varchar(50) not null comment '事件ID',
+   F_SPID               varchar(50),
+   F_EVENTKEY           varchar(50) comment '事件标识',
+   F_EVENTSTATUS        varchar(1) comment '事件状态
+            0:未完成 1已完成',
+   F_CREATETIME         varchar(50) comment '创建时间',
+   F_TRIGGERUID         varchar(50) comment '触发人',
+   F_EVENTJSON          varchar(5000) comment '事件参数'
+);
+
+alter table t_sm_event comment '事件表';
+
+alter table t_sm_event
+   add primary key (F_EVENTID);

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.EventDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertEvent" parameterType="event">
+		INSERT INTO 
+			t_sm_event  
+		(
+			F_EVENTID ,
+			F_SPID ,
+			F_EVENTKEY ,
+			F_EVENTSTATUS ,
+			F_CREATETIME ,
+			F_TRIGGERUID ,
+			F_EVENTJSON 
+		) VALUES (
+			#{eventId} ,
+			#{spId} ,
+			#{eventKey} ,
+			#{eventStatus} ,
+			#{createTime} ,
+			#{triggerUid} ,
+			#{feventjson} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeEvent" parameterType="event">
+		REPLACE INTO 
+			t_sm_event 
+		(
+			F_EVENTID ,
+			F_SPID ,
+			F_EVENTKEY ,
+			F_EVENTSTATUS ,
+			F_CREATETIME ,
+			F_TRIGGERUID ,
+			F_EVENTJSON 
+		) VALUES (
+			#{eventId} ,
+			#{spId} ,
+			#{eventKey} ,
+			#{eventStatus} ,
+			#{createTime} ,
+			#{triggerUid} ,
+			#{feventjson} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateEvent" parameterType="event">
+		UPDATE
+			t_sm_event 
+		SET
+			F_SPID = #{spId} ,
+			F_EVENTKEY = #{eventKey} ,
+			F_EVENTSTATUS = #{eventStatus} ,
+			F_CREATETIME = #{createTime} ,
+			F_TRIGGERUID = #{triggerUid} ,
+			F_EVENTJSON = #{feventjson} 
+		<where>
+			F_EVENTID = #{eventId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteEvent" parameterType="event">
+		DELETE FROM
+			t_sm_event 
+		<where>
+			F_EVENTID = #{eventId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchEvent" parameterType="event">
+		DELETE FROM 
+			t_sm_event 
+		<where>
+			F_EVENTID in
+			<foreach collection="eventIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryEvent" parameterType="String" resultType="event">
+		SELECT
+			t.F_EVENTID as eventId ,
+			t.F_SPID as spId ,
+			t.F_EVENTKEY as eventKey ,
+			t.F_EVENTSTATUS as eventStatus ,
+			t.F_CREATETIME as createTime ,
+			t.F_TRIGGERUID as triggerUid ,
+			t.F_EVENTJSON as feventjson 
+		FROM
+			t_sm_event t
+		<where>
+			t.F_EVENTID = #{eventId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryEventList" parameterType="event" resultType="event">
+		SELECT
+			t.F_EVENTID as eventId ,
+			t.F_SPID as spId ,
+			t.F_EVENTKEY as eventKey ,
+			t.F_EVENTSTATUS as eventStatus ,
+			t.F_CREATETIME as createTime ,
+			t.F_TRIGGERUID as triggerUid ,
+			t.F_EVENTJSON as feventjson 
+		FROM
+		t_sm_event t
+		<where>
+			<if test="eventId!=null and eventId!=''">
+		    	t.F_EVENTID = #{eventId}
+		     </if>
+			
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	

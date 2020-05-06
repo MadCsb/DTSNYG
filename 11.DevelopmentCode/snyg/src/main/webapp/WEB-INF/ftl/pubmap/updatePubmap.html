@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/INC_HEAD.html">
+    <meta charset="UTF-8">
+</head>
+
+<script type="text/javascript">
+    $( function() {
+        $("#createPubmap").validationEngine();
+    });
+</script>
+<body>
+
+<div class="cont-div1">
+    <div class="waybill-title"><span>修改字典 </span> </div>
+    <form action="pubMap?method=updatePubmap" method="post" id="createPubmap">
+        <input name="mapId" type="hidden" id="mapId" size="40" value="${pubmap.mapId!''}" />
+        <table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr class="cs">
+                <td width="35%" class="tdright"><font class="f2">*</font> 字典类别：</td>
+                <td width="60%" class="tdleft">
+                    <input style="float:left;margin:8px;width:218px;" name="mapType" type="text" id="mapType" size="40"
+                            value="${pubmap.mapType!''}" class="validate[required,maxSize[20]] data-searchtxt"/>
+                </td>
+            </tr>
+            <tr class="cs">
+                <td width="35%" class="tdright"><font class="f2">*</font> 字典键：</td>
+                <td width="60%" class="tdleft">
+                    <input style="float:left;margin:8px;width:218px;" name="mapKey" type="text" id="mapKey" size="40"
+                          value="${pubmap.mapKey!''}" class="validate[required,maxSize[100]] data-searchtxt"/>
+                    <!--  	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;float:left;color:#ff0000;">
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <strong id="form_1_msg"><s:property value="errorMsg"/></strong></p>
+                        </div> -->
+                </td>
+            </tr>
+            <tr class="cs">
+                <td width="35%" class="tdright"><font class="f2">*</font> 字典值：</td>
+                <td width="60%" class="tdleft">
+                    <input style="float:left;margin:8px;width:218px;" name="mapValue" type="text" id="mapValue" size="40"
+                           value="${pubmap.mapValue!''}" class="validate[required,maxSize[100]] data-searchtxt"/>
+                </td>
+            </tr>
+            <tr class="cs">
+                <td width="35%" class="tdright"><font class="f2">*</font> 字典描述：</td>
+                <td width="60%" class="tdleft">
+                    <input style="float:left;margin:8px;width:218px;" name="mapDesc" type="text" id="mapDesc" size="40"
+                           value="${pubmap.mapDesc!''}" class="validate[required,maxSize[255]] data-searchtxt"/>
+                </td>
+            </tr>
+            <tr class="cs">
+                <td width="35%" class="tdright"> 系统选项：</td>
+                <td width="60%" class=""  style="text-align:left">
+                    <input type="checkbox" name="sys" value="1" class="commtxt" style="margin:8px;" <#if pubmap.sys=='1'>checked</#if> />
+                </td>
+            </tr>
+        </table>
+        <div class="footerbtn">
+        	<input type="reset" class="cbtn2" value="取消" onclick="javascript:location.href='${Session.BACK_URL!''}'"/>
+            <input type="button"  class="cbtn1" value="保存" onclick="beforeSubmit()"/>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function beforeSubmit() {
+        $("#createPubmap").validationEngine();
+        $("#createPubmap").submit();
+    }
+</script>
+</html>

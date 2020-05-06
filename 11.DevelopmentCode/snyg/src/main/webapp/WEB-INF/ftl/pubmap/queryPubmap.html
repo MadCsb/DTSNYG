@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/INC_HEAD.html">
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!--内容区-->
+<!--//搜索部分-->
+<form id="queryFrm" action="pubMap?method=queryPubmapList" method="post" >
+
+    <input type="hidden" id="entityPage.currentPage" name="entityPage.currentPage"  value="${pageInfo.pageNum!''}" />
+    <input type="hidden" id="entityPage.totalSize" name="entityPage.totalSize"  value="${pageInfo.total!''}" />
+    <input type="hidden" id="entityPage.sortField" name="entityPage.sortField"  value="${entityPage.sortField!''}" />
+    <input type="hidden" id="entityPage.sortOrder" name="entityPage.sortOrder"  value="${entityPage.sortOrder!''}" />
+
+    <!--查询条件区-->
+    <div class="data-requry">
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>字典描述：</td>
+                <td>
+                    <select id="mapDesc" name="mapDesc" class="data-searchtxt-select" >
+                        <option value="">请选择</option>
+                        <#list descList as item>
+                            <option <#if  mapDesc??&&item.mapDesc==mapDesc> selected</#if> value=${item.mapDesc!''}>${item.mapDesc!''}</option>
+                        </#list>
+                    </select>
+                </td>
+                <td>
+                    <input name="button" type="submit" class="data-searchbtn" value="查询"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <!--查询操作项区-->
+
+    <!--//表格部分-->
+    <div class="cont-div">
+        <!--//菜单部分-->
+        <div class="waybill-title">
+            <div align="left">
+                <input type="button" class="cbtn1" onclick="window.location.href='pubMap?method=toAddPubmap'" value="新增" />
+                <input type="button" class="cbtn1" onclick="deleteBatch()" value="删除" />
+            </div>
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" class="datalist">
+        <tr>
+            <th width="3%" style="text-align: center">
+                <input type="checkbox" id="checkAll" >
+            </th>
+            <th>字典类别</th>
+            <th>字典键</th>
+            <th>字典值</th>
+            <th>字典描述</th>
+            <th width="10%">操作</th>
+        </tr>
+            <#list pubmapList as pl>
+                <tr>
+                    <td align="center">
+                        <input class="check-item" type="checkbox" id="checkId" name="checkId"  value="${pl.mapId!''}" />
+                    </td>
+                    <td title="${pl.mapType!''}">
+                         ${pl.mapType!""}
+                    </td>
+                    <td title="${pl.mapKey!''}">
+                        ${pl.mapKey!""}
+                    </td>
+                    <td title="${pl.mapValue!''}">
+                        ${pl.mapValue!""}
+                    </td>
+                    <td title="${pl.mapDesc!''}">
+                        ${pl.mapDesc!""}
+                    </td>
+                    <td>
+                    	<a class="ico_btn1" href="javascript:void(0)" onclick="updateById('${pl.mapId!''}');">编辑</a>
+                        
+                        <a class="ico_btn1" href="javascript:void(0)" onclick="deleteById('${pl.mapId!''}');">删除</a>
+                    </td>
+                </tr>
+            </#list>
+        </table>
+    </div>
+
+    <#if pubmapList?? && (pubmapList?size>0)>
+        <#include "/pagination.html">
+    <#else>
+    <div id='ListIsNullMsg' style="font-size:17px;color:red"><script type="text/javascript">showListIsNullMsg();</script></div>
+
+    </#if>
+</form>
+<script>
+    $(function() {
+        initCombox();
+        $("#mapDesc").combobox();
+    });
+
+    //删除
+    function deleteById(mapId){
+        art.dialog.confirm('确认要删除记录吗？', function() {
+            var url="pubMap?method=deletePubmap&mapId="+mapId;
+            window.location.href=url;
+        }, function() {
+            // art.dialog.tips('取消当前操作');
+        });
+    }
+
+    //批量删除
+    function deleteBatch() {
+        var idArray = [];
+
+        $("input[name=checkId]:checked").each(function () {
+            var id = $(this).val();
+            if(id!=null&&id!=''){
+                idArray.push(id)
+            }
+        });
+        if(idArray.length == 0){
+            art.dialog.alert("请至少选中一项！");
+        } else {
+            var checkedPubMapIds = idArray.join(',');
+            art.dialog.confirm("确认删除吗？", function() {
+                window.location.href='pubMap?method=deleteBatchPubmap&checkedPubMapIds=' + checkedPubMapIds
+            });
+        }
+    }
+         //修改
+        function updateById(mapId){
+
+            var url="pubMap?method=toUpdatePubmap&mapId="+mapId;
+            window.location.href=url;
+        }
+
+    //一键勾选
+
+    $(document).on("click","#checkAll",function () {
+        var userids = this.checked;
+        $("input[type=checkbox]").each(function () {
+            if(!$(this).is("[disabled]")){
+                this.checked = userids;
+            }
+        });
+    })
+
+    $(document).on("click",".check-item",function () {
+        if(!$(this).prop("checked")){
+            $("#checkAll").prop("checked", false);
+        }
+    })
+    
+    function exportList(){
+    	var exportAction = "pubMap?method=export";
+		var queryAction = $("#queryFrm").attr("action");
+		$("#queryFrm").attr("action", exportAction);
+		$("#queryFrm").submit();
+		$("#queryFrm").attr("action", queryAction);
+    }
+</script>
+<script src="js/ligerUI/js/ligerui.all.js" type="text/javascript"/>
+<script src="js/ligerUI/js/ligerui.min.js" type="text/javascript"/>
+</body>
+</html>

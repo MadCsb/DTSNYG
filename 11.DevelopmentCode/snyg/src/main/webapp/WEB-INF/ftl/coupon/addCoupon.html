@@ -50,7 +50,7 @@
 						<span id="useTypeSpan2">减</span>&nbsp;&nbsp;<input name="discount" type="text"
 						id="discount" size="40" style="width:175px;" class="validate[required,maxSize[10],custom[num8point2]] data-inputtxt"/>
 						<span id="useTypeSpan3">元</span><br>
-						<span style="color:red;" id="useTypeSpan4">抵扣金额不能大于满足金额的80%</span>
+						<span style="color:red;" id="useTypeSpan4"></span>
 					</td>
 				</tr>
 				<tr>
@@ -191,10 +191,10 @@ function beforeSubmit(type){
 			var discount = $("#discount").val();
 			var useLimit = $("#useLimit").val();
 			
-			if((discount*1)>(useLimit * 0.8)){
-				parent.layer.alert("抵扣金额不能大于满足金额的80%");
-				return ;
-			}
+			//if((discount*1)>(useLimit * 0.8)){
+			//	parent.layer.alert("抵扣金额不能大于满足金额的80%");
+			//	return ;
+			//}
 		}else if(useType=="2"){
 			var discount = $("#discount").val();
 			if(discount * 1 >= 1){
@@ -286,7 +286,7 @@ function beforeSubmit(type){
 			$("#useTypeSpan1").html("抵扣：");
 			$("#useTypeSpan2").html("减");
 			$("#useTypeSpan3").html("元");
-			$("#useTypeSpan4").html("抵扣金额不能大于满足金额的80%");
+			$("#useTypeSpan4").html("");
 		}else if(changeUserType=="2"){
 			$("#useTypeSpan1").html("折扣：");
 			$("#useTypeSpan2").html("打");

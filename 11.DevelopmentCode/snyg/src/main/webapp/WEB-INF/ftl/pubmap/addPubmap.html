@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/INC_HEAD.html">
+    <meta charset="UTF-8">
+</head>
+<body>
+<!--主窗体-->
+<div>
+    <div class="cont-div1">
+        <div class="waybill-title"><span>新增字典</span> </div>
+        <form action="pubMap?method=addPubmap" method="post" id="createPubmap">
+            <input type="hidden" name="mapId" id="mapId"  value="" />
+            <!--编辑区-->
+            <table class="datalist-new" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr class="cs">
+                    <td width="35%" class="tdright"><font class="f2">*</font> 字典类别：</td>
+                    <td width="60%" class="tdleft">
+                       <input style="float:left;margin:8px;width:218px;" name="mapType" type="text" id="mapType" size="40" class="validate[required,maxSize[20]] data-searchtxt "/>
+                    </td>
+                </tr>
+                <tr class="cs">
+                    <td width="35%" class="tdright"><font class="f2">*</font> 字典键：</td>
+                    <td width="60%" class="tdleft">
+                        <input style="float:left;margin:8px;width:218px;" name="mapKey" type="text" id="mapKey" size="40" class="validate[required,maxSize[100]] data-searchtxt "/>
+                    </td>
+                </tr>
+                <tr class="cs">
+                    <td width="35%" class="tdright"><font class="f2">*</font> 字典值：</td>
+                    <td width="60%" class="tdleft">
+                        <input style="float:left;margin:8px;width:218px;" name="mapValue" type="text" id="mapValue" size="40"
+                                class="validate[required,maxSize[100]] data-searchtxt "/>
+                    </td>
+                </tr>
+                <tr class="cs">
+                    <td width="35%" class="tdright"><font class="f2">*</font> 字典描述：</td>
+                    <td width="60%" class="tdleft">
+                        <input style="float:left;margin:8px;width:218px;" name="mapDesc" type="text" id="mapDesc" size="40" class="validate[required,maxSize[255]] data-searchtxt "/>
+                    </td>
+                </tr>
+                <tr class="cs">
+                    <td width="35%" class="tdright">系统选项：</td>
+                    <td width="60%" class="" style="text-align:left">
+                        <input type="checkbox" name="sys" value="1" class="commtxt sys-check" style="margin:8px;"/>
+                    </td>
+                </tr>
+            </table>
+            <div class="footerbtn">
+            	<input type="reset" class="cbtn2" value="取消" onclick="javascript:location.href='${Session.BACK_URL!''}'"/>
+                <input type="button" class="cbtn1" id="button" value="保存" onclick="beforeSubmit()"/>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    function beforeSubmit() {
+        $("#createPubmap").validationEngine();
+        $("#createPubmap").submit();
+    }
+</script>
+</html>
