@@ -149,6 +149,7 @@ public class Scheduled {
 	 * @return void
 	 */
 	@org.springframework.scheduling.annotation.Scheduled(cron = "0 * * * * ? ")
+	@Async
 	public void implementEvent() {
 		try {
 			Event event = new Event();
