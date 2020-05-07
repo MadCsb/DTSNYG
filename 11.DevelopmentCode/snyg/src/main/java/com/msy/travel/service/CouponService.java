@@ -1,6 +1,7 @@
 package com.msy.travel.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
@@ -188,5 +189,17 @@ public interface CouponService {
 	 * @return Result
 	 */
 	public Result canReceiveMsg(Coupon coupon, String userId) throws Exception;
+
+	/**
+	 * 执行发放优惠券事件
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午5:16:23
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result implementEventCoupon(Map<String, String> params) throws Exception;
 
 }

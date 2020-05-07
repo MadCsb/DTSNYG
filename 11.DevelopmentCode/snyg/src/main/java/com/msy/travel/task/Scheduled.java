@@ -2,7 +2,9 @@ package com.msy.travel.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -15,8 +17,11 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.Order;
 import com.msy.travel.pojo.OrderExpress;
+import com.msy.travel.service.CouponService;
+import com.msy.travel.service.EventService;
 import com.msy.travel.service.OrderExpressService;
 import com.msy.travel.service.OrderService;
 
@@ -33,10 +38,16 @@ public class Scheduled {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@Resource(name = "eventServiceImpl")
+	private EventService eventService;
+
+	@Resource(name = "couponServiceImpl")
+	private CouponService couponService;
+
 	/**
 	 * 每分钟 ，自动关闭超时未支付订单，不需要异步
 	 */
-	 @org.springframework.scheduling.annotation.Scheduled(cron="0 * * * * ? ")
+	@org.springframework.scheduling.annotation.Scheduled(cron = "0 * * * * ? ")
 	public void closeNotPayOrder() {
 		List<Order> orderList = null;
 		try {
@@ -130,4 +141,42 @@ public class Scheduled {
 		}
 	}
 
+	/**
+	 * 执行事件
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午4:50:26
+	 * @return void
+	 */
+	@org.springframework.scheduling.annotation.Scheduled(cron = "0 * * * * ? ")
+	public void implementEvent() {
+		try {
+			Event event = new Event();
+			event.setEventStatus("0");
+			List<Event> eventList = eventService.queryEventList(event);
+
+			if (eventList != null && eventList.size() > 0) {
+				for (int i = 0; i < eventList.size(); i++) {
+					Event ev = eventList.get(i);
+					if (ev.getEventKey().equals(Event.EVENT_NEWUSER_COUPON) || ev.getEventKey().equals(Event.EVENT_PAYSUCCESS_COUPON) || ev.getEventKey().equals(Event.EVENT_SEND_COUPON)) {
+						try {
+							Map<String, String> params = new HashMap<String, String>();
+							params.put("eventKey", ev.getEventKey());
+							params.put("userId", ev.getTriggerUid());
+							couponService.implementEventCoupon(params);
+							ev.setEventStatus("1");
+							eventService.updateEvent(ev);
+						} catch (Exception e) {
+							log.error("执行发放优惠券事件出错" + ev.getEventId());
+						}
+					}
+
+				}
+			}
+
+		} catch (Exception e) {
+			log.error("执行事件出错");
+		}
+
+	}
 }

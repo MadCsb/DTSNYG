@@ -118,8 +118,10 @@
 		<where>
 			<if test="eventId!=null and eventId!=''">
 		    	t.F_EVENTID = #{eventId}
-		     </if>
-			
+		    </if>
+			<if test="eventStatus !=null and eventStatus !=''">
+		    	and t.F_EVENTSTATUS = #{eventStatus}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

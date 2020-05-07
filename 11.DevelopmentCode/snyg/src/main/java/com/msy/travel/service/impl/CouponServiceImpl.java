@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -614,5 +615,35 @@ public class CouponServiceImpl implements CouponService {
 
 		return result;
 
+	}
+
+	/**
+	 * 执行发放优惠券事件
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午5:16:23
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result implementEventCoupon(Map<String, String> params) throws Exception {
+		Result result = new Result();
+		result.setResultCode("0");
+		Coupon coupon = new Coupon();
+		coupon.setObtainType(params.get("eventKey"));
+		coupon.setDelFlag("0");
+		coupon.setSpId(Destsp.currentSpId);
+		coupon.setCouponTag("1");
+		coupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
+		coupon.setUserId(params.get("userId"));
+		List<Coupon> couponList = couponDao.queryCouponListForSellPriceLogin(coupon);
+
+		for (Coupon c : couponList) {
+			if ("0".equals(canReceiveMsg(c, params.get("userId")).getResultCode())) {
+				customerCouponService.receiveCoupon(params.get("userId"), coupon);
+			}
+		}
+		return result;
 	}
 }
