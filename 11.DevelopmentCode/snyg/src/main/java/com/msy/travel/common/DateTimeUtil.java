@@ -24,6 +24,14 @@ public class DateTimeUtil {
 
 	public static String sdf23 = "yyyy-MM-dd HH:mm:ss:SSS";
 
+	/**
+	 * yyyy-MM-dd HH:mm:ss
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午3:56:43
+	 * @return
+	 * @return String
+	 */
 	public static final String getDateTime19() {
 		return getDateTime19(System.currentTimeMillis());
 	}
@@ -89,6 +97,14 @@ public class DateTimeUtil {
 		return d.getTime();
 	}
 
+	/**
+	 * yyyy-MM-dd
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午3:57:28
+	 * @return
+	 * @return String
+	 */
 	public static final String getDateTime10() {
 		return getDateTime10(System.currentTimeMillis());
 	}

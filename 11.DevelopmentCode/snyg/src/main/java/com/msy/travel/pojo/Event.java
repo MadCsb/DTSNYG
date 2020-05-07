@@ -36,12 +36,12 @@ public class Event extends BaseEntity implements java.io.Serializable {
 	/**
 	 * 新用户
 	 */
-	public static final String EVENT_NEWUSER = "EVENT_NEWUSER";
+	public static final String EVENT_NEWUSER_COUPON = "EVENT_NEWUSER_COUPON";
 
 	/**
 	 * 支付
 	 */
-	public static final String EVENT_PAYSUCCESS = "EVENT_PAYSUCCESS";
+	public static final String EVENT_PAYSUCCESS_COUPON = "EVENT_PAYSUCCESS_COUPON";
 
 	// columns START
 	/**

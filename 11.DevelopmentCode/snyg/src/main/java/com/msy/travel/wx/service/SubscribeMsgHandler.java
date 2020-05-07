@@ -172,11 +172,11 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 
 					log.info("用户关注消息 来源场景ID[" + fansfrom + "]");
 
-					// flag = true;
+					flag = true;
 
 				}
 
-				if (!flag) {
+				if (flag) {
 					Feedback feedback = new Feedback();
 					if (serviceCode.getInMsgId() != null && !"".equals(serviceCode.getInMsgId())) {
 						feedback.setFeedBackId(serviceCode.getInMsgId());
