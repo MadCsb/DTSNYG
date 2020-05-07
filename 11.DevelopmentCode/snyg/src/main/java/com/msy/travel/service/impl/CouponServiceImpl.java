@@ -18,12 +18,15 @@ import com.msy.travel.common.WTConvert;
 import com.msy.travel.dao.CouponDao;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
+import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
+import com.msy.travel.service.CustomerCouponService;
 import com.msy.travel.service.SaleTypeService;
 import com.msy.travel.service.SellPriceService;
 
@@ -48,6 +51,9 @@ public class CouponServiceImpl implements CouponService {
 
 	@Resource(name = "saleTypeServiceImpl")
 	private SaleTypeService saleTypeService;
+
+	@Resource(name = "customerCouponServiceImpl")
+	private CustomerCouponService customerCouponService;
 
 	/**
 	 * 新增Coupon
@@ -481,8 +487,10 @@ public class CouponServiceImpl implements CouponService {
 
 		List<Coupon> couponList = new ArrayList<Coupon>();
 		if (isLogin) {
+			coupon.setObtainType(Event.EVNET_PDC_COUPON);
 			couponList = couponDao.queryCouponListForSellPriceLogin(coupon);
 		} else {
+			coupon.setObtainType(Event.EVNET_PDC_COUPON);
 			couponList = couponDao.queryCouponListForSellPriceNoLogin(coupon);
 		}
 
@@ -515,5 +523,96 @@ public class CouponServiceImpl implements CouponService {
 	 */
 	public List<Coupon> queryCouponListBySquareLogin(Coupon coupon) throws Exception {
 		return couponDao.queryCouponListBySquareLogin(coupon);
+	}
+
+	/**
+	 * 判断能否领取（返回提示信息）
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午2:56:59
+	 * @param coupon
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result canReceiveMsg(Coupon coupon, String userId) throws Exception {
+
+		Result result = new Result();
+		result.setResultCode("0");
+
+		String crrDate = DateTimeUtil.getDateTime10();
+		String couponId = coupon.getCouponId();
+
+		// 不是发布状态
+		if (!"1".equals(coupon.getStatus())) {
+			result.setResultCode("1");
+			result.setResultMsg("尊敬的游客，该优惠活动已经结束了，请您刷新页面后查看最新的优惠活动");
+			return result;
+		}
+
+		// 领券日期不对
+		if (crrDate.compareTo(coupon.getObtainDateBegin()) < 0 || crrDate.compareTo(coupon.getObtainDateEnd()) > 0) {
+			result.setResultCode("1");
+			result.setResultMsg("尊敬的游客，该优惠活动未开始或已经结束(该优惠券不在领取时间内)，请您刷新页面后查看最新的优惠活动");
+			return result;
+		}
+
+		// 领取总数
+		CustomerCoupon obj1 = new CustomerCoupon();
+		obj1.setCouponId(couponId);
+		Long receiveTotal = customerCouponService.getCustomerCouponCount(obj1);
+
+		// 领取总数大于发行总量
+		if (receiveTotal >= Long.valueOf(coupon.getTotalNum())) {
+			result.setResultCode("1");
+			result.setResultMsg("尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧");
+			return result;
+		}
+
+		// 每日领取总数
+		CustomerCoupon obj2 = new CustomerCoupon();
+		obj2.setCouponId(couponId);
+		obj2.setObtainTime(DateTimeUtil.getDateTime10());
+		Long dayCount = customerCouponService.getCustomerCouponCount(obj2);
+
+		// 每日领取总数大于等于日发行量
+		if (coupon.getDayNum() != null && !"".equals(coupon.getDayNum())) {
+			if (dayCount >= Long.valueOf(coupon.getDayNum())) {
+				result.setResultCode("1");
+				result.setResultMsg("尊敬的游客，该优惠券刚刚被领完了，请尝试领取其他优惠券吧");
+				return result;
+			}
+		}
+
+		// 本人领取总数
+		CustomerCoupon obj3 = new CustomerCoupon();
+		obj3.setCouponId(couponId);
+		obj3.setCustomerCode(userId);
+		Long myCount = customerCouponService.getCustomerCouponCount(obj3);
+
+		// 本人领取总数大于等于每人限领
+		if (myCount >= Long.valueOf(coupon.getObtainLimit())) {
+			result.setResultCode("1");
+			result.setResultMsg("尊敬的游客，该优惠券您已无法领取更多了，请尝试领取其他优惠券吧");
+			return result;
+		}
+
+		// 本人今天领取总数
+		CustomerCoupon obj4 = new CustomerCoupon();
+		obj4.setCouponId(couponId);
+		obj4.setCustomerCode(userId);
+		obj4.setObtainTime(DateTimeUtil.getDateTime10());
+		Long myTodayCount = customerCouponService.getCustomerCouponCount(obj4);
+
+		// 本人今天领取总数大于等于每人每天限领
+		if (myTodayCount >= Long.valueOf(coupon.getDayObtainLimit())) {
+			result.setResultCode("1");
+			result.setResultMsg("尊敬的游客，您已超出该优惠券的领取最大限制，请明天再来领取吧");
+			return result;
+		}
+
+		return result;
+
 	}
 }

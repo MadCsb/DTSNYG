@@ -372,7 +372,7 @@
 					WHERE 
 						t.F_STATUS = '1'
 					AND  
-						t.F_OBTAINTYPE = '1'
+						t.F_OBTAINTYPE = #{obtainType}
 					AND t.F_COUPONTAG = '1'
 					AND t.F_DELFLAG='0'
 					AND 
@@ -441,7 +441,7 @@
 					WHERE 
 						t.F_STATUS = '1'
 					AND  
-						t.F_OBTAINTYPE = '1'
+						t.F_OBTAINTYPE =  #{obtainType}
 					AND t.F_COUPONTAG = '1'
 					AND t.F_DELFLAG='0'
 					AND 

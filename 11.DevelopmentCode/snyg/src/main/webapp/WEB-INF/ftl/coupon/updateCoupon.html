@@ -20,8 +20,13 @@
 					</td>
 					<td width="15%" class="tdright"><b><font class="f2">*</font>领取方式：</b></td>
 					<td width="50%">
-						<label><input name="obtainType" id="obtainType1" type="radio" value="1"  hidden <#if coupon.obtainType?? && coupon.obtainType == "1">checked</#if> /><label for="obtainType1" class="radiock"></label>商品页领取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	           			<label><input name="obtainType" id="obtainType2" type="radio" value="2" hidden <#if coupon.obtainType?? && coupon.obtainType == "2">checked</#if>/><label for="obtainType2" class="radiock"></label>活动页领取</label>
+	           			<select name="obtainType" id="obtainType" class="data-inputtxt-select">
+							<option value="EVNET_PDC_COUPON" <#if coupon.obtainType?? && coupon.obtainType == "EVNET_PDC_COUPON">selected="selected"</#if> >商品页领取</option>
+							<option value="EVNET_PAGE_COUPON" <#if coupon.obtainType?? && coupon.obtainType == "EVNET_PAGE_COUPON">selected="selected"</#if> >活动页领取</option>
+							<option value="EVENT_SEND_COUPON" <#if coupon.obtainType?? && coupon.obtainType == "EVENT_SEND_COUPON">selected="selected"</#if> >指定用户</option>
+							<option value="EVENT_NEWUSER" <#if coupon.obtainType?? && coupon.obtainType == "EVENT_NEWUSER">selected="selected"</#if> >新用户</option>
+							<option value="EVENT_PAYSUCCESS" <#if coupon.obtainType?? && coupon.obtainType == "EVENT_PAYSUCCESS">selected="selected"</#if> >支付成功</option>
+						</select>	
 					</td>
 				</tr>
 				<tr>

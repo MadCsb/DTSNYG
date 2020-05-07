@@ -20,7 +20,6 @@ public class Coupon extends BaseEntity implements java.io.Serializable {
 			"delFlag:是否删除0-未删除1-已删除", "couponTag:优惠券标识，0:历史数据 1最新数据", "pcouponId:首次生成优惠券ID"
 
 	};
-
 	// columns START
 	/**
 	 * 优惠券ID db_column: F_COUPONID

@@ -176,4 +176,17 @@ public interface CouponService {
 	 */
 	public List<Coupon> queryCouponListBySquareLogin(Coupon coupon) throws Exception;
 
+	/**
+	 * 判断能否领取（返回提示信息）
+	 * 
+	 * @author wzd
+	 * @date 2020年5月7日 下午2:56:59
+	 * @param coupon
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result canReceiveMsg(Coupon coupon, String userId) throws Exception;
+
 }

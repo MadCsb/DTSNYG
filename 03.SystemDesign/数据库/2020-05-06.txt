@@ -17,5 +17,4 @@ create table t_sm_event
 
 alter table t_sm_event comment '事件表';
 
-alter table t_sm_event
-   add primary key (F_EVENTID);
+alter table t_sm_event add primary key (F_EVENTID);
