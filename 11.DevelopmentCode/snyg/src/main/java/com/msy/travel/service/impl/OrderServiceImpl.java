@@ -716,8 +716,7 @@ public class OrderServiceImpl implements OrderService {
 			orderDb.setPayTag("1");
 			orderDb.setStatus("0");
 			orderDb.setPayDate(thirdPayFlow.getThirdCreateTime());
-			orderDb.setPayTag("1"); // 目前默认支付
-			orderDb.setPayType("0");
+			orderDb.setPayType(thirdPayFlow.getThirdType());
 			orderDb.setPlatformFlowCode(thirdPayFlow.getPlatformFlowCode());
 			orderDao.updateOrder(orderDb);
 
