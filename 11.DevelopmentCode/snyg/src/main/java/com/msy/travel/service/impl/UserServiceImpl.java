@@ -82,6 +82,7 @@ public class UserServiceImpl implements IUserService {
 		event.setEventStatus("0");
 		event.setCreateTime(DateTimeUtil.getDateTime19());
 		event.setTriggerUid(user.getUserId());
+
 		userDao.insertUser(user);
 	}
 
