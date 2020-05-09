@@ -22,10 +22,12 @@ import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.dao.UserDao;
 import com.msy.travel.pojo.Channel;
 import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.ChannelService;
+import com.msy.travel.service.EventService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.RoleDataService;
@@ -63,6 +65,9 @@ public class UserServiceImpl implements IUserService {
 	@Resource(name = "roleDataServiceImpl")
 	private RoleDataService roleDataService;
 
+	@Resource(name = "eventServiceImpl")
+	private EventService eventService;
+
 	/**
 	 * 新增User
 	 *
@@ -70,6 +75,13 @@ public class UserServiceImpl implements IUserService {
 	 *            User对象
 	 */
 	public void createUser(User user) throws Exception {
+		Event event = new Event();
+		event.setEventId(PrimaryKeyUtil.generateKey());
+		event.setSpId(Destsp.currentSpId);
+		event.setEventKey(Event.EVENT_NEWUSER_COUPON);
+		event.setEventStatus("0");
+		event.setCreateTime(DateTimeUtil.getDateTime19());
+		event.setTriggerUid(user.getUserId());
 		userDao.insertUser(user);
 	}
 
@@ -202,30 +214,36 @@ public class UserServiceImpl implements IUserService {
 				} else {
 
 					WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
+
 					user = new User();
-					String userId = PrimaryKeyUtil.generateKey();
-					user.setUserId(userId);
+					user.setUserId(PrimaryKeyUtil.generateKey());
 					user.setType(User.USER_TYPE_WEIXIN);
 					user.setUserLoginName(openId);
 					user.setWxServiceId(serviceCode.getServiceId());
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
-					user.setHeadPic(wxuser.getHeadimgurl());
 
-					try {
-						user.setUserName(wxuser.getNickname());
-					} catch (Exception e) {
+					log.info("用户关注获取用户信息详情wxuser[" + wxuser + "]");
+					// 值为0时，代表此用户没有关注该公众号，拉取不到其余信息
+					if (wxuser != null && !"0".equals(wxuser.getSubscribe())) {
+						user.setHeadPic(wxuser.getHeadimgurl());
+						try {
+							user.setUserName(wxuser.getNickname());
+						} catch (Exception e) {
+							user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
+						}
+						user.setCountry(wxuser.getCountry());
+						user.setProvince(wxuser.getProvince());
+						user.setCity(wxuser.getCity());
+						user.setSex(wxuser.getSex());// 1男 2女 3未知
+					} else {
 						user.setUserName(PrimaryKeyUtil.getDefaultWxUserName());
 					}
 
-					user.setCountry(wxuser.getCountry());
-					user.setProvince(wxuser.getProvince());
-					user.setCity(wxuser.getCity());
-					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					user.setUserState("1");
 					user.setUserLocked("0");
 					user.setUserRegDate(DateTimeUtil.getDateTime19());
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
-					userDao.insertUser(user);
+					userService.createUser(user);
 					u = user;
 				}
 				// 添加老用户角色信息
