@@ -196,13 +196,16 @@ function beforeSubmit(type){
 			var discount = $("#discount").val();
 			var useLimit = $("#useLimit").val();
 			
-			//if((discount*1)>(useLimit * 0.8)){
-			//	parent.layer.alert("抵扣金额不能大于满足金额的80%");
-			//	return ;
-			//}
+			if((discount*1)>=(useLimit * 1)){
+				parent.layer.alert("抵扣金额不能大于或等于满足金额");
+				return ;
+			}
 		}else if(useType=="2"){
 			var discount = $("#discount").val();
 			if(discount * 1 >= 1){
+				parent.layer.alert("折扣请填入0-1之间的小数，保留两位小数");
+				return ;
+			}else if(discount * 1<=0){
 				parent.layer.alert("折扣请填入0-1之间的小数，保留两位小数");
 				return ;
 			}
