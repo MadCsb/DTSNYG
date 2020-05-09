@@ -69,7 +69,7 @@ public class UserServiceImpl implements IUserService {
 	private EventService eventService;
 
 	/**
-	 * 新增User
+	 * ` 新增User
 	 *
 	 * @param user
 	 *            User对象
