@@ -15,12 +15,14 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.dao.CustomerCouponDao;
+import com.msy.travel.pojo.ChannelBindSaleType;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
 import com.msy.travel.pojo.CustomerCoupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.ChannelBindSaleTypeService;
 import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
 import com.msy.travel.service.CustomerCouponService;
@@ -51,6 +53,9 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 
 	@Resource(name = "saleTypeServiceImpl")
 	private SaleTypeService saleTypeService;
+
+	@Resource(name = "channelBindSaleTypeServiceImpl")
+	private ChannelBindSaleTypeService channelBindSaleTypeService;
 
 	/**
 	 * 新增CustomerCoupon
@@ -268,12 +273,24 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 					}
 				}
 			} else {
+				result.setResultCode("0");
+
+				List<String> saleTypeKey = new ArrayList<String>();
+
 				// 活动
 				SaleType saleType = new SaleType();
 				saleType.setSaleTypeId(userCouponId);
 				saleType = saleTypeService.displaySaleType(saleType);
 
-				result.setResultCode("0");
+				if (saleType != null && saleType.getSaleTypeKey() != null) {
+					saleTypeKey.add(saleType.getSaleTypeKey());
+				} else {
+					ChannelBindSaleType channelBindSaleType = new ChannelBindSaleType();
+					channelBindSaleType.setChannelId(userCouponId);
+					channelBindSaleType.setStatus("1");
+					saleTypeKey = channelBindSaleTypeService.queryChannelBindSaleTypeListByUserId(channelBindSaleType);
+				}
+
 				// 判断销售商品是否属于活动
 				JSONArray jsonArray = jsonObject.getJSONArray("sellPrice");
 				if (jsonArray != null && jsonArray.size() > 0) {
@@ -284,7 +301,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 						sellPrice.setPriceId(job.getString("priceId"));
 						sellPrice = sellPriceService.displaySellPrice(sellPrice);
 
-						if (sellPrice.getPriceType().equals(saleType.getSaleTypeKey())) {
+						if (saleTypeKey.contains(sellPrice.getPriceType())) {
 							String price = BigDecimalUtil.multiply(job.getString("num"), sellPrice.getPrice());
 
 							priceAll = BigDecimalUtil.add(priceAll, price);

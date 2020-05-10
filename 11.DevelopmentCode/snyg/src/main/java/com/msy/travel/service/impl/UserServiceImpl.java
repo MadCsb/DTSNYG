@@ -78,7 +78,7 @@ public class UserServiceImpl implements IUserService {
 	public void createUser(User user) throws Exception {
 
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("eventId", Event.EVENT_NEWUSER_COUPON);
+		jsonObject.put("eventKey", Event.EVENT_NEWUSER_COUPON);
 		jsonObject.put("triggerUid", user.getUserId());
 		eventService.createNewEvent(jsonObject);
 
