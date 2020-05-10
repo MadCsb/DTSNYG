@@ -27,6 +27,8 @@ import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.CouponProduction;
+import com.msy.travel.pojo.Destsp;
+import com.msy.travel.pojo.SaleType;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
@@ -61,7 +63,12 @@ public class CouponController extends BaseController {
 		try {
 
 			view = new ModelAndView("coupon/addCoupon");
-			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId());
+			SaleType saleType = new SaleType();
+			saleType.setSaleTypeId(Destsp.currentSpId);
+			saleType.setSaleTypeName("");
+			saleTypeList.add(0, saleType);
+			view.addObject("saleTypeList", saleTypeList);
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
@@ -123,7 +130,12 @@ public class CouponController extends BaseController {
 				view.addObject("couponProduction", cp);
 			}
 
-			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId());
+			SaleType saleType = new SaleType();
+			saleType.setSaleTypeId(Destsp.currentSpId);
+			saleType.setSaleTypeName("");
+			saleTypeList.add(0, saleType);
+			view.addObject("saleTypeList", saleTypeList);
 
 			view.addObject("coupon", objCoupon);
 
@@ -379,7 +391,12 @@ public class CouponController extends BaseController {
 				view.addObject("couponProduction", cp);
 			}
 
-			view.addObject("saleTypeList", saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId()));
+			List<SaleType> saleTypeList = saleTypeService.querySaleTypeListOrChannel(null, getLoginUser(request).getAccId());
+			SaleType saleType = new SaleType();
+			saleType.setSaleTypeId(Destsp.currentSpId);
+			saleType.setSaleTypeName("");
+			saleTypeList.add(0, saleType);
+			view.addObject("saleTypeList", saleTypeList);
 
 			view.addObject("coupon", objCoupon);
 

@@ -2,6 +2,7 @@ package com.msy.travel.service;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Event;
 
@@ -77,5 +78,15 @@ public interface EventService {
 	 */
 	public String getEventId() throws Exception;
 
-	public Result createNewUserEvent(String userId) throws Exception;
+	/**
+	 * 新增事件
+	 * 
+	 * @author wzd
+	 * @date 2020年5月10日 下午3:19:20
+	 * @param jsonObject
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result createNewEvent(JSONObject jsonObject) throws Exception;
 }

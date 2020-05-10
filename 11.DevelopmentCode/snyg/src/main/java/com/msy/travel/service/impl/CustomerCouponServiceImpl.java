@@ -215,16 +215,20 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 		if (!userId.equals(customerCoupon.getCustomerCode())) {
 			result.setResultCode("1");
 			result.setResultMsg("优惠券未领取");
+			return result;
 		} else if ("1".equals(customerCoupon.getDelFlag())) {
 			result.setResultCode("1");
 			result.setResultMsg("优惠券已删除");
+			return result;
 		} else if ("1".equals(customerCoupon.getStatus())) {
 			result.setResultCode("1");
 			result.setResultMsg("优惠券已使用");
+			return result;
 		} else if (crrDate.compareTo(customerCoupon.getValidBegin()) < 0 || crrDate.compareTo(customerCoupon.getValidEnd()) > 0) {
 			// 有效期不对
 			result.setResultCode("1");
 			result.setResultMsg("优惠券不在有效期内");
+			return result;
 		}
 
 		CouponProduction couponProduction = new CouponProduction();
@@ -260,6 +264,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 					if (limitMoney > 0) {
 						result.setResultCode("1");
 						result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
+						return result;
 					}
 				}
 			} else {
@@ -293,6 +298,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 					if (limitMoney > 0) {
 						result.setResultCode("1");
 						result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
+						return result;
 					}
 				}
 
@@ -324,6 +330,7 @@ public class CustomerCouponServiceImpl implements CustomerCouponService {
 				if (limitMoney > 0) {
 					result.setResultCode("1");
 					result.setResultMsg("还需要购买" + limitMoney + "元才能使用该优惠券");
+					return result;
 				}
 			}
 		}

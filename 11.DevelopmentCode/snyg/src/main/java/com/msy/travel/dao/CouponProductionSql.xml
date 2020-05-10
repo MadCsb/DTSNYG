@@ -103,7 +103,7 @@
 		    	t.F_COUPONPDCID = #{couponPdcId}
 		     </if>
 			<if test="couponId !=null and couponId !=''">
-		    	t.F_COUPONID = #{couponId}
+		    	and t.F_COUPONID = #{couponId}
 		    </if>
 		</where>
 		<if test="entityPage != null">
@@ -128,7 +128,7 @@
 		    	t.F_COUPONPDCID = #{couponPdcId}
 		     </if>
 			<if test="couponId !=null and couponId !=''">
-		    	t.F_COUPONID = #{couponId}
+		    	and t.F_COUPONID = #{couponId}
 		    </if>
 		</where>
 	</select>

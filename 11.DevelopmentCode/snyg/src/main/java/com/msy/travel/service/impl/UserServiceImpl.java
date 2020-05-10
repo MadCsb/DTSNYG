@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.openapi.Common;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.LogicException;
@@ -75,13 +76,11 @@ public class UserServiceImpl implements IUserService {
 	 *            User对象
 	 */
 	public void createUser(User user) throws Exception {
-		Event event = new Event();
-		event.setEventId(PrimaryKeyUtil.generateKey());
-		event.setSpId(Destsp.currentSpId);
-		event.setEventKey(Event.EVENT_NEWUSER_COUPON);
-		event.setEventStatus("0");
-		event.setCreateTime(DateTimeUtil.getDateTime19());
-		event.setTriggerUid(user.getUserId());
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("eventId", Event.EVENT_NEWUSER_COUPON);
+		jsonObject.put("triggerUid", user.getUserId());
+		eventService.createNewEvent(jsonObject);
 
 		userDao.insertUser(user);
 	}

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
@@ -109,17 +110,27 @@ public class EventServiceImpl implements EventService {
 		return eventDao.getEventId();
 	}
 
-	public Result createNewUserEvent(String userId) throws Exception {
+	/**
+	 * 新增事件
+	 * 
+	 * @author wzd
+	 * @date 2020年5月10日 下午3:19:20
+	 * @param jsonObject
+	 * @return
+	 * @throws Exception
+	 * @return Result
+	 */
+	public Result createNewEvent(JSONObject jsonObject) throws Exception {
 		Result result = new Result();
 		result.setResultCode("0");
 
 		Event event = new Event();
 		event.setEventId(PrimaryKeyUtil.generateKey());
 		event.setSpId(Destsp.currentSpId);
-		event.setEventKey(Event.EVENT_NEWUSER_COUPON);
+		event.setEventKey(jsonObject.getString("eventKey"));
 		event.setEventStatus("0");
 		event.setCreateTime(DateTimeUtil.getDateTime19());
-		event.setTriggerUid(userId);
+		event.setTriggerUid(jsonObject.getString("userId"));
 		eventDao.insertEvent(event);
 
 		return result;
