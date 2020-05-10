@@ -1,14 +1,17 @@
 package com.msy.travel.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Channel;
+import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.Order;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.ChannelService;
+import com.msy.travel.service.EventService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.OrderListService;
 import com.msy.travel.service.OrderService;
@@ -38,7 +41,7 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
 {
     public static final Log log = LogFactory.getLog(ThirdPayFlowServiceImpl.class);
 
-	@Resource(name="thirdPayFlowDao")
+	  @Resource(name="thirdPayFlowDao")
     private ThirdPayFlowDao thirdPayFlowDao;
 
     @Resource(name = "orderServiceImpl")
@@ -55,7 +58,10 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
 
     @Resource(name = "sellPriceServiceImpl")
     private SellPriceService sellPriceService;
-    
+
+    @Resource(name = "eventServiceImpl")
+    private EventService eventService;
+
     /**
      * 新增ThirdPayFlow
      * 
@@ -161,6 +167,25 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
         if (operate)
         {
             orderService.payOrder(thirdPayFlowDb);
+
+            //下单秩父事件
+            try
+            {
+
+                String[] orderIdArray = orderIds.split(",");
+                Order order = new Order();
+                order.setOrderId(orderIdArray[0]);
+                order = orderService.displayOrder(order);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("eventId", Event.EVENT_PAYSUCCESS_COUPON);
+                jsonObject.put("triggerUid", order.getUserId());
+                eventService.createNewEvent(jsonObject);
+
+            }catch (Exception eventLog)
+            {
+                log.error(eventLog);
+            }
         }
         try {
             Channel sdydChannel = channelService.getChannelByChannelKey(Channel.SDYD);
