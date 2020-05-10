@@ -130,7 +130,7 @@ public class EventServiceImpl implements EventService {
 		event.setEventKey(jsonObject.getString("eventKey"));
 		event.setEventStatus("0");
 		event.setCreateTime(DateTimeUtil.getDateTime19());
-		event.setTriggerUid(jsonObject.getString("userId"));
+		event.setTriggerUid(jsonObject.getString("triggerUid"));
 		eventDao.insertEvent(event);
 
 		return result;
