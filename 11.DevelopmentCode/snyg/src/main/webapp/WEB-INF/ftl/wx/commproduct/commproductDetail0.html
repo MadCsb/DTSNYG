@@ -4,6 +4,9 @@
 <#include "/WX_INC_HEAD.html">   
 <script src="${rc.contextPath}/wx/js/default.js"></script>
 <script src="${rc.contextPath}/wx/js/coupon.js"></script>
+<!-- 
+<script src="https://cdn.bootcss.com/vConsole/3.2.2/vconsole.min.js"></script>
+<script type="text/javascript">	var vConsole = new VConsole();</script> -->
 <style>
 .flexslider {
     margin: 0;
@@ -61,7 +64,7 @@
 </div>
 <#if coupon??>
 <div class="snyg_contentb" > 
-    <a href="javascript:void(0)"  onclick="showCoupon('','','${commproduct.priceId!''}','${userId!''}')">
+    <a href="javascript:void(0)"  onclick="showCoupon('','','${commproduct.priceId!''}','${user.userId!''}')">
     <div class="yhrkdiv">
          <div class="leftzi">优惠<span class="f1">平台优惠</span></div>
          <div class="centyhxx">

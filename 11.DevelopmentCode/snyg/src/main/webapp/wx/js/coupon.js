@@ -34,6 +34,7 @@ function receiveCouponAjax(couponId, fansId) {
 	
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
+	
 
 	$.post("wxCoupon.do?method=receiveCouponSquareAjax", {
 		couponId : couponId,
@@ -75,7 +76,7 @@ function loadCouponUlList() {
 	
 	$("#ulCouponList").html("");
 	
-	$.post("wxCoupon.do?method=getCouponListByGoodsAjax", {
+	$.post("wxCoupon.do?method=queryCouponList", {
 		pdcType : m_pdcType,
 		pmastCoding : m_pmastCoding,
 		priceId : m_pdcId,

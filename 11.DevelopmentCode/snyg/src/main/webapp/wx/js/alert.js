@@ -96,7 +96,7 @@ var Alert={
 	
 	// 提示框（弹出层上操作后，弹出的提示框，点击确定后回调，不需要禁用滚动条和蒙板）
 	alertMsgCallBack:function(obj, callback){		
-		var subhtml='<div id="alertMsgCallBack_box" style=" overflow:hidden;height:100px;width:200px;margin:15% auto;"><div class="sweet-overlay" tabIndex="-1" style=" position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index:9998;"></div><div id="alert_show_3" style="height:auto; padding-bottom:20px;width:200px; background-color:#ddd; color:#000; border-radius:8px;text-align:center;z-index:9999;position:fixed;top:200px"><p style="font-size:14px; margin:15px auto;">'+obj+'</p><span name="button" onclick="closeAlertMsgCallBack(' + callback + ')" class="ydbtn-ico">确认</span></div></div>';
+		var subhtml='<div id="alertMsgCallBack_box" style=" overflow:hidden;height:100px;width:200px;margin:15% auto;"><div class="sweet-overlay" tabIndex="-1" style=" position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index:9998;"></div><div id="alert_show_3" style="height:auto; padding-bottom:20px;width:200px; background-color:#f5f5f5;padding:10px;box-sizing:border-box;border:1px solid #ddd; color:#000; border-radius:8px;text-align:center;z-index:9999;position:fixed;top:200px"><p style="font-size:14px; margin:15px auto;">'+obj+'</p><span name="button" onclick="closeAlertMsgCallBack(' + callback + ')" class="ydbtn-ico">确认</span></div></div>';
 		$("body").append(subhtml);
 	},
 	//
