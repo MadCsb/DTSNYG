@@ -179,7 +179,12 @@ public class WapCouponController extends BaseController {
 			User user = getLoginUser(request);
 			// 用户
 			if (user != null) {
-				result = couponService.canReceiveMsg(coupon, getLoginUser(request).getUserId());
+				if (coupon.getObtainType().equals(Event.EVNET_PAGE_COUPON) || coupon.getObtainType().equals(Event.EVNET_PDC_COUPON)) {
+					result = couponService.canReceiveMsg(coupon, getLoginUser(request).getUserId());
+				} else {
+					result.setResultCode("1");
+					result.setResultMsg("该优惠券无法领取");
+				}
 
 				// 可以领取
 				if (result.getResultCode().equals("0")) {

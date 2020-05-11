@@ -2,9 +2,7 @@ package com.msy.travel.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -151,32 +149,26 @@ public class Scheduled {
 	@org.springframework.scheduling.annotation.Scheduled(cron = "0 * * * * ? ")
 	@Async
 	public void implementEvent() {
+		List<Event> eventList = null;
 		try {
 			Event event = new Event();
 			event.setEventStatus("0");
-			List<Event> eventList = eventService.queryEventList(event);
+			eventList = eventService.queryEventList(event);
+		} catch (Exception e) {
+			log.error("执行事件出错" + e.getMessage());
+		}
 
-			if (eventList != null && eventList.size() > 0) {
-				for (int i = 0; i < eventList.size(); i++) {
-					Event ev = eventList.get(i);
-					if (ev.getEventKey().equals(Event.EVENT_NEWUSER_COUPON) || ev.getEventKey().equals(Event.EVENT_PAYSUCCESS_COUPON) || ev.getEventKey().equals(Event.EVENT_SEND_COUPON)) {
-						try {
-							Map<String, String> params = new HashMap<String, String>();
-							params.put("eventKey", ev.getEventKey());
-							params.put("userId", ev.getTriggerUid());
-							couponService.implementEventCoupon(params);
-							ev.setEventStatus("1");
-							eventService.updateEvent(ev);
-						} catch (Exception e) {
-							log.error("执行发放优惠券事件出错" + ev.getEventId());
-						}
+		for (int i = 0; i < eventList.size(); i++) {
+			synchronized (eventList.get(i).getEventId().intern()) {
+				Event ev = eventList.get(i);
+				if (ev.getEventKey().equals(Event.EVENT_NEWUSER_COUPON) || ev.getEventKey().equals(Event.EVENT_PAYSUCCESS_COUPON) || ev.getEventKey().equals(Event.EVENT_SEND_COUPON)) {
+					try {
+						couponService.implementEventCoupon(ev);
+					} catch (Exception e) {
+						log.error("执行发放优惠券事件出错" + e.getMessage());
 					}
-
 				}
 			}
-
-		} catch (Exception e) {
-			log.error("执行事件出错");
 		}
 
 	}

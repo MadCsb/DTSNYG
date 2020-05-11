@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -28,6 +27,7 @@ import com.msy.travel.pojo.User;
 import com.msy.travel.service.CouponProductionService;
 import com.msy.travel.service.CouponService;
 import com.msy.travel.service.CustomerCouponService;
+import com.msy.travel.service.EventService;
 import com.msy.travel.service.SaleTypeService;
 import com.msy.travel.service.SellPriceService;
 
@@ -55,6 +55,9 @@ public class CouponServiceImpl implements CouponService {
 
 	@Resource(name = "customerCouponServiceImpl")
 	private CustomerCouponService customerCouponService;
+
+	@Resource(name = "eventServiceImpl")
+	private EventService eventService;
 
 	/**
 	 * 新增Coupon
@@ -627,23 +630,25 @@ public class CouponServiceImpl implements CouponService {
 	 * @throws Exception
 	 * @return Result
 	 */
-	public Result implementEventCoupon(Map<String, String> params) throws Exception {
+	public Result implementEventCoupon(Event event) throws Exception {
 		Result result = new Result();
 		result.setResultCode("0");
 		Coupon coupon = new Coupon();
-		coupon.setObtainType(params.get("eventKey"));
+		coupon.setObtainType(event.getEventKey());
 		coupon.setDelFlag("0");
 		coupon.setSpId(Destsp.currentSpId);
 		coupon.setCouponTag("1");
 		coupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
-		coupon.setUserId(params.get("userId"));
+		coupon.setUserId(event.getTriggerUid());
 		List<Coupon> couponList = couponDao.queryCouponListForSellPriceLogin(coupon);
 
 		for (Coupon c : couponList) {
-			if ("0".equals(canReceiveMsg(c, params.get("userId")).getResultCode())) {
-				customerCouponService.receiveCoupon(params.get("userId"), coupon);
+			if ("0".equals(canReceiveMsg(c, event.getTriggerUid()).getResultCode())) {
+				customerCouponService.receiveCoupon(event.getTriggerUid(), c);
 			}
 		}
+		event.setEventStatus("1");
+		eventService.updateEvent(event);
 		return result;
 	}
 }

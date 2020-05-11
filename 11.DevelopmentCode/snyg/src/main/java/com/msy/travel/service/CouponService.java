@@ -1,10 +1,10 @@
 package com.msy.travel.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
+import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.User;
 
 /**
@@ -195,11 +195,11 @@ public interface CouponService {
 	 * 
 	 * @author wzd
 	 * @date 2020年5月7日 下午5:16:23
-	 * @param params
+	 * @param event
 	 * @return
 	 * @throws Exception
 	 * @return Result
 	 */
-	public Result implementEventCoupon(Map<String, String> params) throws Exception;
+	public Result implementEventCoupon(Event event) throws Exception;
 
 }
