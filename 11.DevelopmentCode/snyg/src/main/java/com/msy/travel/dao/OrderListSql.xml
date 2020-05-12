@@ -446,6 +446,12 @@
 			SELECT
 			ol.F_ORDERLISTTYPE as orderListType,
 			(CASE ol.F_ORDERLISTTYPE
+				WHEN '0' THEN ol.F_NUM
+				WHEN '1' THEN ol.F_BACKNUM
+				WHEN '2' THEN ol.F_NUM
+				END
+			) AS num,	/*数量*/
+			(CASE ol.F_ORDERLISTTYPE
 				WHEN '0' THEN o.F_PAYDATE
 				WHEN '1' THEN ob.F_APPLYTIME
 				WHEN '2' THEN otmp.F_CREATETIME

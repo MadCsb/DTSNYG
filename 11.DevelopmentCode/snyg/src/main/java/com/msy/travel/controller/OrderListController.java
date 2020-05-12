@@ -470,7 +470,7 @@ public class OrderListController extends BaseController {
 				map.put("createTime", t.getCreateTime());
 				map.put("money", t.getMoney());
 				map.put("orderListType", t.getOrderListType());
-
+				map.put("num", t.getNum());
 				map.put("productName", t.getProductName());
 				map.put("childName", t.getChildName());
 				map.put("custName", t.getCustName());

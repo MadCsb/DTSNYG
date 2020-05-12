@@ -155,6 +155,8 @@ td img {
 <script type="text/javascript">
 
 $(function () {
+	//parent.layer.closeAll('loading');
+	
 	//多个查询条件样式
 	showHideQuery();
 	
@@ -167,9 +169,11 @@ $(function () {
 
 function exportList(){
 //	if(checkSubmit()){
-		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailListExport");
-		$("#queryFrm").submit();
-		$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailList");
+	//parent.layer.load(2,{shade: [0.2, '#000']});
+	$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailListExport");
+	$("#queryFrm").submit();
+	$("#queryFrm").attr("action", "orderList.do?method=queryOrderListDetailList");
+	//parent.layer.closeAll('loading');
 //	}
 }
 

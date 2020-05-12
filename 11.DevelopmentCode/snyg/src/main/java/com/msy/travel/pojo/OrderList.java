@@ -32,7 +32,7 @@ public class OrderList extends BaseEntity implements java.io.Serializable {
 	 */
 	public static final String[] EXPORT_HEADERS_DETAILLIST = {
 			// columns START
-			"orderCode:单据编号", "createTime:发生日期", "money:发生金额(¥)", "orderListType:发生类型", "productName:商品名称", "childName:商品规格", "custName:收货人", "custPhone:收货电话", "recAddress:收货地址" };
+			"orderCode:单据编号", "createTime:发生日期", "money:发生金额(¥)", "orderListType:发生类型", "num:发生数量", "productName:商品名称", "childName:商品规格", "custName:收货人", "custPhone:收货电话", "recAddress:收货地址" };
 	// columns START
 	/**
 	 * 订单产品明细编号 db_column: F_ORDERLISTID
