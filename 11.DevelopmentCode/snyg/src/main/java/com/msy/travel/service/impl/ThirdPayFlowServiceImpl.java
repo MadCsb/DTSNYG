@@ -178,7 +178,7 @@ public class ThirdPayFlowServiceImpl implements ThirdPayFlowService
                 order = orderService.displayOrder(order);
 
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("eventId", Event.EVENT_PAYSUCCESS_COUPON);
+                jsonObject.put("eventKey", Event.EVENT_PAYSUCCESS_COUPON);
                 jsonObject.put("triggerUid", order.getUserId());
                 eventService.createNewEvent(jsonObject);
 
