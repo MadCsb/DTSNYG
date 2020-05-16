@@ -15,7 +15,7 @@
 <form action="" method="post" id="createConsignee">
 <div class="snyg_content">
 		
-     	<input type="hidden" id="isDefault" name="isDefault">
+     	<input type="hidden" id="isDefault" name="isDefault" value="${consignee.isDefault!''}">
      		<input type="hidden" name="spId" id="spId" value="${spId!''}" />
 			<input type="hidden" name="userId" id="userId" value="${user.userId!''}" />
 			<input type="hidden" name="province" id="province" value="${province!''}" />
@@ -35,29 +35,29 @@
 				value="${consignee.pcx!''}"		name="location">
      </p>
      <p>
-     	<input id="address" class="txt-input dz" type="text"
+     	<input id="recAddress" class="txt-input dz" type="text"
 			value="${consignee.recAddress!''}"		placeholder="收货地址" name="recAddress">
      </p>
-    
+    <!-- 
      <div class="text_c"><label>
         <input  type="radio"  value="radio" hidden/>
         <label for="radio" class="radiock"></label>
-    	<span class="f1" style="vertical-align: middle; margin-left:10px;">设为默认</span></div></label>      
+    	<span class="f1" style="vertical-align: middle; margin-left:10px;">设为默认</span></div></label> -->      
 	</div>
 </div>
 	<div align="center"><button class="btn-big" type="button" onclick="beforeSubmit()">保存</button></div>
 </form>
 <script>
 function beforeSubmit() {
-	var item = $("input[type='radio']").is(':checked');
+	/*var item = $("input[type='radio']").is(':checked');
 	if (item == true) {
 		$("#isDefault").val("1");
 	} else {
 		$("#isDefault").val("0");
-	}
+	}*/
 	var name = $("#name").val();
 	var link = $("#link").val();
-	var address = $("#address").val();
+	var recAddress = $("#recAddress").val();
 	var pcx = $("#location").val();
 
 	// 姓名必填
@@ -91,13 +91,13 @@ function beforeSubmit() {
 	}
 	
 	// 地址必填
-	if (address == "") {
+	if (recAddress == "") {
 		Alert.showMsg("收货地址必填");
 		return;
 	}
 
 	// 地址长度
-	if (address != "" && getStrLengthCom(address) > 500) {
+	if (recAddress != "" && getStrLengthCom(recAddress) > 500) {
 		Alert.showMsg("收货地址不能超过500位（中文算2位）");
 		return;
 	}
@@ -108,9 +108,10 @@ function beforeSubmit() {
 		userId:$("#userId").val(),
 		custName:$("#name").val(),
 		custPhone:$("#link").val(),
-		recAddress:$("#address").val(),
+		recAddress:$("#recAddress").val(),
 		isDefault:$("#isDefault").val(),
-		pcx:$("#location").val().trim()
+		pcx:$("#location").val().trim(),
+		consigneeId:$("#consigneeId").val()
 	},function(data) {
 		if(data=="success"){
 			 toConsigneeList();
