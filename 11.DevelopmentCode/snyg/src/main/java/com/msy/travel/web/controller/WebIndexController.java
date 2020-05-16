@@ -20,6 +20,7 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.pojo.Carousel;
 import com.msy.travel.pojo.CarouselItem;
+import com.msy.travel.pojo.User;
 import com.msy.travel.service.CarouselItemService;
 import com.msy.travel.service.CarouselService;
 import com.msy.travel.service.IDestspService;
@@ -108,6 +109,29 @@ public class WebIndexController extends BaseController {
 			response.getWriter().write(JSON.toJSONString(carouselItemList));
 		} catch (Exception e) {
 			log.error(e);
+		}
+	}
+
+	/**
+	 * 是否登录
+	 * 
+	 * @author wzd
+	 * @date 2020年5月16日 上午9:57:12
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=checkLogin")
+	public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			User user = getLoginUser(request);
+			if (user != null && user.getUserId() != null) {
+				response.getWriter().print("1");
+			} else {
+				response.getWriter().print("0");
+			}
+		} catch (Exception e) {
+			log.error(e, e);
 		}
 	}
 }

@@ -74,15 +74,21 @@ $(function(){
 })
 
 function getShopCartListLenth(){
-	$.post("wapShopCart?method=getShopCartListWx",{
+	$.post("webIndex?method=checkLogin",{
 		
 	},function(data){
-		if(data!=null && data!="" && data.length>0){
-			$("#shopCartNum").html(data.length);		
-		}else{
-			$("#shopCartNum").html("0");	
-		}		
-	},'json')
+		if(data=="1"){
+			$.post("wapShopCart?method=getShopCartListWx",{
+				
+			},function(data){
+				if(data!=null && data!="" && data.length>0){
+					$("#shopCartNum").html(data.length);		
+				}else{
+					$("#shopCartNum").html("0");	
+				}		
+			},'json')
+		}	
+	})
 }
 </script>
     </body>

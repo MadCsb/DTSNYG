@@ -80,17 +80,23 @@ $(function(){
 
 
 function getShopCartList(){
-	$.post("webShopcart?method=getShopCartListWeb",{
+	$.post("webIndex?method=checkLogin",{
 		
 	},function(data){
-		if(data!=null && data!="" && data.length>0){
-			$("#shopCartListDiv").html(getShopCartStr(data));	
-		}else{
-			$("#shopCartListDiv").html("");
-			$("#numAll").html("0");
-			$("#moneyAll").html("&yen;0.00");
-		}		
-	},'json')
+		if(data=="1"){
+			$.post("webShopcart?method=getShopCartListWeb",{
+				
+			},function(data){
+				if(data!=null && data!="" && data.length>0){
+					$("#shopCartListDiv").html(getShopCartStr(data));	
+				}else{
+					$("#shopCartListDiv").html("");
+					$("#numAll").html("0");
+					$("#moneyAll").html("&yen;0.00");
+				}		
+			},'json')
+		}	
+	})
 }
 function getShopCartStr(data){
 	var str = "";
