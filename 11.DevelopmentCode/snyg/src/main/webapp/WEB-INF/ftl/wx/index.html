@@ -608,9 +608,12 @@ function changePriceType(priceType){
 
 		        str+='<a  onclick="productDetail(\''+data[i].priceId+'\')">';  
 
-		        str+='<div class="data_jg">&yen;' + data[i].price + '</div>';  
+		     //   str+='<div class="data_jg">&yen;' + data[i].price + '</div>';  
 
-		        str+='<div class="data_more"></div>';  
+		     //   str+='<div class="data_more"></div>';
+		        
+		        str+='<div class="data_jg">&yen;' + data[i].price + '<span class="f4" style="text-decoration:line-through; font-size:13px;">&yen;' + data[i].referencePrice + '</span></div>';  
+		        str+='<div class="data_more" style="display:none;"></div>';  
 
 		        str+='</a>';  
 

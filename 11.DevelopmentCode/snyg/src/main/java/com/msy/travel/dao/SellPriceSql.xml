@@ -187,7 +187,8 @@
 			g.F_GOODSPRICEID as goodsPriceId,
 			p.F_PRODUCTID as productId,
 			g.F_THUMBPIC as goodsThumbPic,
-			s.F_PRICECODE as priceCode
+			s.F_PRICECODE as priceCode,
+			p.F_REFERENCEPRICE as referencePrice
 		FROM
 			t_sm_sellprice s
 		LEFT JOIN t_sm_commproduct p ON s.F_PRODUCTID = p.F_PRODUCTID
