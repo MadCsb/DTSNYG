@@ -53,6 +53,9 @@
   <div class="zfbtx" >
     运费合计<span id="transFee"></span>
   </div>
+  <div class="zfbtx" >
+    优惠合计<span id="couponMoney"></span>
+  </div>
 </div>
 
 
@@ -144,6 +147,16 @@
     $("#money1").html("&yen;"+order.money);
     $("#productPrice").html("&yen;"+order.productPrice);
     $("#transFee").html("&yen;"+order.transFee);
+    $("#couponMoney").html("&yen;"+order.couponMoney);
+    if(typeof(order.couponMoney) == 'undefined' || parseFloat(order.couponMoney) == 0)
+    {
+      $("#couponMoney").parent().hide();
+    }else
+    {
+      $("#couponMoney").parent().show();
+      $("#couponMoney").html("&yen;"+order.couponMoney);
+    }
+
     $("#memo").val(order.memo);
 
     //"-"已退订 "--"退款中  "0-0"未支付未关闭，"0-12".未支付已关闭，"1-0"已支付待确认，"1-1"已支付已发货，"1-2"已支付已收货,"1-5"订单已关闭

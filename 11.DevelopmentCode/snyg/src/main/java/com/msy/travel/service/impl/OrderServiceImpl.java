@@ -405,6 +405,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	public List<Order> createOrder(JSONObject param) throws LogicException, Exception {
 		List<Order> orderResult = new ArrayList<>();
+		List<OrderList> allOrderList = new ArrayList<>(); //所有订单的所有明细
 		// 操作用户=下单用户
 		User operatorUser = new User();
 		operatorUser.setUserId(param.getString("userId"));
@@ -421,12 +422,6 @@ public class OrderServiceImpl implements OrderService {
 		String createTime = DateTimeUtil.getDateTime19();
 		// 数字格式化
 		DecimalFormat df = new DecimalFormat("#.##");
-
-		// 优惠券JSONObject
-		JSONObject customerCouponJSONObject = param.getJSONObject("customerCoupon");
-		// 使用优惠券临时保存Array
-		JSONArray useCustomerCouponJSONArray = new JSONArray();
-		BigDecimal useCustomerCouponTotalMoney = new BigDecimal("0");// 总共使用优惠券的订单明细总产品价格
 
 		// 根据orderListList分订单，目前一个orderList=一个订单
 		JSONArray orders = separateOrder(param.getJSONArray("orderListList"));
@@ -531,25 +526,7 @@ public class OrderServiceImpl implements OrderService {
 				num = num.add(new BigInteger(String.valueOf(orderListNum)));
 				transFee = transFee.add(new BigDecimal(orderListTransFee));
 				money = money.add(productPrice).add(transFee);
-				if (customerCouponJSONObject != null) // 如果存在优惠券
-				{
-					for (int m = 0; m < customerCouponJSONObject.getJSONArray("sellPrice").size(); m++) {
-						JSONObject sellPriceJSONObject = customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(m);
-						if (sellPriceJSONObject.getString("priceId").equals(priceId)) {
-							if (sellPriceJSONObject.getString("isUse").equals("1")) // 可以使用优惠券
-							{
-								JSONObject useCustomerCouponJSONObject = new JSONObject();
-								useCustomerCouponJSONObject.put("priceId", priceId);
-								useCustomerCouponJSONObject.put("orderListId", orderList.getOrderListId());
-								useCustomerCouponJSONObject.put("orderId", orderList.getOrderId());
-								useCustomerCouponJSONObject.put("orderListProductPrice", orderListProductPrice);
-								useCustomerCouponJSONArray.add(useCustomerCouponJSONObject);
-								useCustomerCouponTotalMoney = useCustomerCouponTotalMoney.add(orderListProductPrice);
-							}
-							break;
-						}
-					}
-				}
+				allOrderList.add(orderList);
 			}
 			if (productNameStringBuffer.length() > 299) {
 				order.setProductName(productNameStringBuffer.substring(0, 299));
@@ -590,82 +567,85 @@ public class OrderServiceImpl implements OrderService {
 
 			orderResult.add(order);
 		}
-		// 如果有使用优惠券，需要更新优惠券的金额
-		// {customerCouponId:使用优惠券ID,couponMoney:优惠券金额,userId:优惠券使用人,sellPrice:[{priceId:'',num:'',isUse:'0不能使用'},{priceId:'',num:'',isUse:'1能使用'}]
-		// }
+
+		// 优惠券JSONObject
+		JSONObject customerCouponJSONObject = param.getJSONObject("customerCoupon");
 		if (customerCouponJSONObject != null) // 如果存在优惠券
 		{
-			double couponMoney = customerCouponJSONObject.getDoubleValue("couponMoney");// 总优惠金额
-			double reCouponMoney = couponMoney;// 剩余优惠金额
-			for (int i = 0; i < customerCouponJSONObject.getJSONArray("sellPrice").size(); i++) {
-				JSONObject sellPrice = customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(i);
-				if (sellPrice.getString("isUse").equals("1")) // 可以使用
+			JSONArray customerCouponSellPriceJSONArray =	customerCouponJSONObject.getJSONArray("sellPrice");//优惠券接口返回的使用优惠券内容 [{priceId:'',num:'',isUse:'1能使用'}]
+			//自定义使用优惠券的订单明细列表
+			JSONArray useCouponOrderListJSONArray = new JSONArray();
+			//自定义使用优惠券的订单明细商品总金额
+			BigDecimal useCouponOrderListProductMoney = new BigDecimal(0);
+
+			for(int i=0;i<allOrderList.size();i++)
+			{
+				for(int j=0;j<customerCouponSellPriceJSONArray.size();j++)
 				{
-					// 判断是否最后一个可以使用
-					boolean isLast = true;
-					for (int j = i + 1; j < customerCouponJSONObject.getJSONArray("sellPrice").size(); j++) {
-						if (customerCouponJSONObject.getJSONArray("sellPrice").getJSONObject(j).getString("isUse").equals("1")) // 可以使用
+					if(allOrderList.get(i).getPriceId().equals(customerCouponSellPriceJSONArray.getJSONObject(j).getString("priceId"))) //如果订单明细中的priceId 等于 优惠券使用明细中的priceId
+					{
+						if("1".equals(customerCouponSellPriceJSONArray.getJSONObject(j).getString("isUse")))
 						{
-							isLast = false;
-							break;
+							JSONObject useCouponOrderListJSONObject = new JSONObject();
+							useCouponOrderListJSONObject.put("orderId", allOrderList.get(i).getOrderId()); //订单ID
+							useCouponOrderListJSONObject.put("orderListId", allOrderList.get(i).getOrderListId()); //订单明细ID
+							useCouponOrderListJSONObject.put("priceId", allOrderList.get(i).getPriceId()); //销售ID
+							BigDecimal price = new BigDecimal(allOrderList.get(i).getPrice());
+							BigDecimal num = new BigDecimal(allOrderList.get(i).getNum());
+							BigDecimal money = new BigDecimal(allOrderList.get(i).getMoney());
+							BigDecimal productMoney = price.multiply(num);
+							useCouponOrderListProductMoney = useCouponOrderListProductMoney.add(productMoney); //所有使用优惠券的
+							useCouponOrderListJSONObject.put("price",price); //单价
+							useCouponOrderListJSONObject.put("num",num);  //数量
+							useCouponOrderListJSONObject.put("money",money); //订单明细金额
+							useCouponOrderListJSONObject.put("productMoney", productMoney); //订单明细商品金额
+							useCouponOrderListJSONArray.add(useCouponOrderListJSONObject);
 						}
-					}
-
-					for (int j = 0; j < useCustomerCouponJSONArray.size(); j++) {
-						JSONObject useCustomerCouponJSONObject = useCustomerCouponJSONArray.getJSONObject(j);
-						if (useCustomerCouponJSONObject.getString("priceId").equals(sellPrice.getString("priceId"))) {
-							String orderListId = useCustomerCouponJSONObject.getString("orderListId");
-							String orderId = useCustomerCouponJSONObject.getString("orderId");
-							// 当前订单明细 产品金额
-							double orderListProductPrice = Double.parseDouble(useCustomerCouponJSONObject.getString("orderListProductPrice"));
-							double orderListCouponMoney = 0;// 订单应该优惠的金额
-							if (isLast) // 如果是最后一个,则订单明细优惠金额，等于剩余优惠金额
-							{
-								orderListCouponMoney = reCouponMoney;
-							} else // 如果不是最后一个,则订单明细优惠金额
-									// 当前订单明细产品金额/所有优惠产品的产品总金额*总优惠金额
-							{
-								orderListCouponMoney = orderListProductPrice / useCustomerCouponTotalMoney.doubleValue() * couponMoney;
-							}
-							String orderListCouponMoneyDf = df.format(orderListCouponMoney);
-							reCouponMoney = reCouponMoney - Double.parseDouble(orderListCouponMoneyDf);
-							// 更新订单明细表
-							OrderList orderList = new OrderList();
-							orderList.setOrderListId(orderListId);
-							orderList = orderListService.displayOrderList(orderList);
-							// 订单金额 = （产品金额+运费） - 优惠金额
-							double orderListMoney = Double.parseDouble(orderList.getMoney()) - Double.valueOf(orderListCouponMoneyDf);
-							orderList = new OrderList();
-							orderList.setOrderListId(orderListId);
-							orderList.setCouponMoney(orderListCouponMoneyDf);
-							orderList.setMoney(df.format(orderListMoney));
-							orderList.setCustomerCouponId(customerCouponJSONObject.getString("customerCouponId"));
-							orderListService.updateOrderList(orderList);
-							// 更新订单表
-							Order order = new Order();
-							order.setOrderId(orderId);
-							order = orderDao.queryOrder(order);
-							// 订单金额 = （产品金额+运费） - 优惠金额
-							double orderMoney = Double.parseDouble(order.getMoney()) - Double.valueOf(orderListCouponMoneyDf);
-							order.setMoney(df.format(orderMoney));
-							double orderCouponMoney = 0;
-							if (order.getCouponMoney() == null) {
-
-							} else {
-								orderCouponMoney = orderCouponMoney + Double.parseDouble(order.getCouponMoney());
-							}
-							order.setCouponMoney(df.format(orderCouponMoney));
-							orderDao.updateOrder(order);
-							for (int k = 0; k < orderResult.size(); k++) {
-								if (orderResult.get(k).getOrderId().equals(order.getOrderId())) {
-									orderResult.set(k, order);
-									break;
-								}
-							}
-							break;
-						}
+						break;
 					}
 				}
+			}
+
+			//总优惠金额
+			BigDecimal couponMoney = new BigDecimal(customerCouponJSONObject.getString("couponMoney"));
+			//useCouponOrderListProductMoney
+			BigDecimal beforeOrderListProductMoney = new BigDecimal(0);//之前所有订单明细的商品金额
+			BigDecimal beforeOrderListCouponMoney = new BigDecimal(0);//之前所有订单明细的优惠金额
+			for(int i=0;i<useCouponOrderListJSONArray.size();i++)
+			{
+				beforeOrderListProductMoney = beforeOrderListProductMoney.add(useCouponOrderListJSONArray.getJSONObject(i).getBigDecimal("productMoney")).setScale(2, BigDecimal.ROUND_HALF_UP); //（当前+之前总商品金额） 重置之前所有订单明细的商品金额
+				BigDecimal beforeCurrentOrderListCouponMoney = beforeOrderListProductMoney.multiply(couponMoney).divide(useCouponOrderListProductMoney).setScale(2, BigDecimal.ROUND_HALF_UP);; //（当前+之前总商品金额）*总优惠金额/总商品金额 = （当前+之前总优惠金额）
+				BigDecimal currentOrderListCouponMoney = beforeCurrentOrderListCouponMoney.subtract(beforeOrderListCouponMoney).setScale(2, BigDecimal.ROUND_HALF_UP);; //当前优惠金额=（当前+之前总优惠金额）-之前优惠金额
+				beforeOrderListCouponMoney = beforeCurrentOrderListCouponMoney; //重置之前所有订单明细的优惠金额
+
+				//更新订单明细
+				OrderList orderList = new OrderList();
+				orderList.setOrderListId(useCouponOrderListJSONArray.getJSONObject(i).getString("orderListId"));
+				BigDecimal orderListMoney = useCouponOrderListJSONArray.getJSONObject(i).getBigDecimal("money");
+				orderListMoney = orderListMoney.subtract(currentOrderListCouponMoney).setScale(2, BigDecimal.ROUND_HALF_UP);;
+				orderList.setCouponMoney( currentOrderListCouponMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				orderList.setMoney(orderListMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				orderListService.updateOrderList(orderList);
+				//更新订单金额
+				Order orderTmp = new Order();
+				orderTmp.setOrderId(useCouponOrderListJSONArray.getJSONObject(i).getString("orderId"));
+				orderTmp = displayOrder(orderTmp);
+				BigDecimal orderCouponMoney;
+				if(orderTmp.getCouponMoney() == null || "".equals(orderTmp.getCouponMoney()))
+				{
+					orderCouponMoney = new BigDecimal(0);
+				}else
+				{
+					orderCouponMoney = new BigDecimal(orderTmp.getCouponMoney());
+				}
+				orderCouponMoney = orderCouponMoney.add(currentOrderListCouponMoney);
+				BigDecimal orderMoney = new BigDecimal(orderTmp.getMoney());
+				orderMoney = orderMoney.subtract(currentOrderListCouponMoney);
+				Order order = new Order();
+				order.setOrderId(orderTmp.getOrderId());
+				order.setCouponMoney(orderCouponMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				order.setMoney(orderMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				orderDao.updateOrder(order);
 			}
 			CustomerCoupon customerCoupon = new CustomerCoupon();
 			customerCoupon.setCustomerCouponId(customerCouponJSONObject.getString("customerCouponId"));

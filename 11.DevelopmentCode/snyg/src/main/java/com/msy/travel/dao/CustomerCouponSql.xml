@@ -77,23 +77,23 @@
 	<!-- 修改信息 -->
 	<update id="updateCustomerCoupon" parameterType="customerCoupon">
 		UPDATE
-			t_sm_customercoupon 
-		SET
-			F_CUSTOMERCODE = #{customerCode} ,
-			F_COUPONID = #{couponId} ,
-			F_USETYPE = #{useType} ,
-			F_USELIMIT = #{useLimit} ,
-			F_DISCOUNT = #{discount} ,
-			F_COUPONTYPE = #{couponType} ,
-			F_VALIDBEGIN = #{validBegin} ,
-			F_VALIDEND = #{validEnd} ,
-			F_OBTAINTIME = #{obtainTime} ,
-			F_STATUS = #{status} ,
-			F_ORDERID = #{orderId} ,
-			F_DELFLAG = #{delFlag} 
+			t_sm_customercoupon
+		<set>
+			<if test="customerCode !=null">F_CUSTOMERCODE = #{customerCode},</if>
+			<if test="couponId !=null">F_COUPONID = #{couponId},</if>
+			<if test="useType !=null">F_USETYPE = #{useType},</if>
+			<if test="useLimit !=null">F_USELIMIT = #{useLimit},</if>
+			<if test="discount !=null">F_DISCOUNT = #{discount},</if>
+			<if test="couponType !=null">F_COUPONTYPE = #{couponType},</if>
+			<if test="validBegin !=null">F_VALIDBEGIN = #{validBegin},</if>
+			<if test="validEnd !=null">F_VALIDEND = #{validEnd},</if>
+			<if test="obtainTime !=null">F_OBTAINTIME = #{obtainTime},</if>
+			<if test="status !=null">F_STATUS = #{status},</if>
+			<if test="orderId !=null">F_ORDERID = #{orderId},</if>
+			<if test="delFlag !=null">F_DELFLAG = #{delFlag},</if>
+		</set>
 		<where>
-			F_CUSTOMERCOUPONID = #{customerCouponId} 
-			
+			F_CUSTOMERCOUPONID = #{customerCouponId}
 		</where>
 	</update>
 	<!-- 删除消息 -->
