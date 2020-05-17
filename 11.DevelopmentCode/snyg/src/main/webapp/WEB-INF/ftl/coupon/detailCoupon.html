@@ -69,14 +69,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tdright"><b><font class="f2">*</font>券有效期：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>券使用有效期：</b></td>
 					<td colspan="3">${coupon.validBegin!''}
 						至 
 						${coupon.validEnd!''}
 					</td>
 				</tr>
 				<tr>
-					<td class="tdright"><b><font class="f2">*</font>领券有效期：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>使用有效期：</b></td>
 					<td>
 						<#if coupon.obtainDateType?? && coupon.obtainDateType=="1">
 							有效时段
@@ -84,7 +84,7 @@
                				有效时长
                			</#if>
 					</td>
-					<td class="tdright"><b><font class="f2">*</font>有效时段：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>领券时段：</b></td>
 					<td>
 						<#if coupon.obtainDateType?? && coupon.obtainDateType=="1">
 							${coupon.obtainDateBegin!''} 至 ${coupon.obtainDateEnd!''}
