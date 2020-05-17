@@ -78,6 +78,7 @@ public class WapPersonalController extends BaseController {
 		ModelAndView view = null;
 		try {
 			view = new ModelAndView("wap/personal/customerCoupon");
+			view.addObject("user",getLoginUser(request));
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));

@@ -71,19 +71,27 @@
   </div>
 </div>
 
-<!--<div class="snyg_contentb" style="display: none;">-->
-  <!--<div class="ddbt_title">-->
-    <!--<a href="">优惠券</a>-->
-  <!--</div>-->
-  <!--<div class="jtdiv">-->
-    <!--夏日清凉满减优惠-->
-    <!--<span class="f1">-&yen;1200</span>-->
-  <!--</div>-->
-  <!--<div class="jtdiv">-->
-    <!--夏日清凉满减优惠-->
-    <!--<span class="f2">暂无可用优惠券</span>-->
-  <!--</div>-->
-<!--</div>-->
+
+<div class="snyg_contentb">
+  <div class="ddbt_title">
+    <a href="">优惠券</a>
+  </div>
+  <#list customerCouponList  as ccl>
+    <div class="jtdiv" customerCouponId="${ccl.customerCouponId!''}" onclick="selectCustomerCoupon(this)" haveSelect="">
+      ${ccl.name!''}
+      <span class="f1">
+        <#if ccl.useType == '1'>
+          -&yen;${ccl.discount}
+        </#if>
+        <#if ccl.useType == '2'>
+          ${ccl.discount}折
+        </#if>
+      </span>
+      <span class="f2" errMsg="errMsg"></span>
+    </div>
+  </#list>
+</div>
+
 <div class="snyg_contentb">
   <div class="ddbt_title">
     <a>买家留言</a>
@@ -96,7 +104,7 @@
 
 <!--预订menu开始-->
 <nav class="snyg_nav">
-  <span class="wid2 text_c"><p class="f2 lh24">合计：<b id="totalPay">&yen;235.00</b></p><p class="tswz">含运费</p></span>
+  <span class="wid2 text_c"><p class="f2 lh24">合计：<b id="totalPay"></b></p><p class="tswz">含运费</p></span>
   <a onclick="createOrder()"><span class="green_btn wid3" >提交订单</span></a>
 </nav>
 
@@ -114,7 +122,22 @@
     queryObject.userId = $("#userId").val();
     queryObject.defaultFirst = "1"; //默认地址排前边
     getUserConsignee(queryObject); //获取用户信息以后，获取收货地址
+
+    //设置第一个优惠券选中
+    selectCustomerCoupon($("div [customerCouponId]").first());
   })
+
+  /**
+   * 选中优惠券
+   **/
+  function selectCustomerCoupon(divObject) {
+    $("div [customerCouponId]").attr("haveSelect","1"); //所有优惠券不选中
+    $("div [customerCouponId]").attr("class","yhjoff"); //所有优惠券不选中
+
+    $(divObject).attr("haveSelect","0"); //当前优惠券选中
+    $(divObject).attr("class","yhjon");  //当前优惠券选中
+    calculation();
+  }
 
   //获取服务器收货地址详情
   function getUserConsignee(queryData)
@@ -252,6 +275,8 @@
   function calculation() {
     var totalPrice = 0; //总商品费用
     var totalTransFee = 0; //总运费
+    var totalPay = 0;//总支付金额
+    var sellPrice = new Array();
     $(".lics").each(function () {
       var price = parseFloat($(this).attr("price"));
       var num = parseInt($(this).find(".input_sl").eq(0).val());
@@ -266,8 +291,42 @@
       }
       totalPrice = parseFloat(totalPrice + price*num);
       totalTransFee = parseFloat(totalTransFee + parseFloat(transFee));
+
+      var sellPriceTmp = new Object();
+      sellPriceTmp.priceId = $(this).attr("priceId");
+      sellPriceTmp.num = $(this).find(".input_sl").eq(0).val();
+      sellPrice.push(sellPriceTmp);
     });
 
+    var couponMoney = 0;//优惠金额
+    var customerCouponIdDiv = $("div [haveSelect='"+0+"']"); //选中的优惠券
+    $("[errMsg]").html(""); //清空优惠券不能使用消息
+    $("[canUse]").attr("canUse","1"); //清空当前优惠券可使用
+    if (customerCouponIdDiv && typeof($(customerCouponIdDiv).attr("customerCouponId")) != "undefined")
+    {
+      var customerCouponParam = new Object(); //优惠券请求参数
+      customerCouponParam.customerCouponId = $(customerCouponIdDiv).attr("customerCouponId");//客户优惠券关联ID
+      customerCouponParam.sellPrice =sellPrice;
+      $.ajax({
+        type: "POST",
+        async: false,
+        dataType: "json",
+        url: "waporder?method=ajaxCanUseCoupon",
+        data:{param:JSON.stringify(customerCouponParam),userId:$("#userId").val()},
+        success: function (data) {
+          if(data.resultCode == '0')
+          {
+            $(customerCouponIdDiv).attr("canUse","0");
+            couponMoney =parseFloat(data.resultPojo.couponMoney);
+          }else
+          {
+            $(customerCouponIdDiv).attr("canUse","1");
+            $(customerCouponIdDiv).find("[errMsg]").html(data.resultMsg);
+          }
+        }
+      });
+    }
+    var totalPay = (totalPrice + totalTransFee - couponMoney).toFixed(2);
     var total = (totalPrice + totalTransFee).toFixed(2);
     totalPrice = totalPrice.toFixed(2);
     totalTransFee = totalTransFee.toFixed(2);
@@ -275,7 +334,7 @@
     $("#total").html("&yen;"+total);
     $("#totalPrice").html("&yen;"+totalPrice);
     $("#totalTransFee").html("&yen;"+totalTransFee);
-    $("#totalPay").html("&yen;"+total);
+    $("#totalPay").html("&yen;"+totalPay);
   }
 
   function createOrder() {
@@ -314,6 +373,15 @@
       orderListList.push(orderList);
     });
     param.orderListList = orderListList;
+
+    var customerCouponIdDiv = $("div [haveSelect='"+0+"']"); //选中的优惠券
+    if (customerCouponIdDiv)
+    {
+      if($(customerCouponIdDiv).attr("canUse") == "0")
+      {
+        param.customerCouponId = $(customerCouponIdDiv).attr("customerCouponId");
+      }
+    }
 
     $.ajax({
       type: "POST",

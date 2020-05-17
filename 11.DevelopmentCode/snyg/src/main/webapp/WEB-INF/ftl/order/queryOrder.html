@@ -146,7 +146,7 @@
 													<p style="height:25px; overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">${oll.productName!''}</p>
 													（${oll.childName!''}）
 													</span>
-													<span style="display:inline-block; width:18%;height:50px;line-height:50px; vertical-align:top;">&yen;${oll.price!''}*${oll.num!''}</span>
+													<span style="display:inline-block; width:18%;height:50px;line-height:50px; vertical-align:top;" title="商品价：${oll.price!''}*${oll.num!''}&#13;优惠价：${oll.couponMoney!'0'}&#13;运费：${oll.transFee!'0'}">&yen;${oll.money!'0'}</span>
 												</div>
 											</#if>
 											<#assign orderDetailIndex = orderDetailIndex + 1>

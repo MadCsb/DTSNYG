@@ -122,6 +122,7 @@
   var remainPay = null; //订单支付截止定时器
   var dateTimeUtil = new DateTimeUtil(); //计算日期js
   var pay = null; //支付js
+  var money = null; //订单金额
   var loading = null;
   $(function () {
     new Person().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
@@ -130,6 +131,7 @@
   var orderDetailShow = function (orderDetail) {
     var orderListList = orderDetail.orderListList;
     var order = orderDetail.order;
+    money = order.money;
     var orderCustomer = orderDetail.orderCustomer;
 
     $("#createTime").html(order.createTime);
@@ -326,7 +328,14 @@
    */
   function toPay() {
     pay = new Pay();
-    pay.payMethod = $("input[name='payMethod']:checked").val();
+    if(0 == money)
+    {
+      pay.payMethod = pay.PAY_METHOD_ZERO_AUTO;
+    }else
+    {
+      pay.payMethod = $("input[name='payMethod']:checked").val();
+    }
+
     var payInfoParam = new Object();
     payInfoParam.openId = $("#userLoginName").val();
     payInfoParam.spId = currentSpId;
@@ -340,6 +349,21 @@
   {
     if(pay.payInfo.resultCode == "0") //如果获取到正确的payInfo
     {
+      if(pay.payMethod == pay.PAY_METHOD_ZERO_AUTO) //如果是0元自动支付，自己手动调用支付回调
+      {
+        $.ajax({
+          type: "POST",
+          async: false,
+          dataType: "json",
+          url: "pay_zeroAutoNotify",
+          data: {
+            d:new Date().getTime(),
+            platformFlowCode: pay.payInfo.platformFlowCode
+          },
+          success: function (data) {
+          }
+        });
+      }
       pay.havePayed = function(){
         toOrderList("0");
       }

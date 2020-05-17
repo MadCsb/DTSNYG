@@ -129,6 +129,11 @@ public class PayServiceImpl implements PayService {
 	private static String PAY_METHOD_ALIPAY_PC = "ALIPAY_PC";
 
 	/**
+	 * 金额0自动支付支付方式
+	 */
+	private static String PAY_METHOD_ZERO_AUTO = "ZERO_AUTO";
+
+	/**
 	 * 获取 支付 信息
 	 * @param paramObject 参数信息 {payMethod:支付方式,openId:微信用户openId,userId:登录用户Id,spId:运营商id,platformOrders:订单ids,remoteAddr;请求ip地址}
 	 * @return
@@ -148,7 +153,7 @@ public class PayServiceImpl implements PayService {
 		payInfoParam.put("openId",openId);
 
 		StringBuffer bodySb = new StringBuffer();
-		double totalFee = 0; //订单金额
+		BigDecimal totalFee = new BigDecimal("0.00"); //订单金额
 		String[] orderIds = platformOrders.split(",");
 		for (int i=0;i<orderIds.length;i++)
 		{
@@ -183,7 +188,7 @@ public class PayServiceImpl implements PayService {
 					payInfoParam.put("timeExpire",sdf.format(cal.getTime()));
 				}
 			}
-			totalFee = totalFee + Double.valueOf(order.getMoney());
+			totalFee = totalFee.multiply(new BigDecimal(order.getMoney()));
 		}
 		payInfoParam.put("body",bodySb.toString());
 
@@ -193,7 +198,7 @@ public class PayServiceImpl implements PayService {
 		thirdPayFlow.setPlatformFlowCode(PrimaryKeyUtil.getOnlyPlatformFlowCode());
 		thirdPayFlow.setCreateTime(DateTimeUtil.getDateTime19());
 		thirdPayFlow.setFlowState("0");
-		thirdPayFlow.setFlowMoney(String.valueOf(totalFee));
+		thirdPayFlow.setFlowMoney(String.valueOf(totalFee.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
 		thirdPayFlow.setPlatformOrders(platformOrders);
 		thirdPayFlow.setSpId(spId);
 		thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
@@ -214,6 +219,9 @@ public class PayServiceImpl implements PayService {
 		}else if (PAY_METHOD_ALIPAY_PC.equals(payMethod)) //支付宝 PC支付
 		{
 			result = getPayInfoByAlipayPC(payInfoParam);
+		}else if(PAY_METHOD_ZERO_AUTO.equals(payMethod)) //0元自动支付
+		{
+			result = getPayInfoByZeroAuto(payInfoParam);
 		}
 		else
 		{
@@ -676,6 +684,42 @@ public class PayServiceImpl implements PayService {
 			log.error(this.PAY_METHOD_ALIPAY_PC + " 支付接口响应:"+JSON.toJSONString(e));
 			result.setResultCode("1");
 			result.setResultCode(e.getErrMsg());
+		}
+		return result;
+	}
+
+
+	/**
+	 * 获取 0元自动支付的方式
+	 * @param param 参数信息
+	 * param.spId 运营商ID
+	 * param.body 支付内容
+	 * param.platformFlowCode 本系统支付流水ID
+	 * param.remoteAddr 创建订单的用户ID
+	 * param.timeExpire 订单失效时间 2016-12-31 10:05:00
+	 * param.openId 微信用户OpenId
+	 * param.productId 订单的商品ID
+	 * param.orderId 订单ID
+	 * @return
+	 */
+	private Result getPayInfoByZeroAuto(Map<String,String> param) throws Exception {
+		Result result = new Result();
+
+		ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+		thirdPayFlow.setPlatformFlowCode(param.get("platformFlowCode"));
+		thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+		if(Double.parseDouble(thirdPayFlow.getFlowMoney()) == 0) //如果金额为0，则可以使用0元自动支付
+		{
+			Map<String,String> payInfo = new HashMap<String,String>();
+			payInfo.put("platformFlowCode",thirdPayFlow.getPlatformFlowCode());
+			result.setResultCode("0");
+			result.setResultMsg("生成订单金额为0的自动支付流水");
+			result.setResultPojo(payInfo);
+		}else
+		{
+			log.error(this.PAY_METHOD_ZERO_AUTO+" 支付 由于金额非0，不能成功!:"+ param.get("platformFlowCode"));
+			result.setResultCode("1");
+			result.setResultCode("订单金额不为0，不能自动支付");
 		}
 		return result;
 	}

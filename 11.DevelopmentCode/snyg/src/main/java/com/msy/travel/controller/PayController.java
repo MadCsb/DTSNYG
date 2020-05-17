@@ -302,6 +302,35 @@ public class PayController extends BaseController {
 		}
 	}
 
+
+	/**
+	 * 0元自动支付返回地址
+	 */
+	@RequestMapping(value = "/pay_zeroAutoNotify")
+	public void pay_zeroAutoNotify(HttpServletRequest request,HttpServletResponse response)
+	{
+		try {
+			String platformFlowCode = request.getParameter("platformFlowCode");
+			ThirdPayFlow thirdPayFlow = new ThirdPayFlow();
+			thirdPayFlow.setPlatformFlowCode(platformFlowCode);
+			thirdPayFlow = thirdPayFlowService.displayThirdPayFlow(thirdPayFlow);
+			if(Double.parseDouble(thirdPayFlow.getFlowMoney()) == 0 )
+			{
+				thirdPayFlow.setFlowState("1"); //流水成功
+				thirdPayFlow.setThirdFlowCode(DateTimeUtil.getDateTime19());
+				thirdPayFlow.setThirdCreateTime(thirdPayFlow.getThirdFlowCode());
+				thirdPayFlow.setThirdType(ThirdPayFlow.THIRD_TYPE_ZEROAUTO);
+				thirdPayFlowService.flowReturn(thirdPayFlow);
+			}else
+			{
+				log.error("违规调用0元自动支付 platformFlowCode = " + platformFlowCode);
+			}
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
+	}
+
 	/**
 	 * 跳转支付结束页面
 	 * @return

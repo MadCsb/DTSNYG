@@ -37,6 +37,11 @@ function Pay(){
   Pay.prototype.PAY_METHOD_ALIPAY_PC = "ALIPAY_PC";
 
   /**
+   * 金额0自动支付支付方式
+   */
+  Pay.prototype.PAY_METHOD_ZERO_AUTO = "ZERO_AUTO";
+
+  /**
    * 验证支付成功定时器
    */
   Pay.checkPayInterval = null;
@@ -143,6 +148,9 @@ Pay.prototype.toPay = function()
     }else if(this.payMethod == this.PAY_METHOD_ALIPAY_PC) //payMethod=ALIPAY_PC
     {
       return this.payInfo.body; //支付宝pc支付，body就是当前页面具体内容
+    }else if(this.payMethod == this.PAY_METHOD_ZERO_AUTO) //payMethod=ALIPAY_PC
+    {
+      return this.payInfo;
     }
 }
 

@@ -43,6 +43,12 @@ public class ThirdPayFlow extends BaseEntity implements java.io.Serializable
 	 * 流水类型-支付宝1
 	 */
 	public static String THIRD_TYPE_ZFB="1";
+
+	/**
+	 * 流水类型-0元自动支付2
+	 */
+	public static String THIRD_TYPE_ZEROAUTO="2";
+
     /**
      * 流水ID       db_column: F_FLOWID 
      */	

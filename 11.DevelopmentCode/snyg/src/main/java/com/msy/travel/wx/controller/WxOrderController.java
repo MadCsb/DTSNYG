@@ -106,6 +106,9 @@ public class WxOrderController extends BaseController {
 	@Resource(name = "configParameter")
 	private ConfigParameter configParameter;
 
+	@Resource(name = "customerCouponServiceImpl")
+	private CustomerCouponService customerCouponService;
+
 	/**
 	 * 进入订单收集数据页面
 	 * prepareOrderJson
@@ -133,6 +136,8 @@ public class WxOrderController extends BaseController {
 		ModelAndView view = null;
 		try {
 			JSONObject prepareOrderJsonObject = JSON.parseObject(prepareOrderJson);
+
+			StringBuffer priceIdsSB = new StringBuffer();
 			Channel channel = null;
 			List<OrderList> orderListList = new ArrayList<>();
 			JSONArray orderListListJSONArray = prepareOrderJsonObject.getJSONArray("orderListList");
@@ -177,7 +182,21 @@ public class WxOrderController extends BaseController {
 				orderList.setCommproduct(commproduct);
 
 				orderListList.add(orderList);
+				if (i != 0 )
+				{
+					priceIdsSB.append(",");
+				}
+				priceIdsSB.append(sellPrice.getPriceId());
 			}
+
+			CustomerCoupon customerCoupon = new CustomerCoupon();
+			customerCoupon.setCustomerCode(userId); //使用人
+			customerCoupon.setStatus("0");//未使用
+			customerCoupon.setCrrObtainDate(DateTimeUtil.getDateTime10());
+			//个人中心 setStatus("0") setCustomerCode price = ""
+
+			List<CustomerCoupon> customerCouponList = customerCouponService.queryCustomerCouponListByUserIdAndPriceId(customerCoupon,priceIdsSB.toString());
+
 			view = new ModelAndView("/wx/order/createOrder");
 			view.addObject("orderListList",orderListList);
 			if (prepareOrderJsonObject.containsKey("price"))
@@ -214,6 +233,34 @@ public class WxOrderController extends BaseController {
 		return view;
 	}
 
+	/**
+	 * ajax 验证能否使用优惠券
+	 * param
+	 * {customerCouponId:客户优惠券关联ID,sellPrice[{priceId:销售id,num:数量}]}
+	 */
+	@RequestMapping(params = "method=ajaxCanUseCoupon")
+	public void ajaxCanUseCoupon(String param,String userId,HttpServletRequest request,HttpServletResponse response) {
+		JSONObject data = JSON.parseObject(param);
+		data.put("userId",userId);
+		Result result = new Result();
+		try
+		{
+			result = customerCouponService.canUseCoupon(data);
+		}catch (Exception e)
+		{
+			log.error(e,e);
+			result = new Result();
+			result.setResultCode("1");
+			result.setResultMsg("系统异常");
+		}
+		try
+		{
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
+	}
 
 	/**
 	 * ajax 创建订单

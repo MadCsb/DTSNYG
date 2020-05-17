@@ -67,6 +67,9 @@
 					<#if order.payType?? && (order.payType=='1')>
 						支付宝支付
 					</#if>
+					<#if order.payType?? && (order.payType=='2')>
+						0元自动支付
+					</#if>
 				</#if>
 			</td>
     </tr>
@@ -141,8 +144,10 @@
 								<td>${o.transFee!''}</td>
 							</tr>
 							<tr class="">
+								<td class="tdright"><b>优惠金额：</b></td>
+								<td>${o.couponMoney!''}</td>
 								<td class="tdright"><b>支付费用：</b></td>
-								<td colspan="3">${o.payMoney!''}</td>
+								<td>${o.payMoney!''}</td>
 							</tr>
 						<#if o.backNum != '0'>
 							<tr class="">
