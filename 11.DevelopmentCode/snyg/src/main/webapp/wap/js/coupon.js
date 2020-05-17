@@ -25,7 +25,8 @@ function showCoupon(priceId) {
 }
 
 // 领取优惠券
-function receiveCouponAjax(couponId, fansId) {
+function receiveCouponAjax(couponId) {
+	event.cancelBubble=true;
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
 	
@@ -51,6 +52,7 @@ function receiveCouponAjax(couponId, fansId) {
 
 	
 }
+
 
 /**
  * 领取成功
@@ -128,7 +130,7 @@ function loadCouponUlList() {
 
 // 打开使用规则
 function openCouponRule(couponId) {
-
+	event.cancelBubble=true;
 	$.post("wapCoupon.do?method=couponRuleAjax",{
 		couponId : couponId
 	},function(data){

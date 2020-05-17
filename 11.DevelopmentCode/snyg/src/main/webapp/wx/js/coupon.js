@@ -31,7 +31,8 @@ function showCoupon(pdcType, pmastCoding, pdcId, fansId) {
 
 // 领取优惠券
 function receiveCouponAjax(couponId, fansId) {
-	
+
+	event.cancelBubble=true;
 	// 所有按钮不可用
 	$(".btnReceiveCoupon").attr("disabled", true); 
 	
@@ -134,7 +135,7 @@ function loadCouponUlList() {
 
 // 打开使用规则
 function openCouponRule(couponId) {
-
+	event.cancelBubble=true;
 	$.post("wxCoupon.do?method=couponRuleAjax",{
 		couponId : couponId
 	},function(data){

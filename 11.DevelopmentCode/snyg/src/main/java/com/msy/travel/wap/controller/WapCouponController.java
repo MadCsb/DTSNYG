@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
 import com.msy.travel.common.BaseController;
+import com.msy.travel.common.BigDecimalUtil;
 import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.pojo.Coupon;
@@ -279,4 +280,42 @@ public class WapCouponController extends BaseController {
 		}
 	}
 
+	/**
+	 * 优惠券详情页
+	 * 
+	 * @author wzd
+	 * @date 2020年5月17日 上午9:25:09
+	 * @param coupon
+	 * @param request
+	 * @param response
+	 * @return
+	 * @return ModelAndView
+	 */
+	@RequestMapping(params = "method=toLinkCoupon")
+	public ModelAndView toLinkCoupon(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView view = null;
+		try {
+			view = new ModelAndView("wap/coupon/linkCoupon");
+			// 检索优惠券
+			coupon = couponService.displayCoupon(coupon);
+
+			if (coupon != null) {
+				coupon.setUseLimit(BigDecimalUtil.getPrettyNumber(coupon.getUseLimit()));
+
+				// 打折，显示*10
+				if ("2".equals(coupon.getUseType())) {
+					coupon.setDiscount(BigDecimalUtil.getPrettyNumber(BigDecimalUtil.multiply(coupon.getDiscount(), "10")));
+				} else {
+					coupon.setDiscount(BigDecimalUtil.getPrettyNumber(coupon.getDiscount()));
+				}
+			}
+
+			view.addObject("coupon", coupon);
+		} catch (Exception e) {
+			view = new ModelAndView("error");
+			view.addObject("e", getExceptionInfo(e));
+			log.error(e, e);
+		}
+		return view;
+	}
 }

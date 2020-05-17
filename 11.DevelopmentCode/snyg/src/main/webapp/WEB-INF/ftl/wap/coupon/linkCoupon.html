@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>优惠券</title>
+<#include "../WAP_INC_HEAD.html">  
+<script src="${rc.contextPath}/wap/js/coupon.js"></script>
+</head>
+<body>
+
+<div class="content">
+
+    <dl class="xlxqcss" style="overflow-y:auto; overflow-x:hidden;">
+	    <ul class="tcyhj">
+	        <li>
+				<div class="tcyhj-list" style="width:99.2%;" onclick="openCouponRule('${coupon.couponId!''}')"> 
+	                <div class="tcyhj-bt">
+	                    <#if coupon.useType == "1">
+		                    <p class="btzi">&yen;${coupon.discount}</p>
+		                    <span class="nrzi">代金券</span>
+	                	<#else>
+	                		<p class="btzi">${coupon.discount}折</p>
+		                    <span class="nrzi">打折券</span>
+	                	</#if>
+	                    <span class="leftyuan"></span>
+	                    <span class="rightyuan"></span>
+	                    <p>订单满${coupon.useLimit!''}元可使用</p>  
+	                    <p>有效期自${coupon.validBegin!''}至${coupon.validEnd!''}</p>
+	                </div>
+	                <a href="javascript:void(0)" onclick="receiveCouponAjax('${coupon.couponId!''}')"><div class="tcyhj-data">立即领取</div></a>
+	            </div>
+	        </li>
+       </ul>
+    </dl>
+</div>
+</body>
+</html>

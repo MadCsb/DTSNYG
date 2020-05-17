@@ -168,19 +168,13 @@ function beforeSubmit(type){
 		}
 		//每人限领
 		var obtainLimit  = $("#obtainLimit").val();
-		if(obtainLimit * 1 > 10){
-			parent.layer.alert("每人限领不能超过10张");
-			return ;
-		}else if(obtainLimit * 1 < 1){
+		if(obtainLimit * 1 < 1){
 			parent.layer.alert("每人限领最少1张");
 			return ;
 		}
 		// 每人每天限领
 		var dayObtainLimit =$("#dayObtainLimit").val();
-		if(dayObtainLimit * 1 > 10){
-			parent.layer.alert("每人每天限领不能超过10张");
-			return ;
-		}else if(dayObtainLimit * 1 < 1){
+		if(dayObtainLimit * 1 < 1){
 			parent.layer.alert("每人每天限领最少1张");
 			return ;
 		}
