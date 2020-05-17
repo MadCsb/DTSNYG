@@ -78,7 +78,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tdright"><b><font class="f2">*</font>券有效期：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>领券时段：</b></td>
 					<td colspan="3"><input name="validBegin" type="text"
 						id="validBegin" size="40" value="${coupon.validBegin!''}" class="validate[required,maxSize[23]] data-searchtxt-time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'validEnd\')}'})" readonly="readonly"/>
 						- 
@@ -87,7 +87,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tdright"><b><font class="f2">*</font>领券有效期：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>使用有效期：</b></td>
 					<td>
 						<select name="obtainDateType" id="obtainDateType" onchange="changeobtainDateType()" class="data-inputtxt-select">
 							<#if coupon.obtainDateType?? && coupon.obtainDateType=="1">
@@ -102,7 +102,7 @@
 	               			</#if>
 						</select>	
 					</td>
-					<td class="tdright"><b><font class="f2">*</font>有效时段：</b></td>
+					<td class="tdright"><b><font class="f2">*</font>使用时段：</b></td>
 					<td>
 						<span id="obtainDateTypeSpan2">
 						<input name="obtainDateBegin" type="text"
