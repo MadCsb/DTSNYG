@@ -294,6 +294,16 @@ public class CouponServiceImpl implements CouponService {
 			oldCoupon.setCouponTag("0");
 			couponDao.updateCoupon(oldCoupon);
 
+			CustomerCoupon customerCoupon = new CustomerCoupon();
+			customerCoupon.setCouponId(oldCoupon.getCouponId());
+			Long count = customerCouponService.getCustomerCouponCount(customerCoupon);
+			if (count == 0) {
+				CouponProduction couponProduction = new CouponProduction();
+				couponProduction.setCouponId(oldCoupon.getCouponId());
+				couponProductionService.deleteCouponProduction(couponProduction);
+				couponDao.deleteCoupon(oldCoupon);
+			}
+
 			coupon.setCouponId(PrimaryKeyUtil.generateKey());
 			coupon.setSpId(user.getAccId());
 			coupon.setCreateTime(DateTimeUtil.getDateTime19());

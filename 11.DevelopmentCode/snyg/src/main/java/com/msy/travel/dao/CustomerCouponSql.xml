@@ -160,8 +160,10 @@
 		<where>
 			<if test="customerCouponId!=null and customerCouponId!=''">
 		    	t.F_CUSTOMERCOUPONID = #{customerCouponId}
-		     </if>
-			
+		    </if>
+			<if test="couponId !=null and couponId !=''">
+		    	and t.F_COUPONID = #{couponId}
+		    </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
