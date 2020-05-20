@@ -153,7 +153,7 @@ public class PayServiceImpl implements PayService {
 		payInfoParam.put("openId",openId);
 
 		StringBuffer bodySb = new StringBuffer();
-		BigDecimal totalFee = new BigDecimal("0.00"); //订单金额
+		BigDecimal totalFee = new BigDecimal("0"); //订单金额
 		String[] orderIds = platformOrders.split(",");
 		for (int i=0;i<orderIds.length;i++)
 		{
@@ -188,7 +188,7 @@ public class PayServiceImpl implements PayService {
 					payInfoParam.put("timeExpire",sdf.format(cal.getTime()));
 				}
 			}
-			totalFee = totalFee.multiply(new BigDecimal(order.getMoney()));
+			totalFee = totalFee.add(new BigDecimal(order.getMoney()));
 		}
 		payInfoParam.put("body",bodySb.toString());
 
@@ -198,7 +198,7 @@ public class PayServiceImpl implements PayService {
 		thirdPayFlow.setPlatformFlowCode(PrimaryKeyUtil.getOnlyPlatformFlowCode());
 		thirdPayFlow.setCreateTime(DateTimeUtil.getDateTime19());
 		thirdPayFlow.setFlowState("0");
-		thirdPayFlow.setFlowMoney(String.valueOf(totalFee.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+		thirdPayFlow.setFlowMoney(totalFee.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		thirdPayFlow.setPlatformOrders(platformOrders);
 		thirdPayFlow.setSpId(spId);
 		thirdPayFlowService.createThirdPayFlow(thirdPayFlow);
@@ -270,9 +270,9 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("sign_type", "MD5"); //签名类型 默认为MD5，支持HMAC-SHA256和MD5。
 		//httpRequestParamMap.put("body", (body.length()>175?body.substring(0,175):body.toString()));//商品描述
 		String body = param.get("body");
-		if (body.length()>175) //微信支付body最长175
+		if (body.length()>30) //微信支付body最长175
 		{
-			body = body.substring(0,175);
+			body = body.substring(0,30);
 		}
 		httpRequestParamMap.put("body",body);
 		//httpRequestParamMap.put("detail", null); //商品详情
@@ -386,9 +386,9 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("sign_type", "MD5"); //签名类型 默认为MD5，支持HMAC-SHA256和MD5。
 		//httpRequestParamMap.put("body", (body.length()>175?body.substring(0,175):body.toString()));//商品描述
 		String body = param.get("body");
-		if (body.length()>175) //微信支付body最长175
+		if (body.length()>30) //微信支付body最长175
 		{
-			body = body.substring(0,175);
+			body = body.substring(0,30);
 		}
 		httpRequestParamMap.put("body",body);
 		//httpRequestParamMap.put("detail", null); //商品详情
@@ -499,9 +499,9 @@ public class PayServiceImpl implements PayService {
 		//httpRequestParamMap.put("sign_type", "MD5"); //签名类型 默认为MD5，支持HMAC-SHA256和MD5。
 		//httpRequestParamMap.put("body", (body.length()>175?body.substring(0,175):body.toString()));//商品描述
 		String body = param.get("body");
-		if (body.length()>175) //微信支付body最长175
+		if (body.length()>30) //微信支付body最长175
 		{
-			body = body.substring(0,175);
+			body = body.substring(0,30);
 		}
 		httpRequestParamMap.put("body",body);
 		//httpRequestParamMap.put("detail", null); //商品详情

@@ -199,6 +199,7 @@ public class WxOrderController extends BaseController {
 
 			view = new ModelAndView("/wx/order/createOrder");
 			view.addObject("orderListList",orderListList);
+			view.addObject("customerCouponList",customerCouponList);
 			if (prepareOrderJsonObject.containsKey("price"))
 			{
 				view.addObject("price",prepareOrderJsonObject.getJSONObject("price").toJSONString());

@@ -570,6 +570,7 @@ public class OrderServiceImpl implements OrderService {
 
 		// 优惠券JSONObject
 		JSONObject customerCouponJSONObject = param.getJSONObject("customerCoupon");
+
 		if (customerCouponJSONObject != null) // 如果存在优惠券
 		{
 			JSONArray customerCouponSellPriceJSONArray =	customerCouponJSONObject.getJSONArray("sellPrice");//优惠券接口返回的使用优惠券内容 [{priceId:'',num:'',isUse:'1能使用'}]
@@ -577,7 +578,6 @@ public class OrderServiceImpl implements OrderService {
 			JSONArray useCouponOrderListJSONArray = new JSONArray();
 			//自定义使用优惠券的订单明细商品总金额
 			BigDecimal useCouponOrderListProductMoney = new BigDecimal(0);
-
 			for(int i=0;i<allOrderList.size();i++)
 			{
 				for(int j=0;j<customerCouponSellPriceJSONArray.size();j++)
@@ -605,7 +605,6 @@ public class OrderServiceImpl implements OrderService {
 					}
 				}
 			}
-
 			//总优惠金额
 			BigDecimal couponMoney = new BigDecimal(customerCouponJSONObject.getString("couponMoney"));
 			//useCouponOrderListProductMoney
@@ -614,10 +613,9 @@ public class OrderServiceImpl implements OrderService {
 			for(int i=0;i<useCouponOrderListJSONArray.size();i++)
 			{
 				beforeOrderListProductMoney = beforeOrderListProductMoney.add(useCouponOrderListJSONArray.getJSONObject(i).getBigDecimal("productMoney")).setScale(2, BigDecimal.ROUND_HALF_UP); //（当前+之前总商品金额） 重置之前所有订单明细的商品金额
-				BigDecimal beforeCurrentOrderListCouponMoney = beforeOrderListProductMoney.multiply(couponMoney).divide(useCouponOrderListProductMoney).setScale(2, BigDecimal.ROUND_HALF_UP);; //（当前+之前总商品金额）*总优惠金额/总商品金额 = （当前+之前总优惠金额）
+				BigDecimal beforeCurrentOrderListCouponMoney = beforeOrderListProductMoney.multiply(couponMoney).divide(useCouponOrderListProductMoney,2,BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);; //（当前+之前总商品金额）*总优惠金额/总商品金额 = （当前+之前总优惠金额）
 				BigDecimal currentOrderListCouponMoney = beforeCurrentOrderListCouponMoney.subtract(beforeOrderListCouponMoney).setScale(2, BigDecimal.ROUND_HALF_UP);; //当前优惠金额=（当前+之前总优惠金额）-之前优惠金额
 				beforeOrderListCouponMoney = beforeCurrentOrderListCouponMoney; //重置之前所有订单明细的优惠金额
-
 				//更新订单明细
 				OrderList orderList = new OrderList();
 				orderList.setOrderListId(useCouponOrderListJSONArray.getJSONObject(i).getString("orderListId"));
@@ -1085,7 +1083,6 @@ public class OrderServiceImpl implements OrderService {
 
 		JSONObject expressResultPojo = (JSONObject) result.getResultPojo();
 		Double orderListTransFee = Double.valueOf(expressResultPojo.getString("expressFee"));
-		log.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + orderListTransFee);
 	}
 
 	/**

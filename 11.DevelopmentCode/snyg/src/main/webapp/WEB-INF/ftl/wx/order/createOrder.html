@@ -71,7 +71,6 @@
   </div>
 </div>
 
-
 <div class="snyg_contentb">
   <div class="ddbt_title">
     <a href="">优惠券</a>
@@ -80,17 +79,18 @@
     <div class="jtdiv" customerCouponId="${ccl.customerCouponId!''}" onclick="selectCustomerCoupon(this)" haveSelect="">
       ${ccl.name!''}
       <span class="f1">
-        <#if ccl.useType == '1'>
-          -&yen;${ccl.discount}
-        </#if>
-        <#if ccl.useType == '2'>
-          ${ccl.discount}折
-        </#if>
-      </span>
+      <#if ccl.useType == '1'>
+        -&yen;${ccl.discount}
+      </#if>
+      <#if ccl.useType == '2'>
+        ${ccl.discount}折
+      </#if>
+    </span>
       <span class="f2" errMsg="errMsg"></span>
     </div>
   </#list>
 </div>
+
 
 <div class="snyg_contentb">
   <div class="ddbt_title">
@@ -311,7 +311,7 @@
         type: "POST",
         async: false,
         dataType: "json",
-        url: "waporder?method=ajaxCanUseCoupon",
+        url: "wxorder?method=ajaxCanUseCoupon",
         data:{param:JSON.stringify(customerCouponParam),userId:$("#userId").val()},
         success: function (data) {
           if(data.resultCode == '0')
