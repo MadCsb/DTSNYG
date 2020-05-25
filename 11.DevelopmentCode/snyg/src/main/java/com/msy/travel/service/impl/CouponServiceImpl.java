@@ -653,9 +653,13 @@ public class CouponServiceImpl implements CouponService {
 		List<Coupon> couponList = couponDao.queryCouponListForSellPriceLogin(coupon);
 
 		for (Coupon c : couponList) {
-			if ("0".equals(canReceiveMsg(c, event.getTriggerUid()).getResultCode())) {
-				customerCouponService.receiveCoupon(event.getTriggerUid(), c);
+			int obtainLimit = Integer.parseInt(c.getObtainLimit());
+			for(int i=0;i<obtainLimit;i++){
+				if ("0".equals(canReceiveMsg(c, event.getTriggerUid()).getResultCode())) {
+					customerCouponService.receiveCoupon(event.getTriggerUid(), c);
+				}
 			}
+			
 		}
 		event.setEventStatus("1");
 		eventService.updateEvent(event);
