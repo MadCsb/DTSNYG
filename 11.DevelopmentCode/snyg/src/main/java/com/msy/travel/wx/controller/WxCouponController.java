@@ -237,10 +237,11 @@ public class WxCouponController extends BaseController {
 	public ModelAndView toCouponSquare(Coupon coupon, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = null;
 		try {
+
+			view = new ModelAndView("wx/coupon/couponSquare");
 			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
 			wxSetViewObjects(view, request, serviceCode, userService);
 
-			view = new ModelAndView("wx/coupon/couponSquare");
 		} catch (Exception e) {
 			view = new ModelAndView("error");
 			view.addObject("e", getExceptionInfo(e));
