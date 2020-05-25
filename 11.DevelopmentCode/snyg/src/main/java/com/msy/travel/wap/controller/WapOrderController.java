@@ -735,6 +735,7 @@ public class WapOrderController extends BaseController {
 				EntityPage entityPage = new EntityPage();
 				entityPage.setSortField("t.F_ISDEFAULT");
 				entityPage.setSortOrder("DESC");
+				consignee.setEntityPage(entityPage);
 			}
 			List<Consignee> consigneeList = consigneeService.queryConsigneeList(consignee);
 			response.getWriter().write(net.sf.json.JSONArray.fromObject(consigneeList).toString());
