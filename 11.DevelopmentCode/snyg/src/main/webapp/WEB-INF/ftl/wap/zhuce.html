@@ -31,16 +31,18 @@
 			<span style="vertical-align: middle; margin-left:10px;" id="errorMsg"></span></div>
 	</div>
 </div>
-<a onclick="toZhuce()"><div align="center"><button class="btn-big"  style="width:80%; margin-top:0;">注册</button></div></a>
+<a onclick="toZhuce()" id="zcbtn"><div align="center"><button class="btn-big"  style="width:80%; margin-top:0;">注册</button></div></a>
 
 <a href="tologin?loginPage=${loginPage!'wap'}"><div align="center">我要登录</div></a>
 <br>
 <br>
 	<script>
     function toZhuce() {
+      $("#zcbtn").removeAttr("onclick");
       if( !$("#isOk").is(":checked"))
       {
         $("#errorMsg").html("请同意《三农壹购平台注册协议》");
+		$("#zcbtn").attr("onclick","toZhuce()");
         return false;
       }
       var userLoginName = $("#userLoginName").val();
@@ -64,7 +66,7 @@
           }else
           {
             $("#errorMsg").html(data.resultMsg);
-            replaceCode()
+			$("#zcbtn").attr("onclick","toZhuce()");
           }
         }
       })
