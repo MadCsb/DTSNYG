@@ -120,7 +120,7 @@
 
 <!--整点秒杀-->
 
-<a href="javascript:void(0)"><div class="snyg_details_title">整点秒杀</div></a>
+<a href="javascript:void(0)"><div class="snyg_details_title">9.9秒杀</div></a>
 
 <!-- 
 
@@ -196,9 +196,11 @@ $(function(){
 
 	changeBottomClass('1');
 
+	//秒杀
 	getDataList('2','3','ASC','p.F_SORTNUM','1','');
-
-	getDataList('1','12','ASC','p.F_SORTNUM','1','');
+	
+	//团购
+	getDataList('1','6','ASC','p.F_SORTNUM','1','');
 
 	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
 

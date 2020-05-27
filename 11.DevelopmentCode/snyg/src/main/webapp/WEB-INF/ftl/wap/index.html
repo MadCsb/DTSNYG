@@ -56,7 +56,7 @@
 </ul> 
 
 <!--整点秒杀-->
-<a href="javascript:void(0)"><div class="snyg_details_title">整点秒杀</div></a>
+<a href="javascript:void(0)"><div class="snyg_details_title">9.9秒杀</div></a>
 <!-- 
 <ul class="mssjlist">
 	<li><a href="javascript:void(0)" onclick="changePriceType2('1',this)"><span id="priceTypeChange1" class="msbtn_on"><i class="ico_z"></i>早市抢鲜<br>09:00-10:00</span></a></li>
@@ -96,8 +96,10 @@ var currentPage = 1;
 $(function(){
   openFollowMediaPlatform();
 	changeBottomClass('1');
+	//秒杀
 	getDataList('2','3','ASC','p.F_SORTNUM','1','');
-	getDataList('1','12','ASC','p.F_SORTNUM','1','');
+	//团购
+	getDataList('1','6','ASC','p.F_SORTNUM','1','');
 	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
 
   setCarousel();
