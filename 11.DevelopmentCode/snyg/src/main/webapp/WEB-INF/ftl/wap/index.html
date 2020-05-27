@@ -285,16 +285,16 @@ function changePriceType(priceType){
 			        str+='</a>';  
 			        str+='</li>';
 			        
-			        if(isHaveArray.length<20){
+			      //  if(isHaveArray.length<20){
 						$("#dataList0").append(str);
 				        isHaveArray.push(data[i].productId);
-			        }
+			      //  }
 				}
 			}
 			currentPage++;
-			if(isHaveArray.length<20){
+		//	if(isHaveArray.length<20){
 				getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
-			}
+		//	}
 		}
 	}
 	function getDataStr(data){
