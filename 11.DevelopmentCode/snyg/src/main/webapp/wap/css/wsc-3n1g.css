@@ -251,8 +251,8 @@ input[type="checkbox"]:checked + .check{
 .snyg_details_title{
 	width:100%;
 	text-indent:0;
-	font-size:1.125rem;
-	margin:10px auto 10px auto;
+	font-size:1.3rem;
+	margin:16px auto 16px auto;
 	color:#333333;
 	height:2rem;
 	line-height:2rem;
@@ -260,7 +260,7 @@ input[type="checkbox"]:checked + .check{
 	position:relative;
 	background: url(../images/btzbg.png) no-repeat center;
 	background-size:100%;
-
+	font-weight:bold;
 	text-align:center;
 }
 .snyg_details_title a{ color:#8bd044;}
@@ -286,7 +286,7 @@ input[type="checkbox"]:checked + .check{
 .snyg_data_details li{display:block;float:left;width:41%;position:relative;margin:0px auto 20px 6%;height: auto; background:#ffffff;overflow:hidden; padding:1rem; box-sizing:border-box;border-radius:4px;}
 .snyg_data_details li .data_img{width:100%;height: auto;overflow:hidden;}
 .snyg_data_details li .data_img img{width:100%;height:100%;border_radius:4px; max-width:300px;max-height:300px;}
-.snyg_data_details li .data_bt{ font_size:1rem; color:#555555; line-height:2rem;overflow: hidden;
+.snyg_data_details li .data_bt{ font_size:1rem; color:#333; font-weight:bold; line-height:2rem;overflow: hidden;
 	text-overflow:ellipsis;
 	white-space: nowrap; }
 .snyg_data_details li .data_jg{font-size:1rem;color:#fc9645;z-index:10;line-height:2rem;}
@@ -301,7 +301,7 @@ input[type="checkbox"]:checked + .check{
 .snyg_data_tglist li:nth-of-type(even){display:block;float:left;width:28%;position:relative;margin:0px auto 20px 4%;height: auto; background:#ffffff;overflow:hidden; padding:.5rem; box-sizing:border-box;border-top:5px solid #ffbb32;}
 .snyg_data_tglist li .data_img{width:100%;height: auto;overflow:hidden;}
 .snyg_data_tglist li .data_img img{width:100%;height:100%;border-radius:4px;max-width:300px;max-height:300px;}
-.snyg_data_tglist li .data_bt{ font-size:1rem; color:#555555; line-height:2rem;overflow: hidden;
+.snyg_data_tglist li .data_bt{ font-size:1rem; color:#333; font-weight:bold;  line-height:2rem;overflow: hidden;
 	text-overflow:ellipsis;
 	white-space: nowrap; }
 .snyg_data_tglist li .data_jg{font-size:1rem;color:#fc9645;z-index:10;line-height:2rem;}
@@ -534,13 +534,13 @@ input[type="checkbox"]:checked + .check{
 	position: absolute;
 	top: 0px;
 	left:0px;
-	width: 110px;
-	height: 80px;
+	width: 90px;
+	height: 90px;
 }
 
 .one_sp_list .iconl0 img {
-	width: 110px;
-	height: 80px;
+	width: 90px;
+	height: 90px;
 	border-radius:4px;
 }
 
@@ -549,8 +549,8 @@ input[type="checkbox"]:checked + .check{
 	left: 20px;
 	display: block;
 	position: absolute;
-	width: 130px;
-	height: 80px;
+	width: 90px;
+	height: 90px;
 	z-index:9;
 }
 
@@ -570,13 +570,13 @@ input[type="checkbox"]:checked + .check{
 	position: absolute;
 	top: 0px;
 	left: 20px;
-	width: 110px;
-	height: 80px;
+	width: 90px;
+	height: 90px;
 }
 
 .one_sp_list .icon img {
-	width: 110px;
-	height: 80px;
+	width: 90px;
+	height: 90px;
 	border-radius:4px;
 }
 
@@ -1864,7 +1864,6 @@ input[type="checkbox"]:checked + .check{
 	background:url(../images/check.png) no-repeat right;vertical-align: middle;
 	margin:0 20px;
 }
-
 .ddlist .txt{	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 1;
