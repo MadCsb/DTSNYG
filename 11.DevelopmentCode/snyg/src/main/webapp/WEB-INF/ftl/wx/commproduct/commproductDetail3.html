@@ -4,6 +4,7 @@
 <#include "/WX_INC_HEAD.html">   
 <script src="${rc.contextPath}/wx/js/default.js"></script>
 <script src="${rc.contextPath}/wx/js/coupon.js"></script>
+<script src="${rc.contextPath}/wx/js/snyg-sellprice-wx.js"></script>
 <style>
 .flexslider {
     margin: 0;
@@ -198,7 +199,7 @@
 <!--预订menu开始--> 
   <nav class="snyg_nav">
         <a href="tel:400-8013841"><span class="wid6" style="width:50%" ><i class="kfico"></i>联系客服</span></a>
-        <a onclick="ydShow('2')" href="javascript:void(0)" ><span class="green_btn wid3" style="width:50%" >立即购买</span></a></nav>
+        <a onclick="ydShow('2','')" href="javascript:void(0)" ><span class="green_btn wid3" style="width:50%" >立即购买</span></a></nav>
 <!--预订menu结束-->
 
 </div>
@@ -208,104 +209,16 @@
   <input type="hidden" name="userId" value="${user.userId!''}">
 </form>
 <script>
-
-
-var alertHtml = "";
+var checkPriceId = "";
+var showType = "";
 	$(function(){
-		getSellPriceList();			
+		getSellPriceList("${rc.contextPath}");	
 		
 		window.addEventListener("popstate", function(e) {  
 		 //  alert("我监听到了浏览器的返回按钮事件啦");//根据自己的需求实现自己的功能  
 		}, false);
 	});  
 	
-	
-	var checkPriceId = "";
-	
-	function addShopCart(){
-		if(showType == "1"){
-			$.post("wx?method=toAddOrUpdateShopCart",{
-				userId:$("#userId").val(),
-				priceId:checkPriceId,
-				num:$("#num").val()
-			},function(data){
-				if(data=="success"){
-					closeBottomHtml();
-					Alert.showMsg("加入购物车成功");
-				}
-			});
-		}else{
-			submitOrder();
-		}
-	}
-	
-	function getSellPriceList(){
-		$.post("wx?method=queryGoodsPriceListForWx",{
-			userId:$("#userId").val(),
-			productId:$("#productId").val(),
-			priceType:$("#priceType").val(),
-			delFlag:'0'
-		},function(data){
-			if(data!=null && data.length>0){
-				var str = "";
-				var str1 = "";
-				for(var i=0;i<data.length;i++){
-					str+='<div class="spgg_title"';
-					if($("#priceId").val() ==  data[i].priceId){
-						checkPriceId = data[i].priceId;
-						if(data[i].freight == ""){
-							$("#kuaidi").html("快递 免运费");
-						}else{
-							$("#kuaidi").html("快递 "+data[i].freight);
-						}
-						
-						$("#goodsPriceNameCheck").html(data[i].priceName);
-					}else{
-						str+="style='display:none;'"
-					}
-					str+=' id="pricePic'+data[i].priceId+'">';
-					str+='<div class="sptucss"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></div>';
-					str+='<span class="f1" style="margin-left:120px; line-height:50px;">&yen;'+data[i].price+'</span><a class="closdiv" onclick="ydNone()"></a>';      
-					str+='</div>';
-					
-					if($("#priceId").val() ==  data[i].priceId){
-						str1+='<button class="spggflon" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-					}else{
-						str1+='<button class="spggfloff" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-					}
-				}
-				$("#picAndPrice").html(str);
-				$("#goodsPriceDiv").html(str1);
-			}
-			
-			alertHtml = $("#tcyddiv").html()
-			$("#tcyddiv").remove();
-		},'json');
-	}
-	
-	function checkGoodsPrice(priceId,obj){
-		$(".spgg_title").hide();
-		$("#pricePic"+priceId).show();
-		
-		$(".spggflon").removeClass("spggflon").addClass("spggfloff");
-		$(obj).removeClass("spggfloff").addClass("spggflon");
-		
-		checkPriceId = priceId;
-	}
-	
-	function changeNum(type){
-		var num = parseInt($("#num").val());
-		if(type=="1"){
-			if(num >1){
-				num --;
-			}else{
-				num = 1;
-			}
-		}else{
-			num++;
-		}
-		$("#num").val(num)
-	}
 	function submitOrder(){
 		var prepareOrderJson = new Object();
 		  var orderListList = new Array();
@@ -318,20 +231,6 @@ var alertHtml = "";
 		  prepareOrderJson.orderListList = orderListList;
 		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
 		  $("#toCreateOrder").submit();
-	}
-	var showType = "";
-	function ydShow(showTypeInfo)
-	{
-	   showType = showTypeInfo;
-	   //document.getElementById("tcyddiv").style.display="block";
-	  // alert(alertHtml);
-	   Alert.showBottomHtml(alertHtml);
-		$("#alert_show_3").css("height", "290");
-	}
-	function ydNone()
-	{
-	//   document.getElementById("tcyddiv").style.display="none";
-		closeBottomHtml();
 	}
 	
 	window.history.go(2);

@@ -173,7 +173,11 @@
 				str+='<div class="info">';
 				str+='<a href="javascript:void(0)" onclick="productDetail(\''+data[i].priceId+'\',\''+data[i].priceType+'\')" title="商品详情"><h4>' + data[i].productName + '</h4></a>';  
 				str+='<p class="txt1"><span class="f4">' + data[i].priceName + '</span></p>';
-				str+='<a href="javasript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\',\''+data[i].priceType+'\')" title="购物车"><p class="txt"><span class="f2">&yen;' + data[i].price + '</span></p>';
+				str+='<a href="javasript:void(0)"  onclick="productDetail(\''+data[i].priceId+'\',\''+data[i].priceType+'\')" title="购物车"><p class="txt"><span class="f2">&yen;' + data[i].price + '</span>';
+				if(data[i].referencePrice != null && data[i].referencePrice != ""){
+					str+='&nbsp;&nbsp;原价:<span class="f4" style="text-decoration:line-through; font-size:13px;">&yen;'+data[i].referencePrice+'</span>';
+				}
+				str+='</p>';
 		        str+='<div class="gwc"  onclick="toShopCart()"></div></a>';
 		        str+='</div>';
 		        str+='</li>';

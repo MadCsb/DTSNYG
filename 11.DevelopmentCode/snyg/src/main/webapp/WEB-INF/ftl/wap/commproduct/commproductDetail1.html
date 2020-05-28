@@ -4,6 +4,7 @@
 <#include "../WAP_INC_HEAD.html">  
 <script src="${rc.contextPath}/wap/js/default.js"></script>
 <script src="${rc.contextPath}/wap/js/coupon.js"></script>
+<script src="${rc.contextPath}/wap/js/snyg-sellprice-wap.js"></script>
 <style>
 .flexslider {
     margin: 0;
@@ -341,106 +342,15 @@ function timer(intDiff){
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
 </form>
 <script>
-var alertHtml = "";
-	$(function(){
-		getSellPriceList();	
-	});
-	
+var refPatchCode = "";
+var checkPriceId = "";
+var showType = "";
+
+$(function(){
+	getSellPriceList("${rc.contextPath}");
+});
 	
 
-	var checkPriceId = "";
-	
-	function addShopCart(){
-		/*if(showType == "1"){
-			$.post("wx?method=toAddOrUpdateShopCart",{
-				userId:$("#userId").val(),
-				priceId:checkPriceId,
-				num:$("#num").val()
-			},function(data){
-				if(data=="success"){
-					closeBottomHtml();
-					Alert.showMsg("加入购物车成功");
-				}
-			});
-		}else{
-			submitOrder();
-		}*/
-		submitOrder();
-	}
-	
-	function getSellPriceList(){
-		$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
-			productId:$("#productId").val(),
-			priceType:$("#priceType").val(),
-			delFlag:'0'
-		},function(data){
-			if(data!=null && data.length>0){
-				var str = "";
-				var str1 = "";
-				for(var i=0;i<data.length;i++){
-					if($("#priceId").val() ==  data[i].priceId){
-						str+='<div class="spgg_title"';
-						if($("#priceId").val() ==  data[i].priceId){
-							checkPriceId = data[i].priceId;
-							
-							if(data[i].freight == ""){
-								$("#kuaidi").html("快递 免运费");
-							}else{
-								$("#kuaidi").html("快递 "+data[i].freight);
-							}
-							
-							getPrice1Ref();
-							
-							$("#priceName").html(data[i].priceName);
-						}else{
-							str+="style='display:none;'"
-						}
-						str+=' id="pricePic'+data[i].priceId+'">';
-						str+='<div class="sptucss"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></div>';
-						str+='<span class="f1" style="margin-left:120px; line-height:50px;">&yen;'+data[i].price+'</span><a class="closdiv" onclick="ydNone()"></a>';      
-						str+='</div>';
-						
-						if($("#priceId").val() ==  data[i].priceId){
-							str1+='<button class="spggflon" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-						}else{
-							str1+='<button class="spggfloff" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-						}
-					}
-				}
-				$("#picAndPrice").html(str);
-				$("#goodsPriceDiv").html(str1);
-			}
-			
-			alertHtml = $("#tcyddiv").html();
-			$("#tcyddiv").remove();
-		},'json');
-	}
-	
-	function checkGoodsPrice(priceId,obj){
-		$(".spgg_title").hide();
-		$("#pricePic"+priceId).show();
-		
-		$(".spggflon").removeClass("spggflon").addClass("spggfloff");
-		$(obj).removeClass("spggfloff").addClass("spggflon");
-		
-		checkPriceId =priceId;
-	}
-	
-	function changeNum(type){
-		var num = parseInt($("#num").val());
-		if(type=="1"){
-			if(num >1){
-				num --;
-			}else{
-				num = 1;
-			}
-		}else{
-			num++;
-		}
-		$("#num").val(num)
-	}
-
-	var refPatchCode = "";
 	function submitOrder(){
 		var prepareOrderJson = new Object();
 		  var orderListList = new Array();
@@ -466,19 +376,6 @@ var alertHtml = "";
 		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
 		  $("#toCreateOrder").submit();
 	}
-	var showType = "";
-	function ydShow(showTypeInfo,refPatchCodeTemp)
-	{
-		   showType = showTypeInfo;
-		   refPatchCode = refPatchCodeTemp;
-		   Alert.showBottomHtml(alertHtml);
-		$("#alert_show_3").css("height", "290");
-	}
-	function ydNone()
-	{
-		closeBottomHtml();
-	}
-	
 
 	
 	function getPrice1Ref(){

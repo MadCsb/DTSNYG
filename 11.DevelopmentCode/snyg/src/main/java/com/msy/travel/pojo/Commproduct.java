@@ -164,36 +164,6 @@ public class Commproduct extends BaseEntity implements java.io.Serializable {
 
 	private String couponId;
 
-	private String isGroupPro;
-
-	private String isSeckill;
-
-	private String isCommon;
-
-	public String getIsGroupPro() {
-		return isGroupPro;
-	}
-
-	public void setIsGroupPro(String isGroupPro) {
-		this.isGroupPro = isGroupPro;
-	}
-
-	public String getIsSeckill() {
-		return isSeckill;
-	}
-
-	public void setIsSeckill(String isSeckill) {
-		this.isSeckill = isSeckill;
-	}
-
-	public String getIsCommon() {
-		return isCommon;
-	}
-
-	public void setIsCommon(String isCommon) {
-		this.isCommon = isCommon;
-	}
-
 	public String getCouponId() {
 		return couponId;
 	}

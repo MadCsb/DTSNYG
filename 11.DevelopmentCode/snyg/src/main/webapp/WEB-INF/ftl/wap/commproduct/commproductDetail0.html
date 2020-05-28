@@ -4,6 +4,8 @@
 <#include "../WAP_INC_HEAD.html">  
 <script src="${rc.contextPath}/wap/js/default.js"></script>
 <script src="${rc.contextPath}/wap/js/coupon.js"></script>
+<script src="${rc.contextPath}/wap/js/snyg-sellprice-wap.js"></script>
+
 <style>
 .flexslider {
     margin: 0;
@@ -176,8 +178,8 @@
 <!--预订menu开始--> 
   <nav class="snyg_nav">
         <a href="tel:400-8013841"><span class="wid6"><i class="kfico"></i>联系客服</span></a>
-        <a onclick="ydShow('1')" href="javascript:void(0)"title=""><span class="orange_btn wid3" >加入购物车</span></a>
-        <a onclick="ydShow('2')" href="javascript:void(0)" ><span class="green_btn wid3" >立即购买</span></a></nav>
+        <a onclick="ydShow('1','')" href="javascript:void(0)"title=""><span class="orange_btn wid3" >加入购物车</span></a>
+        <a onclick="ydShow('2','')" href="javascript:void(0)" ><span class="green_btn wid3" >立即购买</span></a></nav>
 <!--预订menu结束-->
 
 </div>
@@ -186,115 +188,14 @@
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
 </form>
 <script>
+var showType = "";
+var checkPriceId = "";
 
-
-var alertHtml = "";
 	$(function(){
-		getSellPriceList();			
-		
-		window.addEventListener("popstate", function(e) {  
-		 //  alert("我监听到了浏览器的返回按钮事件啦");//根据自己的需求实现自己的功能  
-		}, false);
-		
-	//	queryCouponList();
+		getSellPriceList("${rc.contextPath}");
 	});  
 	
 	
-	var checkPriceId = "";
-	
-	function addShopCart(){
-		if(showType == "1"){
-			$.post("wapIndex?method=checkLogin",{
-			},function(data){
-				if(data.resultCode=='0'){
-					$.post("wapShopCart?method=toAddOrUpdateShopCart",{
-						priceId:checkPriceId,
-						num:$("#num").val()
-					},function(data){
-						if(data=="success"){
-							closeBottomHtml();
-							Alert.showMsg("加入购物车成功");
-						}
-					});
-				}else{
-					closeBottomHtml();
-					Alert.showConfirmMsg("您还没有登录，请先登录",'toLogin');
-				}
-			},'json')
-			
-		}else{
-			submitOrder();
-		}
-	}
-	
-	
-	
-	function getSellPriceList(){
-		$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
-			productId:$("#productId").val(),
-			priceType:$("#priceType").val(),
-			delFlag:'0'
-		},function(data){
-			if(data!=null && data.length>0){
-				var str = "";
-				var str1 = "";
-				for(var i=0;i<data.length;i++){
-					str+='<div class="spgg_title"';
-					if($("#priceId").val() ==  data[i].priceId){
-						checkPriceId = data[i].priceId;
-						if(data[i].freight == ""){
-							$("#kuaidi").html("快递 免运费");
-						}else{
-							$("#kuaidi").html("快递 "+data[i].freight);
-						}
-						
-						$("#goodsPriceNameCheck").html(data[i].priceName);
-					}else{
-						str+="style='display:none;'"
-					}
-					str+=' id="pricePic'+data[i].priceId+'">';
-					str+='<div class="sptucss"><img src="${rc.contextPath}/upload/wxpic/'+data[i].thumbPic+'"></div>';
-					str+='<span class="f1" style="margin-left:120px; line-height:50px;">&yen;'+data[i].price+'</span><a class="closdiv" onclick="ydNone()"></a>';      
-					str+='</div>';
-					
-					if($("#priceId").val() ==  data[i].priceId){
-						str1+='<button class="spggflon" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-					}else{
-						str1+='<button class="spggfloff" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
-					}
-				}
-				$("#picAndPrice").html(str);
-				$("#goodsPriceDiv").html(str1);
-			}
-			
-			alertHtml = $("#tcyddiv").html()
-			$("#tcyddiv").remove();
-		},'json');
-	}
-	
-	function checkGoodsPrice(priceId,obj){
-		$(".spgg_title").hide();
-		$("#pricePic"+priceId).show();
-		
-		$(".spggflon").removeClass("spggflon").addClass("spggfloff");
-		$(obj).removeClass("spggfloff").addClass("spggflon");
-		
-		checkPriceId = priceId;
-	}
-	
-	function changeNum(type){
-		var num = parseInt($("#num").val());
-		if(type=="1"){
-			if(num >1){
-				num --;
-			}else{
-				num = 1;
-			}
-		}else{
-			num++;
-		}
-		$("#num").val(num)
-	}
 	function submitOrder(){
 		var prepareOrderJson = new Object();
 		  var orderListList = new Array();
@@ -302,38 +203,13 @@ var alertHtml = "";
 		  orderList1.priceId =checkPriceId; //销售id
 		  orderList1.num = $("#num").val(); //数量
 		  orderList1.cartId = ""; //购物车id
-		  //price_1_refPatchCode
 		  orderListList.push(orderList1);
 		  prepareOrderJson.orderListList = orderListList;
 		  $("#prepareOrderJson").val(JSON.stringify(prepareOrderJson));
 		  $("#toCreateOrder").submit();
 	}
-	var showType = "";
-	function ydShow(showTypeInfo)
-	{
-	   showType = showTypeInfo;
-	   //document.getElementById("tcyddiv").style.display="block";
-	  // alert(alertHtml);
-	   Alert.showBottomHtml(alertHtml);
-		$("#alert_show_3").css("height", "290");
-	}
-	function ydNone()
-	{
-	//   document.getElementById("tcyddiv").style.display="none";
-		closeBottomHtml();
-	}
 	
 	window.history.go(2);
-	
-	function queryCouponList(){
-		var priceType = $("#priceType").val();
-		var priceId = $("#priceId").val();
-		$.post("wapCoupon?method=queryCouponList",{
-			priceType:priceType,
-			priceId:priceId
-		},function(data){
-		},'json')
-	}
 </script>
 
 
