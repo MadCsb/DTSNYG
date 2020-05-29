@@ -97,10 +97,10 @@ $(function(){
   openFollowMediaPlatform();
 	changeBottomClass('1');
 	//秒杀
-	getDataList('2','3','ASC','p.F_SORTNUM','1','');
+	getDataList('2','3','DESC','p.F_SORTNUM','1','');
 	//团购
-	getDataList('1','6','ASC','p.F_SORTNUM','1','');
-	getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
+	getDataList('1','6','DESC','p.F_SORTNUM','1','');
+	getDataList('0','20','DESC','p.F_SORTNUM',currentPage,'');
 
   setCarousel();
   

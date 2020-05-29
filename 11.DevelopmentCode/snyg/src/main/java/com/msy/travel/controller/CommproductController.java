@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -26,6 +27,7 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PoiWriteExcel;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.UploadFileCom;
 import com.msy.travel.common.config.ConfigParameter;
@@ -555,5 +557,36 @@ public class CommproductController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * 修改排序
+	 * 
+	 * @author wzd
+	 * @date 2020年5月29日 上午10:39:27
+	 * @param commproduct
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=changeCommproductionSortNum")
+	public void changeCommproductionSortNum(Commproduct commproduct, HttpServletRequest request, HttpServletResponse response) {
+		Result result = new Result();
+		try {
+			String sortNum = commproduct.getSortNum();
+			commproduct = commproductService.displayCommproduct(commproduct);
+			commproduct.setSortNum(sortNum);
+			commproductService.updateCommproduct(commproduct);
+			result.setResultCode("0");
+		} catch (Exception e) {
+			result.setResultCode("1");
+			result.setResultMsg("程序出错，请稍后再试");
+			log.error(e, e);
+		}
+		try {
+			response.getWriter().print(JSONObject.toJSONString(result));
+		} catch (Exception e) {
+			log.error(e, e);
+		}
 	}
 }

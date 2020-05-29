@@ -383,7 +383,8 @@
 			p.F_TYPENAME as typeName,
 			tem.F_PRICEID as priceId,
 			t.F_REFERENCEPRICE as referencePrice,
-			tem.F_PRICECODE as priceCode
+			tem.F_PRICECODE as priceCode,
+			t.F_SORTNUM as sortNum
 		FROM
 		t_sm_commproduct t
 		LEFT JOIN t_sm_pdctype p on t.F_TYPE = p.F_PDCTYPEID

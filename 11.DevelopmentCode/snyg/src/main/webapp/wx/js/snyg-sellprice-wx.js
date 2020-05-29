@@ -37,8 +37,8 @@ function getSellPriceList(contextPath){
 					str1+='<button class="spggfloff" onclick="checkGoodsPrice(\''+data[i].priceId+'\',this)">'+data[i].priceName+'</button>';
 				}
 			}
-			$("#picAndPrice").html(str);
-			$("#goodsPriceDiv").html(str1);
+			$("#picAndPrice").append(str);
+			$("#goodsPriceDiv").append(str1);
 		}
 		
 		alertHtml = $("#tcyddiv").html()
