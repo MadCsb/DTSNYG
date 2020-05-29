@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/sellPriceEdit.js"></script>
 </head>
 <body>
 
@@ -69,44 +70,6 @@ $(function() {
 	$("#priceForm").validationEngine();
 });
 
-function delCheckSellPrice(checkId){
-	$("#"+checkId).remove();
-} 
-
-function saveSellPrice(){
-	if ($("#priceForm").validationEngine('validate')){
-		var priceType = $("#priceType").val();
-
-		if(priceType=="" || priceType=="undefined" || priceType==undefined){
-			parent.layer.alert("系统错误，请重新进入该页面");
-		}else{
-			var len = $("#saveTable tr").length;
-			if(len > 1){
-				layer.load(2,{shade: [0.2, '#000']});
-				$("#priceForm").submit();
-			}else{
-				parent.layer.alert("请选择活动商品");
-			}
-		}
-	}
-}
-
-function setDate(){
-	var priceStartDate = $("#priceStartDate").val();
-	var priceEndDate = $("#priceEndDate").val();
-	
-	$(".dateStartClass").each(function(i){
-		if($(this).val()==""){
-			$(this).val(priceStartDate);
-		}
-	});
-	
-	$(".dateEndClass").each(function(i){
-		if($(this).val()==""){
-			$(this).val(priceEndDate);
-		}
-	});
-}
 </script>
 </body>
 </html>

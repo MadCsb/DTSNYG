@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/sellPriceEdit.js"></script>
 </head>
 <body>
 	<form id="queryFrm" action="sellPrice?method=querySellPriceListForAdd" method="post">
@@ -122,8 +123,8 @@
 	</form>
 <script>
 
-function checkSellPrice(goodsPriceId){
 
+function checkSellPrice(goodsPriceId){
 	var priceType = $("#priceType").val();
 	if(priceType == ""){
 		parent.layer.alert("系统错误，请重新进入该页面");
@@ -135,7 +136,7 @@ function checkSellPrice(goodsPriceId){
 		str +='<input name="sellPriceList['+checkIndex+'].priceId" value="'+$("#priceId"+goodsPriceId).val()+'" type="hidden" />';
 		str +='<input name="sellPriceList['+checkIndex+'].goodsPriceId" value="'+goodsPriceId+'" type="hidden" />';
 		str +='<input name="sellPriceList['+checkIndex+'].productId" value="'+$("#productId"+goodsPriceId).val()+'" type="hidden" />';
-		str +='</td>'; 
+		str +='</td>';
 		str += '<td title="'+$("#productName"+goodsPriceId).val()+'">'+$("#productName"+goodsPriceId).val()+'</td>'; 
 		str += '<td title="'+$("#priceName"+goodsPriceId).val()+'">'+$("#priceName"+goodsPriceId).val()+'</td>'; 
 		str += '<td><input name="sellPriceList['+checkIndex+'].price" id="price'+checkIndex+'" value="'+$("#price"+goodsPriceId).val()+'" type="text" class="validate[required,custom[num6point2] data-inputtxt" style="width:100px;" maxlength="9" onkeyup="this.value= this.value.match(/\\d+(\\.\\d{0,2})?/) ? this.value.match(/\\d+(\\.\\d{0,2})?/)[0] : \'\'"/></td>';
@@ -146,7 +147,6 @@ function checkSellPrice(goodsPriceId){
 		str += '<td><a href="javascript:void(0)" onclick="delCheckSellPrice(\'sellPriceTr'+checkIndex+'\')" title="移除" class="ico_btn1">移除</a></td>';  
 		str += '</tr>';
 		window.parent.checkIndex++;
-		
 		window.parent.$("#saveTable").append(str);
 	}
 }

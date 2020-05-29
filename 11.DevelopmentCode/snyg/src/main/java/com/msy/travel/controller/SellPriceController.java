@@ -209,10 +209,8 @@ public class SellPriceController extends BaseController {
 			p.setLevel("1");
 			List<PdcType> pdcTypeList = pdcTypeService.queryPdcTypeList(p);
 
-			if (priceType.equals("1")) {
-				view = new ModelAndView("sellprice/querySellPrice");
-			} else if (priceType.equals("2")) {
-				view = new ModelAndView("sellprice/querySellPrice2");
+			if (priceType.equals("1") || priceType.equals("2")) {
+				view = new ModelAndView("sellprice/querySellPrice" + priceType);
 			} else {
 				view = new ModelAndView("sellprice/querySellPriceDefault");
 			}
@@ -355,10 +353,8 @@ public class SellPriceController extends BaseController {
 		ModelAndView view = null;
 		try {
 
-			if (priceType.equals("1")) {
-				view = new ModelAndView("sellprice/querySellPriceForAdd");
-			} else if (priceType.equals("2")) {
-				view = new ModelAndView("sellprice/querySellPriceForAdd2");
+			if (priceType.equals("1") || priceType.equals("2")) {
+				view = new ModelAndView("sellprice/querySellPriceForAdd" + priceType);
 			} else {
 				view = new ModelAndView("sellprice/querySellPriceForAddDefault");
 			}
@@ -381,10 +377,8 @@ public class SellPriceController extends BaseController {
 		ModelAndView view = null;
 		try {
 
-			if (priceType.equals("1")) {
-				view = new ModelAndView("sellprice/queryAddOrCreateSellPrice");
-			} else if (priceType.equals("2")) {
-				view = new ModelAndView("sellprice/queryAddOrCreateSellPrice2");
+			if (priceType.equals("1") || priceType.equals("2")) {
+				view = new ModelAndView("sellprice/queryAddOrCreateSellPrice" + priceType);
 			} else {
 				view = new ModelAndView("sellprice/queryAddOrCreateSellPriceDefault");
 			}
@@ -445,10 +439,8 @@ public class SellPriceController extends BaseController {
 		ModelAndView view = null;
 		try {
 			sellPriceService.createOrUpdateSellPrice(sellPrice);
-			if (priceType.equals("1")) {
-				view = new ModelAndView("sellprice/querySellPriceForAdd");
-			} else if (priceType.equals("2")) {
-				view = new ModelAndView("sellprice/querySellPriceForAdd2");
+			if (priceType.equals("1") || priceType.equals("2")) {
+				view = new ModelAndView("sellprice/querySellPriceForAdd" + priceType);
 			} else {
 				view = new ModelAndView("sellprice/querySellPriceForAddDefault");
 			}

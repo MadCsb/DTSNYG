@@ -2,7 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
-<script type="text/javascript" src="${rc.contextPath}/js/snyg.js"></script>
+<script type="text/javascript" src="${rc.contextPath}/js/sellPriceEdit.js"></script>
 <script type="text/javascript">
 	function deleteBatch() {
 
@@ -157,54 +157,8 @@ $(function () {
 		$(".getMore").click();
 	}
 });
-function copyUrl(id,priceId){
-	var url = $("#domainName").val()+"/wx.do?method=toQueryCommproductDetailByPriceId&priceId="+priceId;
-	$("#productIdHidden"+id).val(url);
-	 var copyText = $("#productIdHidden"+id);//获取对象
-     copyText.select();//选择
-     document.execCommand("Copy");//执行复制
-　　parent.layer.alert("复制成功！");
-}
-function delPrice(priceId) {
-	var index = parent.layer.confirm('确认删除该商品吗?', function() {
-		$.post("sellPrice?method=delete", {
-			priceId : priceId
-		}, function(ret) {
-			if (ret=="success") {
-				var index2 = parent.layer.alert("删除成功",function(){
-					$("#queryFrm").submit();
 
-					parent.layer.closeAll();
-				}); 
-			}
-		})
-	}, function() {
-		parent.layer.closeAll();
-	});
-}
 
-function toQueryForAdd(){
-	var content = "sellPrice?method=toQuerySellPriceListForAdd&priceType="+$("#priceType").val();
-	parent.layer.open({
-		type : 2,
-		title : '管理活动商品',
-		area : [ '1320px', '600px' ],
-		fix : true,
-		content :content,
-		end: function(){
-			$("#queryFrm").submit();
-		}
-	});
-}
-/*
-function copyUrlChannel(id,priceCode){
-	var url = $("#domainName").val()+"/open/"+currentSpId+"/"+priceCode;
-	$("#productIdHidden"+id).val(url);
-	 var copyText = $("#productIdHidden"+id);//获取对象
-     copyText.select();//选择
-     document.execCommand("Copy");//执行复制
-　　parent.layer.alert("复制成功！");
-}*/
 </script>
 </body>
 </html>

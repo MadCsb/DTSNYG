@@ -2,6 +2,7 @@
 <html>
 <head>
 <#include "/INC_HEAD.html">
+<script type="text/javascript" src="${rc.contextPath}/js/sellPriceEdit.js"></script>
 </head>
 <body>
 	<form id="queryFrm" action="sellPrice?method=querySellPriceListForAdd" method="post">
@@ -125,9 +126,7 @@
 	</form> -->
 	</form>
 <script>
-
 function checkSellPrice(goodsPriceId){
-
 	var priceType = $("#priceType").val();
 	if(priceType == ""){
 		parent.layer.alert("系统错误，请重新进入该页面");
@@ -151,7 +150,6 @@ function checkSellPrice(goodsPriceId){
 		str += '<td><a href="javascript:void(0)" onclick="delCheckSellPrice(\'sellPriceTr'+checkIndex+'\')" title="移除" class="ico_btn1">移除</a></td>';  
 		str += '</tr>';
 		window.parent.checkIndex++;
-		
 		window.parent.$("#saveTable").append(str);
 	}
 }
