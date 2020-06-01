@@ -30,6 +30,7 @@ import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.common.Result;
 import com.msy.travel.common.SysConsts;
 import com.msy.travel.common.UploadFileCom;
+import com.msy.travel.common.WTConvert;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.Commproduct;
 import com.msy.travel.pojo.Company;
@@ -575,7 +576,7 @@ public class CommproductController extends BaseController {
 		try {
 			String sortNum = commproduct.getSortNum();
 			commproduct = commproductService.displayCommproduct(commproduct);
-			commproduct.setSortNum(sortNum);
+			commproduct.setSortNum(WTConvert.emptyToNull(sortNum));
 			commproductService.updateCommproduct(commproduct);
 			result.setResultCode("0");
 		} catch (Exception e) {

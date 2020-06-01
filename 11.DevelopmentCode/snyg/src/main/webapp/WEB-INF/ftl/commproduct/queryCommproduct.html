@@ -155,7 +155,7 @@
                 </#if>
 				</td> 
 				<td title="${li.updateTime!''}" style="word-wrap: break-word;white-space:normal;">${li.updateTime!''}</td> 
-				<td><span onclick="editSortNum(this,'${li.productId!''}')">${li.sortNum!''}</span></td>
+				<td  onclick="editSortNum(this,'${li.productId!''}')">${li.sortNum!''}</td>
 				<td style="word-wrap: break-word;white-space:normal;">
 					<a href="commproduct?method=toDetail&productId=${li.productId!''}&priceType=${priceType!''}" title="详情" class="ico_btn1">详情</a>
 					<#if li.state?? && li.state=='0'>
@@ -246,7 +246,8 @@ function editSortNum(obj,productId){
 	var sortNum = $(obj).html();
 	var str = '<input maxlength="6" value="'+sortNum+'" onblur="changeSortNum(this,\''+productId+'\')" type="text" class="data-inputtxt" id="sortNum'+productId+'" style="width:80px;" onkeyup="value=value.replace(/[^0-9]\D*$/,\'\')" />';
 	
-	$(obj).parent().html(str);
+	$(obj).html(str);
+	$(obj).removeAttr("onclick");
 	
 	$("#sortNum"+productId).focus();
 }
@@ -261,7 +262,8 @@ function changeSortNum(obj,productId){
 			parent.layer.alert(data.resultMsg);
 		}
 		var str = '<span onclick="editSortNum(this,\''+productId+'\')">'+sortNum+'</span>';
-		$(obj).parent().html(str);
+		$(obj).parent().attr("onclick","editSortNum(this,'"+productId+"')");
+		$(obj).parent().html(sortNum);
 	},'json')
 
 }
