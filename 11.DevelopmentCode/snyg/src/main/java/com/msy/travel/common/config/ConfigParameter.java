@@ -44,6 +44,7 @@ public class ConfigParameter {
 
 	private String orderCloseDay; //订单，已收货自动关闭时间
 
+	private String wxOplatformTokenSync; //微信开放平台 token同步 1:是，0:否
 
 	public String getPicUrl() {
 		return picUrl;
@@ -211,5 +212,13 @@ public class ConfigParameter {
 
 	public void setWxpayWapReturnUrl(String wxpayWapReturnUrl) {
 		this.wxpayWapReturnUrl = wxpayWapReturnUrl;
+	}
+
+	public String getWxOplatformTokenSync() {
+		return wxOplatformTokenSync;
+	}
+
+	public void setWxOplatformTokenSync(String wxOplatformTokenSync) {
+		this.wxOplatformTokenSync = wxOplatformTokenSync;
 	}
 }

@@ -1,5 +1,9 @@
 package com.msy.travel.task;
 
+import com.alibaba.fastjson.JSONObject;
+import com.msy.travel.pojo.WeixinOpenApplication;
+import com.msy.travel.service.WeixinOpenApplicationService;
+import com.qq.weixin.open.WebsiteApp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -41,6 +45,9 @@ public class Scheduled {
 
 	@Resource(name = "couponServiceImpl")
 	private CouponService couponService;
+
+	@Resource(name = "weixinOpenApplicationServiceImpl")
+	private WeixinOpenApplicationService weixinOpenApplicationService;
 
 	/**
 	 * 每分钟 ，自动关闭超时未支付订单，不需要异步
@@ -172,4 +179,5 @@ public class Scheduled {
 		}
 
 	}
+
 }

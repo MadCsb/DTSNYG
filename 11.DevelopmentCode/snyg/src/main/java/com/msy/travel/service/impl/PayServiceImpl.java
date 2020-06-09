@@ -667,7 +667,7 @@ public class PayServiceImpl implements PayService {
 		JSONObject bizContent = new JSONObject();
 		bizContent.put("out_trade_no",thirdPayFlow.getPlatformFlowCode());
 		bizContent.put("product_code","FAST_INSTANT_TRADE_PAY");
-		bizContent.put("total_amount",0.01);//Double.parseDouble(thirdPayFlow.getFlowMoney()));
+		bizContent.put("total_amount",thirdPayFlow.getFlowMoney());//Double.parseDouble(thirdPayFlow.getFlowMoney()));
 		bizContent.put("subject",body);
 		bizContent.put("body",body);
 		bizContent.put("time_expire",param.get("timeExpire"));

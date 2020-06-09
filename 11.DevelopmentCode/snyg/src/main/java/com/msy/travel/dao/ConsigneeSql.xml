@@ -144,6 +144,9 @@
 			<if test="userId !=null and userId !=''">
 		    	and t.F_USER_ID = #{userId}
 			</if>
+			<if test="unionId!=null and unionId!=''">
+				and u.F_UNIONID = #{unionId}
+			</if>
 			<if test="isDefault !=null and isDefault !=''">
 			   and t.F_ISDEFAULT = #{isDefault}
 			</if>

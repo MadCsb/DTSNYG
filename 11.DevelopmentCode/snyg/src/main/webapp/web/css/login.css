@@ -33,7 +33,7 @@ box-flex: 1;
 flex-grow: 1;}
 
 .layout{ width:300px; height:400px;	padding: 20px 50px; background:#FFFFFF; position:absolute; top:30px; right:0;}
-.layout h3{ font-size:20px; margin:30px auto}
+.layout h3{ font-size:20px; margin:15px auto}
 
 .layoutzc{ width:300px; height:400px; margin:30px auto 0 auto;padding: 20px 50px; background:#FFFFFF;}
 .layoutzc h3{ font-size:20px;}
@@ -81,7 +81,7 @@ flex-grow: 1;}
 .icon_default_qq{background: url(../images/qq.png) no-repeat;background-size:30px;width:30px;height:30px;margin-right:10px;display:inline-block;vertical-align:middle;}
 
 
-.icon_default_weixin{background:url(../images/wx.png) no-repeat;background-size:30px;width:30px;height:30px;margin-right:10px;display:inline-block;vertical-align:middle;}
+.icon_default_weixin{background:url(../images/wx.PNG) no-repeat;background-size:30px;width:30px;height:30px;margin-right:10px;display:inline-block;vertical-align:middle;}
 
 .n-footer{height:60px; padding-top:20px; margin:0 auto;text-align:center; position:relative; width:100%;}
 .nf-link-area{text-align:center; font-size:12px; }

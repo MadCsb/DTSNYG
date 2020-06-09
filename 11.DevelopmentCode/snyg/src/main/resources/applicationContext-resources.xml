@@ -19,5 +19,6 @@
 		<property name="price1PatchTime" value="${price.1.patchTime}"/>
 		<property name="orderExpressCloseDay" value="${orderExpress.closeDay}"/>
 		<property name="orderCloseDay" value="${order.closeDay}"/>
+		<property name="wxOplatformTokenSync" value="${weixin.oplatform.tokenSync}"/>
 	</bean>
 </beans>

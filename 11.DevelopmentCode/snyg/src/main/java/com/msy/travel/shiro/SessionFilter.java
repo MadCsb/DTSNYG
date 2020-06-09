@@ -25,7 +25,10 @@ public class SessionFilter extends AccessControlFilter {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;application/json");
 		// 微信链接、微信图片
-		if (url.indexOf("/logout") != -1 || url.indexOf("/wx/core") != -1 || url.indexOf("/wx.do") != -1 || url.indexOf("/" + Consts.WX_PIC_FOLDER_NAME + "/") != -1 || url.indexOf("/wx/") != -1
+		if (url.indexOf("/logout") != -1
+				|| url.indexOf("/getWeixinLoginUrl") != -1
+				|| url.indexOf("/weixinLogin") != -1
+				|| url.indexOf("/wx/core") != -1 || url.indexOf("/wx.do") != -1 || url.indexOf("/" + Consts.WX_PIC_FOLDER_NAME + "/") != -1 || url.indexOf("/wx/") != -1
 				|| url.indexOf("/wxAfterPay") != -1 || url.indexOf("/api") != -1 || url.indexOf("/loginApi") != -1 || url.indexOf("/wx") != -1 || url.indexOf("/pay") != -1
 				|| url.indexOf("/city") != -1) {
 			return Boolean.TRUE;

@@ -245,6 +245,8 @@ public class Order extends BaseEntity implements java.io.Serializable
 	private String backId;
 	private String priceType; //销售类型
 
+	private String unionId; 	//用户的unionId
+
 	/**
 	 * 活动名称 db_column: F_SALETYPENAME
 	 */
@@ -718,6 +720,14 @@ public class Order extends BaseEntity implements java.io.Serializable
 
 	public void setSaleTypeName(String saleTypeName) {
 		this.saleTypeName = saleTypeName;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 }
 

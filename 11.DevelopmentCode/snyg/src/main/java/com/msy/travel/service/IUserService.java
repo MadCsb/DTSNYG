@@ -95,15 +95,21 @@ public interface IUserService {
 	public User getOrCreateByUserLoginName(String spId, String code, User oldLoginUser) throws Exception;
 
 	/**
-	 * 查询微商城或pC用户
-	 * 
-	 * @author wzd
-	 * @date 2019年11月16日 下午8:13:51
-	 * @param user
-	 * @return
-	 * @throws Exception
-	 * @return List<User>
+	 * 获取或新增 web端 微信用户扫码登录
+	 * spId 运营商ID
+	 * openId 普通用户的标识
 	 */
+	public User getOrCreateByWeixinUserScanCode(String spId, String openId) throws Exception;
+		/**
+     * 查询微商城或pC用户
+     *
+     * @author wzd
+     * @date 2019年11月16日 下午8:13:51
+     * @param user
+     * @return
+     * @throws Exception
+     * @return List<User>
+     */
 	List<User> queryUserListByType(User user) throws Exception;
 
 	/**

@@ -29,7 +29,8 @@
 		u.F_PROVINCE as province,
 		u.F_SEX as sex,
 		u.F_UPDATETIME as updateTime,
-		u.F_UNIONID as unionId
+		u.F_UNIONID as unionId,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 		FROM
 		t_pub_user u
 		<where>
@@ -47,6 +48,9 @@
 			</if>
 			<if test='delFlag != null and delFlag =="0" '>
 				and u.f_user_state != '-1'
+			</if>
+			<if test="wxOplatformUnionId!=null and wxOplatformUnionId!='' ">
+				and u.F_WX_OPLATFORM_UNIONID = #{wxOplatformUnionId}
 			</if>
 		</where>
 		<if test="entityPage!=null">
@@ -86,6 +90,7 @@
 			<if test="updateTime !=null">F_UPDATETIME  = #{updateTime} ,</if>
 			<if test="headPic !=null">F_HEADPIC  = #{headPic} ,</if>
 			<if test="unionId !=null">F_UNIONID  = #{unionId} ,</if>
+			<if test="wxOplatformUnionId !=null">F_WX_OPLATFORM_UNIONID  = #{wxOplatformUnionId} ,</if>
 		</set>
 		WHERE
 		F_USER_ID = #{userId}
@@ -140,7 +145,7 @@
 		F_USER_LOCKED as userLocked ,
 		F_UNIT_NAME as unitName ,
 		F_WXSERVICEID as wxServiceId ,
-		F_TYPE as type
+		F_TYPE as type,
 		FROM
 		(SELECT row_.*, rownum rownum_ FROM (
 		select
@@ -214,7 +219,8 @@
 		u.F_SEX as sex,
 		u.F_HEADPIC as headPic,
 		u.F_UPDATETIME as updateTime,
-		u.F_UNIONID as unionId
+		u.F_UNIONID as unionId,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 		FROM
 		t_pub_user u
 		WHERE
@@ -247,7 +253,8 @@
 		F_SEX  ,
 		F_UPDATETIME   ,
 		F_HEADPIC ,
-		F_UNIONID
+		F_UNIONID ,
+		F_WX_OPLATFORM_UNIONID
 		) VALUES (
 		#{userId,jdbcType=VARCHAR} ,
 		#{userLoginName,jdbcType=VARCHAR} ,
@@ -272,7 +279,8 @@
 		#{sex,jdbcType=VARCHAR},
 		#{updateTime,jdbcType=VARCHAR},
 		#{headPic,jdbcType=VARCHAR} ,
-		#{unionId,jdbcType=VARCHAR} 
+		#{unionId,jdbcType=VARCHAR} ,
+		#{wxOplatformUnionId,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -312,7 +320,8 @@
 		u.F_SEX as sex,
 		u.F_HEADPIC as headPic,
 		u.F_UPDATETIME as updateTime,
-		u.F_UNIONID as unionId
+		u.F_UNIONID as unionId ,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 		FROM
 		t_pub_user u
 		<where>
@@ -356,13 +365,17 @@
 		u.F_SEX as sex,
 		u.F_UPDATETIME as updateTime,
 		u.F_HEADPIC as headPic,
-		u.F_UNIONID as unionId
+		u.F_UNIONID as unionId,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 		FROM
 		t_pub_user u
 		<where>
 			1=1
 			<if test="userLoginName!=null and userLoginName!=''">
 				and u.F_USER_LOGINNAME = #{userLoginName}
+			</if>
+			<if test="type!=null and type!=''">
+				and u.F_TYPE = #{type}
 			</if>
 			<if test="userState!=null and userState!=''">
 				and u.F_USER_STATE = #{userState}
@@ -398,7 +411,8 @@
 		u.F_PROVINCE as province,
 		u.F_SEX as sex,
 		u.F_UPDATETIME as updateTime,
-		u.F_HEADPIC as headPic
+		u.F_HEADPIC as headPic,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 		FROM
 		t_pub_user u
 		<where>
@@ -485,7 +499,8 @@
 		u.F_SEX AS sex,
 		u.F_UPDATETIME AS updateTime,
 		u.F_HEADPIC AS headPic,
-		u.F_UNIONID as unionId
+		u.F_UNIONID as unionId,
+		u.F_WX_OPLATFORM_UNIONID as wxOplatformUnionId
 	FROM
 		t_pub_roledata r 
 	LEFT JOIN 

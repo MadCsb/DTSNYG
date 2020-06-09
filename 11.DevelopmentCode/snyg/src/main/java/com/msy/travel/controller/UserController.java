@@ -1,10 +1,18 @@
 package com.msy.travel.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.msy.travel.common.config.ConfigParameter;
+import com.msy.travel.pojo.WeixinOpenApplication;
+import com.msy.travel.service.WeixinOpenApplicationService;
+import com.qq.weixin.open.WebsiteApp;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +76,9 @@ public class UserController extends BaseController {
 	@Resource(name = "userServiceImpl")
 	private IUserService userService;
 
+	@Resource(name = "weixinOpenApplicationServiceImpl")
+	private WeixinOpenApplicationService weixinOpenApplicationService;
+
 	@Resource(name = "roleDataServiceImpl")
 	private RoleDataService roleDataService;
 
@@ -95,6 +106,9 @@ public class UserController extends BaseController {
 	@Resource(name = "pubUserLogServiceImpl")
 	private IPubUserLogService pubUserLogService;
 
+	@Resource(name = "configParameter")
+	private ConfigParameter configParameter;
+
 	@Resource(name = "redisUtil")
 	private RedisUtil redisUtil;
 
@@ -106,7 +120,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/tologin")
-	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, User user, String loginPage,String redictUrl) {
+	public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, String loginPage,String redictUrl) {
 		ModelAndView view = null;
 		try {
 			if (loginPage == null || loginPage.trim().equals("")) {
@@ -145,6 +159,51 @@ public class UserController extends BaseController {
 		return view;
 	}
 
+
+	/**
+	 * 获取微信用户登录地址
+	 *
+	 * @param state 用于存储用户登录之后进入的地址
+	 * @return
+	 */
+	@RequestMapping(value = "/getWeixinLoginUrl")
+	public void getWeixinLoginUrl(HttpServletRequest request, HttpServletResponse response,String state) {
+		Result result = new Result();
+		try {
+			WeixinOpenApplication application = new WeixinOpenApplication();
+			application.setAppType(WeixinOpenApplication.APPTYPE_WEBSITE);
+			List<WeixinOpenApplication> weixinOpenApplicationList = weixinOpenApplicationService.queryWeixinOpenApplicationList(application);
+			if (weixinOpenApplicationList.size()!=1)
+			{
+				throw new LogicException("微信开放平台应用中未正确设置应用信息");
+			}
+			application = weixinOpenApplicationList.get(0);
+			JSONObject param = new JSONObject();
+			param.put("appId",application.getAppId());
+			param.put("redirectUri",configParameter.getPreviewUrl()+"/"+"weixinLogin");
+			param.put("state",state);
+			String weixinLoginUrl = WebsiteApp.getRequestCodeUrl(param);
+			result.setResultCode("0");
+			result.setResultPojo(weixinLoginUrl);
+		}catch (LogicException le)
+		{
+			result.setResultCode("1");
+			result.setResultMsg(le.getMessage());
+		}
+		catch (Exception e)
+		{
+			log.error(e);
+			result.setResultCode("1");
+			result.setResultMsg("未知异常");
+		}finally {
+			try {
+				response.getWriter().write(JSON.toJSONString(result));
+			}catch (Exception fe)
+			{
+				log.error(fe);
+			}
+		}
+	}
 	/**
 	 * 跳转注册用户
 	 * 
@@ -307,6 +366,76 @@ public class UserController extends BaseController {
 			log.error(e);
 		}
 	}
+
+
+	/**
+	 * 微信用户登陆
+	 *
+	 * @param code 微信成功授权后，返回code，用于获取token
+	 * @param state 系统自带参数，微信原内容返回
+	 * @return
+	 */
+	@RequestMapping(value = "/weixinLogin")
+	public ModelAndView weixinLogin(HttpServletRequest request, HttpServletResponse response,String code,String state) {
+		ModelAndView view;
+		try {
+			view = new ModelAndView("web/weixinLogined");
+			// 若用户禁止授权，则重定向后不会带上code参数，仅会带上state参数
+			if (code == null || code.equals("")) {
+				view = new ModelAndView("tologin?loginPage=" + Consts.LOGIN_PAGE_WEB+"&redictUrl="+state);
+				return view;
+			}
+
+			//微信website应用
+			WeixinOpenApplication application = new WeixinOpenApplication();
+			application.setAppType(WeixinOpenApplication.APPTYPE_WEBSITE);
+			List<WeixinOpenApplication> weixinOpenApplicationList = weixinOpenApplicationService.queryWeixinOpenApplicationList(application);
+			if (weixinOpenApplicationList.size()!=1)
+			{
+				throw new LogicException("微信开放平台应用中未正确设置应用信息");
+			}
+			application = weixinOpenApplicationList.get(0);
+
+			JSONObject param = new JSONObject();
+			param.put("appId",application.getAppId());
+			param.put("appSecret",application.getAppSecret());
+			param.put("code",hashCode());
+			// 获取accessToken
+			JSONObject object = WebsiteApp.accessToken(param);
+			if (object == null)
+			{
+				throw new LogicException("微信开放平台应用通过code获取accessToken,返回null");
+			}
+			if(object.containsKey("errcode"))
+			{
+				throw new LogicException("微信开放平台应用通过code获取accessToken,返回"+object.toJSONString());
+			}
+			application.setComponentAccessToken(object.getString("access_token")); //重置 access_token
+			int expiresIn = object.getIntValue("expires_in");// 授权过期时长,单位秒
+			SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtil.sdf19);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			calendar.add(Calendar.SECOND, expiresIn);
+			application.setAccessTokenExp(sdf.format(calendar.getTime())); //更新accessToken过期时长
+			weixinOpenApplicationService.updateWeixinOpenApplication(application); //更新应用信息
+
+			User user = userService.getOrCreateByWeixinUserScanCode(Destsp.currentSpId,object.getString("openid"));
+
+			RoleData loginRoleData = new RoleData();
+			loginRoleData.setRoleType(RoleData.ROLE_TYPE_CHANNEL);
+			loginRoleData.setAccId(Destsp.currentSpId);
+			loginRoleData.setUserId(user.getUserId());
+
+			UsernamePasswordRoledataToken token = new UsernamePasswordRoledataToken(user.getUserLoginName(), MD5.encode(user.getUserLoginName()), loginRoleData);
+			Subject subject = SecurityUtils.getSubject();
+			subject.login(token);
+		}catch (Exception e) {
+			view = new ModelAndView("error");
+			log.error(e, e);
+		}
+		return view;
+	}
+
 
 	/**
 	 * 跳转到首页

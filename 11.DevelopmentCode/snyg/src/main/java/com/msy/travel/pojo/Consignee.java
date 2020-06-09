@@ -77,6 +77,8 @@ public class Consignee extends BaseEntity implements java.io.Serializable
 	private String userName;
 
 	private String defaultFirst; //收货地址排前边
+
+	private String unionId; 	//用户的unionId
 	//columns END
 	private List<String> consigneeIdList;
 	public void setConsigneeId(String consigneeId) {
@@ -164,6 +166,14 @@ public class Consignee extends BaseEntity implements java.io.Serializable
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 }
 

@@ -17,7 +17,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	// columns START
 
 	/**
-	 * 用户类型 微信 0
+	 * 用户类型 微信公众号用户 0
 	 */
 	public static final String USER_TYPE_WEIXIN = "0";
 
@@ -30,6 +30,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	 * 用户类型 山东移动 2
 	 */
 	public static final String USER_TYPE_SDMOBILE = "2";
+
+	/**
+	 * 用户类型 微信扫码 3
+	 */
+	public static final String USER_TYPE_WEIXIN_SCANCODE = "3";
 
 	/**
 	 * 用户ID db_column: F_USER_ID
@@ -115,6 +120,12 @@ public class User extends BaseEntity implements java.io.Serializable {
 	 */
 	@MyAnnotation(desc = "所属部门ID")
 	private String storeId;
+
+	/**
+	 * 微信开放平台UNION_ID db_column: F_WX_OPLATFORM_UNIONID
+	 */
+	private String wxOplatformUnionId;
+
 	// columns END
 
 	private String securityCode;
@@ -620,5 +631,13 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setColList(List colList) {
 		this.colList = colList;
+	}
+
+	public String getWxOplatformUnionId() {
+		return wxOplatformUnionId;
+	}
+
+	public void setWxOplatformUnionId(String wxOplatformUnionId) {
+		this.wxOplatformUnionId = wxOplatformUnionId;
 	}
 }

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msy.travel.dao.WeixinOpenApplicationDao" >
+
+	<!-- 新增信息 -->
+	<insert id="insertWeixinOpenApplication" parameterType="weixinOpenApplication">
+		INSERT INTO 
+			t_weixin_open_application  
+		(
+			F_APPID ,
+			F_APPSECRET ,
+			F_APPTYPE ,
+			F_TOKEN ,
+			F_ENCODINGAESKEY ,
+			F_COMPONENTVERIFYTICKET ,
+			F_COMPONENTACCESSTOKEN ,
+			F_PREAUTHCODE ,
+			F_VERIFYTICKET_EXP ,
+			F_ACCESSTOKEN_EXP 
+		) VALUES (
+			#{appId} ,
+			#{appSecret} ,
+			#{appType} ,
+			#{token} ,
+			#{encodingAESKey} ,
+			#{componentVerifyTicket} ,
+			#{componentAccessToken} ,
+			#{preAuthCode} ,
+			#{verifyTicketExp} ,
+			#{accessTokenExp} 
+		)
+	</insert>
+
+	<!-- 校验信息，主键相同则修改，主键不同则添加 -->
+	<insert id="mergeWeixinOpenApplication" parameterType="weixinOpenApplication">
+		REPLACE INTO 
+			t_weixin_open_application 
+		(
+			F_APPID ,
+			F_APPSECRET ,
+			F_APPTYPE ,
+			F_TOKEN ,
+			F_ENCODINGAESKEY ,
+			F_COMPONENTVERIFYTICKET ,
+			F_COMPONENTACCESSTOKEN ,
+			F_PREAUTHCODE ,
+			F_VERIFYTICKET_EXP ,
+			F_ACCESSTOKEN_EXP 
+		) VALUES (
+			#{appId} ,
+			#{appSecret} ,
+			#{appType} ,
+			#{token} ,
+			#{encodingAESKey} ,
+			#{componentVerifyTicket} ,
+			#{componentAccessToken} ,
+			#{preAuthCode} ,
+			#{verifyTicketExp} ,
+			#{accessTokenExp} 
+		)
+	</insert>
+
+	<!-- 修改信息 -->
+	<update id="updateWeixinOpenApplication" parameterType="weixinOpenApplication">
+		UPDATE
+			t_weixin_open_application 
+		SET
+			F_APPSECRET = #{appSecret} ,
+			F_APPTYPE = #{appType} ,
+			F_TOKEN = #{token} ,
+			F_ENCODINGAESKEY = #{encodingAESKey} ,
+			F_COMPONENTVERIFYTICKET = #{componentVerifyTicket} ,
+			F_COMPONENTACCESSTOKEN = #{componentAccessToken} ,
+			F_PREAUTHCODE = #{preAuthCode} ,
+			F_VERIFYTICKET_EXP = #{verifyTicketExp} ,
+			F_ACCESSTOKEN_EXP = #{accessTokenExp} 
+		<where>
+			F_APPID = #{appId} 
+			
+		</where>
+	</update>
+	<!-- 删除消息 -->
+	<delete id="deleteWeixinOpenApplication" parameterType="weixinOpenApplication">
+		DELETE FROM
+			t_weixin_open_application 
+		<where>
+			F_APPID = #{appId}
+			
+		</where>
+	</delete>
+	<!-- 批量删除消息 -->
+	<delete id="deleteBatchWeixinOpenApplication" parameterType="weixinOpenApplication">
+		DELETE FROM 
+			t_weixin_open_application 
+		<where>
+			F_APPID in
+			<foreach collection="weixinOpenApplicationIdList" item="param" separator="," open="(" close=")">
+                   #{param}
+            </foreach>
+		</where>
+	</delete>
+	<!-- 查询单个详情 -->
+	<select id="queryWeixinOpenApplication" parameterType="String" resultType="weixinOpenApplication">
+		SELECT
+			t.F_APPID as appId ,
+			t.F_APPSECRET as appSecret ,
+			t.F_APPTYPE as appType ,
+			t.F_TOKEN as token ,
+			t.F_ENCODINGAESKEY as encodingAESKey ,
+			t.F_COMPONENTVERIFYTICKET as componentVerifyTicket ,
+			t.F_COMPONENTACCESSTOKEN as componentAccessToken ,
+			t.F_PREAUTHCODE as preAuthCode ,
+			t.F_VERIFYTICKET_EXP as verifyTicketExp ,
+			t.F_ACCESSTOKEN_EXP as accessTokenExp 
+		FROM
+			t_weixin_open_application t
+		<where>
+			t.F_APPID = #{appId} 
+			
+		</where>
+	</select>
+	<!-- 按条件查询所有 -->
+	<select id="queryWeixinOpenApplicationList" parameterType="weixinOpenApplication" resultType="weixinOpenApplication">
+		SELECT
+			t.F_APPID as appId ,
+			t.F_APPSECRET as appSecret ,
+			t.F_APPTYPE as appType ,
+			t.F_TOKEN as token ,
+			t.F_ENCODINGAESKEY as encodingAESKey ,
+			t.F_COMPONENTVERIFYTICKET as componentVerifyTicket ,
+			t.F_COMPONENTACCESSTOKEN as componentAccessToken ,
+			t.F_PREAUTHCODE as preAuthCode ,
+			t.F_VERIFYTICKET_EXP as verifyTicketExp ,
+			t.F_ACCESSTOKEN_EXP as accessTokenExp 
+		FROM
+		t_weixin_open_application t
+		<where>
+			<if test="appId!=null and appId!=''">
+		  	and t.F_APPID = #{appId}
+			</if>
+			<if test="appType!=null and appType!=''">
+				and t.F_APPTYPE = #{appType}
+			</if>
+			<if test="timeRefreshAccessToken!=null and timeRefreshAccessToken!=''">
+				and (F_COMPONENTACCESSTOKEN IS NULL
+				or F_ACCESSTOKEN_EXP IS NULL
+				OR F_ACCESSTOKEN_EXP &lt;= #{timeRefreshAccessToken})
+			</if>
+		</where>
+		<if test="entityPage != null">
+			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">
+		    	ORDER BY ${entityPage.sortField}
+			</if>
+		</if>	
+		<if test="entityPage != null">	
+			<if test="entityPage.sortOrder !=null and entityPage.sortOrder !='' ">
+		    	${entityPage.sortOrder}
+			</if>
+		</if>
+	</select>
+</mapper>	
