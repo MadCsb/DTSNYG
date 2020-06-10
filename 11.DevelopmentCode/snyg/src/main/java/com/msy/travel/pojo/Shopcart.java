@@ -60,6 +60,16 @@ public class Shopcart extends BaseEntity implements java.io.Serializable {
 
 	private String goodsThumbPic;
 
+	private String unionId;
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
+
 	public String getGoodsThumbPic() {
 		return goodsThumbPic;
 	}

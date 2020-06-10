@@ -11,6 +11,8 @@ import com.msy.travel.common.DateTimeUtil;
 import com.msy.travel.common.PrimaryKeyUtil;
 import com.msy.travel.dao.ShopcartDao;
 import com.msy.travel.pojo.Shopcart;
+import com.msy.travel.pojo.User;
+import com.msy.travel.service.IUserService;
 import com.msy.travel.service.ShopcartService;
 
 /**
@@ -25,6 +27,9 @@ public class ShopcartServiceImpl implements ShopcartService {
 
 	@Resource(name = "shopcartDao")
 	private ShopcartDao shopcartDao;
+
+	@Resource(name = "userServiceImpl")
+	private IUserService userService;
 
 	/**
 	 * 新增Shopcart
@@ -97,6 +102,17 @@ public class ShopcartServiceImpl implements ShopcartService {
 	 * @return Shopcart列表
 	 */
 	public List<Shopcart> queryShopcartList(Shopcart shopcart) throws Exception {
+		if (shopcart.getUserId() != null && !shopcart.getUserId().equals("")) // 如果存在用戶ID作为参数
+		{
+			User user = new User();
+			user.setUserId(shopcart.getUserId());
+			user = userService.displayUser(user);
+			if (user.getUnionId() != null && !user.getUnionId().equals("")) // 如果参数对应用户保存了unionId，则使用unionId作为参数
+			{
+				shopcart.setUserId(null);
+				shopcart.setUnionId(user.getUnionId());
+			}
+		}
 		return shopcartDao.queryShopcartList(shopcart);
 	}
 

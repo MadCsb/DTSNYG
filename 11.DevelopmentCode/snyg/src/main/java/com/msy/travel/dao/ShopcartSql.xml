@@ -128,6 +128,7 @@
 		left join t_sm_sellprice s on t.F_PRICEID = s.F_priceid
 		left join t_sm_commproduct c on s.F_PRODUCTID = c.F_PRODUCTID
 		left join t_sm_goodsprice g on s.F_GOODSPRICEID = g.F_GOODSPRICEID
+		LEFT JOIN t_pub_user u on  t.F_USERID = u.F_USER_ID
 		<where>
 			<if test="cartId!=null and cartId!=''">
 		    	and t.F_CARTID = #{cartId}
@@ -135,6 +136,9 @@
 			<if test="userId !=null and userId !=''">
 		    	and t.F_USERID = #{userId}
 		    </if>
+		    <if test="unionId!=null and unionId!=''">
+				and u.F_UNIONID = #{unionId}
+			</if>
 		    <if test="delFlag !=null and delFlag !=''">
 		    	and s.F_DELFLAG=#{delFlag} and c.F_DELFLAG=#{delFlag} and g.F_DELFLAG=#{delFlag}
 		    </if>

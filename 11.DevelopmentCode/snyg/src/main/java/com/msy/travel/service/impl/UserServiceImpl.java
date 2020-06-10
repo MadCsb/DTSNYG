@@ -1,8 +1,5 @@
 package com.msy.travel.service.impl;
 
-import com.msy.travel.pojo.WeixinOpenApplication;
-import com.msy.travel.service.WeixinOpenApplicationService;
-import com.qq.weixin.open.WebsiteApp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +27,17 @@ import com.msy.travel.pojo.Event;
 import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
+import com.msy.travel.pojo.WeixinOpenApplication;
 import com.msy.travel.service.ChannelService;
 import com.msy.travel.service.EventService;
 import com.msy.travel.service.IServiceCodeService;
 import com.msy.travel.service.IUserService;
 import com.msy.travel.service.RoleDataService;
+import com.msy.travel.service.WeixinOpenApplicationService;
 import com.msy.travel.wx.pojo.WxUser;
 import com.msy.travel.wx.utils.WeixinService;
 import com.msy.travel.wx.utils.WeixinUtil;
+import com.qq.weixin.open.WebsiteApp;
 
 /**
  * UserService接口实现类
@@ -214,7 +214,10 @@ public class UserServiceImpl implements IUserService {
 							u.setSex(wxuser.getSex());// 1男 2女 3未知
 							u.setUpdateTime(DateTimeUtil.getDateTime19());
 							u.setHeadPic(wxuser.getHeadimgurl());
+							u.setWxOplatformUnionId(wxuser.getUnionid());
 							userService.updateUser(u);
+
+							unionWxOplatformUser(u.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
 						}
 					}
 				} else {
@@ -249,7 +252,11 @@ public class UserServiceImpl implements IUserService {
 					user.setUserLocked("0");
 					user.setUserRegDate(DateTimeUtil.getDateTime19());
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
+					user.setWxOplatformUnionId(wxuser.getUnionid());
 					userService.createUser(user);
+
+					unionWxOplatformUser(user.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+
 					u = user;
 				}
 				// 添加老用户角色信息
@@ -303,30 +310,27 @@ public class UserServiceImpl implements IUserService {
 					roleDataService.createRoleData(snygRoleData);
 					log.error("微信用户" + u.getUserLoginName() + ":添加roleData=" + snygRoleData.getUserRoleDataId());
 				}
+
 			}
 		}
 
 		return u;
 	}
 
-
 	/**
-	 * 获取或新增 web端 微信用户扫码登录
-	 * spId 运营商ID
-	 * openId 普通用户的标识
+	 * 获取或新增 web端 微信用户扫码登录 spId 运营商ID openId 普通用户的标识
 	 */
 	public User getOrCreateByWeixinUserScanCode(String spId, String openId) throws Exception {
 
 		User user = new User();
 		user.setType(User.USER_TYPE_WEIXIN_SCANCODE);
 		user.setUserLoginName(openId);
-		user = userDao.selectUserByUserLoginName(user); //根据用户登录名查询
+		user = userDao.selectUserByUserLoginName(user); // 根据用户登录名查询
 
-		if(user == null) {
+		if (user == null) {
 			WeixinOpenApplication application = new WeixinOpenApplication();
 			application.setAppType(WeixinOpenApplication.APPTYPE_WEBSITE);
-			List<WeixinOpenApplication> weixinOpenApplicationList = weixinOpenApplicationService
-					.queryWeixinOpenApplicationList(application);
+			List<WeixinOpenApplication> weixinOpenApplicationList = weixinOpenApplicationService.queryWeixinOpenApplicationList(application);
 			if (weixinOpenApplicationList.size() != 1) {
 				throw new LogicException("微信开放平台应用中未正确设置应用信息");
 			}
@@ -336,7 +340,7 @@ public class UserServiceImpl implements IUserService {
 			if (userInfo == null) {
 				throw new LogicException("微信开放平台应用获取用户信息为null");
 			}
-			//新增用户信息
+			// 新增用户信息
 			user = new User();
 			user.setUserId(PrimaryKeyUtil.generateKey());
 			user.setUserLoginName(openId);
@@ -376,9 +380,9 @@ public class UserServiceImpl implements IUserService {
 			roleData.setUserId(user.getUserId());
 			roleData.setIsDefault("1");
 			roleDataList.add(roleData);
-			createUserAndRoledata(user, roleDataList); //保存用户和角色信息
+			createUserAndRoledata(user, roleDataList); // 保存用户和角色信息
 		}
-		unionWxOplatformUser(user.getWxOplatformUnionId()); //把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+		unionWxOplatformUser(user.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
 		return user;
 	}
 
@@ -514,9 +518,8 @@ public class UserServiceImpl implements IUserService {
 		userTwo.setUserId(userIdTwo);
 		userTwo = userDao.queryUser(userTwo);
 
-		//如果userOne和userTwo的unionId都不为空，且相同，表示已经完成合并,直接退出
-		if(userOne.getUnionId() != null && !userOne.getUnionId().equals("") && userOne.getUnionId().equals(userTwo.getUnionId()))
-		{
+		// 如果userOne和userTwo的unionId都不为空，且相同，表示已经完成合并,直接退出
+		if (userOne.getUnionId() != null && !userOne.getUnionId().equals("") && userOne.getUnionId().equals(userTwo.getUnionId())) {
 			return;
 		}
 
@@ -542,7 +545,6 @@ public class UserServiceImpl implements IUserService {
 		}
 	}
 
-
 	/**
 	 * 合并微信开放平台下相同UNIONID的用于，及相同wxOplatformUnionId的用户
 	 */
@@ -550,9 +552,8 @@ public class UserServiceImpl implements IUserService {
 		User user = new User();
 		user.setWxOplatformUnionId(wxOplatformUnionId);
 		List<User> userList = userDao.queryUserList(user);
-		for (int i=0;i<(userList.size()-1);i++)
-		{
-			unionUser(userList.get(i).getUserId(),userList.get(i+1).getUserId()); //把i+1合并到i
+		for (int i = 0; i < (userList.size() - 1); i++) {
+			unionUser(userList.get(i).getUserId(), userList.get(i + 1).getUserId()); // 把i+1合并到i
 		}
 	}
 
