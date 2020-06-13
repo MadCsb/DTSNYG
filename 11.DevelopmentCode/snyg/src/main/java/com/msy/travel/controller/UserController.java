@@ -163,11 +163,11 @@ public class UserController extends BaseController {
 	/**
 	 * 获取微信用户登录地址
 	 *
-	 * @param state 用于存储用户登录之后进入的地址
+	 * @param weixinLoginRedictUrl 微信登录成功，跳转地址
 	 * @return
 	 */
 	@RequestMapping(value = "/getWeixinLoginUrl")
-	public void getWeixinLoginUrl(HttpServletRequest request, HttpServletResponse response,String state) {
+	public void getWeixinLoginUrl(HttpServletRequest request, HttpServletResponse response,String weixinLoginRedictUrl) {
 		Result result = new Result();
 		try {
 			WeixinOpenApplication application = new WeixinOpenApplication();
@@ -181,7 +181,8 @@ public class UserController extends BaseController {
 			JSONObject param = new JSONObject();
 			param.put("appId",application.getAppId());
 			param.put("redirectUri",configParameter.getPreviewUrl()+"/"+"weixinLogin");
-			param.put("state",state);
+//			param.put("state",null);
+			request.getSession().setAttribute("weixinLoginRedictUrl",weixinLoginRedictUrl);
 			String weixinLoginUrl = WebsiteApp.getRequestCodeUrl(param);
 			result.setResultCode("0");
 			result.setResultPojo(weixinLoginUrl);
@@ -379,10 +380,16 @@ public class UserController extends BaseController {
 	public ModelAndView weixinLogin(HttpServletRequest request, HttpServletResponse response,String code,String state) {
 		ModelAndView view;
 		try {
+			log.error("*************************");
+			String weixinLoginRedictUrl = (String) request.getSession().getAttribute("weixinLoginRedictUrl");
+			log.error("getSession获取weixinLoginRedictUrl="  + weixinLoginRedictUrl);
+			weixinLoginRedictUrl = URLDecoder.decode(weixinLoginRedictUrl,"UTF-8");
+			log.error("weixinLoginRedictUrl在URLDecoder.decode后"  + weixinLoginRedictUrl);
 			view = new ModelAndView("web/weixinLogined");
+			view.addObject("redictUrl",weixinLoginRedictUrl);
 			// 若用户禁止授权，则重定向后不会带上code参数，仅会带上state参数
 			if (code == null || code.equals("")) {
-				view = new ModelAndView("tologin?loginPage=" + Consts.LOGIN_PAGE_WEB+"&redictUrl="+state);
+				view = new ModelAndView("tologin?loginPage=" + Consts.LOGIN_PAGE_WEB+"&redictUrl="+weixinLoginRedictUrl);
 				return view;
 			}
 
@@ -399,7 +406,7 @@ public class UserController extends BaseController {
 			JSONObject param = new JSONObject();
 			param.put("appId",application.getAppId());
 			param.put("appSecret",application.getAppSecret());
-			param.put("code",hashCode());
+			param.put("code",code);
 			// 获取accessToken
 			JSONObject object = WebsiteApp.accessToken(param);
 			if (object == null)

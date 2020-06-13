@@ -361,7 +361,7 @@ public class UserServiceImpl implements IUserService {
 			user.setCountry(userInfo.getString("country"));
 			user.setProvince(userInfo.getString("province"));
 			user.setCity(userInfo.getString("city"));
-			user.setSex(userInfo.getString("city"));
+			user.setSex(userInfo.getString("sex"));
 			user.setUpdateTime(DateTimeUtil.getDateTime19());
 			user.setWxOplatformUnionId(userInfo.getString("unionid"));
 			user.setHeadPic(userInfo.getString("headimgurl"));

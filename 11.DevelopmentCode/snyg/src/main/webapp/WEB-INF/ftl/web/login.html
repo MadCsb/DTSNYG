@@ -171,19 +171,17 @@
      * 打开微信登录
      */
     function toWeixinLogin() {
-      var state = encodeURIComponent($("#redictUrl").text());
-      alert(state);
+      var weixinLoginRedictUrl = encodeURIComponent($("#redictUrl").text());
       $.ajax({
         type: "POST",
         url: "getWeixinLoginUrl",
         dataType:"json",
         data: {
-          state: state
+            weixinLoginRedictUrl: weixinLoginRedictUrl
         },
         success: function (data) {
           if(data.resultCode == '0')
           {
-            alert(data.resultPojo);
             window.location.href = data.resultPojo;
           }else
           {
