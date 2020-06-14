@@ -357,7 +357,7 @@ public class UserServiceImpl implements IUserService {
 			user.setUserLocked("0");
 			user.setStoreId(null);
 			user.setWxServiceId(null);
-			user.setType(User.USER_TYPE_WEIXIN);
+			user.setType(User.USER_TYPE_WEIXIN_SCANCODE);
 			user.setCountry(userInfo.getString("country"));
 			user.setProvince(userInfo.getString("province"));
 			user.setCity(userInfo.getString("city"));

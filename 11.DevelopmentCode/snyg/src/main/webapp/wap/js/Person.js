@@ -45,6 +45,48 @@ Person.prototype.orderList = function (sync,searchObject,pageEntity)
   return orderList;
 }
 
+
+/**
+ * 获取微信用户的订单数量
+ * sync true 异步, false 同步
+ * searchObject
+ * searchObject.searchKey搜索关键字
+ * searchObject.userId 用户id
+ * searchObject.payTag支付状态
+ * searchObject.beforePayStatus支付前状态
+ * searchObject.status支付后订单状态
+ * searchObject.backNumS是否有退订
+ */
+Person.prototype.orderNum = function (searchObject)
+{
+  var orderNum = 0;
+  $.ajax({
+    type: "POST",
+    async: false,
+    dataType: "json",
+    url: "waporder?method=wapAjaxOrderCount",
+    data: {
+      d:new Date().getTime(),
+      userId:searchObject.userId,
+      searchKey: searchObject.searchKey,
+      payTag: searchObject.payTag,
+      beforePayStatus: searchObject.beforePayStatus,
+      status: searchObject.status,
+      backNumS: searchObject.backNumS
+    },
+    success: function (data) {
+      if (data.resultCode == "0")
+      {
+        orderNum = data.resultPojo;
+      }else
+      {
+        orderNum = "0";
+      }
+    }
+  });
+  return orderNum;
+}
+
 /**
  * 获取微信用户的订单详情
  * sync true 异步, false 同步

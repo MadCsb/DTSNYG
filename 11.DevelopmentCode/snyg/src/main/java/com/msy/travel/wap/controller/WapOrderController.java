@@ -659,6 +659,35 @@ public class WapOrderController extends BaseController {
 	}
 
 	/**
+	 * ajax 获取订单统计
+	 */
+	@RequestMapping(params = "method=wapAjaxOrderCount")
+	public void wapAjaxOrderCount(Order order,HttpServletRequest request,HttpServletResponse response) {
+		Result result = new Result();
+		order.setUserId(getLoginUser(request).getUserId());
+		try {
+			List<Order> orderList =
+					orderService.queryOrderList(order);
+			result.setResultCode("0");
+			result.setResultPojo(orderList.size());
+		}catch (Exception e)
+		{
+			log.error(e);
+			result.setResultCode("1");
+			result.setResultMsg("查询错误");
+		}
+		try {
+			response.setContentType("text/json;charset=utf-8");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(JSON.toJSONString(result));
+		}catch (Exception e)
+		{
+			log.error(e);
+		}
+	}
+
+
+	/**
 	 * ajax 获取订单的orderList列表
 	 */
 	@RequestMapping(params = "method=wapAjaxOrderDetail")

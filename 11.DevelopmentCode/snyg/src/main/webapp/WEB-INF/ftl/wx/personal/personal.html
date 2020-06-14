@@ -2,6 +2,7 @@
 <html>
   <head>
     <#include "/WX_INC_HEAD.html">
+      <script src="${rc.contextPath}/wx/js/Person.js"></script>
     <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
 
       </head>
@@ -31,10 +32,10 @@
 <div class="snyg_content">
   <ul class="snyg_tz_type">
     <div class="snyg_type_bt">我的订单<a onclick="toOrderList('0')"><span>全部订单</span></a></div>
-    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wx/images/1.png" /></a></li>
-    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wx/images/2.png" /></a></li>
-    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wx/images/3.png" /></a></li>
-    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wx/images/4.png" /></a></li>
+    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wx/images/1.png" /></a><i class="itsbg"></i></li>
+    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wx/images/2.png" /></a><i class="itsbg"></i></li>
+    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wx/images/3.png" /></a><i class="itsbg"></i></li>
+    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wx/images/4.png" /></a><i class="itsbg"></i></li>
     <div style="clear:both;"></div>
   </ul>
 </div>
@@ -52,6 +53,48 @@
 <#include "/wx/WX_FOOTER.html">
 </body>
 <script>
-  changeBottomClass('4');
+  $(function () {
+    changeBottomClass('4');
+    $(".itsbg").each(function (index) {
+      var num = queryOrderNum(index);
+      $(this).html(num);
+    })
+  })
+
+
+  //修改orderListType,查询订单列表
+  function queryOrderNum(orderListType)
+  {
+    var searchObject = new Object();
+    searchObject.searchKey = "";
+    searchObject.userId = "${user.userId}";
+    if (orderListType == 0) // 待支付
+    {
+      searchObject.payTag = "0";
+      searchObject.beforePayStatus = "0";
+      searchObject.status = ""
+      searchObject.backNumS = "";
+    }else if (orderListType == 1) // 待发货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = "0";
+      searchObject.backNumS = "";
+    }else if (orderListType == 2) // 待收货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = "1"
+      searchObject.backNumS = "";
+    }else if (orderListType == 3) // 退换货
+    {
+      searchObject.payTag = "1";
+      searchObject.beforePayStatus = "";
+      searchObject.status = ""
+      searchObject.backNumS = "1";
+    }
+    var num = new Person().orderNum(searchObject);
+    return num;
+  }
 </script>
 </html>
