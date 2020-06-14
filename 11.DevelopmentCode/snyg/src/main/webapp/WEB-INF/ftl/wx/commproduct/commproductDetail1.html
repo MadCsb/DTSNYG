@@ -41,6 +41,7 @@ var refPatchCode = "";
 
 $(function(){
 	getSellPriceList("${rc.contextPath}");
+	
 });
 </script>
 
@@ -137,6 +138,9 @@ $(function(){
 	$("#buyA").hide();	
 		
 	checkActiveDate();
+	
+
+	getPrice1Ref();
 });
 
 function checkActiveDate(){
