@@ -217,12 +217,16 @@ public class UserServiceImpl implements IUserService {
 							u.setWxOplatformUnionId(wxuser.getUnionid());
 							userService.updateUser(u);
 
-							unionWxOplatformUser(u.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+							if (u.getWxOplatformUnionId() != null && !"".equals(u.getWxOplatformUnionId())) {
+								unionWxOplatformUser(u.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+							}
 						}
 					}
 				} else {
 
 					WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
+
+					log.info("用户获取用户信息详情wxuser[" + wxuser + "]");
 
 					user = new User();
 					user.setUserId(PrimaryKeyUtil.generateKey());
@@ -254,8 +258,9 @@ public class UserServiceImpl implements IUserService {
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
 					user.setWxOplatformUnionId(wxuser.getUnionid());
 					userService.createUser(user);
-
-					unionWxOplatformUser(user.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+					if (u.getWxOplatformUnionId() != null && !"".equals(u.getWxOplatformUnionId())) {
+						unionWxOplatformUser(user.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+					}
 
 					u = user;
 				}
@@ -357,7 +362,7 @@ public class UserServiceImpl implements IUserService {
 			user.setUserLocked("0");
 			user.setStoreId(null);
 			user.setWxServiceId(null);
-			user.setType(User.USER_TYPE_WEIXIN_SCANCODE);
+			user.setType(User.USER_TYPE_WEIXIN);
 			user.setCountry(userInfo.getString("country"));
 			user.setProvince(userInfo.getString("province"));
 			user.setCity(userInfo.getString("city"));
