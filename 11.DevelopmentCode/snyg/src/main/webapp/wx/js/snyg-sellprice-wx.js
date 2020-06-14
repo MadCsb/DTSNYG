@@ -127,6 +127,7 @@ function ydShow(showTypeInfo,refPatchCodeTemp)
 	}else{
 		$("#num").val(num)	
 	}
+	event.cancelBubble=true;
 }
 
 function ydNone()

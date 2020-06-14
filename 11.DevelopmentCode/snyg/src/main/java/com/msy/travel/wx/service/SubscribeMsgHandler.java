@@ -171,6 +171,10 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setWxOplatformUnionId(wxuser.getUnionid());
 					userService.updateUser(user);
 
+					if (user.getWxOplatformUnionId() != null && !"".equals(user.getWxOplatformUnionId())) {
+						userService.unionWxOplatformUser(user.getWxOplatformUnionId()); // 把所有相同wxOplatformUnionId的用户，合并到相同unionId下
+					}
+
 					log.info("用户关注消息 来源场景ID[" + fansfrom + "]");
 
 					flag = true;

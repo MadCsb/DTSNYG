@@ -95,21 +95,20 @@ public interface IUserService {
 	public User getOrCreateByUserLoginName(String spId, String code, User oldLoginUser) throws Exception;
 
 	/**
-	 * 获取或新增 web端 微信用户扫码登录
-	 * spId 运营商ID
-	 * openId 普通用户的标识
+	 * 获取或新增 web端 微信用户扫码登录 spId 运营商ID openId 普通用户的标识
 	 */
 	public User getOrCreateByWeixinUserScanCode(String spId, String openId) throws Exception;
-		/**
-     * 查询微商城或pC用户
-     *
-     * @author wzd
-     * @date 2019年11月16日 下午8:13:51
-     * @param user
-     * @return
-     * @throws Exception
-     * @return List<User>
-     */
+
+	/**
+	 * 查询微商城或pC用户
+	 *
+	 * @author wzd
+	 * @date 2019年11月16日 下午8:13:51
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return List<User>
+	 */
 	List<User> queryUserListByType(User user) throws Exception;
 
 	/**
@@ -168,4 +167,9 @@ public interface IUserService {
 	 * 分开已合并用户 userIdTwo分开
 	 */
 	public void unUnionUser(String userIdOne, String userIdTwo) throws Exception;
+
+	/**
+	 * 合并微信开放平台下相同UNIONID的用于，及相同wxOplatformUnionId的用户
+	 */
+	public void unionWxOplatformUser(String wxOplatformUnionId) throws Exception;
 }
