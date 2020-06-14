@@ -21,7 +21,7 @@ function getSellPriceList(contextPath){
 						$("#kuaidi").html("快递 "+data[i].freight);
 					}
 					
-					$("#goodsPriceNameCheck").html(data[i].priceName);
+					//$("#goodsPriceNameCheck").html(data[i].priceName);
 				}else{
 					str+="style='display:none;'"
 				}
