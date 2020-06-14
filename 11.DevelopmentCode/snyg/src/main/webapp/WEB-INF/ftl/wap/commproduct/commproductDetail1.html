@@ -376,7 +376,6 @@ function timer(intDiff){
 
 	
 	function getPrice1Ref(){
-		alert(checkPriceId);
 		$.post("wapPrice1Ref?method=queryPrice1RefForJson",{
 			'priceId':checkPriceId,
 			'isBegin':'1'
@@ -400,7 +399,7 @@ function timer(intDiff){
 				str+='<div class="divleft"><i class="usertx"><img src="'+data[i].headPic+'"></i>'+data[i].userName+'</div>';
 			}
 			str+='<div class="divcen">还差'+data[i].num+'人成团<p class="f4" id=refTime'+data[i].refPatchCode+'></p></div>';
-			str+='<div class="divright"><a href="javascript:void(0)" onclick="ydShow(\'1\',\''+data[i].refPatchCode+'\')"><span class="s_btn">参团</span></a></div>';
+			str+='<div class="divright"><a href="javascript:void(0)" onclick="showListByRefPatchCode(\''+data[i].refPatchCode+'\')"><span class="s_btn">参团</span></a></div>';
 			str+='<div style="clear:both;"></div>';
 			str+='</li>';   
 			
