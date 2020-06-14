@@ -168,6 +168,7 @@ public class SubscribeMsgHandler extends AbstractMsgHandler {
 					user.setSex(wxuser.getSex());// 1男 2女 3未知
 					user.setUpdateTime(DateTimeUtil.getDateTime19());
 					user.setHeadPic(wxuser.getHeadimgurl());
+					user.setWxOplatformUnionId(wxuser.getUnionid());
 					userService.updateUser(user);
 
 					log.info("用户关注消息 来源场景ID[" + fansfrom + "]");

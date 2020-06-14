@@ -195,7 +195,7 @@ public class UserServiceImpl implements IUserService {
 				if (user != null && user.getUserId() != null) {
 					u = user;
 
-					if (u.getUserName() == null || u.getUserName().equals("") || u.getUserName().indexOf("用户") == 0) {
+					if (u.getUserName() == null || u.getUserName().equals("") || u.getUserName().indexOf("用户") == 0 || u.getWxOplatformUnionId() == null || "".equals(u.getWxOplatformUnionId())) {
 						WxUser wxuser = WeixinUtil.getUserDeatil(WeixinService.getAccessToken(serviceCode), openId);
 						log.info("用户关注获取用户信息详情wxuser[" + wxuser + "]");
 						// 值为0时，代表此用户没有关注该公众号，拉取不到其余信息

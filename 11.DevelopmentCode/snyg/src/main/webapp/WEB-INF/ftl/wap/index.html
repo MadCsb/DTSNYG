@@ -84,7 +84,9 @@
    商品精选</div>
 <ul class="snyg_data_details"  id="dataList0">
 </ul>
-    
+<div style="clear:both;"></div>
+<a href="javascript:void(0)" onclick="changePriceType('')"><div class="ckgd"><span class="morebtn">更多产品</span></div></a>
+<div class="snyg_flbanner"></div>    
 <div class="clear"></div> 
 <div class="snyg_footer"></div>
 
@@ -280,21 +282,25 @@ function changePriceType(priceType){
 			        str+='<div class="data_xl">' + data[i].priceName + '</div>';  
 			        str+='</a>';  
 			        str+='<a  onclick="productDetail(\''+data[i].priceId+'\')">';  
-			        str+='<div class="data_jg">&yen;' + data[i].price + '</div>';  
+			        str+='<div class="data_jg">&yen;' + data[i].price ; 
+			        if(data[i].referencePrice!=null && data[i].referencePrice!=""){
+			        	str+='<span class="f4" style="text-decoration:line-through; font-size:13px;">&yen;' + data[i].referencePrice + '</span>';
+			        }
+			        str+='</div>';  
 			        str+='<div class="data_more"></div>';  
 			        str+='</a>';  
 			        str+='</li>';
 			        
-			      //  if(isHaveArray.length<20){
+			        if(isHaveArray.length<20){
 						$("#dataList0").append(str);
 				        isHaveArray.push(data[i].productId);
-			      //  }
+			        }
 				}
 			}
 			currentPage++;
-		//	if(isHaveArray.length<20){
-				getDataList('0','20','ASC','p.F_SORTNUM',currentPage,'0');
-		//	}
+			if(isHaveArray.length<20){
+				getDataList('0','20','DESC','p.F_SORTNUM',currentPage,'0');
+			}
 		}
 	}
 	function getDataStr(data){
