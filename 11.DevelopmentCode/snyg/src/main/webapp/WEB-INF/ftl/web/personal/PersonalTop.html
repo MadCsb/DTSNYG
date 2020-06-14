@@ -53,7 +53,11 @@
                 <div class="_img">
 
                     <#if user.headPic??>
-                        <img src="${rc.contextPath}/upload/wxpic/${user.headPic!''}" onload="javascript:DrawImage(this,80,80);" width="80" height="80">
+                        <#if user.headPic?index_of("http") == -1>
+                            <img src="${rc.contextPath}/upload/wxpic/${user.headPic!''}" onload="javascript:DrawImage(this,80,80);" width="80" height="80">
+                        <#else>
+                            <img src="${user.headPic!''}" onload="javascript:DrawImage(this,80,80);" width="80" height="80">
+                        </#if>
                     <#else>
                         <img src="${rc.contextPath}/wx/images/tx.jpg" onload="javascript:DrawImage(this,80,80);" width="80" height="80">
                     </#if>

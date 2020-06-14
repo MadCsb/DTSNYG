@@ -270,8 +270,12 @@
 					<dd>
 						<div class="member-avatar-thumb">
 							<#if user.headPic??>
-								<img src="${rc.contextPath}/upload/wxpic/${user.headPic!''}" id="headShowImg" width="100" height="100">
+								<#if user.headPic?index_of("http") == -1>
+									<img src="${rc.contextPath}/upload/wxpic/${user.headPic!''}" id="headShowImg" width="100" height="100">
 								<#else>
+									<img src="${user.headPic!''}" id="headShowImg" width="100" height="100">
+								</#if>
+							<#else>
 								<img src="${rc.contextPath}/wx/images/tx.jpg" id="headShowImg" width="100" height="100">
 							</#if>
 						</div>
