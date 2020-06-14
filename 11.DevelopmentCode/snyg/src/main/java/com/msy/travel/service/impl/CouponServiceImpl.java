@@ -562,14 +562,14 @@ public class CouponServiceImpl implements CouponService {
 		// 不是发布状态
 		if (!"1".equals(coupon.getStatus())) {
 			result.setResultCode("1");
-			result.setResultMsg("该优惠活动已经结束了，请刷新页面后查看最新的优惠活动");
+			result.setResultMsg("优惠券活动已经结束");
 			return result;
 		}
 
 		// 领券日期不对
 		if (crrDate.compareTo(coupon.getObtainDateBegin()) < 0 || crrDate.compareTo(coupon.getObtainDateEnd()) > 0) {
 			result.setResultCode("1");
-			result.setResultMsg("该优惠活动未开始或已经结束(该优惠券不在领取时间内)，请刷新页面后查看最新的优惠活动");
+			result.setResultMsg("优惠券活动未开始或已经结束(优惠券不在领取时间内)");
 			return result;
 		}
 
@@ -581,7 +581,7 @@ public class CouponServiceImpl implements CouponService {
 		// 领取总数大于发行总量
 		if (receiveTotal >= Long.valueOf(coupon.getTotalNum())) {
 			result.setResultCode("1");
-			result.setResultMsg("该优惠券刚刚被领完了，请尝试领取其他优惠券吧");
+			result.setResultMsg("优惠券被抢光了");
 			return result;
 		}
 
@@ -595,7 +595,7 @@ public class CouponServiceImpl implements CouponService {
 		if (coupon.getDayNum() != null && !"".equals(coupon.getDayNum())) {
 			if (dayCount >= Long.valueOf(coupon.getDayNum())) {
 				result.setResultCode("1");
-				result.setResultMsg("该优惠券刚刚被领完了，请尝试领取其他优惠券吧");
+				result.setResultMsg("优惠券今日发行数量被抢光了");
 				return result;
 			}
 		}
@@ -609,7 +609,7 @@ public class CouponServiceImpl implements CouponService {
 		// 本人领取总数大于等于每人限领
 		if (myCount >= Long.valueOf(coupon.getObtainLimit())) {
 			result.setResultCode("1");
-			result.setResultMsg("该优惠券您已无法领取更多了，请尝试领取其他优惠券吧");
+			result.setResultMsg("领券数量已达上限");
 			return result;
 		}
 
@@ -623,7 +623,7 @@ public class CouponServiceImpl implements CouponService {
 		// 本人今天领取总数大于等于每人每天限领
 		if (myTodayCount >= Long.valueOf(coupon.getDayObtainLimit())) {
 			result.setResultCode("1");
-			result.setResultMsg("您已超出该优惠券的领取最大限制，请明天再来领取吧");
+			result.setResultMsg("领券数量已达今日上限");
 			return result;
 		}
 
