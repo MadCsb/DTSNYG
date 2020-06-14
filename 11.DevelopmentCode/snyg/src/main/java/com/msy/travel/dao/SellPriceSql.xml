@@ -511,6 +511,12 @@
 		    <if test="venId !=null and venId !=''">
 		    	and p.F_VENID = #{venId}
 		    </if>
+		    <if test='priceTypeList !=null and priceTypeList.size()>0'>
+		    AND
+	    		<foreach collection="priceTypeList" item="param" separator="or" open="(" close=")">
+                  s.F_PRICETYPE = #{param}
+            	</foreach>
+            </if>
 		</where>
 		<if test="entityPage != null">
 			<if test="entityPage.sortField !=null and entityPage.sortField !='' ">

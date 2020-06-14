@@ -227,6 +227,8 @@ public class WebSellPriceController extends BaseController {
 				sellPrice.getEntityPage().setSortOrder("DESC");
 			}
 
+			sellPrice.setPriceTypeList(channelBindSaleTypeService.querySaleTypeByUser(null));
+
 			List<SellPrice> sellPricelist = sellPriceService.querySellPriceListOrderByOrderCount(sellPrice);
 
 			JSONArray jsonArray = JSONArray.fromObject(sellPricelist);
