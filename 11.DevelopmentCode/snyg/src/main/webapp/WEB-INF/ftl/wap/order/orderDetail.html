@@ -2,7 +2,7 @@
 <html>
 <head>
   <#include "/wap/WAP_INC_HEAD.html">
-  <script src="${rc.contextPath}/wap/js/Person.js"></script>
+  <script src="${rc.contextPath}/wap/js/wapPerson.js"></script>
   <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
   <script src="${rc.contextPath}/js/pay.js"></script>
 
@@ -128,7 +128,7 @@
   var money = null; //订单金额
   var loading = null;
   $(function () {
-    new Person().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+    new WapPerson().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
   })
 
   var orderDetailShow = function (orderDetail) {

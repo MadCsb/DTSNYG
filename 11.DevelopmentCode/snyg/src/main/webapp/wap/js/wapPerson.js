@@ -1,9 +1,9 @@
 /**
  * Created by cheng on 2019/10/17.
  */
-function Person(){
-  Person.prototype.userId = null;
-  Person.prototype.user = null;
+function WapPerson(){
+  WapPerson.prototype.userId = null;
+  WapPerson.prototype.user = null;
 }
 /**
  * 获取微信用户的订单
@@ -19,17 +19,16 @@ function Person(){
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
  */
-Person.prototype.orderList = function (sync,searchObject,pageEntity)
+WapPerson.prototype.orderList = function (sync,searchObject,pageEntity)
 {
   var orderList = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "wxorder?method=wxAjaxOrderList",
+    url: "waporder?method=wapAjaxOrderList",
     data: {
       d:new Date().getTime(),
-      userId:searchObject.userId,
       searchKey: searchObject.searchKey,
       payTag: searchObject.payTag,
       beforePayStatus: searchObject.beforePayStatus,
@@ -57,7 +56,7 @@ Person.prototype.orderList = function (sync,searchObject,pageEntity)
  * searchObject.status支付后订单状态
  * searchObject.backNumS是否有退订
  */
-Person.prototype.orderNum = function (searchObject)
+WapPerson.prototype.orderNum = function (searchObject)
 {
   var orderNum = 0;
   $.ajax({
@@ -67,7 +66,6 @@ Person.prototype.orderNum = function (searchObject)
     url: "waporder?method=wapAjaxOrderCount",
     data: {
       d:new Date().getTime(),
-      userId:searchObject.userId,
       searchKey: searchObject.searchKey,
       payTag: searchObject.payTag,
       beforePayStatus: searchObject.beforePayStatus,
@@ -93,14 +91,14 @@ Person.prototype.orderNum = function (searchObject)
  * orderId 订单id
  * func 获取订单详情后，执行的方法，如果未定义，则返回订单详情
  */
-Person.prototype.orderDetail = function (sync,orderId,func)
+WapPerson.prototype.orderDetail = function (sync,orderId,func)
 {
   var orderDetail = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "wxorder?method=wxAjaxOrderDetail",
+    url: "waporder?method=wapAjaxOrderDetail",
     data: {
       d:new Date().getTime(),
       orderId:orderId
@@ -111,26 +109,6 @@ Person.prototype.orderDetail = function (sync,orderId,func)
     }
   });
   return orderDetail;
-}
-
-/**
- * 根据openId返回user对象，非设置Person.user
- */
-Person.prototype.getUserByUserId = function () {
-  var userIdTmp = this.userId;
-  $.ajax({
-    type: "POST",
-    async: false,
-    dataType: "json",
-    url: "wappersonal?method=getUserByUserId",
-    data: {
-      userId:userIdTmp
-    },
-    success: function (data) {
-      dataTmp = data;
-    }
-  });
-  this.user = dataTmp;
 }
 
 

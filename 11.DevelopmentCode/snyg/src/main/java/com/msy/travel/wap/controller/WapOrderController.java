@@ -633,6 +633,12 @@ public class WapOrderController extends BaseController {
 		//验证微信用户
 		List<Order> orderList = new ArrayList<Order>();
 		try {
+			order.setUserId(getLoginUser(request).getUserId());
+
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			if(order.getEntityPage()==null){
 				order.setEntityPage(new EntityPage());
 			}
@@ -664,8 +670,13 @@ public class WapOrderController extends BaseController {
 	@RequestMapping(params = "method=wapAjaxOrderCount")
 	public void wapAjaxOrderCount(Order order,HttpServletRequest request,HttpServletResponse response) {
 		Result result = new Result();
-		order.setUserId(getLoginUser(request).getUserId());
+
 		try {
+			order.setUserId(getLoginUser(request).getUserId());
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			List<Order> orderList =
 					orderService.queryOrderList(order);
 			result.setResultCode("0");

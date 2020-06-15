@@ -2,7 +2,7 @@
 <html>
 <head>
   <#include "/wap/WAP_INC_HEAD.html">
-    <script src="${rc.contextPath}/wap/js/Person.js"></script>
+    <script src="${rc.contextPath}/wap/js/wapPerson.js"></script>
     <style>
       #navbar.navbar_fixed {
         position:fixed;
@@ -177,7 +177,7 @@
     {
       $(".ddlist").html("");
     }
-    var orderList = new Person().orderList(false,searchObject,pageEntity); //同步加载
+    var orderList = new WapPerson().orderList(false,searchObject,pageEntity); //同步加载
     if (orderList != null)
     {
       for(var i=0;i<orderList.length;i++)
@@ -214,7 +214,7 @@
         }
         liHtml += '</li>';
         $(".ddlist").append(liHtml);
-        new Person().orderDetail(true,orderList[i].orderId,orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+        new WapPerson().orderDetail(true,orderList[i].orderId,orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
       }
     }
     if(orderList==null || orderList.length<pageEntity.pageSize)

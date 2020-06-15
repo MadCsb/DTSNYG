@@ -172,4 +172,9 @@ public interface IUserService {
 	 * 合并微信开放平台下相同UNIONID的用于，及相同wxOplatformUnionId的用户
 	 */
 	public void unionWxOplatformUser(String wxOplatformUnionId) throws Exception;
+
+	/**
+	 * 查询关联用户的信息时，通过用户ID，得到[userId,unionId]数组
+	 */
+	public String[] getUserQueryUnionInfo(String userId) throws Exception;
 }

@@ -58,7 +58,7 @@ WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
  * searchObject.status支付后订单状态
  * searchObject.backNumS是否有退订
  */
-Person.prototype.orderNum = function (searchObject)
+WxPerson.prototype.orderNum = function (searchObject)
 {
   var orderNum = 0;
   $.ajax({

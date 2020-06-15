@@ -1,7 +1,7 @@
 /**
  * Created by cheng on 2019/10/17.
  */
-function WxPerson(){
+function WebPerson(){
 
 }
 /**
@@ -18,17 +18,16 @@ function WxPerson(){
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
  */
-WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
+WebPerson.prototype.orderList = function (sync,searchObject,pageEntity)
 {
   var orderList = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "wxorder?method=wxAjaxOrderList",
+    url: "webOrder?method=ajaxOrderDetail",
     data: {
       d:new Date().getTime(),
-      userId:searchObject.userId,
       searchKey: searchObject.searchKey,
       payTag: searchObject.payTag,
       beforePayStatus: searchObject.beforePayStatus,
@@ -50,14 +49,14 @@ WxPerson.prototype.orderList = function (sync,searchObject,pageEntity)
  * orderId 订单id
  * func 获取订单详情后，执行的方法，如果未定义，则返回订单详情
  */
-WxPerson.prototype.orderDetail = function (sync,orderId,func)
+WebPerson.prototype.orderDetail = function (sync,orderId,func)
 {
   var orderDetail = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "wxorder?method=wxAjaxOrderDetail",
+    url: "webOrder?method=ajaxOrderDetail",
     data: {
       d:new Date().getTime(),
       orderId:orderId
@@ -69,26 +68,5 @@ WxPerson.prototype.orderDetail = function (sync,orderId,func)
   });
   return orderDetail;
 }
-
-/**
- * 根据openId返回user对象，非设置WxPerson.user
- */
-WxPerson.prototype.getUserByUserId = function () {
-  var userIdTmp = this.userId;
-  $.ajax({
-    type: "POST",
-    async: false,
-    dataType: "json",
-    url: "wxpersonal?method=getUserByUserId",
-    data: {
-      userId:userIdTmp
-    },
-    success: function (data) {
-      dataTmp = data;
-    }
-  });
-  this.user = dataTmp;
-}
-
 
 

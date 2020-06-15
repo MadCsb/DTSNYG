@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <#include "/WX_INC_HEAD.html">
-      <script src="${rc.contextPath}/wx/js/Person.js"></script>
+    <#include "/WX_INC_HEAD.html" />
     <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
-
-      </head>
+  </head>
 <body>
   <input type="hidden" id="userId" value="${user.userId!''}">
 <!--<div class="snyg_headdiv">-->
@@ -32,10 +30,10 @@
 <div class="snyg_content">
   <ul class="snyg_tz_type">
     <div class="snyg_type_bt">我的订单<a onclick="toOrderList('0')"><span>全部订单</span></a></div>
-    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wx/images/1.png" /></a><i class="itsbg"></i></li>
-    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wx/images/2.png" /></a><i class="itsbg"></i></li>
-    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wx/images/3.png" /></a><i class="itsbg"></i></li>
-    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wx/images/4.png" /></a><i class="itsbg"></i></li>
+    <li><a onclick="toOrderList('1')"><img src="${rc.contextPath}/wx/images/1.png" /></a><i class="itsbg">0</i></li>
+    <li><a onclick="toOrderList('2')"><img src="${rc.contextPath}/wx/images/2.png" /></a><i class="itsbg">0</i></li>
+    <li><a onclick="toOrderList('3')"><img src="${rc.contextPath}/wx/images/3.png" /></a><i class="itsbg">0</i></li>
+    <li><a onclick="toOrderList('4')"><img src="${rc.contextPath}/wx/images/4.png" /></a><i class="itsbg">0</i></li>
     <div style="clear:both;"></div>
   </ul>
 </div>
@@ -93,7 +91,7 @@
       searchObject.status = ""
       searchObject.backNumS = "1";
     }
-    var num = new Person().orderNum(searchObject);
+    var num = new WxPerson().orderNum(searchObject);
     return num;
   }
 </script>
