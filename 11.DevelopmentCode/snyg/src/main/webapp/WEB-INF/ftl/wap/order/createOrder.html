@@ -2,7 +2,7 @@
 <html>
 <head>
   <#include "/wap/WAP_INC_HEAD.html">
-  <script src="${rc.contextPath}/wap/js/wapPerson.js"></script>
+  <script src="${rc.contextPath}/wap/js/Person.js"></script>
   <script src="${rc.contextPath}/js/pay.js"></script>
 </head>
 <body>
@@ -129,7 +129,7 @@
   <a onclick="createOrder()"><span class="green_btn wid3" >提交订单</span></a>
 </nav>
 
-<iframe runat="server" id="ifa" src="" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" style="display: none;-webkit-overflow-scrolling: touch;-webkit-overflow:auto;"></iframe>
+<iframe runat="server" id="ifa" src="" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes" style="display: none;-webkit-overflow-scrolling: touch;-webkit-overflow:auto;"></iframe>
 <!--预订menu结束-->
 <script>
   var pay = null; //支付信息

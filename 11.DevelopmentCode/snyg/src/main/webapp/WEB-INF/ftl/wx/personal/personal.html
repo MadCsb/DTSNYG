@@ -2,7 +2,6 @@
 <html>
   <head>
     <#include "/WX_INC_HEAD.html" />
-    <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
   </head>
 <body>
   <input type="hidden" id="userId" value="${user.userId!''}">
@@ -91,8 +90,38 @@
       searchObject.status = ""
       searchObject.backNumS = "1";
     }
-    var num = new WxPerson().orderNum(searchObject);
+    var num = ajaxOrderNum(searchObject);
     return num;
+  }
+
+  function ajaxOrderNum(searchObject)
+  {
+    var orderNum = 0;
+    $.ajax({
+      type: "POST",
+      async: false,
+      dataType: "json",
+      url: "wxorder?method=wxAjaxOrderCount",
+      data: {
+        d:new Date().getTime(),
+        userId:searchObject.userId,
+        searchKey: searchObject.searchKey,
+        payTag: searchObject.payTag,
+        beforePayStatus: searchObject.beforePayStatus,
+        status: searchObject.status,
+        backNumS: searchObject.backNumS
+      },
+      success: function (data) {
+        if (data.resultCode == "0")
+        {
+          orderNum = data.resultPojo;
+        }else
+        {
+          orderNum = "0";
+        }
+      }
+    });
+    return orderNum;
   }
 </script>
 </html>
