@@ -111,6 +111,18 @@ public class WapCommproductController extends BaseController {
 		try {
 			commproduct = commproductService.queryCommproductForWx(commproduct);
 
+			if (null != commproduct.getFeeMemo()) {
+				String msgString = commproduct.getFeeMemo();// 费用说明 转义字符换成<br/>
+				String newMsg = msgString.replaceAll("\r\n", "<br/>");
+				commproduct.setFeeMemo(newMsg);
+			}
+
+			if (null != commproduct.getTigInfo()) {
+				String msgString = commproduct.getTigInfo();// 温馨提示 转义字符换成<br/>
+				String newMsg = msgString.replaceAll("\r\n", "<br/>");
+				commproduct.setTigInfo(newMsg);
+			}
+
 			if ("0".equals(commproduct.getPriceType())) {
 				view = new ModelAndView("wap/commproduct/commproductDetail0");
 			} else if ("1".equals(commproduct.getPriceType())) {
