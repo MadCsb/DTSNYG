@@ -3,7 +3,7 @@
 <head>
 <#include "/WX_INC_HEAD.html">
   <script src="${rc.contextPath}/js/DateTimeUtil.js"></script>
-  <script src="${rc.contextPath}/wx/js/wxPerson.js"></script>
+  <script src="${rc.contextPath}/web/js/webPerson.js"></script>
   <script src="${rc.contextPath}/js/pay.js"></script>
 
 </head>
@@ -102,7 +102,7 @@
   var pay = null; //支付js
   var loading = null;
   $(function () {
-    new WxPerson().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
+    new WebPerson().orderDetail(true,$("#orderId").val(),orderDetailShow); //异步获取订单，通过orderDetailShow方法处理订单
   })
 
   var orderDetailShow = function (orderDetail) {

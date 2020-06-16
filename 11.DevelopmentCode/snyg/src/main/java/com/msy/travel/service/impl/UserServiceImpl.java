@@ -362,7 +362,7 @@ public class UserServiceImpl implements IUserService {
 			user.setUserLocked("0");
 			user.setStoreId(null);
 			user.setWxServiceId(null);
-			user.setType(User.USER_TYPE_WEIXIN);
+			user.setType(User.USER_TYPE_WEIXIN_SCANCODE);
 			user.setCountry(userInfo.getString("country"));
 			user.setProvince(userInfo.getString("province"));
 			user.setCity(userInfo.getString("city"));
@@ -595,6 +595,30 @@ public class UserServiceImpl implements IUserService {
 	 */
 	public void updateColNull(User user) throws Exception {
 		userDao.updateColNull(user);
+	}
+
+	/**
+	 * 查询关联用户的信息时，通过用户ID，得到[userId,unionId]数组
+	 */
+	public String[] getUserQueryUnionInfo(String userId) throws Exception
+	{
+		String[] unionInfo = new String[2];
+		if (userId != null && !userId.equals(""))
+		{
+			User user = new User();
+			user.setUserId(userId);
+			user = userService.displayUser(user);
+			if(user.getUnionId() == null || "".equals(user.getUnionId()))
+			{
+				unionInfo[0] = user.getUserId();
+				unionInfo[1] = user.getUnionId();
+			}else
+			{
+				unionInfo[0] = null;
+				unionInfo[1] = user.getUnionId();
+			}
+		}
+		return unionInfo;
 	}
 
 }

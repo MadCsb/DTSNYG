@@ -150,17 +150,6 @@ public class OrderServiceImpl implements OrderService {
 	 * @return Order列表
 	 */
 	public List<Order> queryOrderList(Order order) throws Exception {
-		if(order.getUserId() != null && !order.getUserId().equals("")) //如果存在用戶ID作为参数
-		{
-			User user = new User();
-			user.setUserId(order.getUserId());
-			user = userService.displayUser(user);
-			if(user.getUnionId() != null && !user.getUnionId().equals("")) //如果参数对应用户保存了unionId，则使用unionId作为参数
-			{
-				order.setUserId(null);
-				order.setUnionId(user.getUnionId());
-			}
-		}
 		return orderDao.queryOrderList(order);
 	}
 

@@ -561,6 +561,11 @@ public class WebOrderController extends BaseController {
 	public void ajaxOrderList(Order order,int pageNum,int pageSize,HttpServletRequest request,HttpServletResponse response) {
 		JSONObject result = new JSONObject();
 		try {
+			order.setUserId(getLoginUser(request).getUserId());
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			if(order.getEntityPage()==null){
 				order.setEntityPage(new EntityPage());
 			}
@@ -592,8 +597,8 @@ public class WebOrderController extends BaseController {
 	/**
 	 * ajax 获取订单的orderList列表
 	 */
-	@RequestMapping(params = "method=wxAjaxOrderDetail")
-	public void wxAjaxOrderDetail(String orderId,HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(params = "method=ajaxOrderDetail")
+	public void ajaxOrderDetail(String orderId,HttpServletRequest request,HttpServletResponse response) {
 		JSONObject object = new JSONObject();
 		//验证微信用户
 		try {

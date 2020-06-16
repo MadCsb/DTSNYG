@@ -8,32 +8,10 @@
 <body>
 </body>
 <script type="text/javascript">
-
-  /**
-    * 关闭浏览器兼容安卓及苹果
-    */
-  function CloseBrowser() {
-    //判断谷歌火狐安卓和linux关闭当前页面及浏览器
-    var userAgent = navigator.userAgent;
-    if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1) {
-      WeixinJSBridge.call('closeWindow');
-    } else {
-      //针对苹果不能关闭当前页面
-      setTimeout(function () {
-        WeixinJSBridge.invoke("closeWindow", {}, function (e) { })
-      }, 100)
-    }
-  }
-  CloseBrowser();
-
-//
-//
-//
-//
-//  var openApi = new OpenApi();
-//  openApi.resetDefaultPageType();
-//  var spId = "${spId!''}";
-//  var detailUrl = "${rc.contextPath}/open/orderList";
-//  window.location.replace(detailUrl);
+  var openApi = new OpenApi();
+  openApi.resetDefaultPageType();
+  var spId = "${spId!''}";
+  var detailUrl = "${rc.contextPath}/open/orderList";
+  window.location.replace(detailUrl);
 </script>
 </html>

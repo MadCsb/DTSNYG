@@ -1,8 +1,9 @@
 /**
  * Created by cheng on 2019/10/17.
  */
-function WebPerson(){
-
+function WapPerson(){
+  WapPerson.prototype.userId = null;
+  WapPerson.prototype.user = null;
 }
 /**
  * 获取微信用户的订单
@@ -18,14 +19,14 @@ function WebPerson(){
  * pageEntity.pageNum 查询分页数
  * pageEntity.pageSize 查询每页数量
  */
-WebPerson.prototype.orderList = function (sync,searchObject,pageEntity)
+WapPerson.prototype.orderList = function (sync,searchObject,pageEntity)
 {
   var orderList = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "webOrder?method=ajaxOrderDetail",
+    url: "waporder?method=wapAjaxOrderList",
     data: {
       d:new Date().getTime(),
       searchKey: searchObject.searchKey,
@@ -49,14 +50,14 @@ WebPerson.prototype.orderList = function (sync,searchObject,pageEntity)
  * orderId 订单id
  * func 获取订单详情后，执行的方法，如果未定义，则返回订单详情
  */
-WebPerson.prototype.orderDetail = function (sync,orderId,func)
+WapPerson.prototype.orderDetail = function (sync,orderId,func)
 {
   var orderDetail = null;
   $.ajax({
     type: "POST",
     async: sync,
     dataType: "json",
-    url: "webOrder?method=ajaxOrderDetail",
+    url: "waporder?method=wapAjaxOrderDetail",
     data: {
       d:new Date().getTime(),
       orderId:orderId
@@ -68,5 +69,6 @@ WebPerson.prototype.orderDetail = function (sync,orderId,func)
   });
   return orderDetail;
 }
+
 
 

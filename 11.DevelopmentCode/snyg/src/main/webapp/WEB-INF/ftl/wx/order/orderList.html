@@ -80,6 +80,7 @@
       orderListType = "0";
     }
     changeOrderListType(orderListType);
+
     $(window).scroll(function(){
       if(!loading && pageEntity.pageNum != null) {
 
@@ -179,6 +180,7 @@
     {
       $(".ddlist").html("");
     }
+
     var orderList = new WxPerson().orderList(false,searchObject,pageEntity); //同步加载
     if (orderList != null)
     {

@@ -383,7 +383,10 @@ public class UserController extends BaseController {
 			log.error("*************************");
 			String weixinLoginRedictUrl = (String) request.getSession().getAttribute("weixinLoginRedictUrl");
 			log.error("getSession获取weixinLoginRedictUrl="  + weixinLoginRedictUrl);
-			weixinLoginRedictUrl = URLDecoder.decode(weixinLoginRedictUrl,"UTF-8");
+			if(weixinLoginRedictUrl != null)
+			{
+				weixinLoginRedictUrl = URLDecoder.decode(weixinLoginRedictUrl,"UTF-8");
+			}
 			log.error("weixinLoginRedictUrl在URLDecoder.decode后"  + weixinLoginRedictUrl);
 			view = new ModelAndView("web/weixinLogined");
 			view.addObject("redictUrl",weixinLoginRedictUrl);

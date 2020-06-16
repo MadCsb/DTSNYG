@@ -671,6 +671,11 @@ public class WxOrderController extends BaseController {
 			order.getEntityPage().setSortOrder("DESC");
 			order.getEntityPage().setCurrentPage(pageNum);
 			order.getEntityPage().setRowsPerPage(pageSize);
+
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			PageHelper.startPage(super.getPageNum(order.getEntityPage()), super.getPageSize(order.getEntityPage()));
 			orderList =
 					orderService.queryOrderList(order);
@@ -696,6 +701,10 @@ public class WxOrderController extends BaseController {
 	public void wxAjaxOrderCount(Order order,HttpServletRequest request,HttpServletResponse response) {
 		Result result = new Result();
 		try {
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			List<Order> orderList =
 					orderService.queryOrderList(order);
 			result.setResultCode("0");

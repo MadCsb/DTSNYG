@@ -109,10 +109,16 @@ public class WebPersonalController extends BaseController {
 		ModelAndView view = null;
 		try {
 			Order order = new Order();
+
+			order.setUserId(getLoginUser(request).getUserId());
+
+			String[] userUnionInfo = userService.getUserQueryUnionInfo(order.getUserId());
+			order.setUserId(userUnionInfo[0]);
+			order.setUnionId(userUnionInfo[1]);
+
 			order.setEntityPage(new EntityPage());
 			order.getEntityPage().setSortField("t.F_CREATETIME");
 			order.getEntityPage().setSortOrder("DESC");
-			order.setUserId(getLoginUser(request).getUserId());
 			order.setPayTag("0");
 			order.setBeforePayStatus("0");
 			PageHelper.startPage(1, 10);
