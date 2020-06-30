@@ -95,6 +95,16 @@ public class GoodsPrice extends BaseEntity implements java.io.Serializable {
 
 	private String feeName;
 
+	private List<SellPrice> sellPriceList;
+
+	public List<SellPrice> getSellPriceList() {
+		return sellPriceList;
+	}
+
+	public void setSellPriceList(List<SellPrice> sellPriceList) {
+		this.sellPriceList = sellPriceList;
+	}
+
 	public String getFeeName() {
 		return feeName;
 	}

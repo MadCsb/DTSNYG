@@ -285,4 +285,5 @@ public class GoodsPriceServiceImpl implements GoodsPriceService {
 	public GoodsPrice queryGoodsPriceByPriceId(GoodsPrice goodsPrice) throws Exception {
 		return goodsPriceDao.queryGoodsPriceByPriceId(goodsPrice);
 	}
+
 }

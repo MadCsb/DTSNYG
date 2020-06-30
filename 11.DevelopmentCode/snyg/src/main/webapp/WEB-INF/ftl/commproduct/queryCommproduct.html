@@ -137,7 +137,7 @@
 
 			<#list commproductlist as li>
 			<tr  onclick="selectTr(this)">
-				<td title="${li.productName!''}">${li.productName!''}</td> 
+				<td class="productNameTitle" id="productNameTitle${li.productId!''}" productId="${li.productId!''}" title="${li.productName!''}">${li.productName!''}</td> 
 				<td>
 				<#if li.thumbPic?? && li.thumbPic!=''>
                     <img class="myimg" style="width:120px;height:90px;" src="${rc.contextPath}/upload/wxpic/${li.thumbPic!''}"  id="idImg1" />
@@ -200,7 +200,37 @@ $(function () {
 	if ($("#openFlag").val() == "1") {
 		$(".getMore").click();
 	}
+	
+	getGoodsPriceForTitle();
 });
+
+function getGoodsPriceForTitle(){
+	$(".productNameTitle").each(function(){
+		var productId = $(this).attr("productId");
+		$.post("goodsPrice?method=toGetGoodsPriceForCommproduct",{
+			productId:productId
+		},function(data){
+			var str = $("#productNameTitle"+productId).html();
+			for(var i = 0;i<data.length;i++){
+				str+="\n";
+				str+=data[i].priceName;
+				for(var j = 0;j<data[i].sellPriceList.length;j++){
+					var obj =  data[i].sellPriceList[j];
+					if(obj.priceType=="0"){
+						str+="\t普通价:"+obj.price;
+					}else if(obj.priceType=="1"){
+						str+="\t团购价:"+obj.price;
+					}else if(obj.priceType=="2"){
+						str+="\t秒杀价:"+obj.price;
+					}else if(obj.priceType=="3"){
+						str+="\t山东移动价:"+obj.price;
+					}
+				}
+			}
+			$("#productNameTitle"+productId).attr("title",str);
+		},'json')
+	})
+}
 
 function copyUrl(id,priceId){
 	var url = $("#domainName").val()+"/wx.do?method=toQueryCommproductDetailByPriceId&priceId="+priceId;

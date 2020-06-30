@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msy.travel.common.BaseController;
@@ -31,8 +32,10 @@ import com.msy.travel.common.UploadFileCom;
 import com.msy.travel.common.config.ConfigParameter;
 import com.msy.travel.pojo.CompanyExpress;
 import com.msy.travel.pojo.GoodsPrice;
+import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.service.CompanyExpressService;
 import com.msy.travel.service.GoodsPriceService;
+import com.msy.travel.service.SellPriceService;
 
 @Controller
 @Scope(value = "prototype")
@@ -48,6 +51,9 @@ public class GoodsPriceController extends BaseController {
 
 	@Resource(name = "companyExpressServiceImpl")
 	private CompanyExpressService companyExpressService;
+
+	@Resource(name = "sellPriceServiceImpl")
+	private SellPriceService sellPriceService;
 
 	/**
 	 * 跳转到新增页面
@@ -358,5 +364,33 @@ public class GoodsPriceController extends BaseController {
 			log.error(e, e);
 		}
 		return view;
+	}
+
+	/**
+	 * 商品列表获取规格
+	 * 
+	 * @author wzd
+	 * @date 2020年6月30日 上午10:12:18
+	 * @param goodsPrice
+	 * @param request
+	 * @param response
+	 * @return void
+	 */
+	@RequestMapping(params = "method=toGetGoodsPriceForCommproduct")
+	public void toGetGoodsPriceForCommproduct(GoodsPrice goodsPrice, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			goodsPrice.setDelFlag("0");
+			goodsPrice.setPriceType("0");
+			List<GoodsPrice> goodsPriceList = goodsPriceService.queryGoodsPriceList(goodsPrice);
+			for (int i = 0; i < goodsPriceList.size(); i++) {
+				SellPrice sellPrice = new SellPrice();
+				sellPrice.setGoodsPriceId(goodsPriceList.get(i).getGoodsPriceId());
+				List<SellPrice> sellPriceList = sellPriceService.querySellPriceList(sellPrice);
+				goodsPriceList.get(i).setSellPriceList(sellPriceList);
+			}
+			response.getWriter().print(JSONObject.toJSONString(goodsPriceList));
+		} catch (Exception e) {
+			log.error(e, e);
+		}
 	}
 }
