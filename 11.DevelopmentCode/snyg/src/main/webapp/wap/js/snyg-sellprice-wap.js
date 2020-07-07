@@ -1,6 +1,7 @@
-var alertHtml = "";
+var alertHtml = $("#tcyddiv").html();
+$("#tcyddiv").remove();
 
-
+/*
 //获得价格策略
 function getSellPriceList(contextPath){
 	$.post("wapSellPrice?method=queryGoodsPriceListForWx",{
@@ -41,15 +42,18 @@ function getSellPriceList(contextPath){
 			$("#goodsPriceDiv").append(str1);
 		}
 		
-		alertHtml = $("#tcyddiv").html()
+		//alertHtml = $("#tcyddiv").html()
 		$("#tcyddiv").remove();
 	},'json');
 }
-
+*/
 //选择价格策略
 function checkGoodsPrice(priceId,obj){
-	$(".spgg_title").hide();
+	$("#pricePic"+checkPriceId).hide();
+	
 	$("#pricePic"+priceId).show();
+	
+	//alert($("#pricePic"+priceId).prop("outerHTML"))
 	
 	$(".spggflon").removeClass("spggflon").addClass("spggfloff");
 	$(obj).removeClass("spggfloff").addClass("spggflon");
@@ -126,6 +130,7 @@ function ydShow(showTypeInfo,refPatchCodeTemp)
 	
    showType = showTypeInfo;
    refPatchCode = refPatchCodeTemp;
+   
    Alert.showBottomHtml(alertHtml);
    $("#alert_show_3").css("height", "290");
    

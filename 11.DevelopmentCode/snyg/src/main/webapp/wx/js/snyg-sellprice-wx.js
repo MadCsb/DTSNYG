@@ -1,6 +1,8 @@
+var alertHtml = $("#tcyddiv").html();
+$("#tcyddiv").remove();
 
-var alertHtml = "";
 
+/*
 function getSellPriceList(contextPath){
 	$.post("wx?method=queryGoodsPriceListForWx",{
 		userId:$("#userId").val(),
@@ -44,7 +46,7 @@ function getSellPriceList(contextPath){
 		alertHtml = $("#tcyddiv").html()
 		$("#tcyddiv").remove();
 	},'json');
-}
+}*/
 
 function addShopCart(){
 	if(showType == "1"){
@@ -113,6 +115,8 @@ function ydShow(showTypeInfo,refPatchCodeTemp)
 {
    showType = showTypeInfo;
    refPatchCode = refPatchCodeTemp;
+   
+   
    Alert.showBottomHtml(alertHtml);
    $("#alert_show_3").css("height", "290");
    

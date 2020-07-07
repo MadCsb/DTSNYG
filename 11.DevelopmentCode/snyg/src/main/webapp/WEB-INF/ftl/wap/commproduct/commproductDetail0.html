@@ -4,7 +4,6 @@
 <#include "../WAP_INC_HEAD.html">  
 <script src="${rc.contextPath}/wap/js/default.js"></script>
 <script src="${rc.contextPath}/wap/js/coupon.js"></script>
-<script src="${rc.contextPath}/wap/js/snyg-sellprice-wap.js"></script>
 
 <style>
 .flexslider {
@@ -30,25 +29,25 @@
 	height:1rem;
 	z-index:99;
 }
+
 </style>
 
 
 </head>
 <body>
+
+
+<input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
+
 <script>
 var showType = "";
-var checkPriceId = "";
-
-	$(function(){
-		getSellPriceList("${rc.contextPath}");
-	});  
+var checkPriceId = $("#priceId").val();
 </script>
 
 <a href="javascript:void(0)"><div class="gwc" style="display:none;"></div></a>
 <a name="aaa"></a>
 <input type="hidden" id="productId" name="productId" value="${commproduct.productId!''}"/>
 <input type="hidden" id="priceType" name="priceType" value="${commproduct.priceType!''}"/>
-<input type="hidden" id="priceId" name="priceId" value="${commproduct.priceId!''}"/>
 
 <div class="flexslider" style="margin-top:0;">
     <ul class="slides">
@@ -83,18 +82,6 @@ var checkPriceId = "";
 </#if>
 
 
-<!-- 
-<div class="navbar_absolute">
-    <nav id="spxq_nav" class="spxq_nav">
-        <a href="#aaa"><span class="spxq_navone">商品</span></a>
-        <a href="#bbb"><span class="spxq_navtwo">详情</span></a>    
-        <a href="#ccc"><span class="spxq_navtwo">评价</span></a>     </nav>
-</div>
- -->
-
-
-
-
 <div class="snyg_contentb" > 
 <a name="bbb"></a>
     <div class="snyg_details_title" style="margin-top:10px;">商品介绍</div>
@@ -114,65 +101,8 @@ var checkPriceId = "";
 
 <div class="snyg_contentb"> 
 <a name="ccc"></a>
-<!-- 
-        <a href="商品详情-评价.html">
-        <div class="yhrkdiv">
-             <div class="leftzi">商品评价</div>
-             <div class="rzi">更多</div>
-        </div>
-        </a>
-    <ul class="sppj_list">
-        <li>
-            <h5>小雪花</h5>
-           <div class="info">这是朋友分享给我买的，团购价很划算，推荐给身边的朋友，大家都可以买到放心的绿色农产品了。
-           </div>
-            <p class="txt">2019-09-23<span>规格：500克</span></p>
-        </li>
-        <li>
-            <h5>小雪花</h5>
-           <div class="info">这是朋友分享给我买的，团购价很划算，推荐给身边的朋友，大家都可以买到放心的绿色农产品了。
-           </div>
-            <p class="txt">2019-09-23<span>规格：500克</span></p>
-        </li>
-        <li>
-            <h5>小雪花</h5>
-           <div class="info">这是朋友分享给我买的，团购价很划算，推荐给身边的朋友，大家都可以买到放心的绿色农产品了。
-           </div>
-            <p class="txt">2019-09-23<span>规格：500克</span></p>
-        </li>
-        <li>
-            <h5>小雪花</h5>
-           <div class="info">这是朋友分享给我买的，团购价很划算，推荐给身边的朋友，大家都可以买到放心的绿色农产品了。
-           </div>
-            <p class="txt">2019-09-23<span>规格：500克</span></p>
-        </li>
+<#include "goodsPriceList.html">  
 
-</ul>   
-</div>
- -->
-<!--商品规格--> 
-<div id="tcyddiv" class="spggdiv" style="display:none;">
-    <div class="snyg_content">
-    	<div id="picAndPrice">
-        </div>
-        <dl class="spggfl"  style="height:150px; overflow-y:auto; overflow-x:hidden;">
-            <dd><span>规格：</span>
-                <div id="goodsPriceDiv">
-                </div>
-            </dd>
-            <dd><span>数量：</span>
-                 <div class="sl">
-                    <button class="btnhui" onclick="changeNum('1')"></button>
-                    <input id="num" type="text" readonly="readonly" class="input_sl" value="1">
-                    <button class="btnadd" onclick="changeNum('2')"></button>
-	            </div>
-            </dd>
-            <div class="clear6"></div>
-        </dl>
-	<div align="center"><a href="javascript:void(0)" onclick="addShopCart()"><button class="btn-big">确定</button></a></div>
-    </div>
-</div>
-</div>
 <div class="clear6"></div>
 <!--预订menu开始--> 
   <nav class="snyg_nav">
@@ -187,9 +117,6 @@ var checkPriceId = "";
   <input type="hidden" name="prepareOrderJson" id="prepareOrderJson" value="">
 </form>
 <script>
-
-	
-	
 	function submitOrder(){
 		var prepareOrderJson = new Object();
 		  var orderListList = new Array();

@@ -26,6 +26,8 @@ import com.msy.travel.pojo.Coupon;
 import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RsPic;
+import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
 import com.msy.travel.service.CompanyService;
 import com.msy.travel.service.CouponService;
@@ -181,10 +183,22 @@ public class WapCommproductController extends BaseController {
 				coupon.setDiscount(BigDecimalUtil.getPrettyNumber(coupon.getDiscount()));
 			}
 
+			SellPrice sellPrice = new SellPrice();
+			sellPrice.setDelFlag("0");
+			sellPrice.setProductId(commproduct.getProductId());
+			sellPrice.setPriceType(commproduct.getPriceType());
+			String userId = "";
+			User user = getLoginUser(request);
+			if (user != null) {
+				userId = user.getUserId();
+			}
+			List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForPriceType(sellPrice, userId);
+
 			view.addObject("commproduct", commproduct);
 			view.addObject("rsPicList", rsPicList);
 			view.addObject("spId", Destsp.currentSpId);
 			view.addObject("coupon", coupon);
+			view.addObject("sellPriceList", sellPriceList);
 		} catch (Exception e) {
 			log.error(e, e);
 		}

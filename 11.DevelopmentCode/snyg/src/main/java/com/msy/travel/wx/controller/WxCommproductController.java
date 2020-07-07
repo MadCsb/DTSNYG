@@ -27,6 +27,7 @@ import com.msy.travel.pojo.Destsp;
 import com.msy.travel.pojo.OrderList;
 import com.msy.travel.pojo.RoleData;
 import com.msy.travel.pojo.RsPic;
+import com.msy.travel.pojo.SellPrice;
 import com.msy.travel.pojo.ServiceCode;
 import com.msy.travel.pojo.User;
 import com.msy.travel.service.CommproductService;
@@ -147,6 +148,8 @@ public class WxCommproductController extends BaseController {
 				view = new ModelAndView("wx/commproduct/commproductDetail0");
 			}
 
+			view.addObject("commproduct", commproduct);
+
 			String userRoleDataId = request.getParameter("userRoleDataId");// 微信回调获取
 			if (userRoleDataId != null && !"".equals(userRoleDataId)) {
 				RoleData roleData = new RoleData();
@@ -166,6 +169,11 @@ public class WxCommproductController extends BaseController {
 			ServiceCode serviceCode = serviceCodeService.getServiceCodeBySpId(Destsp.currentSpId);
 			wxSetViewObjects(view, request, serviceCode, userService);
 
+			User user = (User) view.getModel().get("user");
+			if (user == null || "".equals(user.getUserId())) {
+				return view;
+			}
+
 			RsPic rsPic = new RsPic();
 			rsPic.setRsId(commproduct.getProductId());
 			rsPic.setRsType(SysConsts.RSTYPE_COMMPRODUCT);
@@ -182,7 +190,6 @@ public class WxCommproductController extends BaseController {
 			ol.setOrderListType("0");
 			ol = orderListService.queryGoodPriceCount(ol);
 
-			User user = (User) view.getModel().get("user");
 			if (user != null && user.getUserId() != null && !"".equals(user.getUserId())) {
 				Accessrecord accessrecord = new Accessrecord();
 				accessrecord.setSpId(commproduct.getSpId());
@@ -211,10 +218,16 @@ public class WxCommproductController extends BaseController {
 				coupon.setDiscount(BigDecimalUtil.getPrettyNumber(coupon.getDiscount()));
 			}
 
-			view.addObject("commproduct", commproduct);
+			SellPrice sellPrice = new SellPrice();
+			sellPrice.setDelFlag("0");
+			sellPrice.setProductId(commproduct.getProductId());
+			sellPrice.setPriceType(commproduct.getPriceType());
+			List<SellPrice> sellPriceList = sellPriceService.querySellPriceListForPriceType(sellPrice, user.getUserId());
+
 			view.addObject("rsPicList", rsPicList);
 			view.addObject("spId", Destsp.currentSpId);
 			view.addObject("coupon", coupon);
+			view.addObject("sellPriceList", sellPriceList);
 		} catch (Exception e) {
 			log.error(e, e);
 		}

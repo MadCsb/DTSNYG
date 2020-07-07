@@ -4,7 +4,6 @@
 <#include "/WX_INC_HEAD.html">   
 <script src="${rc.contextPath}/wx/js/default.js"></script>
 <script src="${rc.contextPath}/wx/js/coupon.js"></script>
-<script src="${rc.contextPath}/wx/js/snyg-sellprice-wx.js"></script>
 <style>
 .flexslider {
     margin: 0;
@@ -40,9 +39,7 @@ var checkPriceId = $("#priceId").val();
 var showType = "";
 var refPatchCode = "";
 
-$(function(){
-	getSellPriceList("${rc.contextPath}");
-	
+$(function(){	
 	getPrice1Ref();
 });
 </script>
@@ -304,27 +301,7 @@ function timer(intDiff){
 </div>
  -->
 <!--商品规格--> 
-<div id="tcyddiv" class="spggdiv" style="display:none;">
-    <div class="snyg_content">
-    	<div id="picAndPrice">
-        </div>
-        <dl class="spggfl"  style="height:150px; overflow-y:auto; overflow-x:hidden;">
-            <dd><span>规格：</span>
-                <div id="goodsPriceDiv">
-                </div>
-            </dd>
-            <dd><span>数量：</span>
-                 <div class="sl">
-                    <button class="btnhui" onclick="changeNum('1')"></button>
-                    <input id="num" type="text" readonly="readonly" class="input_sl" value="1">
-                    <button class="btnadd" onclick="changeNum('2')"></button>
-	            </div>
-            </dd>
-            <div class="clear6"></div>
-        </dl>
-	<div align="center"><a href="javascript:void(0)" onclick="addShopCart()"><button class="btn-big">确定</button></a></div>
-    </div>
-</div>
+<#include "goodsPriceList.html">   
 
 <!--预订menu开始--> 
   <nav class="snyg_nav">

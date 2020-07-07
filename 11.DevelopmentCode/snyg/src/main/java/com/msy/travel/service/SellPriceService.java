@@ -167,4 +167,16 @@ public interface SellPriceService {
 	 * @return List<SellPrice>
 	 */
 	public List<SellPrice> querySellPriceListForCouponByCouponId(SellPrice sellPrice) throws Exception;
+
+	/**
+	 * 获取规格
+	 * 
+	 * @author wzd
+	 * @date 2020年7月6日 下午4:54:15
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	public List<SellPrice> querySellPriceListForPriceType(SellPrice sellPrice, String userId) throws Exception;
 }

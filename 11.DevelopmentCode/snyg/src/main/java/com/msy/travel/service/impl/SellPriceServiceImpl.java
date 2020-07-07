@@ -8,9 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msy.travel.common.DateTimeUtil;
+import com.msy.travel.common.EntityPage;
 import com.msy.travel.common.PrimaryKeyUtil;
+import com.msy.travel.common.Result;
 import com.msy.travel.dao.SellPriceDao;
+import com.msy.travel.pojo.Consignee;
 import com.msy.travel.pojo.SellPrice;
+import com.msy.travel.service.CompanyExpressService;
+import com.msy.travel.service.ConsigneeService;
 import com.msy.travel.service.SellPriceService;
 
 /**
@@ -25,6 +30,12 @@ public class SellPriceServiceImpl implements SellPriceService {
 
 	@Resource(name = "sellPriceDao")
 	private SellPriceDao sellPriceDao;
+
+	@Resource(name = "consigneeServiceImpl")
+	private ConsigneeService consigneeService;
+
+	@Resource(name = "companyExpressServiceImpl")
+	private CompanyExpressService companyExpressService;
 
 	/**
 	 * 新增SellPrice
@@ -262,5 +273,44 @@ public class SellPriceServiceImpl implements SellPriceService {
 	 */
 	public List<SellPrice> querySellPriceListForCouponByCouponId(SellPrice sellPrice) throws Exception {
 		return sellPriceDao.querySellPriceListForCouponByCouponId(sellPrice);
+	}
+
+	/**
+	 * 获取规格
+	 * 
+	 * @author wzd
+	 * @date 2020年7月6日 下午4:54:15
+	 * @param sellPrice
+	 * @return
+	 * @throws Exception
+	 * @return List<SellPrice>
+	 */
+	public List<SellPrice> querySellPriceListForPriceType(SellPrice sellPrice, String userId) throws Exception {
+
+		if (!"0".equals(sellPrice.getPriceType())) {
+			sellPrice.setPriceDate(DateTimeUtil.getDateTime19());
+		}
+		List<SellPrice> sellPricelist = sellPriceDao.queryGoodsPriceListForWx(sellPrice);
+
+		if (sellPricelist != null && sellPricelist.size() > 0 && userId != null && !"".equals(userId)) {
+			Consignee c = new Consignee();
+			c.setUserId(userId);
+			c.setEntityPage(new EntityPage());
+			c.getEntityPage().setSortField("t.F_ISDEFAULT");
+			c.getEntityPage().setSortOrder("DESC");
+			List<Consignee> cList = consigneeService.queryConsigneeList(c);
+
+			if (cList != null && cList.size() > 0) {
+				c = cList.get(0);
+				for (int i = 0; i < sellPricelist.size(); i++) {
+					Result result = companyExpressService.getCompanyPrice(sellPricelist.get(i).getPriceId(), "1", c.getPcx().substring(0, c.getPcx().indexOf(" ")));
+					if (result.getResultCode().equals("0")) {
+						com.alibaba.fastjson.JSONObject json = (com.alibaba.fastjson.JSONObject) result.getResultPojo();
+						sellPricelist.get(i).setFreight(json.getString("expressFee"));
+					}
+				}
+			}
+		}
+		return sellPricelist;
 	}
 }
